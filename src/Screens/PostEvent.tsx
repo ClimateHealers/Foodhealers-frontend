@@ -9,6 +9,8 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   TouchableOpacity,
+  ScrollView,
+  Dimensions,
 } from "react-native";
 import { TextInput, Text } from "react-native-paper";
 import { auth } from "../firebase/firebaseConfig";
@@ -28,15 +30,23 @@ import {
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useDispatch } from "react-redux";
 import { login, registerUser } from "../redux/actions/authAction";
-import { signupSchema } from "../Components/validation";
+import { postEventSchema, signupSchema } from "../Components/validation";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
+import DateTimePicker, {
+  DateTimePickerEvent,
+} from "@react-native-community/datetimepicker";
+import moment from "moment";
+import { Button } from "react-native-elements";
+import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+import {
+  widthPercentageToDP as w2dp,
+  heightPercentageToDP as h2dp,
+} from "react-native-responsive-screen";
 
 const PostEvent = () => {
   const [loading, setLoading] = useState(false);
   const [langOpen, setlangOpen] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState(localized.locale);
   const [lang, setLang] = useState([
@@ -49,6 +59,23 @@ const PostEvent = () => {
     { id: 7, label: "Punjabi", value: "pu" },
     { id: 8, label: "Spanish", value: "es" },
   ]);
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(
+    new Date()
+  );
+  const [selectedTime, setSelectedTime] = useState<Date | undefined>(
+    new Date()
+  );
+
+  const eventDate = moment(selectedDate).utc();
+  const eventTime = moment(selectedTime).utc();
+
+  eventDate.set({
+    hour: eventTime.hour(),
+    minute: eventTime.minute(),
+    second: eventTime.second(),
+  });
+
+  const eventDateTime = eventDate.unix();
 
   const dispatch = useDispatch();
 
@@ -56,7 +83,20 @@ const PostEvent = () => {
     setlangOpen(false);
     Keyboard.dismiss();
   };
-  const navigation: string = useNavigation();
+  const navigation: any = useNavigation();
+
+  const handleDateChange = (event: DateTimePickerEvent, date?: Date) => {
+    if (date) {
+      setSelectedDate(date);
+    }
+  };
+
+  const handleTimeChange = (event: DateTimePickerEvent, time?: Date) => {
+    if (time) {
+      setSelectedTime(time);
+      // console.log("kkkkkkkkkkkkkkkkkkkkk", time);
+    }
+  };
 
   const changeLanguage = (itemValue: any, index: any) => {
     const selectedLanguage = lang[index].value;
@@ -74,7 +114,7 @@ const PostEvent = () => {
   const findFoodMenuItemPress = (item: any) => {
     console.log(`Selected menu item: ${item}`);
     setMenuOpen(false);
-    navigation.navigate("MapScreen");
+    // navigation.navigate("MapScreen");
   };
 
   return (
@@ -83,14 +123,14 @@ const PostEvent = () => {
       style={styles.background}
     >
       <TouchableWithoutFeedback onPress={handlePressOutside}>
-        <View style={styles.container}>
+        <ScrollView style={styles.root}>
           <StatusBar animated={true} backgroundColor="auto" />
           {menuOpen && (
             <View
               style={{
                 position: "absolute",
-                right: 60,
-                top: 145,
+                right: 45,
+                top: 95,
                 backgroundColor: "white",
                 borderColor: "white",
                 height: 100,
@@ -104,7 +144,7 @@ const PostEvent = () => {
                   style={{
                     padding: 10,
                     fontSize: 20,
-                    fontWeight: 300,
+                    fontWeight: "300",
                     lineHeight: 27.24,
                   }}
                 >
@@ -118,7 +158,7 @@ const PostEvent = () => {
                   style={{
                     padding: 10,
                     fontSize: 20,
-                    fontWeight: 300,
+                    fontWeight: "300",
                     lineHeight: 27.24,
                   }}
                 >
@@ -148,28 +188,62 @@ const PostEvent = () => {
               </View>
             </View>
           </Modal>
-       
+
           <Formik
+            validationSchema={postEventSchema}
             initialValues={{
-              eventName:"",
+              eventName: "",
+              served: "",
+              eventDate: eventDate,
+              eventTime: eventTime,
+              lat: 0,
+              long: 0,
               address: "",
-              addressCont:"",
-              date:"",
-              time: "",
-              served:""
+              city: "",
+              state: "",
+              postalCode: "",
             }}
-            validationSchema={signupSchema}
-            onSubmit={async ({ eventName, address, addressCont, date,time, served }) => {
-             
-              setLoading(true);
-              
-             
-            }}
+            onSubmit={async ({
+              eventName,
+              served,
+              eventDate,
+              eventTime,
+              lat,
+              long,
+              address,
+              city,
+              state,
+              postalCode,
+            }) =>
+              await navigation.navigate("UploadPhotosScreen", {
+                eventFormData: {
+                  eventName: eventName,
+                  served: served,
+                  eventDate: eventDateTime,
+                  // eventTime: eventTime,
+                  lat: lat,
+                  long: long,
+                  address: address,
+                  city: city,
+                  state: state,
+                  postalCode: Number(postalCode) ? Number(postalCode) : 0,
+                },
+              })
+            }
           >
-            {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
-              <View style={{ marginTop: 30 }}>
+            {({
+              handleSubmit,
+              handleBlur,
+              handleChange,
+              values,
+              setFieldValue,
+              errors,
+              touched,
+              isValid,
+            }) => (
+              <>
                 <TextInput
-                  onChangeText={handleChange("eventname")}
+                  onChangeText={handleChange("eventName")}
                   onBlur={handleBlur("eventName")}
                   value={values.eventName}
                   // placeholder={localized.t("Email")}
@@ -178,60 +252,109 @@ const PostEvent = () => {
                   style={styles.textInput}
                 />
                 <Text style={styles.inputError}>{errors.eventName}</Text>
-                <TextInput
-                  onChangeText={handleChange("address")}
-                  onBlur={handleBlur("address")}
-                  value={values.address}
-                  // placeholder={localized.t("Address")}
-                  placeholder={"Address"}
-                  placeholderTextColor={"black"}
-                  style={styles.textInput}
-                />
 
+                <GooglePlacesAutocomplete
+                  placeholder="Address"
+                  fetchDetails={true}
+                  keepResultsAfterBlur={true}
+                  listViewDisplayed="auto"
+                  textInputProps={{ placeholderTextColor: "#000000" }}
+                  query={{
+                    key: "AIzaSyBgYGulsDfu4VFt_tcPfQwAPjZccMe7nA0",
+                    language: "en",
+                    // components: "country:nz",
+                  }}
+                  enablePoweredByContainer={false}
+                  onPress={(data, details) => {
+                    console.log(
+                      "tttttttttttttttttttttttttttttttttt",
+                      details?.address_components[0]?.types
+                    );
+                    setFieldValue("lat", details?.geometry?.location?.lat);
+                    setFieldValue("long", details?.geometry?.location?.lng);
+                    setFieldValue("address", details?.formatted_address);
+
+                    const addressComponents = details?.address_components || [];
+                    addressComponents.forEach((component) => {
+                      if (
+                        component.types.includes("administrative_area_level_1")
+                      ) {
+                        const state = component.long_name;
+                        console.log("State:", state);
+                        setFieldValue("state", state);
+                      }
+
+                      if (component.types.includes("locality")) {
+                        const city = component.long_name;
+                        console.log("City:", city);
+                        setFieldValue("city", city);
+                      }
+
+                      if (component.types.includes("postal_code")) {
+                        const postalCode = component.long_name;
+                        console.log("Postal Code:", postalCode);
+                        setFieldValue("postalCode", postalCode);
+                      }
+                    });
+                  }}
+                  onFail={(error) => {
+                    console.log(error);
+                  }}
+                  onNotFound={() => {
+                    console.log("no results");
+                  }}
+                  styles={{
+                    textInputContainer: {
+                      borderColor: "black",
+                      // borderWidth: 1,
+                      borderRadius: 3,
+                      // marginBottom: 18,
+                      height: 50,
+                      zIndex: 1,
+                      width: "100%",
+                    },
+                    textInput: {
+                      color: "black",
+                      height: 50,
+                      backgroundColor: "white",
+                      paddingLeft: 16,
+                    },
+                    predefinedPlacesDescription: {
+                      color: "#FFFFFF",
+                    },
+                  }}
+                />
                 <Text style={styles.inputError}>{errors.address}</Text>
-                <TextInput
-                  onChangeText={handleChange("addressCont")}
-                  onBlur={handleBlur("addressCont")}
-                  value={values.password}
-                  // placeholder={localized.t("Password")}
-                  placeholder={"Address cont."}
-                  placeholderTextColor={"black"}
-                  style={styles.textInput}
-                />
+                <View style={styles.dateTimePickerContainer}>
+                  <DateTimePicker
+                    testID="dateTimePicker"
+                    value={selectedDate!}
+                    minimumDate={new Date()}
+                    mode={"date"}
+                    neutralButton={{ label: "Clear", textColor: "grey" }}
+                    onChange={handleDateChange}
+                  />
+                </View>
+                <View style={styles.dateTimePickerContainer}>
+                  <DateTimePicker
+                    testID="dateTimePicker"
+                    value={selectedTime!}
+                    mode="time"
+                    display="default"
+                    onChange={handleTimeChange}
+                  />
+                </View>
 
-                <Text style={styles.inputError}>{errors.addressCont}</Text>
-                <TextInput
-                  onChangeText={handleChange("password")}
-                  onBlur={handleBlur("password")}
-                  value={values.password}
-                  // placeholder={localized.t("Password")}
-                  placeholder={"Date"}
-                  placeholderTextColor={"black"}
-                  style={styles.textInput}
-                />
-
-                <Text style={styles.inputError}>{errors.date}</Text>
-                <TextInput
-                  onChangeText={handleChange("time")}
-                  onBlur={handleBlur("time")}
-                  value={values.time}
-                  // placeholder={localized.t("Password")}
-                  placeholder={"Time"}
-                  placeholderTextColor={"black"}
-                  style={styles.textInput}
-                />
-
-                <Text style={styles.inputError}>{errors.time}</Text>
                 <TextInput
                   onChangeText={handleChange("served")}
                   onBlur={handleBlur("served")}
                   value={values.served}
                   // placeholder={localized.t("Password")}
+                  multiline={true}
                   placeholder={"What's being served"}
                   placeholderTextColor={"black"}
-                  style={styles.textInput}
+                  style={styles.textArea}
                 />
-
                 <Text style={styles.inputError}>{errors.served}</Text>
 
                 <PrimaryButton
@@ -241,10 +364,10 @@ const PostEvent = () => {
                   titleStyle={styles.titleStyle}
                   onPress={handleSubmit}
                 />
-              </View>
+              </>
             )}
           </Formik>
-        </View>
+        </ScrollView>
       </TouchableWithoutFeedback>
     </LinearGradient>
   );
@@ -255,6 +378,14 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
     justifyContent: "flex-start",
+  },
+  root: {
+    display: "flex",
+    marginBottom: 50,
+    flexDirection: "column",
+    flex: 1,
+    marginVertical: 16,
+    marginHorizontal: w2dp("4%"),
   },
   centeredView: {
     flex: 1,
@@ -287,11 +418,11 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     width: 190,
     // marginBottom: 150,
-    marginTop: 50,
+    marginTop: 80,
     marginLeft: 75,
   },
   titleStyle: {
-    color: "black",
+    color: "white",
     fontSize: 26,
     fontWeight: "400",
     lineHeight: 35,
@@ -311,8 +442,19 @@ const styles = StyleSheet.create({
   },
 
   textInput: {
+    height: 50,
+    borderRadius: 3,
+    backgroundColor: "#FFFFFF",
+  },
+  textArea: {
+    height: 50,
+    borderRadius: 3,
+    backgroundColor: "#FFFFFF",
+  },
+
+  DateStyle: {
     height: 45,
-    marginBottom: 1,
+    backgroundColor: "#FFFFFF",
   },
 
   item: {
@@ -323,6 +465,38 @@ const styles = StyleSheet.create({
   itemText: {
     fontSize: 25,
     color: "white",
+  },
+  datePickerStyle: {
+    width: 345,
+    height: 45,
+    marginBottom: 20,
+    borderColor: "white",
+    backgroundColor: "#FFFFFF",
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: "gray",
+    borderRadius: 4,
+    marginBottom: 12,
+    padding: 8,
+  },
+  inputView: {
+    justifyContent: "flex-start",
+    borderColor: "#000000",
+    borderWidth: 1,
+    width: "100%",
+    height: 50,
+    marginTop: 12,
+    borderRadius: 6,
+    backgroundColor: "white",
+  },
+  dateTimePickerContainer: {
+    backgroundColor: "white",
+    borderRadius: 3,
+    paddingRight: 250,
+    paddingVertical: 5,
+    marginBottom: 25,
+    height: 45,
   },
 });
 

@@ -11,9 +11,12 @@ import HomeScreen from "./Screens/HomeScreen";
 import MapScreen from "./Screens/MapScreen";
 import SignupScreen from "./Screens/SignupScreen";
 import EventDetailsScreen from "./Screens/EventDetailsScreen";
-import MapWeekScreen from "./Screens/MapWeekScreen";
+import WeekScreen from "./Screens/WeekScreen";
 import EventsHomeScreen from "./Screens/EventsHomeScreen";
 import PostEvent from "./Screens/PostEvent";
+import UploadPhotosScreen from "./Screens/UploadPhotosScreen";
+import EventPhotosScreen from "./Screens/EventPhotosScreen";
+import PostEventDetailsScreen from "./Screens/PostEventDetailsScreen";
 
 const Navigation = () => {
   const Stack = createNativeStackNavigator();
@@ -21,7 +24,7 @@ const Navigation = () => {
   return (
     <>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="SignupScreen">
+        <Stack.Navigator initialRouteName="HomeScreen">
           <Stack.Screen
             name="LoginScreen"
             component={LoginScreen}
@@ -64,8 +67,8 @@ const Navigation = () => {
             options={{ title: "", header: () => null }}
           />
           <Stack.Screen
-            name="MapWeekScreen"
-            component={MapWeekScreen}
+            name="WeekScreen"
+            component={WeekScreen}
             options={{ title: "", header: () => null }}
           />
           <Stack.Screen
@@ -81,6 +84,21 @@ const Navigation = () => {
           <Stack.Screen
             name="PostEvent"
             component={PostEvent}
+            options={{ title: "", header: () => null }}
+          />
+          <Stack.Screen
+            name="UploadPhotosScreen"
+            component={UploadPhotosScreen}
+            options={{ title: "", header: () => null }}
+          />
+          <Stack.Screen
+            name="EventPhotosScreen"
+            component={EventPhotosScreen}
+            options={{ title: "", header: () => null }}
+          />
+          <Stack.Screen
+            name="PostEventDetailsScreen"
+            component={PostEventDetailsScreen}
             options={{ title: "", header: () => null }}
           />
         </Stack.Navigator>

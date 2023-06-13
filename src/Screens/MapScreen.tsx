@@ -45,9 +45,9 @@ const MapScreen = ({ route }: any) => {
 
   console.log("checking curretn datetime", startDate, endDate);
 
-  console.log("mapsscreennnnnnnnnnn", location);
+  // console.log("mapsscreennnnnnnnnnn", location);
   const { width, height } = Dimensions.get("window");
-  const navigation: string = useNavigation();
+  const navigation: any = useNavigation();
   const ASPECT_RATIO = width / height;
   const LATITUDE_DELTA = 0.0922;
   const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
@@ -71,18 +71,25 @@ const MapScreen = ({ route }: any) => {
   const [lat, setLat] = useState<any>();
   const [long, setLong] = useState<any>();
   const [buttonVisibility, setButtonVisibility] = useState(false);
+  const [fullAddress, setfullAddress] = useState<any>("");
+  const [city, setCity] = useState<any>("");
+  const [state, setState] = useState<any>("");
+  const [postalCode, setPostalCode] = useState<string>("");
   const mapRef = useRef<any>(null);
-  console.log("aaaaaaaaaaaa", mapRef.current);
 
   const dispatch = useDispatch();
 
-  console.log("zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz", events);
+  // console.log("zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz", events);
 
-  const EventDetails = useSelector(
-    (state: any) => state.findFood.data.foodEvents
+  // const EventDetails = useSelector(
+  //   (state: any) => state.findFood.data.foodEvents
+  // );
+  const isAuthenticated = useSelector(
+    (state: any) => state.auth.data.isAuthenticated
   );
+  console.log("checking auth data in map screen", isAuthenticated);
 
-  console.log("checking data from the food reducer", EventDetails);
+  // console.log("checking data from the food reducer", EventDetails);
 
   const focusMarker = () => {
     if (mapRef.current) {
@@ -100,35 +107,36 @@ const MapScreen = ({ route }: any) => {
     }
   };
 
-  const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
-  };
-
   const handlePressOutside = () => {
     setlangOpen(false);
     Keyboard.dismiss();
   };
+
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
+
   const handleMenuItemPress = (item: any) => {
     console.log(`Selected menu item: ${item}`);
     setMenuOpen(false);
-    navigation.navigate("HomeScreen");
+    if (isAuthenticated) {
+      navigation.navigate("HomeScreen");
+    } else {
+      navigation.navigate("SignupScreen");
+    }
   };
   const findFoodMenuItemPress = (item: any) => {
     console.log(`Selected menu item: ${item}`);
     setMenuOpen(false);
-    navigation.navigate("MapScreen", {
-      location: location,
-    });
   };
 
-  const [isFocused, setIsFocused] = useState(false);
-
-  // const handleFocus = () => setIsFocused(true);
-  // const handleBlur = () => setIsFocused(false);
-
   const clickHandler = () => {
-    navigation.navigate("MapWeekScreen", {
+    navigation.navigate("WeekScreen", {
       location: location,
+      city: city,
+      state: state,
+      fullAddress: fullAddress,
+      postalCode: postalCode,
     });
   };
 
@@ -143,70 +151,6 @@ const MapScreen = ({ route }: any) => {
       focusMarker();
     }
   }, [lat, long]);
-
-  // const markers = [
-  //   {
-  //     title: "Event 1",
-  //     coordinates: {
-  //       latitude: 15.55609569761755,
-  //       longitude: 73.75171515221851,
-  //     },
-  //   },
-  //   {
-  //     title: "Event 2",
-  //     coordinates: {
-  //       latitude: 13.379048137451052,
-  //       longitude: 77.67450971928682, // 15.55609569761755, 73.75171515221851
-  //     },
-  //   },
-  //   {
-  //     title: "Event 2",
-  //     coordinates: {
-  //       latitude: 11.379048137451052,
-  //       longitude: 17.67450971928682, // 15.55609569761755, 73.75171515221851
-  //     },
-  //   },
-  //   {
-  //     title: "Event 2",
-  //     coordinates: {
-  //       latitude: 15.379048137451052,
-  //       longitude: 37.67450971928682, // 15.55609569761755, 73.75171515221851
-  //     },
-  //   },
-  //   {
-  //     title: "Event 2",
-  //     coordinates: {
-  //       latitude: 53.379048137451052,
-  //       longitude: 57.67450971928682, // 15.55609569761755, 73.75171515221851
-  //     },
-  //   },
-  //   {
-  //     title: "Event 2",
-  //     coordinates: {
-  //       latitude: 18.379048137451052,
-  //       longitude: 97.67450971928682, // 15.55609569761755, 73.75171515221851
-  //     },
-  //   },
-  //   {
-  //     title: "Event 2",
-  //     coordinates: {
-  //       latitude: 3.379048137451052,
-  //       longitude: 57.67450971928682, // 15.55609569761755, 73.75171515221851
-  //     },
-  //   },
-  //   {
-  //     title: "Event 2",
-  //     coordinates: {
-  //       latitude: 11.379048137451052,
-  //       longitude: 67.67450971928682, // 15.55609569761755, 73.75171515221851
-  //     },
-  //   },
-  // ];
-
-  const handleNavigation = () => {
-    const url = `https://www.google.com/maps/dir/?api=1&destination=${lat},${long}`;
-    Linking.openURL(url);
-  };
 
   const navigateToEvent = (event: any) => {
     Alert.alert(
@@ -223,9 +167,7 @@ const MapScreen = ({ route }: any) => {
         },
         {
           text: "Cancel",
-          onPress: () => {
-            console.log("dfbdb");
-          },
+          onPress: () => {},
           style: "default",
         },
       ],
@@ -262,7 +204,7 @@ const MapScreen = ({ route }: any) => {
                     style={{
                       padding: 10,
                       fontSize: 20,
-                      fontWeight: 300,
+                      fontWeight: "300",
                       lineHeight: 27.24,
                     }}
                   >
@@ -276,7 +218,7 @@ const MapScreen = ({ route }: any) => {
                     style={{
                       padding: 10,
                       fontSize: 20,
-                      fontWeight: 300,
+                      fontWeight: "300",
                       lineHeight: 27.24,
                     }}
                   >
@@ -318,34 +260,66 @@ const MapScreen = ({ route }: any) => {
                 <Text style={styles.itemText}>{localized.t("Find Food")}</Text>
               </View>
               <View style={styles.item}>
+                {/* <BurgerIcon/> */}
                 <MaterialCommunityIcons
                   name="menu"
                   size={40}
                   color="white"
-                  onPress={toggleMenu}
+                  onPress={() => toggleMenu()}
                 />
               </View>
             </View>
 
             <GooglePlacesAutocomplete
               placeholder={localized.t("Address or nearest cross streets")}
-              currentLocation={true}
+              // currentLocation={true}
               onPress={async (data, details) => {
                 console.log("checking data from google places", details);
                 setAddress(details);
                 setLat(details?.geometry?.location?.lat);
                 setLong(details?.geometry?.location?.lng);
                 setButtonVisibility(true);
+                setfullAddress(details?.formatted_address);
+                const addressComponents = details?.address_components || [];
+                addressComponents.forEach((component) => {
+                  if (component.types.includes("administrative_area_level_1")) {
+                    const state = component.long_name;
+                    console.log("State:", state);
+                    setState(state);
+
+                 
+                  }
+
+                  if (component.types.includes("locality")) {
+                    const city = component.long_name;
+                    console.log("City:", city);
+                    setCity(city);
+                  }
+
+                  if (component.types.includes("postal_code")) {
+                    const postalCode = component.long_name;
+                    console.log("Postal Code:", postalCode);
+                    setPostalCode(postalCode);
+                  }
+                });
                 const findFoodData = {
                   lat: details?.geometry?.location?.lat,
                   lng: details?.geometry?.location?.lng,
                   alt: 0,
-                  // eventStartDate: startDate,
-                  eventStartDate: 1685351184,
-                  // eventEndDate: endDate,
-                  eventEndDate: 1685610384,
+                  eventStartDate: startDate,
+                  fullAddress: details?.formatted_address,
+                  city: city,
+                  state: state,
+                  postalCode: postalCode ? Number(postalCode) : 0,
+
+                  // eventStartDate: 1685351184,
+                  eventEndDate: endDate,
+                  // eventEndDate: 1685610384,
                 };
-                const response = await dispatch(findFood(findFoodData) as any);
+
+                const response = await dispatch(
+                  findFood(findFoodData as any) as any
+                );
                 console.log(
                   "checking response of findFood API",
                   response?.payload?.foodEvents
@@ -356,8 +330,8 @@ const MapScreen = ({ route }: any) => {
               textInputProps={{ placeholderTextColor: "#000000" }}
               listUnderlayColor="blue"
               query={{
-                // key: "AIzaSyBgYGulsDfu4VFt_tcPfQwAPjZccMe7nA0",
-                key: "AIzaSyDRj8-ZV2Soyar4D5ksAcf5ILW8JKH-eh0",
+                key: "AIzaSyBgYGulsDfu4VFt_tcPfQwAPjZccMe7nA0",
+                // key: "AIzaSyDRj8-ZV2Soyar4D5ksAcf5ILW8JKH-eh0",
                 language: "en",
               }}
               styles={{
@@ -414,7 +388,7 @@ const MapScreen = ({ route }: any) => {
                   longitudeDelta: LONGITUDE_DELTA,
                 }}
                 showsUserLocation={true}
-                // followsUserLocation={true}
+                followsUserLocation={true}
               >
                 {/* <Circle
                   center={{
@@ -426,7 +400,7 @@ const MapScreen = ({ route }: any) => {
                   strokeColor="#3399ff"
                   fillColor="#91c5fa"
                 /> */}
-                <Circle
+                {/* <Circle
                   center={{
                     latitude: lat,
                     longitude: long,
@@ -435,7 +409,7 @@ const MapScreen = ({ route }: any) => {
                   strokeWidth={2}
                   strokeColor="#3399ff"
                   fillColor="#91c5fa"
-                />
+                /> */}
 
                 {address ? (
                   <Marker
@@ -455,14 +429,14 @@ const MapScreen = ({ route }: any) => {
                   </Marker>
                 ) : null}
                 {events?.map((marker: any) => {
-                  console.log("checking evetns", marker);
+                  // console.log("checking evetns", marker);
                   const coordinates = {
                     latitude: marker?.address?.lat,
                     longitude: marker?.address?.lng,
                   };
                   return (
                     <Marker
-                    key = {marker?.id}
+                      key={marker?.id}
                       pinColor="#00693D"
                       coordinate={coordinates}
                       onPress={() => navigateToEvent(coordinates)}
@@ -470,13 +444,15 @@ const MapScreen = ({ route }: any) => {
                       // description={marker?.name}
                       // identifier={marker?.name}
                     >
-                     <View>
-                       <Text style = {{color:"#00693D",fontSize:10}}>{marker?.name}</Text>
-                     <Image
-                        source={require("../../assets/eventLocationPin.png")}
-                        style={styles.markerIcon}
-                      />
-                     </View>
+                      <View>
+                        <Text style={{ color: "#00693D", fontSize: 10 }}>
+                          {marker?.name}
+                        </Text>
+                        <Image
+                          source={require("../../assets/eventLocationPin.png")}
+                          style={styles.markerIcon}
+                        />
+                      </View>
                       {/* <Callout>
                         <View>
                           <Text>{marker?.name}</Text>
@@ -493,7 +469,7 @@ const MapScreen = ({ route }: any) => {
                   title={"Next"}
                   buttonStyle={styles.buttonStyles}
                   titleStyle={styles.titleStyle}
-                  onPress={()=>clickHandler()}
+                  onPress={() => clickHandler()}
                 />
               </View>
             ) : null}

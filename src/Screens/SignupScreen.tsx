@@ -52,7 +52,7 @@ const SignupScreen = () => {
     setlangOpen(false);
     Keyboard.dismiss();
   };
-  const navigation: string = useNavigation();
+  const navigation: any = useNavigation();
 
   const changeLanguage = (itemValue: any, index: any) => {
     const selectedLanguage = lang[index].value;
@@ -70,7 +70,7 @@ const SignupScreen = () => {
   const findFoodMenuItemPress = (item: any) => {
     console.log(`Selected menu item: ${item}`);
     setMenuOpen(false);
-    navigation.navigate("MapScreen");
+    // navigation.navigate("MapScreen");
   };
 
   return (
@@ -100,7 +100,7 @@ const SignupScreen = () => {
                     style={{
                       padding: 10,
                       fontSize: 20,
-                      fontWeight: 300,
+                      fontWeight: "300",
                       lineHeight: 27.24,
                     }}
                   >
@@ -114,7 +114,7 @@ const SignupScreen = () => {
                     style={{
                       padding: 10,
                       fontSize: 20,
-                      fontWeight: 300,
+                      fontWeight: "300",
                       lineHeight: 27.24,
                     }}
                   >
@@ -175,7 +175,7 @@ const SignupScreen = () => {
               confirmPassword: "",
             }}
             validationSchema={signupSchema}
-            onSubmit={async ({ email, password, name }) => {
+            onSubmit={async ({ email , password, name }:any) => {
               console.log("dfbsidjbslkdn");
               setLoading(true);
               createUserWithEmailAndPassword(auth, email, password)
@@ -192,7 +192,7 @@ const SignupScreen = () => {
                     tokenId: token,
                     name: name,
                     email: email,
-                    isVolunteer: false,
+                    isVolunteer: true,
                   };
                   console.log("signup Firebase token:", data.tokenId);
 
@@ -200,8 +200,8 @@ const SignupScreen = () => {
                   console.log("zzzzzzzzzzzzzzzzz", response.payload);
                   if (response.payload.success) {
                     const loginResponse = await dispatch(login(data) as any);
-                    console.log("cccccccccccccccccc", loginResponse.payload);
-                    if (loginResponse.payload.isAuthenticated) {
+                    console.log("cccccccccccccccccc", loginResponse?.payload);
+                    if (loginResponse?.payload?.isAuthenticated) {
                       navigation.navigate("HomeScreen", {
                         data: loginResponse?.payload?.user,
                       });
@@ -229,7 +229,7 @@ const SignupScreen = () => {
                 });
             }}
           >
-            {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
+            {({ handleChange, handleBlur, handleSubmit, values, errors }:any) => (
               <View style={{ marginTop: 100 }}>
                 <TextInput
                   onChangeText={handleChange("name")}

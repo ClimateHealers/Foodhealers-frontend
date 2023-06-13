@@ -10,7 +10,6 @@ import {
   Keyboard,
   TouchableOpacity,
   Image,
-  Linking,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -24,10 +23,9 @@ import { localized } from "../locales/localization";
 import PrimaryButton from "../Components/PrimaryButton";
 import { Divider } from "react-native-paper";
 import moment from "moment";
-import BurgerIcon from "../Components/BurgerIcon";
 
-const EventDetailsScreen = ({ route }: any) => {
-  const { eventDetails } = route.params;
+const PostEventDetailsScreen = ({ route }: any) => {
+  const { eventDetails, eventPhotos } = route.params;
   // console.log("vvvvvvvvvvvvvvvvvvvvvvvvvvv", eventDetails);
   const { width, height } = Dimensions.get("window");
   const navigation: any = useNavigation();
@@ -74,21 +72,31 @@ const EventDetailsScreen = ({ route }: any) => {
     const [startTime, endTime] = timeStr.split("-");
     const formattedStartTime = moment(startTime, "HH:mm").format("hh:mm A");
     const formattedEndTime = moment(endTime, "HH:mm").format("hh:mm A");
-    // return `${formattedStartTime}-${formattedEndTime}`;
-    return `${formattedStartTime}`;
+    return `${formattedStartTime}-${formattedEndTime}`;
   };
 
-  const time = `${moment(eventDetails?.eventStartDate).format(
-    "HH:mm"
-  )} - ${moment(eventDetails?.eventEndDate).format("HH:mm")}`;
-  
-  const navigationHandler =() => {
-  
-      const url =  `https://www.google.com/maps/dir/?api=1&destination=${eventDetails?.address?.lat},${eventDetails?.address?.lng}`;
-      Linking.openURL(url);
-    
-  }
-  
+  const epochDate = eventDetails?.eventDate;
+  const dateObj = new Date(epochDate * 1000); 
+
+  const options = {
+    weekday: "long", 
+    month: "long", 
+    day: "numeric", 
+  };
+
+  const formattedDate = dateObj.toLocaleDateString("en-US", options);
+
+  console.log("checking date converted from epoch time", formattedDate);
+
+  const epochTime = eventDetails?.eventDate; 
+
+  const startTime = moment(epochTime * 1000).format("h:mm a");
+ 
+
+  // const formattedTime = `${startTime} - ${endTime}`;
+  const formattedTime = `${startTime}`;
+  console.log("checking time converted from epoch time", formattedTime);
+
   return (
     <TouchableWithoutFeedback onPress={handlePressOutside}>
       <View style={styles.container}>
@@ -99,16 +107,16 @@ const EventDetailsScreen = ({ route }: any) => {
           <SafeAreaView>
             <View style={styles.row}>
               <View style={styles.item}>
-                <Text style={styles.itemText}>{localized.t("Find Food")}</Text>
+                <Text style={styles.itemText}>Post an Event</Text>
               </View>
               <View style={styles.item}>
-                <BurgerIcon/>
-                {/* <MaterialCommunityIcons
+                <MaterialCommunityIcons
                   name="menu"
                   size={40}
                   color="white"
                   onPress={toggleMenu}
-                /> */}
+                  style= {{marginLeft:30}}
+                />
                 {menuOpen && (
                   <View
                     style={{
@@ -117,8 +125,9 @@ const EventDetailsScreen = ({ route }: any) => {
                       top: 70,
                       backgroundColor: "white",
                       borderColor: "white",
-                      height: 100,
                       borderRadius: 5,
+                      height: 100,
+                      width: 100,
                       zIndex: 9999,
                     }}
                   >
@@ -159,7 +168,9 @@ const EventDetailsScreen = ({ route }: any) => {
               <View style={styles.card}>
                 <View>
                   <Image
-                    source={require("../../assets/images/hostingEvent.png")}
+           
+                    source={{ uri: eventPhotos[0] }}
+                    // source={require("../../assets/images/hostingEvent.png")}
                     style={{
                       width: "100%",
                       height: 200,
@@ -171,67 +182,53 @@ const EventDetailsScreen = ({ route }: any) => {
                 <View style={styles.cardTextConainer}>
                   <View style={{ marginBottom: 30, paddingHorizontal: 10 }}>
                     <Text style={styles.boldText}>
-                      Start date: <Text style={styles.cardText}>
-                     
-                        {`${moment(eventDetails?.eventStartDate).format(
-                          "dddd, MMMM D"
-                        )}`}
-                      </Text>
+                      Start date: <Text style={styles.cardText}>{formattedDate}</Text>
                     </Text>
-                    {/* <View style={{ borderBottomColor: 'black', borderBottomWidth: 1 }} /> */}
+                  
                     <Divider
                       style={{
                         backgroundColor: "black",
                         height: 1,
                         width: "95%",
-                        // marginLeft: 0,
+                       
                       }}
                     />
                   </View>
                   <View style={{ marginBottom: 20, paddingHorizontal: 10 }}>
                     <Text style={styles.boldText}>
-                      Start time: <Text style={styles.cardText}>
-                     
-                        {/* {`${moment(eventDetails?.eventStartDate).format(
-                          "HH:mm"
-                        )} - ${moment(eventDetails?.eventEndDate).format(
-                          "HH:mm"
-                        )}`} */}
-                        {convertTimeFormat(time)}
-                      </Text>
+                      Start time: <Text style={styles.cardText}>{formattedTime}</Text>
                     </Text>
-                    {/* <View style={{ borderBottomColor: 'black', borderBottomWidth: 1 }} /> */}
+             
                     <Divider
                       style={{
                         backgroundColor: "black",
                         height: 1,
                         width: "95%",
-                        // marginLeft: 4,
+                        marginLeft: 2,
                       }}
                     />
                   </View>
                   <View style={{ marginBottom: 30, paddingHorizontal: 10 }}>
                     <Text style={styles.boldText}>
-                      Location: <Text style={styles.cardText}>
-                    
-                        {eventDetails.address?.fullAddress}
+                      Location:{" "}
+                      <Text style={styles.cardText}>
+                        {eventDetails?.address}
                       </Text>
                     </Text>
-                    {/* <View style={{ borderBottomColor: 'black', borderBottomWidth: 1 }} /> */}
                     <Divider
                       style={{
                         backgroundColor: "black",
                         height: 1,
                         width: "95%",
-                        // marginLeft: 4,
+                        marginLeft: 2,
                       }}
                     />
                   </View>
-                  <View style={{ marginBottom: 10, paddingHorizontal: 10 }}>
+                  <View style={{ marginBottom: 20, paddingHorizontal: 10 }}>
                     <Text style={styles.boldText}>
-                      What: <Text style={styles.cardText}>
-                       
-                        {eventDetails?.additionalInfo}
+                      What:{" "}
+                      <Text style={styles.cardText}>
+                        {eventDetails?.served}
                       </Text>
                     </Text>
 
@@ -240,18 +237,12 @@ const EventDetailsScreen = ({ route }: any) => {
                         backgroundColor: "black",
                         height: 1,
                         width: "95%",
-                        // marginLeft: 4,
+                        marginLeft: 2,
                       }}
                     />
                   </View>
                 </View>
               </View>
-              <PrimaryButton
-                title={"Get directions"}
-                onPress= {navigationHandler}
-                buttonStyle={styles.buttonStyles}
-                titleStyle={styles.titleStyle}
-              />
             </View>
           </SafeAreaView>
         </LinearGradient>
@@ -276,9 +267,9 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   item: {
-    width: "30%",
+    width: "40%",
     marginTop: 25,
-    marginLeft: 30,
+    // marginRight: 25,
     height: 100,
     justifyContent: "center",
     alignItems: "center",
@@ -293,7 +284,7 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: "white",
     width: "90%",
-    height: "77%",
+    // height: "77%",
     marginLeft: 20,
     borderRadius: 10,
     marginBottom: 15,
@@ -324,8 +315,7 @@ const styles = StyleSheet.create({
   boldText: {
     fontWeight: "300",
     fontSize: 20,
-    // other styles for the bold text
   },
 });
 
-export default EventDetailsScreen;
+export default PostEventDetailsScreen;
