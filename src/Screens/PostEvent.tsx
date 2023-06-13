@@ -23,6 +23,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { loadFonts } from "../font";
 import { Formik } from "formik";
 import * as Yup from "yup";
+import { GOOGLE_API_KEY } from '@env';
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -260,7 +261,7 @@ const PostEvent = () => {
                   listViewDisplayed="auto"
                   textInputProps={{ placeholderTextColor: "#000000" }}
                   query={{
-                    key: "AIzaSyBgYGulsDfu4VFt_tcPfQwAPjZccMe7nA0",
+                    key: GOOGLE_API_KEY,
                     language: "en",
                     // components: "country:nz",
                   }}

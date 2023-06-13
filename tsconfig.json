@@ -3,6 +3,9 @@
   "compilerOptions": {
     "jsx": "react",
     "strict": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+     "paths": {
+    "@env/*": ["./env"]
+  }
   }
 }

@@ -14,6 +14,7 @@ import {
   Alert,
 } from "react-native";
 import Svg, { Path, Ellipse } from "react-native-svg";
+import { GOOGLE_API_KEY } from "@env";
 import {
   widthPercentageToDP as w2dp,
   heightPercentageToDP as h2dp,
@@ -286,8 +287,6 @@ const MapScreen = ({ route }: any) => {
                     const state = component.long_name;
                     console.log("State:", state);
                     setState(state);
-
-                 
                   }
 
                   if (component.types.includes("locality")) {
@@ -330,8 +329,8 @@ const MapScreen = ({ route }: any) => {
               textInputProps={{ placeholderTextColor: "#000000" }}
               listUnderlayColor="blue"
               query={{
-                key: "AIzaSyBgYGulsDfu4VFt_tcPfQwAPjZccMe7nA0",
-                // key: "AIzaSyDRj8-ZV2Soyar4D5ksAcf5ILW8JKH-eh0",
+                key: GOOGLE_API_KEY,
+
                 language: "en",
               }}
               styles={{
