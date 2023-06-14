@@ -66,44 +66,15 @@ const EventsHomeScreen = () => {
   const findFoodMenuItemPress = (item: any) => {
     console.log(`Selected menu item: ${item}`);
     setMenuOpen(false);
-    navigation.navigate("MapScreen", {
-      location: location,
-    });
+    // navigation.navigate("MapScreen", {
+    //   location: location,
+    // });
   };
 
   const [error, setError] = useState("");
-  const navigation: string = useNavigation<string>();
+  const navigation: any = useNavigation<string>();
 
-  // const handleLogin = () => {
-  //   setLoading(true);
-  //   signInWithEmailAndPassword(auth, email, password)
-  //     .then((userCredential) => {
-  //       // Signed in
-  //       const user = userCredential.user;
-
-  //       console.log("User signed in:", user);
-  //       setLoading(false);
-  //       console.log("user signed in successfully");
-
-  //       return user.getIdToken();
-  //     })
-  //     .then(async(token) => {
-  //       const data = {
-  //         tokenId: token,
-  //       };
-  //      const response = await dispatch(login(data) as any)
-  //      if (response.payload.isAuthenticated) {
-  //       navigation.navigate("HomeScreen");
-  //     }
-
-  //     })
-  //     .catch((error) => {
-  //       setLoading(false);
-  //       const errorCode = error.code;
-  //       const errorMessage = error.message;
-  //       setError(errorMessage);
-  //     });
-  // };
+  
 
   const changeLanguage = (itemValue: any, index: any) => {
     const selectedLanguage = lang[index].value;
@@ -123,8 +94,8 @@ const EventsHomeScreen = () => {
             <View
               style={{
                 position: "absolute",
-                right: 60,
-                top: 125,
+                right: 55,
+                top: 135,
                 backgroundColor: "white",
                 borderColor: "white",
                 height: 100,
@@ -138,7 +109,7 @@ const EventsHomeScreen = () => {
                   style={{
                     padding: 10,
                     fontSize: 20,
-                    fontWeight: 300,
+                    fontWeight: "300",
                     lineHeight: 27.24,
                   }}
                 >
@@ -152,7 +123,7 @@ const EventsHomeScreen = () => {
                   style={{
                     padding: 10,
                     fontSize: 20,
-                    fontWeight: 300,
+                    fontWeight: "300",
                     lineHeight: 27.24,
                   }}
                 >
@@ -185,7 +156,7 @@ const EventsHomeScreen = () => {
                 />
                 <View style={styles.title}>
                   <TouchableOpacity onPress={()=>navigation.navigate("PostEvent")}>
-                  <Text style={styles.textStyle}>Post Event</Text>
+                  <Text style={styles.textStyle}>Post an event</Text>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -195,7 +166,7 @@ const EventsHomeScreen = () => {
                   style={styles.imageStyle}
                 />
                 <View style={styles.title}>
-                  <Text style={styles.textStyle}>See all Event</Text>
+                  <Text style={styles.textStyle}>See all events</Text>
                 </View>
               </View>
             </View>
@@ -265,8 +236,8 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 26,
     lineHeight: 35,
-    fontFamily: "OpenSans-SemiBold",
-    fontWeight: "400",
+    // fontFamily: "OpenSans-SemiBold",
+    fontWeight: "normal",
     fontStyle: "normal",
     marginTop: 15,
   },

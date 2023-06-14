@@ -61,7 +61,9 @@ export const Splash = ({ isAppReady }:any) => {
   return (
     <Animated.View
       collapsable={false}
-      style={[style.container, { opacity: containerOpacity }]}>
+      style={[style.container, { opacity: containerOpacity }]}
+      
+      >
       <Animated.Image
         source={require("../../assets/splashScreen.png")}
         fadeDuration={0}

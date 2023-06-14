@@ -20,10 +20,10 @@ export const findFood = createAsyncThunk<FindFood, FindFood>(
           },
         };
         const result = await API.post("v1/api/find-food/", findFood, config);
-        console.log("Checking result for login", result.data);
+        console.log("Checking result for find food", result?.data);
         return result.data;
       } catch (error: any) {
-        return rejectWithValue(error.response.data.message);
+        return rejectWithValue(error?.response?.data?.message);
       }
     }
   );

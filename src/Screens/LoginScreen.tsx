@@ -65,14 +65,14 @@ const LoginScreen = () => {
   const findFoodMenuItemPress = (item: any) => {
     console.log(`Selected menu item: ${item}`);
     setMenuOpen(false);
-    navigation.navigate("MapScreen",{
-      location:location
-    });
+    // navigation.navigate("MapScreen",{
+    //   location:location
+    // });
   };
 
 
   const [error, setError] = useState("");
-  const navigation: string = useNavigation<string>();
+  const navigation: any = useNavigation<string>();
 
   // const handleLogin = () => {
   //   setLoading(true);
@@ -138,7 +138,7 @@ const LoginScreen = () => {
                     style={{
                       padding: 10,
                       fontSize: 20,
-                      fontWeight: 300,
+                      fontWeight: "300",
                       lineHeight: 27.24,
                     }}
                   >
@@ -152,7 +152,7 @@ const LoginScreen = () => {
                     style={{
                       padding: 10,
                       fontSize: 20,
-                      fontWeight: 300,
+                      fontWeight: "300",
                       lineHeight: 27.24,
                     }}
                   >
