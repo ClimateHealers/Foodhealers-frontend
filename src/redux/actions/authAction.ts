@@ -12,13 +12,6 @@ interface LoginData {
   tokenId: string;
 }
 
-const initialState = {
-  data: {},
-  error: null,
-  loading: false,
-  token: "",
-};
-
 export const registerUser = createAsyncThunk<SignupData, SignupData>(
   "auth/register",
   async (userData: SignupData, { rejectWithValue }: any) => {
@@ -29,8 +22,7 @@ export const registerUser = createAsyncThunk<SignupData, SignupData>(
         },
       };
       const result = await API.post("v1/api/signup/", userData, config);
-      console.log("Checking result for signup", result.data);
-      return result.data
+      return result.data;
     } catch (error: any) {
       return rejectWithValue(error.response.data.message);
     }
@@ -47,7 +39,6 @@ export const login = createAsyncThunk<LoginData, LoginData>(
         },
       };
       const result = await API.post("v1/api/login/", userData, config);
-      console.log("Checking result for login", result.data);
       return result.data;
     } catch (error: any) {
       return rejectWithValue(error.response.data.message);

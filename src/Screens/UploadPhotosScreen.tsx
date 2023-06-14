@@ -2,23 +2,16 @@ import React, { useState } from "react";
 import {
   StyleSheet,
   View,
-  Alert,
   Modal,
   ActivityIndicator,
-  StatusBar,
-  TouchableWithoutFeedback,
   Keyboard,
   TouchableOpacity,
-  Image,
 } from "react-native";
-import mime from "mime";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Text } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
-import { Button } from "react-native-elements";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import PrimaryButton from "../Components/PrimaryButton";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { localized } from "../locales/localization";
 import * as ImagePicker from "expo-image-picker";
@@ -42,14 +35,13 @@ const UploadPhotosScreen = ({route}:any) => {
     setMenuOpen(!menuOpen);
   };
   const handleMenuItemPress = (item: any) => {
-    console.log(`Selected menu item: ${item}`);
+    // console.log(`Selected menu item: ${item}`);
     setMenuOpen(false);
     navigation.navigate("HomeScreen");
   };
   const findFoodMenuItemPress = (item: any) => {
-    console.log(`Selected menu item: ${item}`);
+    // console.log(`Selected menu item: ${item}`);
     setMenuOpen(false);
-    // navigation.navigate("MapScreen");
   };
 
   const openImagePickerAsync = async () => {
@@ -75,12 +67,10 @@ const UploadPhotosScreen = ({route}:any) => {
         });
       });
   
-      // setLoc(true);
   
       console.log("checking image data uploaded from phone", formData);
 
-      // await new Promise((resolve) => setTimeout(resolve, 1000));
-      // setLoc(false);
+
   
       navigation.navigate("EventPhotosScreen", {
         eventFormData: eventFormData,
@@ -195,7 +185,6 @@ const UploadPhotosScreen = ({route}:any) => {
               Skip
             </Text>
           </TouchableOpacity>
-          {/* <View style={{ flex: 1 }}>{appLoader(loc == true)}</View> */}
         </View>
       </SafeAreaView>
     </LinearGradient>
@@ -234,7 +223,6 @@ const styles = StyleSheet.create({
     height: "65%",
     marginLeft: 20,
     borderRadius: 10,
-    // marginBottom: 15,
     marginTop: 20,
     display: "flex",
     justifyContent: "center",
@@ -265,7 +253,6 @@ const styles = StyleSheet.create({
   },
   boldText: {
     fontWeight: "bold",
-    // other styles for the bold text
   },
   centeredView: {
     flex: 1,

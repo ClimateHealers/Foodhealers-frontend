@@ -6,18 +6,14 @@ import { useSelector } from "react-redux";
 
 const BurgerIcon = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-
   const navigation: any = useNavigation();
-
   const isAuthenticated = useSelector(
     (state: any) => state.auth.data.isAuthenticated
   );
-  console.log("checking auth data in MAP SCREEN", isAuthenticated);
 
   const handleMenuItemPress = (item: any) => {
-    console.log(`Selected menu item: ${item}`);
+    // console.log(`Selected menu item: ${item}`);
     setMenuOpen(false);
-    // isAuthenticated !==undefined ?  navigation.navigate("SignupScreen") : navigation.navigate("SignupScreen")
     if (isAuthenticated) {
       navigation.navigate("HomeScreen");
     } else {
@@ -25,7 +21,7 @@ const BurgerIcon = () => {
     }
   };
   const findFoodMenuItemPress = (item: any) => {
-    console.log(`Selected menu item: ${item}`);
+    // console.log(`Selected menu item: ${item}`);
     setMenuOpen(false);
   };
 
@@ -38,7 +34,6 @@ const BurgerIcon = () => {
           name="menu"
           size={40}
           color="white"
-          style = {styles.burgerIcon}
           onPress={() => toggleMenu()}
         />
         {menuOpen && (
@@ -95,9 +90,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  burgerIcon:{
-    // alignSelf: "flex-start", 
-  }
 });
 
 export default BurgerIcon;

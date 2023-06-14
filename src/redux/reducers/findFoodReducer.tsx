@@ -18,7 +18,6 @@ const foodSlice = createSlice({
         state.error = null;
       })
       .addCase(findFood.fulfilled, (state, action) => {
-        console.log("checking payload", action.payload);
         state.loading = false;
         state.data = action.payload;
         state.error = null;

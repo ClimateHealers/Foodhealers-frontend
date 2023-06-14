@@ -1,5 +1,4 @@
 import { combineReducers } from "redux";
-import { findFood } from "../actions/findFoodaction";
 import authreducers from "./authreducers";
 import findFoodReducer from "./findFoodReducer";
 

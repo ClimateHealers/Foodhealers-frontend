@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   View,
-  ImageBackground,
   StyleSheet,
   Text,
   TouchableWithoutFeedback,
-  TextInput,
   Dimensions,
   Keyboard,
   TouchableOpacity,
@@ -13,13 +11,8 @@ import {
   Linking,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
-import MapView, { Callout, Marker } from "react-native-maps";
-import SelectDropdown from "react-native-select-dropdown";
-import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { loadFonts } from "../font";
 import { localized } from "../locales/localization";
 import PrimaryButton from "../Components/PrimaryButton";
 import { Divider } from "react-native-paper";
@@ -28,8 +21,6 @@ import BurgerIcon from "../Components/BurgerIcon";
 
 const EventDetailsScreen = ({ route }: any) => {
   const { eventDetails } = route.params;
-  // console.log("vvvvvvvvvvvvvvvvvvvvvvvvvvv", eventDetails);
-  const { width, height } = Dimensions.get("window");
   const navigation: any = useNavigation();
 
   const [langOpen, setlangOpen] = useState(false);
@@ -55,15 +46,10 @@ const EventDetailsScreen = ({ route }: any) => {
     Keyboard.dismiss();
   };
   const handleMenuItemPress = (item: any) => {
-    console.log(`Selected menu item: ${item}`);
+    // console.log(`Selected menu item: ${item}`);
     setMenuOpen(false);
     navigation.navigate("HomeScreen");
   };
-
-  const [isFocused, setIsFocused] = useState(false);
-
-  const handleFocus = () => setIsFocused(true);
-  const handleBlur = () => setIsFocused(false);
 
   const changeLanguage = (itemValue: any, index: any) => {
     const selectedLanguage = lang[index].value;
@@ -74,21 +60,18 @@ const EventDetailsScreen = ({ route }: any) => {
     const [startTime, endTime] = timeStr.split("-");
     const formattedStartTime = moment(startTime, "HH:mm").format("hh:mm A");
     const formattedEndTime = moment(endTime, "HH:mm").format("hh:mm A");
-    // return `${formattedStartTime}-${formattedEndTime}`;
     return `${formattedStartTime}`;
   };
 
   const time = `${moment(eventDetails?.eventStartDate).format(
     "HH:mm"
   )} - ${moment(eventDetails?.eventEndDate).format("HH:mm")}`;
-  
-  const navigationHandler =() => {
-  
-      const url =  `https://www.google.com/maps/dir/?api=1&destination=${eventDetails?.address?.lat},${eventDetails?.address?.lng}`;
-      Linking.openURL(url);
-    
-  }
-  
+
+  const navigationHandler = () => {
+    const url = `https://www.google.com/maps/dir/?api=1&destination=${eventDetails?.address?.lat},${eventDetails?.address?.lng}`;
+    Linking.openURL(url);
+  };
+
   return (
     <TouchableWithoutFeedback onPress={handlePressOutside}>
       <View style={styles.container}>
@@ -102,7 +85,7 @@ const EventDetailsScreen = ({ route }: any) => {
                 <Text style={styles.itemText}>{localized.t("Find Food")}</Text>
               </View>
               <View style={styles.item}>
-                <BurgerIcon/>
+                <BurgerIcon />
                 {/* <MaterialCommunityIcons
                   name="menu"
                   size={40}
@@ -171,66 +154,58 @@ const EventDetailsScreen = ({ route }: any) => {
                 <View style={styles.cardTextConainer}>
                   <View style={{ marginBottom: 30, paddingHorizontal: 10 }}>
                     <Text style={styles.boldText}>
-                      Start date: <Text style={styles.cardText}>
-                     
+                      Start date:{" "}
+                      <Text style={styles.cardText}>
                         {`${moment(eventDetails?.eventStartDate).format(
                           "dddd, MMMM D"
                         )}`}
                       </Text>
                     </Text>
-                    {/* <View style={{ borderBottomColor: 'black', borderBottomWidth: 1 }} /> */}
+
                     <Divider
                       style={{
                         backgroundColor: "black",
                         height: 1,
                         width: "95%",
-                        // marginLeft: 0,
                       }}
                     />
                   </View>
                   <View style={{ marginBottom: 20, paddingHorizontal: 10 }}>
                     <Text style={styles.boldText}>
-                      Start time: <Text style={styles.cardText}>
-                     
-                        {/* {`${moment(eventDetails?.eventStartDate).format(
-                          "HH:mm"
-                        )} - ${moment(eventDetails?.eventEndDate).format(
-                          "HH:mm"
-                        )}`} */}
+                      Start time:{" "}
+                      <Text style={styles.cardText}>
                         {convertTimeFormat(time)}
                       </Text>
                     </Text>
-                    {/* <View style={{ borderBottomColor: 'black', borderBottomWidth: 1 }} /> */}
+
                     <Divider
                       style={{
                         backgroundColor: "black",
                         height: 1,
                         width: "95%",
-                        // marginLeft: 4,
                       }}
                     />
                   </View>
                   <View style={{ marginBottom: 30, paddingHorizontal: 10 }}>
                     <Text style={styles.boldText}>
-                      Location: <Text style={styles.cardText}>
-                    
+                      Location:{" "}
+                      <Text style={styles.cardText}>
                         {eventDetails.address?.fullAddress}
                       </Text>
                     </Text>
-                    {/* <View style={{ borderBottomColor: 'black', borderBottomWidth: 1 }} /> */}
+
                     <Divider
                       style={{
                         backgroundColor: "black",
                         height: 1,
                         width: "95%",
-                        // marginLeft: 4,
                       }}
                     />
                   </View>
                   <View style={{ marginBottom: 10, paddingHorizontal: 10 }}>
                     <Text style={styles.boldText}>
-                      What: <Text style={styles.cardText}>
-                       
+                      What:{" "}
+                      <Text style={styles.cardText}>
                         {eventDetails?.additionalInfo}
                       </Text>
                     </Text>
@@ -240,7 +215,6 @@ const EventDetailsScreen = ({ route }: any) => {
                         backgroundColor: "black",
                         height: 1,
                         width: "95%",
-                        // marginLeft: 4,
                       }}
                     />
                   </View>
@@ -248,7 +222,7 @@ const EventDetailsScreen = ({ route }: any) => {
               </View>
               <PrimaryButton
                 title={"Get directions"}
-                onPress= {navigationHandler}
+                onPress={navigationHandler}
                 buttonStyle={styles.buttonStyles}
                 titleStyle={styles.titleStyle}
               />
@@ -324,7 +298,6 @@ const styles = StyleSheet.create({
   boldText: {
     fontWeight: "300",
     fontSize: 20,
-    // other styles for the bold text
   },
 });
 

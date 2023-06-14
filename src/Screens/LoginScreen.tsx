@@ -23,7 +23,6 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../redux/actions/authAction";
 import { Formik } from "formik";
-import * as Yup from "yup";
 import { Text } from "react-native";
 import { loginSchema } from "../Components/validation";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -44,11 +43,12 @@ const LoginScreen = () => {
     { id: 7, label: "Punjabi", value: "pu" },
     { id: 8, label: "Spanish", value: "es" },
   ]);
+  const [error, setError] = useState("");
+  const navigation: any = useNavigation<string>();
 
   const dispatch = useDispatch();
 
   const data = useSelector((state: any) => state.auth.data);
-  console.log("checking auth data", data);
 
   const handlePressOutside = () => {
     setlangOpen(false);
@@ -58,52 +58,14 @@ const LoginScreen = () => {
     setMenuOpen(!menuOpen);
   };
   const handleMenuItemPress = (item: any) => {
-    console.log(`Selected menu item: ${item}`);
+    // console.log(`Selected menu item: ${item}`);
     setMenuOpen(false);
     navigation.navigate("HomeScreen");
   };
   const findFoodMenuItemPress = (item: any) => {
-    console.log(`Selected menu item: ${item}`);
+    // console.log(`Selected menu item: ${item}`);
     setMenuOpen(false);
-    // navigation.navigate("MapScreen",{
-    //   location:location
-    // });
   };
-
-
-  const [error, setError] = useState("");
-  const navigation: any = useNavigation<string>();
-
-  // const handleLogin = () => {
-  //   setLoading(true);
-  //   signInWithEmailAndPassword(auth, email, password)
-  //     .then((userCredential) => {
-  //       // Signed in
-  //       const user = userCredential.user;
-
-  //       console.log("User signed in:", user);
-  //       setLoading(false);
-  //       console.log("user signed in successfully");
-
-  //       return user.getIdToken();
-  //     })
-  //     .then(async(token) => {
-  //       const data = {
-  //         tokenId: token,
-  //       };
-  //      const response = await dispatch(login(data) as any)
-  //      if (response.payload.isAuthenticated) {
-  //       navigation.navigate("HomeScreen");
-  //     }
-        
-  //     })
-  //     .catch((error) => {
-  //       setLoading(false);
-  //       const errorCode = error.code;
-  //       const errorMessage = error.message;
-  //       setError(errorMessage);
-  //     });
-  // };
 
   const changeLanguage = (itemValue: any, index: any) => {
     const selectedLanguage = lang[index].value;
@@ -120,47 +82,46 @@ const LoginScreen = () => {
         <View style={styles.container}>
           <StatusBar animated={true} backgroundColor="auto" />
           {menuOpen && (
-              <View
-                style={{
-                  position: "absolute",
-                  right: 60,
-                  top: 125,
-                  backgroundColor: "white",
-                  borderColor: "white",
-                  height: 100,
-                  borderRadius: 5,
-                  zIndex: 9999,
-                  // elevation:0
-                }}
-              >
-                <TouchableOpacity onPress={() => handleMenuItemPress("Home")}>
-                  <Text
-                    style={{
-                      padding: 10,
-                      fontSize: 20,
-                      fontWeight: "300",
-                      lineHeight: 27.24,
-                    }}
-                  >
-                    Home
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => findFoodMenuItemPress("Find Food")}
+            <View
+              style={{
+                position: "absolute",
+                right: 60,
+                top: 125,
+                backgroundColor: "white",
+                borderColor: "white",
+                height: 100,
+                borderRadius: 5,
+                zIndex: 9999,
+              }}
+            >
+              <TouchableOpacity onPress={() => handleMenuItemPress("Home")}>
+                <Text
+                  style={{
+                    padding: 10,
+                    fontSize: 20,
+                    fontWeight: "300",
+                    lineHeight: 27.24,
+                  }}
                 >
-                  <Text
-                    style={{
-                      padding: 10,
-                      fontSize: 20,
-                      fontWeight: "300",
-                      lineHeight: 27.24,
-                    }}
-                  >
-                    Find Food
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            )}
+                  Home
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => findFoodMenuItemPress("Find Food")}
+              >
+                <Text
+                  style={{
+                    padding: 10,
+                    fontSize: 20,
+                    fontWeight: "300",
+                    lineHeight: 27.24,
+                  }}
+                >
+                  Find Food
+                </Text>
+              </TouchableOpacity>
+            </View>
+          )}
           <View style={styles.dropdownContainer}>
             <SelectDropdown
               buttonStyle={styles.dropdown1BtnStyle}
@@ -188,15 +149,15 @@ const LoginScreen = () => {
                 return item;
               }}
             />
-             <MaterialCommunityIcons
-                  name="menu"
-                  size={40}
-                  color="white"
-                  onPress={toggleMenu}
-                  style = {{
-                    marginRight:20
-                  }}
-                />
+            <MaterialCommunityIcons
+              name="menu"
+              size={40}
+              color="white"
+              onPress={toggleMenu}
+              style={{
+                marginRight: 20,
+              }}
+            />
           </View>
           <Modal visible={loading} animationType="slide" transparent={true}>
             <View style={styles.centeredView}>
@@ -213,14 +174,11 @@ const LoginScreen = () => {
               }}
               validationSchema={loginSchema}
               onSubmit={async ({ email, password }) => {
-                console.log("sdkvjskbnsdkbnskdnbkdsbnkds", email, password);
                 setLoading(true);
                 signInWithEmailAndPassword(auth, email, password)
                   .then((userCredential) => {
                     // Signed in
                     const user = userCredential.user;
-
-                    console.log("User signed in:", user);
                     setLoading(false);
                     console.log("user signed in successfully");
                     navigation.navigate("HomeScreen");
@@ -339,14 +297,10 @@ const styles = StyleSheet.create({
     fontFamily: "OpenSans-Regular",
   },
   dropdownContainer: {
-    // position: "absolute",
-    // top: "10%",
-    // left: "5%",
-    // width: "70%",
-    display:"flex",
-    flexDirection:"row",
+    display: "flex",
+    flexDirection: "row",
     justifyContent: "space-between",
-    alignItems:'center'
+    alignItems: "center",
   },
   dropdown1BtnStyle: {
     marginTop: 15,
@@ -377,7 +331,6 @@ const styles = StyleSheet.create({
     color: "red",
     marginBottom: 10,
   },
-
   textInput: {
     height: 45,
     marginBottom: 1,
@@ -387,10 +340,6 @@ const styles = StyleSheet.create({
     top: 85,
     left: 300,
   },
-  // burgerIcon:{
-   
-
-  // }
 });
 
 export default LoginScreen;
