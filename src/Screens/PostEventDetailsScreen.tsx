@@ -1,12 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   View,
-  ImageBackground,
   StyleSheet,
   Text,
   TouchableWithoutFeedback,
-  TextInput,
-  Dimensions,
   Keyboard,
   TouchableOpacity,
   Image,
@@ -14,20 +11,13 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
-import MapView, { Callout, Marker } from "react-native-maps";
-import SelectDropdown from "react-native-select-dropdown";
-import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { loadFonts } from "../font";
 import { localized } from "../locales/localization";
-import PrimaryButton from "../Components/PrimaryButton";
 import { Divider } from "react-native-paper";
 import moment from "moment";
 
 const PostEventDetailsScreen = ({ route }: any) => {
   const { eventDetails, eventPhotos } = route.params;
-  // console.log("vvvvvvvvvvvvvvvvvvvvvvvvvvv", eventDetails);
-  const { width, height } = Dimensions.get("window");
   const navigation: any = useNavigation();
 
   const [langOpen, setlangOpen] = useState(false);
@@ -58,44 +48,19 @@ const PostEventDetailsScreen = ({ route }: any) => {
     navigation.navigate("HomeScreen");
   };
 
-  const [isFocused, setIsFocused] = useState(false);
-
-  const handleFocus = () => setIsFocused(true);
-  const handleBlur = () => setIsFocused(false);
-
-  const changeLanguage = (itemValue: any, index: any) => {
-    const selectedLanguage = lang[index].value;
-    localized.locale = selectedLanguage;
-    setSelectedLanguage(selectedLanguage);
-  };
-  const convertTimeFormat = (timeStr: any) => {
-    const [startTime, endTime] = timeStr.split("-");
-    const formattedStartTime = moment(startTime, "HH:mm").format("hh:mm A");
-    const formattedEndTime = moment(endTime, "HH:mm").format("hh:mm A");
-    return `${formattedStartTime}-${formattedEndTime}`;
-  };
-
   const epochDate = eventDetails?.eventDate;
-  const dateObj = new Date(epochDate * 1000); 
+  const dateObj = new Date(epochDate * 1000);
 
   const options = {
-    weekday: "long", 
-    month: "long", 
-    day: "numeric", 
+    weekday: "long",
+    month: "long",
+    day: "numeric",
   };
 
   const formattedDate = dateObj.toLocaleDateString("en-US", options);
-
-  console.log("checking date converted from epoch time", formattedDate);
-
-  const epochTime = eventDetails?.eventDate; 
-
+  const epochTime = eventDetails?.eventDate;
   const startTime = moment(epochTime * 1000).format("h:mm a");
- 
-
-  // const formattedTime = `${startTime} - ${endTime}`;
   const formattedTime = `${startTime}`;
-  console.log("checking time converted from epoch time", formattedTime);
 
   return (
     <TouchableWithoutFeedback onPress={handlePressOutside}>
@@ -115,7 +80,7 @@ const PostEventDetailsScreen = ({ route }: any) => {
                   size={40}
                   color="white"
                   onPress={toggleMenu}
-                  style= {{marginLeft:30}}
+                  style={{ marginLeft: 30 }}
                 />
                 {menuOpen && (
                   <View
@@ -168,9 +133,7 @@ const PostEventDetailsScreen = ({ route }: any) => {
               <View style={styles.card}>
                 <View>
                   <Image
-           
                     source={{ uri: eventPhotos[0] }}
-                    // source={require("../../assets/images/hostingEvent.png")}
                     style={{
                       width: "100%",
                       height: 200,
@@ -182,23 +145,24 @@ const PostEventDetailsScreen = ({ route }: any) => {
                 <View style={styles.cardTextConainer}>
                   <View style={{ marginBottom: 30, paddingHorizontal: 10 }}>
                     <Text style={styles.boldText}>
-                      Start date: <Text style={styles.cardText}>{formattedDate}</Text>
+                      Start date:{" "}
+                      <Text style={styles.cardText}>{formattedDate}</Text>
                     </Text>
-                  
+
                     <Divider
                       style={{
                         backgroundColor: "black",
                         height: 1,
                         width: "95%",
-                       
                       }}
                     />
                   </View>
                   <View style={{ marginBottom: 20, paddingHorizontal: 10 }}>
                     <Text style={styles.boldText}>
-                      Start time: <Text style={styles.cardText}>{formattedTime}</Text>
+                      Start time:{" "}
+                      <Text style={styles.cardText}>{formattedTime}</Text>
                     </Text>
-             
+
                     <Divider
                       style={{
                         backgroundColor: "black",
@@ -269,7 +233,6 @@ const styles = StyleSheet.create({
   item: {
     width: "40%",
     marginTop: 25,
-    // marginRight: 25,
     height: 100,
     justifyContent: "center",
     alignItems: "center",
@@ -284,7 +247,6 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: "white",
     width: "90%",
-    // height: "77%",
     marginLeft: 20,
     borderRadius: 10,
     marginBottom: 15,

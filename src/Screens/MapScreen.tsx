@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import {
   View,
-  ImageBackground,
   StyleSheet,
   Text,
   TouchableWithoutFeedback,
@@ -9,11 +8,9 @@ import {
   Dimensions,
   Keyboard,
   TouchableOpacity,
-  ScrollView,
   Linking,
   Alert,
 } from "react-native";
-import Svg, { Path, Ellipse } from "react-native-svg";
 import { GOOGLE_API_KEY } from "@env";
 import {
   widthPercentageToDP as w2dp,
@@ -26,7 +23,6 @@ import MapView, { Callout, Circle, Marker } from "react-native-maps";
 import SelectDropdown from "react-native-select-dropdown";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { loadFonts } from "../font";
 import { localized } from "../locales/localization";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import PrimaryButton from "../Components/PrimaryButton";
@@ -44,9 +40,6 @@ const MapScreen = ({ route }: any) => {
     .utc()
     .unix();
 
-  console.log("checking curretn datetime", startDate, endDate);
-
-  // console.log("mapsscreennnnnnnnnnn", location);
   const { width, height } = Dimensions.get("window");
   const navigation: any = useNavigation();
   const ASPECT_RATIO = width / height;
@@ -67,7 +60,6 @@ const MapScreen = ({ route }: any) => {
   const [events, setEvents] = useState([]);
   const [menuOpen, setMenuOpen] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState(localized.locale);
-
   const [address, setAddress] = useState<any>();
   const [lat, setLat] = useState<any>();
   const [long, setLong] = useState<any>();
@@ -80,17 +72,9 @@ const MapScreen = ({ route }: any) => {
 
   const dispatch = useDispatch();
 
-  // console.log("zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz", events);
-
-  // const EventDetails = useSelector(
-  //   (state: any) => state.findFood.data.foodEvents
-  // );
   const isAuthenticated = useSelector(
     (state: any) => state.auth.data.isAuthenticated
   );
-  console.log("checking auth data in map screen", isAuthenticated);
-
-  // console.log("checking data from the food reducer", EventDetails);
 
   const focusMarker = () => {
     if (mapRef.current) {
@@ -103,7 +87,6 @@ const MapScreen = ({ route }: any) => {
         longitudeDelta: LONGITUDE_DELTA,
       };
 
-      // Animate the map to the specified region
       mapRef.current.animateToRegion(region, 2000);
     }
   };
@@ -118,7 +101,7 @@ const MapScreen = ({ route }: any) => {
   };
 
   const handleMenuItemPress = (item: any) => {
-    console.log(`Selected menu item: ${item}`);
+    // console.log(`Selected menu item: ${item}`);
     setMenuOpen(false);
     if (isAuthenticated) {
       navigation.navigate("HomeScreen");
@@ -127,7 +110,7 @@ const MapScreen = ({ route }: any) => {
     }
   };
   const findFoodMenuItemPress = (item: any) => {
-    console.log(`Selected menu item: ${item}`);
+    // console.log(`Selected menu item: ${item}`);
     setMenuOpen(false);
   };
 
@@ -197,7 +180,6 @@ const MapScreen = ({ route }: any) => {
                   height: 100,
                   borderRadius: 5,
                   zIndex: 9999,
-                  // elevation:0
                 }}
               >
                 <TouchableOpacity onPress={() => handleMenuItemPress("Home")}>
@@ -273,9 +255,7 @@ const MapScreen = ({ route }: any) => {
 
             <GooglePlacesAutocomplete
               placeholder={localized.t("Address or nearest cross streets")}
-              // currentLocation={true}
               onPress={async (data, details) => {
-                console.log("checking data from google places", details);
                 setAddress(details);
                 setLat(details?.geometry?.location?.lat);
                 setLong(details?.geometry?.location?.lng);
@@ -285,19 +265,16 @@ const MapScreen = ({ route }: any) => {
                 addressComponents.forEach((component) => {
                   if (component.types.includes("administrative_area_level_1")) {
                     const state = component.long_name;
-                    console.log("State:", state);
                     setState(state);
                   }
 
                   if (component.types.includes("locality")) {
                     const city = component.long_name;
-                    console.log("City:", city);
                     setCity(city);
                   }
 
                   if (component.types.includes("postal_code")) {
                     const postalCode = component.long_name;
-                    console.log("Postal Code:", postalCode);
                     setPostalCode(postalCode);
                   }
                 });
@@ -311,17 +288,11 @@ const MapScreen = ({ route }: any) => {
                   state: state,
                   postalCode: postalCode ? Number(postalCode) : 0,
 
-                  // eventStartDate: 1685351184,
                   eventEndDate: endDate,
-                  // eventEndDate: 1685610384,
                 };
 
                 const response = await dispatch(
                   findFood(findFoodData as any) as any
-                );
-                console.log(
-                  "checking response of findFood API",
-                  response?.payload?.foodEvents
                 );
                 setEvents(response?.payload?.foodEvents);
               }}
@@ -354,7 +325,6 @@ const MapScreen = ({ route }: any) => {
                   width: "92%",
                   marginLeft: 15,
                   borderRadius: 3,
-                  // height: "5%",
                   zIndex: 9999,
                 },
                 row: {
@@ -389,27 +359,6 @@ const MapScreen = ({ route }: any) => {
                 showsUserLocation={true}
                 followsUserLocation={true}
               >
-                {/* <Circle
-                  center={{
-                    latitude: location?.coords?.latitude,
-                    longitude:location?.coords?.longitude,
-                  }}
-                  radius={100}
-                  strokeWidth={2}
-                  strokeColor="#3399ff"
-                  fillColor="#91c5fa"
-                /> */}
-                {/* <Circle
-                  center={{
-                    latitude: lat,
-                    longitude: long,
-                  }}
-                  radius={500}
-                  strokeWidth={2}
-                  strokeColor="#3399ff"
-                  fillColor="#91c5fa"
-                /> */}
-
                 {address ? (
                   <Marker
                     pinColor="#FC5A56"
@@ -428,7 +377,6 @@ const MapScreen = ({ route }: any) => {
                   </Marker>
                 ) : null}
                 {events?.map((marker: any) => {
-                  // console.log("checking evetns", marker);
                   const coordinates = {
                     latitude: marker?.address?.lat,
                     longitude: marker?.address?.lng,
@@ -439,9 +387,6 @@ const MapScreen = ({ route }: any) => {
                       pinColor="#00693D"
                       coordinate={coordinates}
                       onPress={() => navigateToEvent(coordinates)}
-                      // title={marker?.title}
-                      // description={marker?.name}
-                      // identifier={marker?.name}
                     >
                       <View>
                         <Text style={{ color: "#00693D", fontSize: 10 }}>
@@ -452,11 +397,6 @@ const MapScreen = ({ route }: any) => {
                           style={styles.markerIcon}
                         />
                       </View>
-                      {/* <Callout>
-                        <View>
-                          <Text>{marker?.name}</Text>
-                        </View>
-                      </Callout> */}
                     </Marker>
                   );
                 })}
@@ -483,7 +423,6 @@ const styles = StyleSheet.create({
   container: {
     display: "flex",
     flexDirection: "column",
-    // flex: 1,
     alignItems: "center",
   },
   background: {
@@ -525,9 +464,7 @@ const styles = StyleSheet.create({
     fontFamily: "OpenSans-Medium",
     zIndex: 9999,
   },
-  mapContainer: {
-    // marginTop: 100,
-  },
+  mapContainer: {},
   dropdown1BtnStyle: {
     marginTop: 15,
     marginLeft: 45,
@@ -560,7 +497,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     width: w2dp("40%"),
     marginBottom: 25,
-    // marginLeft: 85,
     alignSelf: "center",
     shadowColor: "#171717",
     shadowOffset: { width: -2, height: 6 },

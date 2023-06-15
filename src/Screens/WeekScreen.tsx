@@ -1,35 +1,25 @@
 import React, { useEffect, useRef, useState } from "react";
 import {
   View,
-  ImageBackground,
   StyleSheet,
   Text,
   TouchableWithoutFeedback,
-  TextInput,
   Dimensions,
   Keyboard,
-  TouchableOpacity,
-  ScrollView,
-  Alert,
-  Linking,
 } from "react-native";
 import {
   widthPercentageToDP as w2dp,
   heightPercentageToDP as h2dp,
 } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
-import MapView, { Callout, Circle, Marker } from "react-native-maps";
+import MapView, { Marker } from "react-native-maps";
 import SelectDropdown from "react-native-select-dropdown";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { loadFonts } from "../font";
 import { localized } from "../locales/localization";
-import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
-import PrimaryButton from "../Components/PrimaryButton";
-import { Button, Image } from "react-native-elements";
-import { useDispatch, useSelector } from "react-redux";
+import { Image } from "react-native-elements";
+import { useDispatch } from "react-redux";
 import { findFood } from "../redux/actions/findFoodaction";
 import moment from "moment";
 import SegmentedControlTab from "react-native-segmented-control-tab";
@@ -74,7 +64,6 @@ const WeekScreen = ({ route }: any) => {
     .utc()
     .unix();
 
-  console.log("checking curretn datetime", startDate, endDate);
   const gettingEvents = async () => {
     const findFoodData = {
       lat: location?.coords?.latitude,
@@ -89,12 +78,10 @@ const WeekScreen = ({ route }: any) => {
     };
 
     const response = await dispatch(findFood(findFoodData as any) as any);
-    console.log("checking response from find food api", response?.payload);
     setEvents(response?.payload?.foodEvents);
   };
 
   const navigateToEvent = (eventData: any) => {
-    console.log("checking eventDetails froom a particular icon", eventData);
     navigation.navigate("EventDetailsScreen", {
       eventDetails: eventData,
     });
@@ -103,7 +90,6 @@ const WeekScreen = ({ route }: any) => {
   useEffect(() => {
     gettingEvents();
   }, []);
-
 
   const handleButtonClick = async (buttonTitle: any) => {
     setActiveButton(buttonTitle);
@@ -124,10 +110,8 @@ const WeekScreen = ({ route }: any) => {
   };
 
   const handleSingleIndexSelect = async (index: any) => {
-    // For single Tab Selection SegmentedControlTab
     setSelectedIndex(index);
     if (index === 0) {
-      // Fetch data for one day
       const thisWeekData = {
         lat: location?.coords?.latitude,
         lng: location?.coords?.longitude,
@@ -141,9 +125,7 @@ const WeekScreen = ({ route }: any) => {
       };
       const result = await dispatch(findFood(thisWeekData as any) as any);
       setEvents(result?.payload?.foodEvents);
-      console.log(",,,,,,,,,,,,,,,,,,,,,,,", result?.payload?.foodEvents);
     } else if (index === 1) {
-      // Fetch data for this week
       const thisWeekData = {
         lat: location?.coords?.latitude,
         lng: location?.coords?.longitude,
@@ -157,9 +139,7 @@ const WeekScreen = ({ route }: any) => {
       };
       const result = await dispatch(findFood(thisWeekData as any) as any);
       setEvents(result?.payload?.foodEvents);
-      console.log(",,,,,,,,,,,,,,,,,,,,,,,", result?.payload?.foodEvents);
     }
-   
   };
 
   const handlePressOutside = () => {
@@ -167,28 +147,11 @@ const WeekScreen = ({ route }: any) => {
     Keyboard.dismiss();
   };
 
-  //   const handleMenuItemPress = (item: any) => {
-  //     console.log(`Selected menu item: ${item}`);
-  //     setMenuOpen(false);
-  //     navigation.navigate("SignupScreen");
-  //   };
-
-  const [isFocused, setIsFocused] = useState(false);
-
-  // const handleFocus = () => setIsFocused(true);
-  // const handleBlur = () => setIsFocused(false);
-
   const changeLanguage = (itemValue: any, index: any) => {
     const selectedLanguage = lang[index].value;
     localized.locale = selectedLanguage;
     setSelectedLanguage(selectedLanguage);
   };
-
-  //   useEffect(() => {
-  //     if (lat && long) {
-  //       focusMarker();
-  //     }
-  //   }, [lat, long]);
 
   return (
     <TouchableWithoutFeedback onPress={handlePressOutside}>
@@ -198,7 +161,6 @@ const WeekScreen = ({ route }: any) => {
       >
         <View style={styles.container}>
           <SafeAreaView>
-          
             <View style={styles.row}>
               <View style={styles.dropdownContainer}>
                 <SelectDropdown
@@ -249,7 +211,6 @@ const WeekScreen = ({ route }: any) => {
                 tabsContainerStyle={{
                   width: 200,
                   height: 50,
-                  //   backgroundColor: '#FFFFFF'
                 }}
                 tabTextStyle={{
                   color: "black",
@@ -278,7 +239,6 @@ const WeekScreen = ({ route }: any) => {
                 showsUserLocation={true}
               >
                 {events?.map((marker: any) => {
-                  // console.log("checking evetns", marker);
                   const coordinates = {
                     latitude: marker?.address?.lat,
                     longitude: marker?.address?.lng,

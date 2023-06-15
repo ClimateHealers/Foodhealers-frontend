@@ -4,11 +4,9 @@ import {
   Text,
   ImageBackground,
   StyleSheet,
-  SafeAreaView,
   StatusBar,
   Image,
 } from "react-native";
-import { loadFonts } from "../font";
 
 
 const WelcomeScreen = () => {

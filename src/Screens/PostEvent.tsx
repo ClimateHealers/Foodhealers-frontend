@@ -13,32 +13,19 @@ import {
   Dimensions,
 } from "react-native";
 import { TextInput, Text } from "react-native-paper";
-import { auth } from "../firebase/firebaseConfig";
 import { useNavigation } from "@react-navigation/native";
 import { localized } from "../locales/localization";
 import { LinearGradient } from "expo-linear-gradient";
 import PrimaryButton from "../Components/PrimaryButton";
-import SelectDropdown from "react-native-select-dropdown";
-import { MaterialIcons } from "@expo/vector-icons";
-import { loadFonts } from "../font";
 import { Formik } from "formik";
-import * as Yup from "yup";
-import { GOOGLE_API_KEY } from '@env';
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-} from "firebase/auth";
-import Icon from "react-native-vector-icons/FontAwesome";
+import { GOOGLE_API_KEY } from "@env";
 import { useDispatch } from "react-redux";
-import { login, registerUser } from "../redux/actions/authAction";
-import { postEventSchema, signupSchema } from "../Components/validation";
+import { postEventSchema } from "../Components/validation";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { SafeAreaView } from "react-native-safe-area-context";
 import DateTimePicker, {
   DateTimePickerEvent,
 } from "@react-native-community/datetimepicker";
 import moment from "moment";
-import { Button } from "react-native-elements";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import {
   widthPercentageToDP as w2dp,
@@ -95,7 +82,6 @@ const PostEvent = () => {
   const handleTimeChange = (event: DateTimePickerEvent, time?: Date) => {
     if (time) {
       setSelectedTime(time);
-      // console.log("kkkkkkkkkkkkkkkkkkkkk", time);
     }
   };
 
@@ -108,14 +94,13 @@ const PostEvent = () => {
     setMenuOpen(!menuOpen);
   };
   const handleMenuItemPress = (item: any) => {
-    console.log(`Selected menu item: ${item}`);
+    // console.log(`Selected menu item: ${item}`);
     setMenuOpen(false);
     navigation.navigate("HomeScreen");
   };
   const findFoodMenuItemPress = (item: any) => {
-    console.log(`Selected menu item: ${item}`);
+    // console.log(`Selected menu item: ${item}`);
     setMenuOpen(false);
-    // navigation.navigate("MapScreen");
   };
 
   return (
@@ -137,7 +122,6 @@ const PostEvent = () => {
                 height: 100,
                 borderRadius: 5,
                 zIndex: 9999,
-                // elevation:0
               }}
             >
               <TouchableOpacity onPress={() => handleMenuItemPress("Home")}>
@@ -263,14 +247,9 @@ const PostEvent = () => {
                   query={{
                     key: GOOGLE_API_KEY,
                     language: "en",
-                    // components: "country:nz",
                   }}
                   enablePoweredByContainer={false}
                   onPress={(data, details) => {
-                    console.log(
-                      "tttttttttttttttttttttttttttttttttt",
-                      details?.address_components[0]?.types
-                    );
                     setFieldValue("lat", details?.geometry?.location?.lat);
                     setFieldValue("long", details?.geometry?.location?.lng);
                     setFieldValue("address", details?.formatted_address);
@@ -281,19 +260,15 @@ const PostEvent = () => {
                         component.types.includes("administrative_area_level_1")
                       ) {
                         const state = component.long_name;
-                        console.log("State:", state);
                         setFieldValue("state", state);
                       }
-
                       if (component.types.includes("locality")) {
                         const city = component.long_name;
-                        console.log("City:", city);
                         setFieldValue("city", city);
                       }
 
                       if (component.types.includes("postal_code")) {
                         const postalCode = component.long_name;
-                        console.log("Postal Code:", postalCode);
                         setFieldValue("postalCode", postalCode);
                       }
                     });
@@ -307,9 +282,7 @@ const PostEvent = () => {
                   styles={{
                     textInputContainer: {
                       borderColor: "black",
-                      // borderWidth: 1,
                       borderRadius: 3,
-                      // marginBottom: 18,
                       height: 50,
                       zIndex: 1,
                       width: "100%",
@@ -411,14 +384,12 @@ const styles = StyleSheet.create({
   background: {
     flex: 1,
     resizeMode: "cover",
-    // justifyContent: 'center',
   },
   buttonStyles: {
     backgroundColor: "#FC5A56",
     color: "black",
     borderRadius: 5,
     width: 190,
-    // marginBottom: 150,
     marginTop: 80,
     marginLeft: 75,
   },

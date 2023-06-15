@@ -48,82 +48,82 @@ const HomeScreen = ({ route }: any) => {
     setSelectedLanguage(selectedLanguage);
   };
 
-//  const getLocation = async () => {
-//     try {
-//       setLoc(true);
-//       let { status } = await Location.requestForegroundPermissionsAsync();
-//       if (status !== "granted") {
-//         console.log("permission to access location was denied");
-//         setLoc(false);
-//         Alert.alert(
-//           "Location permission denied",
-//           "Please grant permission to access your location to use this feature.",
-//           [{ text: "OK" }],
-//           { cancelable: false }
-//         );
-//         return;
-//       }
-//       let askLocationPermission = await Location.getCurrentPositionAsync({});
-//      if(askLocationPermission){
-//       let location =  await Location.watchPositionAsync(
-//         { distanceInterval: 5 }, // Minimum distance (in meters) for updates
-//         (newLocation) => {
-//           // setLocation(newLocation.coords);
-//           // console.log("checking live location", newLocation.coords)
-//           if (location) {
-//             setLoc(false);
-//             navigation.navigate("MapScreen", {
-//               location: newLocation,
-//             });
-//           } else {
-//             setLoc(false);
-//           }
-//         }
-//       );
-//      }
-  
-//       // if (location) {
-//       //   setLoc(false);
-//       //   navigation.navigate("MapScreen", {
-//       //     location: location,
-//       //   });
-//       // } else {
-//       //   setLoc(false);
-//       // }
-//     } catch (error) {
-//       setLoc(true);
-//       console.error(error);
-//     }
-//   };
-const getLocation = async () => {
-  try {
-    setLoc(true);
-    let { status } = await Location.requestForegroundPermissionsAsync();
-    if (status !== "granted") {
-      console.log("permission to access location was denied");
-      setLoc(false);
-      Alert.alert(
-        "Location permission denied",
-        "Please grant permission to access your location to use this feature.",
-        [{ text: "OK" }],
-        { cancelable: false }
-      );
-      return;
+  //  const getLocation = async () => {
+  //     try {
+  //       setLoc(true);
+  //       let { status } = await Location.requestForegroundPermissionsAsync();
+  //       if (status !== "granted") {
+  //         console.log("permission to access location was denied");
+  //         setLoc(false);
+  //         Alert.alert(
+  //           "Location permission denied",
+  //           "Please grant permission to access your location to use this feature.",
+  //           [{ text: "OK" }],
+  //           { cancelable: false }
+  //         );
+  //         return;
+  //       }
+  //       let askLocationPermission = await Location.getCurrentPositionAsync({});
+  //      if(askLocationPermission){
+  //       let location =  await Location.watchPositionAsync(
+  //         { distanceInterval: 5 }, // Minimum distance (in meters) for updates
+  //         (newLocation) => {
+  //           // setLocation(newLocation.coords);
+  //           // console.log("checking live location", newLocation.coords)
+  //           if (location) {
+  //             setLoc(false);
+  //             navigation.navigate("MapScreen", {
+  //               location: newLocation,
+  //             });
+  //           } else {
+  //             setLoc(false);
+  //           }
+  //         }
+  //       );
+  //      }
+
+  //       // if (location) {
+  //       //   setLoc(false);
+  //       //   navigation.navigate("MapScreen", {
+  //       //     location: location,
+  //       //   });
+  //       // } else {
+  //       //   setLoc(false);
+  //       // }
+  //     } catch (error) {
+  //       setLoc(true);
+  //       console.error(error);
+  //     }
+  //   };
+  const getLocation = async () => {
+    try {
+      setLoc(true);
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        console.log("permission to access location was denied");
+        setLoc(false);
+        Alert.alert(
+          "Location permission denied",
+          "Please grant permission to access your location to use this feature.",
+          [{ text: "OK" }],
+          { cancelable: false }
+        );
+        return;
+      }
+      let location = await Location.getLastKnownPositionAsync({});
+      if (location) {
+        setLoc(false);
+        navigation.navigate("MapScreen", {
+          location: location,
+        });
+      } else {
+        setLoc(false);
+      }
+    } catch (error) {
+      setLoc(true);
+      console.error(error);
     }
-    let location = await Location.getLastKnownPositionAsync({});
-    if (location) {
-      setLoc(false);
-      navigation.navigate("MapScreen", {
-        location: location,
-      });
-    } else {
-      setLoc(false);
-    }
-  } catch (error) {
-    setLoc(true);
-    console.error(error);
-  }
-};
+  };
 
   const appLoader = (loader: any) => {
     return (
@@ -187,8 +187,8 @@ const getLocation = async () => {
             <PrimaryButton
               title={localized.t("Post Event")}
               buttonStyle={styles.postEventButton}
-              onPress={()=>{
-                navigation.navigate("EventsHomeScreen")
+              onPress={() => {
+                navigation.navigate("EventsHomeScreen");
               }}
               titleStyle={styles.titleStyle}
             />
@@ -218,7 +218,8 @@ const getLocation = async () => {
                     fontFamily: "OpenSans-Bold",
                   }}
                 >
-                  {localized.t("Welcome")} {data?.user?.name ? data?.user?.name : ""}
+                  {localized.t("Welcome")}{" "}
+                  {data?.user?.name ? data?.user?.name : ""}
                 </Text>
               ) : (
                 <Text
