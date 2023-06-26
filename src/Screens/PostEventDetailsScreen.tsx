@@ -15,6 +15,7 @@ import { useNavigation } from "@react-navigation/native";
 import { localized } from "../locales/localization";
 import { Divider } from "react-native-paper";
 import moment from "moment";
+import { getLocation } from "../Components/getCurrentLocation";
 
 const PostEventDetailsScreen = ({ route }: any) => {
   const { eventDetails, eventPhotos } = route.params;
@@ -46,6 +47,15 @@ const PostEventDetailsScreen = ({ route }: any) => {
     console.log(`Selected menu item: ${item}`);
     setMenuOpen(false);
     navigation.navigate("HomeScreen");
+  };
+
+  const findFoodMenuItemPress = (item: any) => {
+    getLocation().then((location: any) => { navigation.navigate("MapScreen", {
+      location: location,
+    })})
+    console.log(`Selected menu item: ${item}`);
+    setMenuOpen(false);
+    // navigation.navigate("MapScreen");
   };
 
   const epochDate = eventDetails?.eventDate;
@@ -111,7 +121,7 @@ const PostEventDetailsScreen = ({ route }: any) => {
                       </Text>
                     </TouchableOpacity>
                     <TouchableOpacity
-                      onPress={() => handleMenuItemPress("Find Food")}
+                      onPress={() => findFoodMenuItemPress("Find Food")}
                     >
                       <Text
                         style={{

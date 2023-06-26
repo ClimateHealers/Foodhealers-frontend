@@ -12,7 +12,7 @@ import {
   ScrollView,
   Dimensions,
 } from "react-native";
-import { TextInput, Text } from "react-native-paper";
+import { TextInput, Text, IconButton } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { localized } from "../locales/localization";
 import { LinearGradient } from "expo-linear-gradient";
@@ -27,15 +27,21 @@ import DateTimePicker, {
 } from "@react-native-community/datetimepicker";
 import moment from "moment";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+import Constants from "expo-constants";
+
 import {
   widthPercentageToDP as w2dp,
   heightPercentageToDP as h2dp,
 } from "react-native-responsive-screen";
+import { getLocation } from "../Components/getCurrentLocation";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 const PostEvent = () => {
   const [loading, setLoading] = useState(false);
   const [langOpen, setlangOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [showTimePicker, setShowTimePicker] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState(localized.locale);
   const [lang, setLang] = useState([
     { id: 1, label: "Bengali", value: "be" },
@@ -47,12 +53,14 @@ const PostEvent = () => {
     { id: 7, label: "Punjabi", value: "pu" },
     { id: 8, label: "Spanish", value: "es" },
   ]);
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>(
+  const [selectedDate, setSelectedDate] = useState<Date | any>(
     new Date()
   );
   const [selectedTime, setSelectedTime] = useState<Date | undefined>(
     new Date()
   );
+
+  const API_KEY = Constants?.manifest?.extra?.googleMapsApiKey;
 
   const eventDate = moment(selectedDate).utc();
   const eventTime = moment(selectedTime).utc();
@@ -73,16 +81,14 @@ const PostEvent = () => {
   };
   const navigation: any = useNavigation();
 
-  const handleDateChange = (event: DateTimePickerEvent, date?: Date) => {
-    if (date) {
-      setSelectedDate(date);
-    }
+  const handleDateChange = (date: any) => {
+    setSelectedDate(date);
+    setShowDatePicker(false);
   };
 
-  const handleTimeChange = (event: DateTimePickerEvent, time?: Date) => {
-    if (time) {
+  const handleTimeChange = (time: any) => {
       setSelectedTime(time);
-    }
+      setShowTimePicker(false)
   };
 
   const changeLanguage = (itemValue: any, index: any) => {
@@ -100,6 +106,15 @@ const PostEvent = () => {
   };
   const findFoodMenuItemPress = (item: any) => {
     // console.log(`Selected menu item: ${item}`);
+    getLocation().then((location: any) => {
+      navigation.navigate("MapScreen", {
+        location: location,
+      });
+    });
+    console.log("getting current location", getLocation());
+    // navigation.navigate("MapScreen", {
+    //   location: location,
+    // });
     setMenuOpen(false);
   };
 
@@ -245,7 +260,7 @@ const PostEvent = () => {
                   listViewDisplayed="auto"
                   textInputProps={{ placeholderTextColor: "#000000" }}
                   query={{
-                    key: GOOGLE_API_KEY,
+                    key: API_KEY, //sachin
                     language: "en",
                   }}
                   enablePoweredByContainer={false}
@@ -299,25 +314,76 @@ const PostEvent = () => {
                   }}
                 />
                 <Text style={styles.inputError}>{errors.address}</Text>
-                <View style={styles.dateTimePickerContainer}>
-                  <DateTimePicker
-                    testID="dateTimePicker"
-                    value={selectedDate!}
-                    minimumDate={new Date()}
-                    mode={"date"}
-                    neutralButton={{ label: "Clear", textColor: "grey" }}
-                    onChange={handleDateChange}
-                  />
-                </View>
-                <View style={styles.dateTimePickerContainer}>
-                  <DateTimePicker
-                    testID="dateTimePicker"
-                    value={selectedTime!}
-                    mode="time"
-                    display="default"
-                    onChange={handleTimeChange}
-                  />
-                </View>
+                <TouchableOpacity onPress={() => setShowDatePicker(true)}>
+                  <View style={styles.dateTimePickerContainer}>
+                    <View>
+                      <Text
+                        style={{
+                          color: "black",
+                          fontSize: 13,
+                          // width: 200,
+                          marginBottom: 5,
+                          marginLeft: 15,
+                        }}
+                      >
+                        Start Date
+                      </Text>
+                        <Text
+                         style={{
+                          color: "black",
+                          fontSize: 13,
+                          // width: 200,
+                          marginBottom: 5,
+                          marginLeft: 15,
+                        }}>
+                        {moment(selectedDate).format("MMM DD, YYYY")}
+                      </Text>
+                    </View>
+                  </View>
+                </TouchableOpacity>
+                <DateTimePickerModal
+                  isVisible={showDatePicker}
+                  minimumDate={new Date()}
+                  mode="date"
+                  onConfirm={handleDateChange}
+                  onCancel={() => setShowDatePicker(false)}
+                />
+                <TouchableOpacity onPress={() => setShowTimePicker(true)}>
+                  <View style={styles.dateTimePickerContainer}>
+                    {/* <IconButton icon="calendar" size={20} /> */}
+                    <View>
+                      <Text
+                        style={{
+                          color: "black",
+                          fontSize: 13,
+                          width: 200,
+                          marginBottom: 5,
+                          marginLeft: 15,
+                        }}
+                      >
+                        Start Time
+                      </Text>
+                      <Text
+                        style={{
+                          color: "black",
+                          fontSize: 13,
+                          // width: 200,
+                          marginBottom: 5,
+                          marginLeft: 15,
+                        }}
+                      >
+                        {moment(selectedTime).format("hh:mm A")}
+                      </Text>
+                    </View>
+                  </View>
+                </TouchableOpacity>
+                <DateTimePickerModal
+                  isVisible={showTimePicker}
+                  minimumDate={new Date()}
+                  mode="time"
+                  onConfirm={handleTimeChange}
+                  onCancel={() => setShowTimePicker(false)}
+                />
 
                 <TextInput
                   onChangeText={handleChange("served")}
@@ -390,8 +456,9 @@ const styles = StyleSheet.create({
     color: "black",
     borderRadius: 5,
     width: 190,
-    marginTop: 80,
-    marginLeft: 75,
+    marginTop: h2dp("12"),
+    // marginLeft: 75,
+    marginLeft: w2dp("20"),
   },
   titleStyle: {
     color: "white",
@@ -465,10 +532,9 @@ const styles = StyleSheet.create({
   dateTimePickerContainer: {
     backgroundColor: "white",
     borderRadius: 3,
-    paddingRight: 250,
     paddingVertical: 5,
     marginBottom: 25,
-    height: 45,
+    height: 50,
   },
 });
 

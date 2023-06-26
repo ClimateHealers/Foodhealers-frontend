@@ -16,6 +16,7 @@ import PostEvent from "./Screens/PostEvent";
 import UploadPhotosScreen from "./Screens/UploadPhotosScreen";
 import EventPhotosScreen from "./Screens/EventPhotosScreen";
 import PostEventDetailsScreen from "./Screens/PostEventDetailsScreen";
+import Forgotpassword from "./Screens/ForgotPassword";
 
 const Navigation = () => {
   const Stack = createNativeStackNavigator();
@@ -32,6 +33,11 @@ const Navigation = () => {
           <Stack.Screen
             name="SignupScreen"
             component={SignupScreen}  
+            options={{ title: "", header: () => null }}
+          />
+          <Stack.Screen
+            name="ForgotPassword"
+            component={Forgotpassword}  
             options={{ title: "", header: () => null }}
           />
           <Stack.Screen

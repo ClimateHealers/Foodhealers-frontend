@@ -143,7 +143,7 @@ const HomeScreen = ({ route }: any) => {
   return (
     <TouchableWithoutFeedback onPress={handlePressOutside}>
       <View style={styles.container}>
-        <StatusBar backgroundColor="auto" barStyle="default" />
+        <StatusBar backgroundColor="auto" barStyle="dark-content" />
         <ImageBackground
           source={require("../../assets/homeScreen.jpg")}
           style={styles.backgroundImage}
@@ -259,7 +259,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.5)",
     alignItems: "center",
     width: "100%",
-    height: 250,
+    height: 260,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
   },

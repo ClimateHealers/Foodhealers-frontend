@@ -25,6 +25,11 @@ import { useDispatch } from "react-redux";
 import { login, registerUser } from "../redux/actions/authAction";
 import { signupSchema } from "../Components/validation";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { getLocation } from "../Components/getCurrentLocation";
+import {
+  widthPercentageToDP as w2dp,
+  heightPercentageToDP as h2dp,
+} from "react-native-responsive-screen";
 
 const SignupScreen = () => {
   const [loading, setLoading] = useState(false);
@@ -67,6 +72,9 @@ const SignupScreen = () => {
   };
   const findFoodMenuItemPress = (item: any) => {
     // console.log(`Selected menu item: ${item}`);
+    getLocation().then((location: any) => { navigation.navigate("MapScreen", {
+      location: location,
+    })})
     setMenuOpen(false);
   };
 
@@ -281,12 +289,40 @@ const SignupScreen = () => {
                 />
                 <Text style={styles.inputError}>{errors.confirmPassword}</Text>
 
-                <PrimaryButton
-                  title={localized.t("Sign up")}
-                  buttonStyle={styles.buttonStyles}
-                  titleStyle={styles.titleStyle}
-                  onPress={handleSubmit}
-                />
+                <View
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      marginTop: h2dp("5"),
+                    }}
+                  >
+                    <PrimaryButton
+                      title={localized.t("Sign in")}
+                      buttonStyle={styles.buttonStyles}
+                      titleStyle={styles.titleStyle}
+                      onPress={handleSubmit}
+                    />
+                  </View>
+                <Text style = {{textAlign:"center", color:"white", fontSize: 18, marginTop:100}}>
+                  Already have an account ?
+                </Text>
+                <TouchableOpacity
+              onPress={() => navigation.navigate("LoginScreen")}
+            >
+                <Text
+                  style={{
+                    color: "white",
+                    fontSize: 18,
+                    textDecorationLine: "underline",
+                    fontFamily: "OpenSans-Bold",
+                    textAlign:"center",
+                    marginTop:10
+                  }}
+                >
+                  {localized.t("Sign in")}
+                </Text>
+                </TouchableOpacity>
               </View>
             )}
           </Formik>
@@ -299,7 +335,7 @@ const SignupScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: "flex-start",
     padding: 16,
   },
   input: {
@@ -337,11 +373,11 @@ const styles = StyleSheet.create({
     color: "black",
     borderRadius: 5,
     width: 190,
-    marginTop: 130,
-    marginLeft: 75,
+    // marginTop: 70,
+    // marginLeft: 75,
   },
   titleStyle: {
-    color: "black",
+    color: "white",
     fontSize: 26,
     fontWeight: "400",
     lineHeight: 35,
@@ -352,6 +388,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    marginTop:40
   },
   dropdown1BtnStyle: {
     marginTop: 15,
@@ -386,6 +423,7 @@ const styles = StyleSheet.create({
   textInput: {
     height: 45,
     marginBottom: 1,
+    color:"white"
   },
   icon: {
     position: "absolute",

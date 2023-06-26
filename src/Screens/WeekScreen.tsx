@@ -60,7 +60,7 @@ const WeekScreen = ({ route }: any) => {
     .unix();
 
   const oneWeek = moment(new Date().setHours(23, 59, 59, 1000))
-    .add(5, "d")
+    .add(6, "d")
     .utc()
     .unix();
 
@@ -112,7 +112,7 @@ const WeekScreen = ({ route }: any) => {
   const handleSingleIndexSelect = async (index: any) => {
     setSelectedIndex(index);
     if (index === 0) {
-      const thisWeekData = {
+      const oneDayData = {
         lat: location?.coords?.latitude,
         lng: location?.coords?.longitude,
         alt: 0,
@@ -121,9 +121,9 @@ const WeekScreen = ({ route }: any) => {
         postalCode: postalCode,
         fullAddress: fullAddress,
         eventStartDate: startDate,
-        eventEndDate: oneWeek,
+        eventEndDate: endDate,
       };
-      const result = await dispatch(findFood(thisWeekData as any) as any);
+      const result = await dispatch(findFood(oneDayData as any) as any);
       setEvents(result?.payload?.foodEvents);
     } else if (index === 1) {
       const thisWeekData = {
@@ -138,6 +138,7 @@ const WeekScreen = ({ route }: any) => {
         eventEndDate: oneWeek,
       };
       const result = await dispatch(findFood(thisWeekData as any) as any);
+      console.log("checking result for one week data from find food api", result?.payload)
       setEvents(result?.payload?.foodEvents);
     }
   };
@@ -145,6 +146,7 @@ const WeekScreen = ({ route }: any) => {
   const handlePressOutside = () => {
     setlangOpen(false);
     Keyboard.dismiss();
+    setMenuOpen(false);
   };
 
   const changeLanguage = (itemValue: any, index: any) => {
@@ -251,7 +253,7 @@ const WeekScreen = ({ route }: any) => {
                       onPress={() => navigateToEvent(marker)}
                     >
                       <View>
-                        <Text style={{ color: "#00693D", fontSize: 10 }}>
+                        <Text style={{ color: "#FC5A56", fontSize: 15, opacity:0.8,fontWeight:"500"}}>
                           {marker?.name}
                         </Text>
                         <Image

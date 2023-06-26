@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Text } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Image } from "react-native-elements";
+import { getLocation } from "../Components/getCurrentLocation";
 
 const EventsHomeScreen = () => {
   const [selectedLanguage, setSelectedLanguage] = useState(localized.locale);
@@ -48,6 +49,9 @@ const EventsHomeScreen = () => {
   };
   const findFoodMenuItemPress = (item: any) => {
     // console.log(`Selected menu item: ${item}`);
+    getLocation().then((location: any) => { navigation.navigate("MapScreen", {
+      location: location,
+    })})
     setMenuOpen(false);
   };
 

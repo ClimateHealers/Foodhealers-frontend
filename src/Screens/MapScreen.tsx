@@ -4,14 +4,13 @@ import {
   StyleSheet,
   Text,
   TouchableWithoutFeedback,
-  TextInput,
   Dimensions,
   Keyboard,
   TouchableOpacity,
   Linking,
   Alert,
+  StatusBar,
 } from "react-native";
-import { GOOGLE_API_KEY } from "@env";
 import {
   widthPercentageToDP as w2dp,
   heightPercentageToDP as h2dp,
@@ -30,6 +29,8 @@ import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import { findFood } from "../redux/actions/findFoodaction";
 import { Image } from "react-native-elements";
+import Constants from "expo-constants";
+import { getLocation } from "../Components/getCurrentLocation";
 
 const MapScreen = ({ route }: any) => {
   const { location } = route.params;
@@ -57,7 +58,7 @@ const MapScreen = ({ route }: any) => {
     { id: 7, label: "Punjabi", value: "pu" },
     { id: 8, label: "Spanish", value: "es" },
   ]);
-  const [events, setEvents] = useState([]);
+  const [events, setEvents] = useState<[]>([]);
   const [menuOpen, setMenuOpen] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState(localized.locale);
   const [address, setAddress] = useState<any>();
@@ -68,7 +69,10 @@ const MapScreen = ({ route }: any) => {
   const [city, setCity] = useState<any>("");
   const [state, setState] = useState<any>("");
   const [postalCode, setPostalCode] = useState<string>("");
+
   const mapRef = useRef<any>(null);
+
+  const API_KEY = Constants?.manifest?.extra?.googleMapsApiKey
 
   const dispatch = useDispatch();
 
@@ -94,6 +98,7 @@ const MapScreen = ({ route }: any) => {
   const handlePressOutside = () => {
     setlangOpen(false);
     Keyboard.dismiss();
+    setMenuOpen(false)
   };
 
   const toggleMenu = () => {
@@ -111,6 +116,9 @@ const MapScreen = ({ route }: any) => {
   };
   const findFoodMenuItemPress = (item: any) => {
     // console.log(`Selected menu item: ${item}`);
+    getLocation().then((location: any) => { navigation.navigate("MapScreen", {
+      location: location,
+    })})
     setMenuOpen(false);
   };
 
@@ -136,10 +144,10 @@ const MapScreen = ({ route }: any) => {
     }
   }, [lat, long]);
 
-  const navigateToEvent = (event: any) => {
+  const navigateToEvent = (event: any, eventName:any) => {
     Alert.alert(
-      "Navigate to event",
-      "Do you want to navigate to google maps ?",
+      `Navigate to ${eventName} event`,
+      "Do you want to navigate to Google maps ?",
       [
         {
           text: "Navigate",
@@ -168,6 +176,7 @@ const MapScreen = ({ route }: any) => {
         style={styles.background}
       >
         <View style={styles.container}>
+        <StatusBar barStyle="dark-content" />
           <SafeAreaView>
             {menuOpen && (
               <View
@@ -256,6 +265,7 @@ const MapScreen = ({ route }: any) => {
             <GooglePlacesAutocomplete
               placeholder={localized.t("Address or nearest cross streets")}
               onPress={async (data, details) => {
+                console.log("checking data from input...", data, details);
                 setAddress(details);
                 setLat(details?.geometry?.location?.lat);
                 setLong(details?.geometry?.location?.lng);
@@ -300,8 +310,7 @@ const MapScreen = ({ route }: any) => {
               textInputProps={{ placeholderTextColor: "#000000" }}
               listUnderlayColor="blue"
               query={{
-                key: GOOGLE_API_KEY,
-
+                key: API_KEY, //sachin
                 language: "en",
               }}
               styles={{
@@ -349,7 +358,7 @@ const MapScreen = ({ route }: any) => {
               <MapView
                 ref={mapRef}
                 provider={"google"}
-                style={{ alignSelf: "stretch", height: "65%" }}
+                style={{ alignSelf: "stretch", height: "60%" }}
                 initialRegion={{
                   latitude: location?.coords?.latitude,
                   longitude: location?.coords?.longitude,
@@ -386,10 +395,10 @@ const MapScreen = ({ route }: any) => {
                       key={marker?.id}
                       pinColor="#00693D"
                       coordinate={coordinates}
-                      onPress={() => navigateToEvent(coordinates)}
+                      onPress={() => navigateToEvent(coordinates,marker?.name)}
                     >
                       <View>
-                        <Text style={{ color: "#00693D", fontSize: 10 }}>
+                      <Text style={{ color: "#FC5A56", fontSize: 15, opacity:0.8,fontWeight:"500"}}>
                           {marker?.name}
                         </Text>
                         <Image
@@ -403,7 +412,7 @@ const MapScreen = ({ route }: any) => {
               </MapView>
             </View>
             {buttonVisibility ? (
-              <View style={{ marginTop: -55 }}>
+              <View>
                 <PrimaryButton
                   title={"Next"}
                   buttonStyle={styles.buttonStyles}
@@ -464,7 +473,9 @@ const styles = StyleSheet.create({
     fontFamily: "OpenSans-Medium",
     zIndex: 9999,
   },
-  mapContainer: {},
+  mapContainer: {
+    marginTop: 15,
+  },
   dropdown1BtnStyle: {
     marginTop: 15,
     marginLeft: 45,
@@ -496,7 +507,7 @@ const styles = StyleSheet.create({
     color: "black",
     borderRadius: 5,
     width: w2dp("40%"),
-    marginBottom: 25,
+    // marginBottom: 25,
     alignSelf: "center",
     shadowColor: "#171717",
     shadowOffset: { width: -2, height: 6 },

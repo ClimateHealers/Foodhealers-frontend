@@ -17,7 +17,12 @@ import { localized } from "../locales/localization";
 import PrimaryButton from "../Components/PrimaryButton";
 import { Divider } from "react-native-paper";
 import moment from "moment";
+import {
+  widthPercentageToDP as w2dp,
+  heightPercentageToDP as h2dp,
+} from "react-native-responsive-screen";
 import BurgerIcon from "../Components/BurgerIcon";
+import { getLocation } from "../Components/getCurrentLocation";
 
 const EventDetailsScreen = ({ route }: any) => {
   const { eventDetails } = route.params;
@@ -49,6 +54,13 @@ const EventDetailsScreen = ({ route }: any) => {
     // console.log(`Selected menu item: ${item}`);
     setMenuOpen(false);
     navigation.navigate("HomeScreen");
+  };
+  const findFoodMenuItemPress = (item: any) => {
+    getLocation().then((location: any) => { navigation.navigate("MapScreen", {
+      location: location,
+    })})
+    // console.log(`Selected menu item: ${item}`);
+    setMenuOpen(false);
   };
 
   const changeLanguage = (itemValue: any, index: any) => {
@@ -120,7 +132,7 @@ const EventDetailsScreen = ({ route }: any) => {
                       </Text>
                     </TouchableOpacity>
                     <TouchableOpacity
-                      onPress={() => handleMenuItemPress("Find Food")}
+                      onPress={() => findFoodMenuItemPress("Find Food")}
                     >
                       <Text
                         style={{
@@ -274,11 +286,12 @@ const styles = StyleSheet.create({
   },
   buttonStyles: {
     backgroundColor: "#FC5A56",
-    color: "black",
+    color: "white",
     borderRadius: 5,
     width: 190,
     marginTop: 20,
-    marginLeft: 85,
+    // marginLeft: 85,
+    marginLeft:w2dp("23") ,
   },
   titleStyle: {
     color: "white",

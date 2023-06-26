@@ -5,6 +5,7 @@ import {
   Keyboard,
   TouchableOpacity,
   Image,
+  TouchableWithoutFeedback,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
@@ -13,10 +14,14 @@ import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 import PrimaryButton from "../Components/PrimaryButton";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { localized } from "../locales/localization";
-
+import {
+  widthPercentageToDP as w2dp,
+  heightPercentageToDP as h2dp,
+} from "react-native-responsive-screen";
 import { useDispatch, useSelector } from "react-redux";
 import { postEvent } from "../redux/actions/postEventaction";
 import Spinner from "react-native-loading-spinner-overlay";
+import { getLocation } from "../Components/getCurrentLocation";
 
 const EventPhotosScreen = ({ route }: any) => {
   const { eventPhotos, eventFormData } = route.params;
@@ -39,6 +44,9 @@ const EventPhotosScreen = ({ route }: any) => {
     navigation.navigate("HomeScreen");
   };
   const findFoodMenuItemPress = (item: any) => {
+    getLocation().then((location: any) => { navigation.navigate("MapScreen", {
+      location: location,
+    })})
     console.log(`Selected menu item: ${item}`);
     setMenuOpen(false);
     // navigation.navigate("MapScreen");
@@ -83,7 +91,8 @@ const EventPhotosScreen = ({ route }: any) => {
     >
       <SafeAreaView>
         {menuOpen && (
-          <View
+          <TouchableWithoutFeedback onPress = {()=>setMenuOpen(false)}>
+            <View
             style={{
               position: "absolute",
               right: 60,
@@ -91,8 +100,8 @@ const EventPhotosScreen = ({ route }: any) => {
               backgroundColor: "white",
               borderColor: "white",
               borderRadius: 5,
-              height: 100,
-              width: 110,
+              height: h2dp("13"),
+                  width: w2dp("32"),
               zIndex: 9999,
             }}
           >
@@ -108,7 +117,7 @@ const EventPhotosScreen = ({ route }: any) => {
                 Home
               </Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => handleMenuItemPress("Find Food")}>
+            <TouchableOpacity onPress={() => findFoodMenuItemPress("Find Food")}>
               <Text
                 style={{
                   padding: 10,
@@ -121,6 +130,7 @@ const EventPhotosScreen = ({ route }: any) => {
               </Text>
             </TouchableOpacity>
           </View>
+          </TouchableWithoutFeedback>
         )}
         <View style={styles.row}>
           {/* <Modal

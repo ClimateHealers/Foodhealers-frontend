@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { TouchableOpacity, Text, View, StyleSheet } from "react-native";
+import { TouchableOpacity, Text, View, StyleSheet, TouchableWithoutFeedback } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useSelector } from "react-redux";
+import { getLocation } from "./getCurrentLocation";
 
 const BurgerIcon = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -21,6 +22,9 @@ const BurgerIcon = () => {
     }
   };
   const findFoodMenuItemPress = (item: any) => {
+    getLocation().then((location: any) => { navigation.navigate("MapScreen", {
+      location: location,
+    })})
     // console.log(`Selected menu item: ${item}`);
     setMenuOpen(false);
   };
@@ -89,6 +93,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
+    zIndex: 9999,
   },
 });
 

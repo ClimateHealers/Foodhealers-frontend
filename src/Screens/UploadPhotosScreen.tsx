@@ -16,6 +16,11 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { localized } from "../locales/localization";
 import * as ImagePicker from "expo-image-picker";
 import * as Permissions from "expo-permissions";
+import { getLocation } from "../Components/getCurrentLocation";
+import {
+  widthPercentageToDP as w2dp,
+  heightPercentageToDP as h2dp,
+} from "react-native-responsive-screen";
 
 const UploadPhotosScreen = ({route}:any) => {
   const {eventFormData} = route.params;
@@ -41,6 +46,9 @@ const UploadPhotosScreen = ({route}:any) => {
   };
   const findFoodMenuItemPress = (item: any) => {
     // console.log(`Selected menu item: ${item}`);
+    getLocation().then((location: any) => { navigation.navigate("MapScreen", {
+      location: location,
+    })})
     setMenuOpen(false);
   };
 
@@ -107,10 +115,10 @@ const UploadPhotosScreen = ({route}:any) => {
                   right: 60,
                   top: 110,
                   backgroundColor: "white",
-                  borderColor: "white",
+                  borderColor: "black",
                   borderRadius: 5,
-                  height: 100,
-                  width: 105,
+                  height: h2dp("13"),
+                  width: w2dp("32"),
                   zIndex: 9999,
                 }}
               >
@@ -127,7 +135,7 @@ const UploadPhotosScreen = ({route}:any) => {
                   </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  onPress={() => handleMenuItemPress("Find Food")}
+                  onPress={() => findFoodMenuItemPress("Find Food")}
                 >
                   <Text
                     style={{
