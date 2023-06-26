@@ -2,37 +2,22 @@ import React, { useState } from "react";
 import {
   StyleSheet,
   View,
-  Alert,
-  Modal,
-  ActivityIndicator,
   StatusBar,
   TouchableWithoutFeedback,
   Keyboard,
   TouchableOpacity,
 } from "react-native";
-import { TextInput } from "react-native-paper";
-import { auth } from "../firebase/firebaseConfig";
 import { useNavigation } from "@react-navigation/native";
 import { localized } from "../locales/localization";
 import { LinearGradient } from "expo-linear-gradient";
-import PrimaryButton from "../Components/PrimaryButton";
-import SelectDropdown from "react-native-select-dropdown";
-import { MaterialIcons } from "@expo/vector-icons";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import Icon from "react-native-vector-icons/FontAwesome";
 import { useDispatch, useSelector } from "react-redux";
-import { login } from "../redux/actions/authAction";
-import { Formik } from "formik";
-import * as Yup from "yup";
 import { Text } from "react-native";
-import { loginSchema } from "../Components/validation";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Image } from "react-native-elements";
+import { getLocation } from "../Components/getCurrentLocation";
 
 const EventsHomeScreen = () => {
-  const [showPassword, setShowPassword] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState(localized.locale);
-  const [loading, setLoading] = useState(false);
   const [langOpen, setlangOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [lang, setLang] = useState([
@@ -49,7 +34,6 @@ const EventsHomeScreen = () => {
   const dispatch = useDispatch();
 
   const data = useSelector((state: any) => state.auth.data);
-  console.log("checking auth data", data);
 
   const handlePressOutside = () => {
     setlangOpen(false);
@@ -59,51 +43,19 @@ const EventsHomeScreen = () => {
     setMenuOpen(!menuOpen);
   };
   const handleMenuItemPress = (item: any) => {
-    console.log(`Selected menu item: ${item}`);
+    // console.log(`Selected menu item: ${item}`);
     setMenuOpen(false);
     navigation.navigate("HomeScreen");
   };
   const findFoodMenuItemPress = (item: any) => {
-    console.log(`Selected menu item: ${item}`);
-    setMenuOpen(false);
-    navigation.navigate("MapScreen", {
+    // console.log(`Selected menu item: ${item}`);
+    getLocation().then((location: any) => { navigation.navigate("MapScreen", {
       location: location,
-    });
+    })})
+    setMenuOpen(false);
   };
 
-  const [error, setError] = useState("");
-  const navigation: string = useNavigation<string>();
-
-  // const handleLogin = () => {
-  //   setLoading(true);
-  //   signInWithEmailAndPassword(auth, email, password)
-  //     .then((userCredential) => {
-  //       // Signed in
-  //       const user = userCredential.user;
-
-  //       console.log("User signed in:", user);
-  //       setLoading(false);
-  //       console.log("user signed in successfully");
-
-  //       return user.getIdToken();
-  //     })
-  //     .then(async(token) => {
-  //       const data = {
-  //         tokenId: token,
-  //       };
-  //      const response = await dispatch(login(data) as any)
-  //      if (response.payload.isAuthenticated) {
-  //       navigation.navigate("HomeScreen");
-  //     }
-
-  //     })
-  //     .catch((error) => {
-  //       setLoading(false);
-  //       const errorCode = error.code;
-  //       const errorMessage = error.message;
-  //       setError(errorMessage);
-  //     });
-  // };
+  const navigation: any = useNavigation<string>();
 
   const changeLanguage = (itemValue: any, index: any) => {
     const selectedLanguage = lang[index].value;
@@ -123,14 +75,13 @@ const EventsHomeScreen = () => {
             <View
               style={{
                 position: "absolute",
-                right: 60,
-                top: 125,
+                right: 55,
+                top: 135,
                 backgroundColor: "white",
                 borderColor: "white",
                 height: 100,
                 borderRadius: 5,
                 zIndex: 9999,
-                // elevation:0
               }}
             >
               <TouchableOpacity onPress={() => handleMenuItemPress("Home")}>
@@ -138,7 +89,7 @@ const EventsHomeScreen = () => {
                   style={{
                     padding: 10,
                     fontSize: 20,
-                    fontWeight: 300,
+                    fontWeight: "300",
                     lineHeight: 27.24,
                   }}
                 >
@@ -152,7 +103,7 @@ const EventsHomeScreen = () => {
                   style={{
                     padding: 10,
                     fontSize: 20,
-                    fontWeight: 300,
+                    fontWeight: "300",
                     lineHeight: 27.24,
                   }}
                 >
@@ -175,7 +126,7 @@ const EventsHomeScreen = () => {
               }}
             />
           </View>
-          
+
           <View style={styles.container}>
             <View style={styles.centeredView}>
               <View>
@@ -184,8 +135,10 @@ const EventsHomeScreen = () => {
                   style={styles.imageStyle}
                 />
                 <View style={styles.title}>
-                  <TouchableOpacity onPress={()=>navigation.navigate("PostEvent")}>
-                  <Text style={styles.textStyle}>Post Event</Text>
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate("PostEvent")}
+                  >
+                    <Text style={styles.textStyle}>Post an event</Text>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -195,7 +148,7 @@ const EventsHomeScreen = () => {
                   style={styles.imageStyle}
                 />
                 <View style={styles.title}>
-                  <Text style={styles.textStyle}>See all Event</Text>
+                  <Text style={styles.textStyle}>See all events</Text>
                 </View>
               </View>
             </View>
@@ -265,8 +218,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 26,
     lineHeight: 35,
-    fontFamily: "OpenSans-SemiBold",
-    fontWeight: "400",
+    fontWeight: "normal",
     fontStyle: "normal",
     marginTop: 15,
   },
@@ -278,10 +230,3 @@ const styles = StyleSheet.create({
 });
 
 export default EventsHomeScreen;
-
-// font-family: 'Open Sans';
-// font-style: normal;
-// font-weight: 400;
-// font-size: 26px;
-// line-height: 35px;
-// text-align: center;

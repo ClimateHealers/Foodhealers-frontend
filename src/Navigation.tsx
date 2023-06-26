@@ -2,7 +2,6 @@ import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import LoginScreen from "./Screens/LoginScreen";
 import Camera from "./Screens/Camera";
-
 import { NavigationContainer } from "@react-navigation/native";
 import LinkingDemo from "./Screens/LinkingDemo";
 import Notification from "./Screens/Notification";
@@ -11,9 +10,13 @@ import HomeScreen from "./Screens/HomeScreen";
 import MapScreen from "./Screens/MapScreen";
 import SignupScreen from "./Screens/SignupScreen";
 import EventDetailsScreen from "./Screens/EventDetailsScreen";
-import MapWeekScreen from "./Screens/MapWeekScreen";
+import WeekScreen from "./Screens/WeekScreen";
 import EventsHomeScreen from "./Screens/EventsHomeScreen";
 import PostEvent from "./Screens/PostEvent";
+import UploadPhotosScreen from "./Screens/UploadPhotosScreen";
+import EventPhotosScreen from "./Screens/EventPhotosScreen";
+import PostEventDetailsScreen from "./Screens/PostEventDetailsScreen";
+import Forgotpassword from "./Screens/ForgotPassword";
 
 const Navigation = () => {
   const Stack = createNativeStackNavigator();
@@ -21,7 +24,7 @@ const Navigation = () => {
   return (
     <>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="SignupScreen">
+        <Stack.Navigator initialRouteName="HomeScreen">
           <Stack.Screen
             name="LoginScreen"
             component={LoginScreen}
@@ -30,6 +33,11 @@ const Navigation = () => {
           <Stack.Screen
             name="SignupScreen"
             component={SignupScreen}  
+            options={{ title: "", header: () => null }}
+          />
+          <Stack.Screen
+            name="ForgotPassword"
+            component={Forgotpassword}  
             options={{ title: "", header: () => null }}
           />
           <Stack.Screen
@@ -64,8 +72,8 @@ const Navigation = () => {
             options={{ title: "", header: () => null }}
           />
           <Stack.Screen
-            name="MapWeekScreen"
-            component={MapWeekScreen}
+            name="WeekScreen"
+            component={WeekScreen}
             options={{ title: "", header: () => null }}
           />
           <Stack.Screen
@@ -81,6 +89,21 @@ const Navigation = () => {
           <Stack.Screen
             name="PostEvent"
             component={PostEvent}
+            options={{ title: "", header: () => null }}
+          />
+          <Stack.Screen
+            name="UploadPhotosScreen"
+            component={UploadPhotosScreen}
+            options={{ title: "", header: () => null }}
+          />
+          <Stack.Screen
+            name="EventPhotosScreen"
+            component={EventPhotosScreen}
+            options={{ title: "", header: () => null }}
+          />
+          <Stack.Screen
+            name="PostEventDetailsScreen"
+            component={PostEventDetailsScreen}
             options={{ title: "", header: () => null }}
           />
         </Stack.Navigator>

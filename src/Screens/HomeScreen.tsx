@@ -48,7 +48,54 @@ const HomeScreen = ({ route }: any) => {
     setSelectedLanguage(selectedLanguage);
   };
 
- const getLocation = async () => {
+  //  const getLocation = async () => {
+  //     try {
+  //       setLoc(true);
+  //       let { status } = await Location.requestForegroundPermissionsAsync();
+  //       if (status !== "granted") {
+  //         console.log("permission to access location was denied");
+  //         setLoc(false);
+  //         Alert.alert(
+  //           "Location permission denied",
+  //           "Please grant permission to access your location to use this feature.",
+  //           [{ text: "OK" }],
+  //           { cancelable: false }
+  //         );
+  //         return;
+  //       }
+  //       let askLocationPermission = await Location.getCurrentPositionAsync({});
+  //      if(askLocationPermission){
+  //       let location =  await Location.watchPositionAsync(
+  //         { distanceInterval: 5 }, // Minimum distance (in meters) for updates
+  //         (newLocation) => {
+  //           // setLocation(newLocation.coords);
+  //           // console.log("checking live location", newLocation.coords)
+  //           if (location) {
+  //             setLoc(false);
+  //             navigation.navigate("MapScreen", {
+  //               location: newLocation,
+  //             });
+  //           } else {
+  //             setLoc(false);
+  //           }
+  //         }
+  //       );
+  //      }
+
+  //       // if (location) {
+  //       //   setLoc(false);
+  //       //   navigation.navigate("MapScreen", {
+  //       //     location: location,
+  //       //   });
+  //       // } else {
+  //       //   setLoc(false);
+  //       // }
+  //     } catch (error) {
+  //       setLoc(true);
+  //       console.error(error);
+  //     }
+  //   };
+  const getLocation = async () => {
     try {
       setLoc(true);
       let { status } = await Location.requestForegroundPermissionsAsync();
@@ -63,33 +110,15 @@ const HomeScreen = ({ route }: any) => {
         );
         return;
       }
-      let askLocationPermission = await Location.getCurrentPositionAsync({});
-     if(askLocationPermission){
-      let location =  await Location.watchPositionAsync(
-        { distanceInterval: 5 }, // Minimum distance (in meters) for updates
-        (newLocation) => {
-          // setLocation(newLocation.coords);
-          console.log("checking live location", newLocation.coords)
-          if (location) {
-            setLoc(false);
-            navigation.navigate("MapScreen", {
-              location: newLocation,
-            });
-          } else {
-            setLoc(false);
-          }
-        }
-      );
-     }
-  
-      // if (location) {
-      //   setLoc(false);
-      //   navigation.navigate("MapScreen", {
-      //     location: location,
-      //   });
-      // } else {
-      //   setLoc(false);
-      // }
+      let location = await Location.getLastKnownPositionAsync({});
+      if (location) {
+        setLoc(false);
+        navigation.navigate("MapScreen", {
+          location: location,
+        });
+      } else {
+        setLoc(false);
+      }
     } catch (error) {
       setLoc(true);
       console.error(error);
@@ -110,11 +139,11 @@ const HomeScreen = ({ route }: any) => {
     );
   };
 
-  const navigation: string = useNavigation();
+  const navigation: any = useNavigation();
   return (
     <TouchableWithoutFeedback onPress={handlePressOutside}>
       <View style={styles.container}>
-        <StatusBar backgroundColor="auto" barStyle="default" />
+        <StatusBar backgroundColor="auto" barStyle="dark-content" />
         <ImageBackground
           source={require("../../assets/homeScreen.jpg")}
           style={styles.backgroundImage}
@@ -158,8 +187,8 @@ const HomeScreen = ({ route }: any) => {
             <PrimaryButton
               title={localized.t("Post Event")}
               buttonStyle={styles.postEventButton}
-              onPress={()=>{
-                navigation.navigate("EventsHomeScreen")
+              onPress={() => {
+                navigation.navigate("EventsHomeScreen");
               }}
               titleStyle={styles.titleStyle}
             />
@@ -230,7 +259,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.5)",
     alignItems: "center",
     width: "100%",
-    height: 250,
+    height: 260,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
   },

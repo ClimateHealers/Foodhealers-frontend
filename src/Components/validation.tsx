@@ -7,7 +7,7 @@ export const signupSchema = Yup.object().shape({
       .trim()
       .matches(
         /^[\w'\-,.][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{2,15}$/,
-        "First name must be in correct format & max length 15"
+        "Name must be in correct format & max length 15"
       ),
     email: Yup.string()
       .email("Please enter valid email")
@@ -51,5 +51,20 @@ export const signupSchema = Yup.object().shape({
 
 
 
-  //driver login form
+  //post event form
+
+  export const postEventSchema = Yup.object().shape({
+    eventName: Yup.string()
+      .required("Event Name is required")
+      .matches(/\w*[a-z]\w*/,"Only alphabets are allowed"),
+    address: Yup
+      .string()
+      .required("Address is required")
+      .matches(/\w*[a-z]\w*/,"Only alphabets are allowed"),
+    served: Yup
+      .string()
+      .required("This field is required")
+      .min(6, ({ min }) => `This field must be at least ${min} characters`)
+      .matches(/\w*[a-z]\w*/,"Only alphabets are allowed")
+  });
   

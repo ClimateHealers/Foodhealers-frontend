@@ -3,7 +3,7 @@ import { LogBox, StyleSheet, Text, View } from "react-native";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import Navigation from "./src/Navigation";
-import { store, persistor } from "./src/redux/store";
+import { store, } from "./src/redux/store";
 import { ThemeProvider } from "react-native-elements";
 import { customFonts } from "./src/font";
 import * as Font from "expo-font";
@@ -26,7 +26,7 @@ export default function App() {
     setAppIsReady(true);
   }, []);
   if (!fontsLoaded) {
-    return <Text>loading....</Text>;
+    return 
   }
  
   return (

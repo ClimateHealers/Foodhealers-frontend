@@ -23,10 +23,14 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../redux/actions/authAction";
 import { Formik } from "formik";
-import * as Yup from "yup";
 import { Text } from "react-native";
 import { loginSchema } from "../Components/validation";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { getLocation } from "../Components/getCurrentLocation";
+import {
+  widthPercentageToDP as w2dp,
+  heightPercentageToDP as h2dp,
+} from "react-native-responsive-screen";
 
 const LoginScreen = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -44,11 +48,12 @@ const LoginScreen = () => {
     { id: 7, label: "Punjabi", value: "pu" },
     { id: 8, label: "Spanish", value: "es" },
   ]);
+  const [error, setError] = useState("");
+  const navigation: any = useNavigation<string>();
 
   const dispatch = useDispatch();
 
   const data = useSelector((state: any) => state.auth.data);
-  console.log("checking auth data", data);
 
   const handlePressOutside = () => {
     setlangOpen(false);
@@ -58,52 +63,19 @@ const LoginScreen = () => {
     setMenuOpen(!menuOpen);
   };
   const handleMenuItemPress = (item: any) => {
-    console.log(`Selected menu item: ${item}`);
+    // console.log(`Selected menu item: ${item}`);
     setMenuOpen(false);
     navigation.navigate("HomeScreen");
   };
   const findFoodMenuItemPress = (item: any) => {
-    console.log(`Selected menu item: ${item}`);
-    setMenuOpen(false);
-    navigation.navigate("MapScreen",{
-      location:location
+    // console.log(`Selected menu item: ${item}`);
+    getLocation().then((location: any) => {
+      navigation.navigate("MapScreen", {
+        location: location,
+      });
     });
+    setMenuOpen(false);
   };
-
-
-  const [error, setError] = useState("");
-  const navigation: string = useNavigation<string>();
-
-  // const handleLogin = () => {
-  //   setLoading(true);
-  //   signInWithEmailAndPassword(auth, email, password)
-  //     .then((userCredential) => {
-  //       // Signed in
-  //       const user = userCredential.user;
-
-  //       console.log("User signed in:", user);
-  //       setLoading(false);
-  //       console.log("user signed in successfully");
-
-  //       return user.getIdToken();
-  //     })
-  //     .then(async(token) => {
-  //       const data = {
-  //         tokenId: token,
-  //       };
-  //      const response = await dispatch(login(data) as any)
-  //      if (response.payload.isAuthenticated) {
-  //       navigation.navigate("HomeScreen");
-  //     }
-        
-  //     })
-  //     .catch((error) => {
-  //       setLoading(false);
-  //       const errorCode = error.code;
-  //       const errorMessage = error.message;
-  //       setError(errorMessage);
-  //     });
-  // };
 
   const changeLanguage = (itemValue: any, index: any) => {
     const selectedLanguage = lang[index].value;
@@ -120,47 +92,46 @@ const LoginScreen = () => {
         <View style={styles.container}>
           <StatusBar animated={true} backgroundColor="auto" />
           {menuOpen && (
-              <View
-                style={{
-                  position: "absolute",
-                  right: 60,
-                  top: 125,
-                  backgroundColor: "white",
-                  borderColor: "white",
-                  height: 100,
-                  borderRadius: 5,
-                  zIndex: 9999,
-                  // elevation:0
-                }}
-              >
-                <TouchableOpacity onPress={() => handleMenuItemPress("Home")}>
-                  <Text
-                    style={{
-                      padding: 10,
-                      fontSize: 20,
-                      fontWeight: 300,
-                      lineHeight: 27.24,
-                    }}
-                  >
-                    Home
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => findFoodMenuItemPress("Find Food")}
+            <View
+              style={{
+                position: "absolute",
+                right: 60,
+                top: 125,
+                backgroundColor: "white",
+                borderColor: "white",
+                height: 100,
+                borderRadius: 5,
+                zIndex: 9999,
+              }}
+            >
+              <TouchableOpacity onPress={() => handleMenuItemPress("Home")}>
+                <Text
+                  style={{
+                    padding: 10,
+                    fontSize: 20,
+                    fontWeight: "300",
+                    lineHeight: 27.24,
+                  }}
                 >
-                  <Text
-                    style={{
-                      padding: 10,
-                      fontSize: 20,
-                      fontWeight: 300,
-                      lineHeight: 27.24,
-                    }}
-                  >
-                    Find Food
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            )}
+                  Home
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => findFoodMenuItemPress("Find Food")}
+              >
+                <Text
+                  style={{
+                    padding: 10,
+                    fontSize: 20,
+                    fontWeight: "300",
+                    lineHeight: 27.24,
+                  }}
+                >
+                  Find Food
+                </Text>
+              </TouchableOpacity>
+            </View>
+          )}
           <View style={styles.dropdownContainer}>
             <SelectDropdown
               buttonStyle={styles.dropdown1BtnStyle}
@@ -188,15 +159,15 @@ const LoginScreen = () => {
                 return item;
               }}
             />
-             <MaterialCommunityIcons
-                  name="menu"
-                  size={40}
-                  color="white"
-                  onPress={toggleMenu}
-                  style = {{
-                    marginRight:20
-                  }}
-                />
+            <MaterialCommunityIcons
+              name="menu"
+              size={40}
+              color="white"
+              onPress={toggleMenu}
+              style={{
+                marginRight: 20,
+              }}
+            />
           </View>
           <Modal visible={loading} animationType="slide" transparent={true}>
             <View style={styles.centeredView}>
@@ -213,14 +184,11 @@ const LoginScreen = () => {
               }}
               validationSchema={loginSchema}
               onSubmit={async ({ email, password }) => {
-                console.log("sdkvjskbnsdkbnskdnbkdsbnkds", email, password);
                 setLoading(true);
                 signInWithEmailAndPassword(auth, email, password)
                   .then((userCredential) => {
                     // Signed in
                     const user = userCredential.user;
-
-                    console.log("User signed in:", user);
                     setLoading(false);
                     console.log("user signed in successfully");
                     navigation.navigate("HomeScreen");
@@ -269,14 +237,75 @@ const LoginScreen = () => {
                     style={styles.icon}
                     onPress={() => setShowPassword(!showPassword)}
                   />
-                  <Text style={styles.inputError}>{errors.password}</Text>
-
-                  <PrimaryButton
-                    title={localized.t("Sign in")}
-                    buttonStyle={styles.buttonStyles}
-                    titleStyle={styles.titleStyle}
-                    onPress={handleSubmit}
-                  />
+                  <View style={{ display: "flex", flexDirection: "column" }}>
+                    <Text style={styles.inputError}>{errors.password}</Text>
+                    <TouchableOpacity
+                      onPress={() => navigation.navigate("ForgotPassword")}
+                    >
+                      <Text
+                        style={{
+                          alignSelf: "flex-end",
+                          color: "white",
+                          fontSize: 15,
+                          // marginTop: 10,
+                          textDecorationLine: "underline",
+                        }}
+                      >
+                        Forgot password?
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                  <View
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      marginTop: h2dp("5"),
+                    }}
+                  >
+                    <PrimaryButton
+                      title={localized.t("Sign in")}
+                      buttonStyle={styles.buttonStyles}
+                      titleStyle={styles.titleStyle}
+                      onPress={handleSubmit}
+                    />
+                  </View>
+                  <View
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      marginTop: h2dp("20"),
+                    }}
+                  >
+                    <Text
+                      style={{
+                        textAlign: "center",
+                        color: "white",
+                        fontSize: 18,
+                        marginTop: 10,
+                      }}
+                    >
+                      Not a user?
+                    </Text>
+                    <TouchableOpacity
+                      onPress={() => navigation.navigate("SignupScreen")}
+                    >
+                      <Text
+                        style={{
+                          color: "white",
+                          fontSize: 18,
+                          textDecorationLine: "underline",
+                          fontFamily: "OpenSans-Bold",
+                          textAlign: "center",
+                          marginTop: 10,
+                        }}
+                      >
+                        {`${" "}${localized.t("Sign up")}`}
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
                 </View>
               )}
             </Formik>
@@ -290,7 +319,7 @@ const LoginScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: "flex-start",
     padding: 16,
   },
   input: {
@@ -328,25 +357,20 @@ const styles = StyleSheet.create({
     color: "black",
     borderRadius: 5,
     width: 190,
-    marginTop: 280,
-    marginLeft: 75,
   },
   titleStyle: {
-    color: "black",
+    color: "white",
     fontSize: 26,
     fontWeight: "400",
     lineHeight: 35,
     fontFamily: "OpenSans-Regular",
   },
   dropdownContainer: {
-    // position: "absolute",
-    // top: "10%",
-    // left: "5%",
-    // width: "70%",
-    display:"flex",
-    flexDirection:"row",
+    display: "flex",
+    flexDirection: "row",
     justifyContent: "space-between",
-    alignItems:'center'
+    alignItems: "center",
+    marginTop: 60,
   },
   dropdown1BtnStyle: {
     marginTop: 15,
@@ -377,20 +401,16 @@ const styles = StyleSheet.create({
     color: "red",
     marginBottom: 10,
   },
-
   textInput: {
     height: 45,
     marginBottom: 1,
+    backgroundColor: "white",
   },
   icon: {
     position: "absolute",
     top: 85,
     left: 300,
   },
-  // burgerIcon:{
-   
-
-  // }
 });
 
 export default LoginScreen;
