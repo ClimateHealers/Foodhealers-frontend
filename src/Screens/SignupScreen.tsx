@@ -1,30 +1,32 @@
+import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import { LinearGradient } from "expo-linear-gradient";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { Formik } from "formik";
 import React, { useState } from "react";
 import {
-  StyleSheet,
-  View,
-  Alert,
-  Modal,
   ActivityIndicator,
-  StatusBar,
-  TouchableWithoutFeedback,
+  Alert,
   Keyboard,
+  Modal,
+  Platform,
+  StatusBar,
+  StyleSheet,
   TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
 } from "react-native";
-import { TextInput, Text } from "react-native-paper";
-import { auth } from "../firebase/firebaseConfig";
-import { useNavigation } from "@react-navigation/native";
-import { localized } from "../locales/localization";
-import { LinearGradient } from "expo-linear-gradient";
-import PrimaryButton from "../Components/PrimaryButton";
+import { Text, TextInput } from "react-native-paper";
+import { heightPercentageToDP as h2dp } from "react-native-responsive-screen";
 import SelectDropdown from "react-native-select-dropdown";
-import { MaterialIcons } from "@expo/vector-icons";
-import { Formik } from "formik";
-import { createUserWithEmailAndPassword } from "firebase/auth";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useDispatch } from "react-redux";
-import { login, registerUser } from "../redux/actions/authAction";
+import { getLocation } from "../Components/getCurrentLocation";
+import PrimaryButton from "../Components/PrimaryButton";
 import { signupSchema } from "../Components/validation";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { auth } from "../firebase/firebaseConfig";
+import { localized } from "../locales/localization";
+import { login, registerUser } from "../redux/actions/authAction";
 
 const SignupScreen = () => {
   const [loading, setLoading] = useState(false);
@@ -61,12 +63,15 @@ const SignupScreen = () => {
     setMenuOpen(!menuOpen);
   };
   const handleMenuItemPress = (item: any) => {
-    // console.log(`Selected menu item: ${item}`);
     setMenuOpen(false);
     navigation.navigate("HomeScreen");
   };
   const findFoodMenuItemPress = (item: any) => {
-    // console.log(`Selected menu item: ${item}`);
+    getLocation().then((location: any) => {
+      navigation.navigate("MapScreen", {
+        location: location,
+      });
+    });
     setMenuOpen(false);
   };
 
@@ -83,7 +88,7 @@ const SignupScreen = () => {
               style={{
                 position: "absolute",
                 right: 60,
-                top: 145,
+                top: Platform.OS === "ios" ? h2dp(12.5) : h2dp(9),
                 backgroundColor: "white",
                 borderColor: "white",
                 height: 100,
@@ -203,10 +208,10 @@ const SignupScreen = () => {
                   const errorCode = error.code;
                   const errorMessage = error.message;
                   console.error("Error signing in:", errorCode, errorMessage);
-                  if (errorCode === "auth/invalid-email") {
+                  if (errorCode === "auth/email-already-in-use") {
                     Alert.alert(
-                      "Invalid Credentials",
-                      "Email not valid",
+                      "Email already in use",
+                      "Please use a different email or sign in instead.",
                       [
                         {
                           text: "Ok",
@@ -226,7 +231,7 @@ const SignupScreen = () => {
               values,
               errors,
             }: any) => (
-              <View style={{ marginTop: 100 }}>
+              <View style={{ marginTop: h2dp(12) }}>
                 <TextInput
                   onChangeText={handleChange("name")}
                   onBlur={handleBlur("name")}
@@ -281,12 +286,47 @@ const SignupScreen = () => {
                 />
                 <Text style={styles.inputError}>{errors.confirmPassword}</Text>
 
-                <PrimaryButton
-                  title={localized.t("Sign up")}
-                  buttonStyle={styles.buttonStyles}
-                  titleStyle={styles.titleStyle}
-                  onPress={handleSubmit}
-                />
+                <View
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    marginTop: h2dp("5"),
+                  }}
+                >
+                  <PrimaryButton
+                    title={localized.t("Sign up")}
+                    buttonStyle={styles.buttonStyles}
+                    titleStyle={styles.titleStyle}
+                    onPress={handleSubmit}
+                  />
+                </View>
+                <Text
+                  style={{
+                    textAlign: "center",
+                    color: "white",
+                    fontSize: 18,
+                    marginTop: h2dp(9),
+                  }}
+                >
+                  Already have an account ?
+                </Text>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate("LoginScreen")}
+                >
+                  <Text
+                    style={{
+                      color: "white",
+                      fontSize: 18,
+                      textDecorationLine: "underline",
+                      fontFamily: "OpenSans-Bold",
+                      textAlign: "center",
+                      marginTop: 10,
+                    }}
+                  >
+                    {localized.t("Sign in")}
+                  </Text>
+                </TouchableOpacity>
               </View>
             )}
           </Formik>
@@ -312,10 +352,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    marginTop: 22,
   },
   modalView: {
     margin: 20,
-    backgroundColor: "white",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
     borderRadius: 20,
     padding: 35,
     alignItems: "center",
@@ -352,6 +393,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    marginTop: 40,
   },
   dropdown1BtnStyle: {
     marginTop: 15,
@@ -386,6 +428,7 @@ const styles = StyleSheet.create({
   textInput: {
     height: 45,
     marginBottom: 1,
+    color: "white",
   },
   icon: {
     position: "absolute",

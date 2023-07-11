@@ -1,19 +1,22 @@
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { CommonActions, useNavigation } from "@react-navigation/native";
+import { LinearGradient } from "expo-linear-gradient";
 import React, { useState } from "react";
 import {
-  StyleSheet,
-  View,
-  StatusBar,
-  TouchableWithoutFeedback,
   Keyboard,
+  StatusBar,
+  StyleSheet,
+  Text,
   TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { localized } from "../locales/localization";
-import { LinearGradient } from "expo-linear-gradient";
-import { useDispatch, useSelector } from "react-redux";
-import { Text } from "react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Image } from "react-native-elements";
+import { heightPercentageToDP as h2dp } from "react-native-responsive-screen";
+import { useDispatch, useSelector } from "react-redux";
+import { getLocation } from "../Components/getCurrentLocation";
+import { localized } from "../locales/localization";
+import { logOut } from "../redux/reducers/authreducers";
 
 const EventsHomeScreen = () => {
   const [selectedLanguage, setSelectedLanguage] = useState(localized.locale);
@@ -30,6 +33,10 @@ const EventsHomeScreen = () => {
     { id: 8, label: "Spanish", value: "es" },
   ]);
 
+  const isAuthenticated = useSelector(
+    (state: any) => state.auth.data.isAuthenticated
+  );
+
   const dispatch = useDispatch();
 
   const data = useSelector((state: any) => state.auth.data);
@@ -42,13 +49,26 @@ const EventsHomeScreen = () => {
     setMenuOpen(!menuOpen);
   };
   const handleMenuItemPress = (item: any) => {
-    // console.log(`Selected menu item: ${item}`);
     setMenuOpen(false);
     navigation.navigate("HomeScreen");
   };
   const findFoodMenuItemPress = (item: any) => {
-    // console.log(`Selected menu item: ${item}`);
+    getLocation().then((location: any) => {
+      navigation.navigate("MapScreen", {
+        location: location,
+      });
+    });
     setMenuOpen(false);
+  };
+  const logout = async (item: any) => {
+    // persistor.purge()
+    await dispatch(logOut({}) as any);
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: "LoginScreen" }],
+      })
+    );
   };
 
   const navigation: any = useNavigation<string>();
@@ -75,7 +95,7 @@ const EventsHomeScreen = () => {
                 top: 135,
                 backgroundColor: "white",
                 borderColor: "white",
-                height: 100,
+
                 borderRadius: 5,
                 zIndex: 9999,
               }}
@@ -106,6 +126,20 @@ const EventsHomeScreen = () => {
                   Find Food
                 </Text>
               </TouchableOpacity>
+              {isAuthenticated && (
+                <TouchableOpacity onPress={() => logout("logout")}>
+                  <Text
+                    style={{
+                      padding: 10,
+                      fontSize: 20,
+                      fontWeight: "300",
+                      lineHeight: 27.24,
+                    }}
+                  >
+                    Log out
+                  </Text>
+                </TouchableOpacity>
+              )}
             </View>
           )}
           <View style={styles.dropdownContainer}>
@@ -144,7 +178,11 @@ const EventsHomeScreen = () => {
                   style={styles.imageStyle}
                 />
                 <View style={styles.title}>
-                  <Text style={styles.textStyle}>See all events</Text>
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate("AllEventScreen")}
+                  >
+                    <Text style={styles.textStyle}>See all events</Text>
+                  </TouchableOpacity>
                 </View>
               </View>
             </View>
@@ -206,7 +244,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "20%",
     position: "absolute",
-    top: 72,
+    top: h2dp("9.2"),
     borderBottomRightRadius: 10,
     borderBottomLeftRadius: 10,
   },
