@@ -131,12 +131,13 @@ const EventDetailsScreen = ({ route }: any) => {
                 <Text style={styles.itemText}>{localized.t("Find Food")}</Text>
               </View>
               <View style={styles.item}>
-                <MaterialCommunityIcons
+                <BurgerIcon />
+                {/* <MaterialCommunityIcons
                   name="menu"
                   size={40}
                   color="white"
                   onPress={toggleMenu}
-                />
+                /> */}
                 {menuOpen && (
                   <View
                     style={{

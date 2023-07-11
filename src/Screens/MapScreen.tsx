@@ -223,11 +223,12 @@ const MapScreen = ({ route }: any) => {
                 <Text style={styles.itemText}>{localized.t("Find Food")}</Text>
               </View>
               <View style={styles.item}>
+                {/* <BurgerIcon/> */}
                 <MaterialCommunityIcons
                   name="menu"
                   size={40}
                   color="white"
-                  onPress={toggleMenu}
+                  onPress={() => toggleMenu()}
                 />
                 {menuOpen && (
                   <View
@@ -426,7 +427,6 @@ const MapScreen = ({ route }: any) => {
                   </Marker>
                 ) : null}
                 {events?.map((marker: any) => {
-                  console.log("checking evetns", marker);
                   const coordinates = {
                     latitude: marker?.address?.lat,
                     longitude: marker?.address?.lng,

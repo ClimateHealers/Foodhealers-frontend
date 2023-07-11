@@ -210,7 +210,6 @@ const UploadPhotosScreen = ({ route }: any) => {
           <Text style={{ fontSize: 20, marginTop: 10 }}>
             Upload event photo
           </Text>
-
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <Text
               style={{

@@ -1,7 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import API, { attachToken } from "../../Utils/APIUtils";
-import jwtDecode from "jwt-decode";
+import API from "../../Utils/APIUtils";
 
 interface SignupData {
   tokenId: string;
@@ -42,7 +41,6 @@ export const login = createAsyncThunk<LoginData, LoginData>(
       };
       const result = await API.post("v1/api/login/", userData, config);
       storeAuthData(result?.data);
-      attachToken(result?.data?.token, result?.data?.refreshToken);
       return result?.data;
     } catch (error: any) {
       return rejectWithValue(error.response.data.message);
