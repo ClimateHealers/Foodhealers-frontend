@@ -1,36 +1,38 @@
+import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import Constants from "expo-constants";
+import { LinearGradient } from "expo-linear-gradient";
+import moment from "moment";
 import React, { useEffect, useRef, useState } from "react";
 import {
-  View,
-  StyleSheet,
-  Text,
-  TouchableWithoutFeedback,
+  Alert,
   Dimensions,
   Keyboard,
-  TouchableOpacity,
   Linking,
-  Alert,
-  StatusBar,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
 } from "react-native";
+import { Image } from "react-native-elements";
+import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+import MapView, { Marker } from "react-native-maps";
 import {
-  widthPercentageToDP as w2dp,
   heightPercentageToDP as h2dp,
+  widthPercentageToDP as w2dp,
 } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { LinearGradient } from "expo-linear-gradient";
-import MapView, { Callout, Circle, Marker } from "react-native-maps";
 import SelectDropdown from "react-native-select-dropdown";
-import { MaterialIcons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
-import { localized } from "../locales/localization";
-import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
-import PrimaryButton from "../Components/PrimaryButton";
-import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
-import { findFood } from "../redux/actions/findFoodaction";
-import { Image } from "react-native-elements";
-import Constants from "expo-constants";
 import { getLocation } from "../Components/getCurrentLocation";
+import PrimaryButton from "../Components/PrimaryButton";
+import { localized } from "../locales/localization";
+import { findFood } from "../redux/actions/findFoodaction";
+import { CommonActions } from "@react-navigation/native";
+import { logOut } from "../redux/reducers/authreducers";
 
 const MapScreen = ({ route }: any) => {
   const { location } = route.params;
@@ -69,15 +71,16 @@ const MapScreen = ({ route }: any) => {
   const [city, setCity] = useState<any>("");
   const [state, setState] = useState<any>("");
   const [postalCode, setPostalCode] = useState<string>("");
+  const [emptyEvents, setEmptyEvents] = useState<boolean>(false);
 
   const mapRef = useRef<any>(null);
 
-  const API_KEY = Constants?.manifest?.extra?.googleMapsApiKey
+  const API_KEY = Constants?.manifest?.extra?.googleMapsApiKey;
 
   const dispatch = useDispatch();
 
   const isAuthenticated = useSelector(
-    (state: any) => state.auth.data.isAuthenticated
+    (state: any) => state?.auth?.data?.isAuthenticated
   );
 
   const focusMarker = () => {
@@ -98,7 +101,7 @@ const MapScreen = ({ route }: any) => {
   const handlePressOutside = () => {
     setlangOpen(false);
     Keyboard.dismiss();
-    setMenuOpen(false)
+    setMenuOpen(false);
   };
 
   const toggleMenu = () => {
@@ -115,11 +118,22 @@ const MapScreen = ({ route }: any) => {
     }
   };
   const findFoodMenuItemPress = (item: any) => {
-    // console.log(`Selected menu item: ${item}`);
-    getLocation().then((location: any) => { navigation.navigate("MapScreen", {
-      location: location,
-    })})
+    getLocation().then((location: any) => {
+      navigation.navigate("MapScreen", {
+        location: location,
+      });
+    });
     setMenuOpen(false);
+  };
+  const logout = async (item: any) => {
+    // persistor.purge()
+    await dispatch(logOut({}) as any);
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: "LoginScreen" }],
+      })
+    );
   };
 
   const clickHandler = () => {
@@ -144,7 +158,7 @@ const MapScreen = ({ route }: any) => {
     }
   }, [lat, long]);
 
-  const navigateToEvent = (event: any, eventName:any) => {
+  const navigateToEvent = (event: any, eventName: any) => {
     Alert.alert(
       `Navigate to ${eventName} event`,
       "Do you want to navigate to Google maps ?",
@@ -168,57 +182,14 @@ const MapScreen = ({ route }: any) => {
       }
     );
   };
-
   return (
     <TouchableWithoutFeedback onPress={handlePressOutside}>
       <LinearGradient
         colors={["#012e17", "#017439", "#009b4d"]}
         style={styles.background}
       >
-        <View style={styles.container}>
-        <StatusBar barStyle="dark-content" />
-          <SafeAreaView>
-            {menuOpen && (
-              <View
-                style={{
-                  position: "absolute",
-                  right: 60,
-                  top: 145,
-                  backgroundColor: "white",
-                  borderColor: "white",
-                  height: 100,
-                  borderRadius: 5,
-                  zIndex: 9999,
-                }}
-              >
-                <TouchableOpacity onPress={() => handleMenuItemPress("Home")}>
-                  <Text
-                    style={{
-                      padding: 10,
-                      fontSize: 20,
-                      fontWeight: "300",
-                      lineHeight: 27.24,
-                    }}
-                  >
-                    Home
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => findFoodMenuItemPress("Find Food")}
-                >
-                  <Text
-                    style={{
-                      padding: 10,
-                      fontSize: 20,
-                      fontWeight: "300",
-                      lineHeight: 27.24,
-                    }}
-                  >
-                    Find Food
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            )}
+        <ScrollView keyboardShouldPersistTaps="always">
+          <SafeAreaView style={styles.container}>
             <View style={styles.row}>
               <View style={styles.dropdownContainer}>
                 <SelectDropdown
@@ -259,6 +230,63 @@ const MapScreen = ({ route }: any) => {
                   color="white"
                   onPress={() => toggleMenu()}
                 />
+                {menuOpen && (
+                  <View
+                    style={{
+                      position: "absolute",
+                      right: 60,
+                      top: Platform.OS === "ios" ? h2dp(8) : h2dp(9),
+                      backgroundColor: "white",
+                      borderColor: "white",
+
+                      borderRadius: 5,
+                      zIndex: 9999,
+                    }}
+                  >
+                    <TouchableOpacity
+                      onPress={() => handleMenuItemPress("Home")}
+                    >
+                      <Text
+                        style={{
+                          padding: 10,
+                          fontSize: 20,
+                          fontWeight: "300",
+                          lineHeight: 27.24,
+                        }}
+                      >
+                        Home
+                      </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => findFoodMenuItemPress("Find Food")}
+                    >
+                      <Text
+                        style={{
+                          padding: 10,
+                          fontSize: 20,
+                          fontWeight: "300",
+                          lineHeight: 27.24,
+                        }}
+                      >
+                        Find Food
+                      </Text>
+                    </TouchableOpacity>
+                    {isAuthenticated && (
+                      <TouchableOpacity onPress={() => logout("logout")}>
+                        <Text
+                          style={{
+                            padding: 10,
+                            fontSize: 20,
+                            fontWeight: "300",
+                            lineHeight: 27.24,
+                          }}
+                        >
+                          Log out
+                        </Text>
+                      </TouchableOpacity>
+                    )}
+                  </View>
+                )}
               </View>
             </View>
 
@@ -304,13 +332,27 @@ const MapScreen = ({ route }: any) => {
                 const response = await dispatch(
                   findFood(findFoodData as any) as any
                 );
-                setEvents(response?.payload?.foodEvents);
+                const foodEvents = response?.payload?.foodEvents;
+                const verifiedFoodEvents = foodEvents?.filter(
+                  (event: any) => event.status === "approved"
+                );
+                console.log(
+                  "checking events from find food api that are approved",
+                  verifiedFoodEvents
+                );
+                if (verifiedFoodEvents.length > 0) {
+                  setEvents(verifiedFoodEvents);
+                  setEmptyEvents(false);
+                } else {
+                  setEmptyEvents(true);
+                }
+
               }}
               fetchDetails={true}
               textInputProps={{ placeholderTextColor: "#000000" }}
               listUnderlayColor="blue"
               query={{
-                key: API_KEY, //sachin
+                key: API_KEY, //client
                 language: "en",
               }}
               styles={{
@@ -318,23 +360,20 @@ const MapScreen = ({ route }: any) => {
                   borderColor: "black",
                   borderRadius: 3,
                   marginTop: 12,
-                  height: 50,
                   width: "92%",
                   marginLeft: 15,
                   marginBottom: 1,
-                  zIndex: 9999,
                 },
                 description: {
                   color: "black",
                   fontSize: 14,
                   width: "80%",
-                  zIndex: 9999,
                 },
                 listView: {
                   width: "92%",
                   marginLeft: 15,
                   borderRadius: 3,
-                  zIndex: 9999,
+                  zIndex: 100,
                 },
                 row: {
                   height: 40,
@@ -347,7 +386,6 @@ const MapScreen = ({ route }: any) => {
                   height: 50,
                   backgroundColor: "white",
                   paddingLeft: 16,
-                  zIndex: 9999,
                 },
 
                 predefinedPlacesDescription: { color: "#FFFFFF" },
@@ -358,7 +396,10 @@ const MapScreen = ({ route }: any) => {
               <MapView
                 ref={mapRef}
                 provider={"google"}
-                style={{ alignSelf: "stretch", height: "60%" }}
+                style={{
+                  alignSelf: "stretch",
+                  height: Platform.OS === "ios" ? "55%" : "60%",
+                }}
                 initialRegion={{
                   latitude: location?.coords?.latitude,
                   longitude: location?.coords?.longitude,
@@ -372,8 +413,8 @@ const MapScreen = ({ route }: any) => {
                   <Marker
                     pinColor="#FC5A56"
                     coordinate={{
-                      latitude: lat,
-                      longitude: long,
+                      latitude: lat ? lat : 0,
+                      longitude: long ? long : 0,
                       latitudeDelta: LATITUDE_DELTA,
                       longitudeDelta: LONGITUDE_DELTA,
                     }}
@@ -395,10 +436,17 @@ const MapScreen = ({ route }: any) => {
                       key={marker?.id}
                       pinColor="#00693D"
                       coordinate={coordinates}
-                      onPress={() => navigateToEvent(coordinates,marker?.name)}
+                      onPress={() => navigateToEvent(coordinates, marker?.name)}
                     >
                       <View>
-                      <Text style={{ color: "#FC5A56", fontSize: 15, opacity:0.8,fontWeight:"500"}}>
+                        <Text
+                          style={{
+                            color: "#FC5A56",
+                            fontSize: 15,
+                            opacity: 0.8,
+                            fontWeight: "500",
+                          }}
+                        >
                           {marker?.name}
                         </Text>
                         <Image
@@ -410,19 +458,60 @@ const MapScreen = ({ route }: any) => {
                   );
                 })}
               </MapView>
+
+              {emptyEvents ? (
+                <Text
+                  style={{
+                    marginTop: 5,
+                    textAlign: "center",
+                    fontSize: 20,
+                    color: "white",
+                  }}
+                >
+                  No events found
+                </Text>
+              ) : (
+                <Text
+                  style={{
+                    marginTop: 5,
+                    textAlign: "center",
+                    fontSize: 20,
+                    color: "white",
+                    opacity: 0,
+                  }}
+                >
+                  No Events Found
+                </Text>
+              )}
+
+              {emptyEvents ? (
+                <View
+                  style={{
+                    position: "absolute",
+                    top: Platform.OS === "ios" ? h2dp(40) : h2dp(48),
+                    left: w2dp(26),
+                  }}
+                >
+                  <PrimaryButton
+                    title={"Home"}
+                    buttonStyle={styles.buttonStyles}
+                    titleStyle={styles.titleStyle}
+                    onPress={() => navigation.navigate("HomeScreen")}
+                  />
+                </View>
+              ) : !emptyEvents && buttonVisibility ? (
+                <View>
+                  <PrimaryButton
+                    title={"Next"}
+                    buttonStyle={styles.buttonStyles}
+                    titleStyle={styles.titleStyle}
+                    onPress={() => clickHandler()}
+                  />
+                </View>
+              ) : null}
             </View>
-            {buttonVisibility ? (
-              <View>
-                <PrimaryButton
-                  title={"Next"}
-                  buttonStyle={styles.buttonStyles}
-                  titleStyle={styles.titleStyle}
-                  onPress={() => clickHandler()}
-                />
-              </View>
-            ) : null}
           </SafeAreaView>
-        </View>
+        </ScrollView>
       </LinearGradient>
     </TouchableWithoutFeedback>
   );
@@ -432,7 +521,8 @@ const styles = StyleSheet.create({
   container: {
     display: "flex",
     flexDirection: "column",
-    alignItems: "center",
+    flex: 1,
+    height: h2dp("100%"),
   },
   background: {
     flex: 1,
@@ -443,6 +533,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     alignItems: "center",
     width: "100%",
+    zIndex: 9999,
   },
   item: {
     width: "30%",
@@ -450,6 +541,7 @@ const styles = StyleSheet.create({
     height: 100,
     justifyContent: "center",
     alignItems: "center",
+    position: "relative",
   },
   dropdownContainer: {
     marginTop: 15,
@@ -463,19 +555,7 @@ const styles = StyleSheet.create({
     fontSize: 25,
     color: "white",
   },
-  input: {
-    height: 45,
-    margin: 12,
-    borderWidth: 1,
-    padding: 10,
-    backgroundColor: "white",
-    marginTop: 30,
-    fontFamily: "OpenSans-Medium",
-    zIndex: 9999,
-  },
-  mapContainer: {
-    marginTop: 15,
-  },
+  mapContainer: {},
   dropdown1BtnStyle: {
     marginTop: 15,
     marginLeft: 45,
@@ -504,16 +584,12 @@ const styles = StyleSheet.create({
   dropdown1RowTxtStyle: { color: "black", textAlign: "center", fontSize: 10 },
   buttonStyles: {
     backgroundColor: "#FC5A56",
-    color: "black",
+    color: "white",
     borderRadius: 5,
-    width: w2dp("40%"),
-    // marginBottom: 25,
+    width: 190,
     alignSelf: "center",
-    shadowColor: "#171717",
-    shadowOffset: { width: -2, height: 6 },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
   },
+
   titleStyle: {
     color: "white",
     fontSize: 26,

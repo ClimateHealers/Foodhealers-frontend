@@ -1,29 +1,27 @@
+import { MaterialIcons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import { LinearGradient } from "expo-linear-gradient";
+import moment from "moment";
 import React, { useEffect, useRef, useState } from "react";
 import {
-  View,
+  Dimensions,
+  Keyboard,
+  StatusBar,
   StyleSheet,
   Text,
   TouchableWithoutFeedback,
-  Dimensions,
-  Keyboard,
+  View,
 } from "react-native";
-import {
-  widthPercentageToDP as w2dp,
-  heightPercentageToDP as h2dp,
-} from "react-native-responsive-screen";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { LinearGradient } from "expo-linear-gradient";
-import MapView, { Marker } from "react-native-maps";
-import SelectDropdown from "react-native-select-dropdown";
-import { MaterialIcons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
-import { localized } from "../locales/localization";
 import { Image } from "react-native-elements";
-import { useDispatch } from "react-redux";
-import { findFood } from "../redux/actions/findFoodaction";
-import moment from "moment";
+import MapView, { Marker } from "react-native-maps";
+import { widthPercentageToDP as w2dp } from "react-native-responsive-screen";
+import { SafeAreaView } from "react-native-safe-area-context";
 import SegmentedControlTab from "react-native-segmented-control-tab";
+import SelectDropdown from "react-native-select-dropdown";
+import { useDispatch } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
+import { localized } from "../locales/localization";
+import { findFood } from "../redux/actions/findFoodaction";
 
 const WeekScreen = ({ route }: any) => {
   const { location, city, postalCode, state, fullAddress } = route.params;
@@ -54,12 +52,9 @@ const WeekScreen = ({ route }: any) => {
   const dispatch = useDispatch();
 
   const startDate = moment(new Date().setHours(0, 0, 0, 0)).utc().unix();
-  const endDate = moment(new Date().setHours(23, 59, 59, 1000))
-    .add(1, "d")
-    .utc()
-    .unix();
+  const endDate = moment(new Date().setHours(23, 59, 59, 0)).utc().unix();
 
-  const oneWeek = moment(new Date().setHours(23, 59, 59, 1000))
+  const oneWeek = moment(new Date().setHours(23, 59, 59, 0))
     .add(6, "d")
     .utc()
     .unix();
@@ -77,8 +72,18 @@ const WeekScreen = ({ route }: any) => {
       eventEndDate: endDate,
     };
 
+
     const response = await dispatch(findFood(findFoodData as any) as any);
-    setEvents(response?.payload?.foodEvents);
+
+    const foodEvents = response?.payload?.foodEvents;
+    const verifiedFoodEvents = foodEvents?.filter(
+      (event: any) => event.status === "approved"
+    );
+    console.log(
+      "checking events from find food api that are approved in week screen",
+      verifiedFoodEvents
+    );
+    setEvents(verifiedFoodEvents);
   };
 
   const navigateToEvent = (eventData: any) => {
@@ -90,20 +95,6 @@ const WeekScreen = ({ route }: any) => {
   useEffect(() => {
     gettingEvents();
   }, []);
-
-  const handleButtonClick = async (buttonTitle: any) => {
-    setActiveButton(buttonTitle);
-
-    const thisWeekData = {
-      lat: location?.coords?.latitude,
-      lng: location?.coords?.longitude,
-      alt: 0,
-      eventStartDate: startDate,
-      eventEndDate: oneWeek,
-    };
-    const result = await dispatch(findFood(thisWeekData as any) as any);
-    setEvents(result?.payload?.foodEvents);
-  };
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
@@ -123,8 +114,12 @@ const WeekScreen = ({ route }: any) => {
         eventStartDate: startDate,
         eventEndDate: endDate,
       };
-      const result = await dispatch(findFood(oneDayData as any) as any);
-      setEvents(result?.payload?.foodEvents);
+      const response = await dispatch(findFood(oneDayData as any) as any);
+      const foodEvents = response?.payload?.foodEvents;
+      const verifiedFoodEvents = foodEvents?.filter(
+        (event: any) => event.status === "approved"
+      );
+      setEvents(verifiedFoodEvents);
     } else if (index === 1) {
       const thisWeekData = {
         lat: location?.coords?.latitude,
@@ -137,9 +132,12 @@ const WeekScreen = ({ route }: any) => {
         eventStartDate: startDate,
         eventEndDate: oneWeek,
       };
-      const result = await dispatch(findFood(thisWeekData as any) as any);
-      console.log("checking result for one week data from find food api", result?.payload)
-      setEvents(result?.payload?.foodEvents);
+      const response = await dispatch(findFood(thisWeekData as any) as any);
+      const foodEvents = response?.payload?.foodEvents;
+      const verifiedFoodEvents = foodEvents?.filter(
+        (event: any) => event.status === "approved"
+      );
+      setEvents(verifiedFoodEvents);
     }
   };
 
@@ -162,6 +160,7 @@ const WeekScreen = ({ route }: any) => {
         style={styles.background}
       >
         <View style={styles.container}>
+          <StatusBar barStyle="light-content" />
           <SafeAreaView>
             <View style={styles.row}>
               <View style={styles.dropdownContainer}>
@@ -197,22 +196,17 @@ const WeekScreen = ({ route }: any) => {
               </View>
               <View style={styles.item}>
                 <BurgerIcon />
-                {/* <MaterialCommunityIcons
-                  name="menu"
-                  size={40}
-                  color="white"
-                  onPress={toggleMenu}
-                /> */}
               </View>
             </View>
 
             <View style={styles.toggle}>
               <SegmentedControlTab
-                values={["Today", "This week"]}
+                values={["Today", "All Days"]}
                 selectedIndex={selectedIndex}
                 tabsContainerStyle={{
                   width: 200,
                   height: 50,
+                  zIndex: 1,
                 }}
                 tabTextStyle={{
                   color: "black",
@@ -253,7 +247,14 @@ const WeekScreen = ({ route }: any) => {
                       onPress={() => navigateToEvent(marker)}
                     >
                       <View>
-                        <Text style={{ color: "#FC5A56", fontSize: 15, opacity:0.8,fontWeight:"500"}}>
+                        <Text
+                          style={{
+                            color: "#FC5A56",
+                            fontSize: 15,
+                            opacity: 0.8,
+                            fontWeight: "500",
+                          }}
+                        >
                           {marker?.name}
                         </Text>
                         <Image
@@ -289,6 +290,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     alignItems: "center",
     width: "100%",
+    zIndex: 9999,
   },
   item: {
     width: "30%",
@@ -296,6 +298,7 @@ const styles = StyleSheet.create({
     height: 100,
     justifyContent: "center",
     alignItems: "center",
+    zIndex: 100,
   },
   dropdownContainer: {
     marginTop: 15,

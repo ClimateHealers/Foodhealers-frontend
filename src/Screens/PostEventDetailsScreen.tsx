@@ -1,26 +1,30 @@
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import { LinearGradient } from "expo-linear-gradient";
+import moment from "moment";
 import React, { useState } from "react";
 import {
-  View,
+  Image,
+  Keyboard,
+  ScrollView,
   StyleSheet,
   Text,
-  TouchableWithoutFeedback,
-  Keyboard,
   TouchableOpacity,
-  Image,
+  TouchableWithoutFeedback,
+  View,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { LinearGradient } from "expo-linear-gradient";
-import { useNavigation } from "@react-navigation/native";
-import { localized } from "../locales/localization";
 import { Divider } from "react-native-paper";
-import moment from "moment";
+import { heightPercentageToDP as h2dp } from "react-native-responsive-screen";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { getLocation } from "../Components/getCurrentLocation";
+import PrimaryButton from "../Components/PrimaryButton";
+import { localized } from "../locales/localization";
 
 const PostEventDetailsScreen = ({ route }: any) => {
   const { eventDetails, eventPhotos } = route.params;
   const navigation: any = useNavigation();
 
+  console.log("checkign event details", eventDetails);
   const [langOpen, setlangOpen] = useState(false);
   const [lang, setLang] = useState([
     { id: 1, label: "French", value: "fr" },
@@ -50,27 +54,38 @@ const PostEventDetailsScreen = ({ route }: any) => {
   };
 
   const findFoodMenuItemPress = (item: any) => {
-    getLocation().then((location: any) => { navigation.navigate("MapScreen", {
-      location: location,
-    })})
-    console.log(`Selected menu item: ${item}`);
+    getLocation().then((location: any) => {
+      navigation.navigate("MapScreen", {
+        location: location,
+      });
+    });
     setMenuOpen(false);
-    // navigation.navigate("MapScreen");
   };
 
   const epochDate = eventDetails?.eventDate;
   const dateObj = new Date(epochDate * 1000);
 
   const options = {
-    weekday: "long",
+    weekday: "short",
     month: "long",
     day: "numeric",
   };
 
   const formattedDate = dateObj.toLocaleDateString("en-US", options);
+
+  const epochEndDate = eventDetails?.eventEndDateTime; //eventEndDateTime
+  const endDateObj = new Date(epochEndDate * 1000);
+
+  const formattedEndDate = dateObj.toLocaleDateString("en-US", options);
+
   const epochTime = eventDetails?.eventDate;
   const startTime = moment(epochTime * 1000).format("h:mm a");
   const formattedTime = `${startTime}`;
+
+  const epochEndTime = eventDetails?.eventEndDateTime;
+
+  const endTime = moment(epochEndTime * 1000).format("h:mm a");
+  const formattedEndTime = `${endTime}`;
 
   return (
     <TouchableWithoutFeedback onPress={handlePressOutside}>
@@ -79,146 +94,167 @@ const PostEventDetailsScreen = ({ route }: any) => {
           colors={["#012e17", "#017439", "#009b4d"]}
           style={styles.background}
         >
-          <SafeAreaView>
-            <View style={styles.row}>
-              <View style={styles.item}>
-                <Text style={styles.itemText}>Post an Event</Text>
-              </View>
-              <View style={styles.item}>
-                <MaterialCommunityIcons
-                  name="menu"
-                  size={40}
-                  color="white"
-                  onPress={toggleMenu}
-                  style={{ marginLeft: 30 }}
-                />
-                {menuOpen && (
-                  <View
-                    style={{
-                      position: "absolute",
-                      right: 60,
-                      top: 70,
-                      backgroundColor: "white",
-                      borderColor: "white",
-                      borderRadius: 5,
-                      height: 100,
-                      width: 100,
-                      zIndex: 9999,
-                    }}
-                  >
-                    <TouchableOpacity
-                      onPress={() => handleMenuItemPress("Home")}
-                    >
-                      <Text
-                        style={{
-                          padding: 10,
-                          fontSize: 20,
-                          fontWeight: "300",
-                          lineHeight: 27.24,
-                        }}
-                      >
-                        Home
-                      </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={() => findFoodMenuItemPress("Find Food")}
-                    >
-                      <Text
-                        style={{
-                          padding: 10,
-                          fontSize: 20,
-                          fontWeight: "300",
-                          lineHeight: 27.24,
-                        }}
-                      >
-                        Find Food
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-                )}
-              </View>
-            </View>
-
-            <View style={styles.cardContainer}>
-              <View style={styles.card}>
-                <View>
-                  <Image
-                    source={{ uri: eventPhotos[0] }}
-                    style={{
-                      width: "100%",
-                      height: 200,
-                      borderTopLeftRadius: 10,
-                      borderTopRightRadius: 10,
-                    }}
+          <ScrollView>
+            <SafeAreaView>
+              <View style={styles.row}>
+                <View style={styles.item}>
+                  <Text style={styles.itemText}>Post an Event</Text>
+                </View>
+                <View style={styles.item}>
+                  <MaterialCommunityIcons
+                    name="menu"
+                    size={40}
+                    color="white"
+                    onPress={toggleMenu}
+                    style={{ marginLeft: 30 }}
                   />
+                  {menuOpen && (
+                    <View
+                      style={{
+                        position: "absolute",
+                        right: 60,
+                        top: 70,
+                        backgroundColor: "white",
+                        borderColor: "white",
+                        borderRadius: 5,
+                        height: 100,
+                        width: 100,
+                        zIndex: 9999,
+                      }}
+                    >
+                      <TouchableOpacity
+                        onPress={() => handleMenuItemPress("Home")}
+                      >
+                        <Text
+                          style={{
+                            padding: 10,
+                            fontSize: 20,
+                            fontWeight: "300",
+                            lineHeight: 27.24,
+                          }}
+                        >
+                          Home
+                        </Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={() => findFoodMenuItemPress("Find Food")}
+                      >
+                        <Text
+                          style={{
+                            padding: 10,
+                            fontSize: 20,
+                            fontWeight: "300",
+                            lineHeight: 27.24,
+                          }}
+                        >
+                          Find Food
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
+                  )}
                 </View>
-                <View style={styles.cardTextConainer}>
-                  <View style={{ marginBottom: 30, paddingHorizontal: 10 }}>
-                    <Text style={styles.boldText}>
-                      Start date:{" "}
-                      <Text style={styles.cardText}>{formattedDate}</Text>
-                    </Text>
+              </View>
 
-                    <Divider
+              <View style={styles.cardContainer}>
+                <View style={styles.card}>
+                  <View>
+                    <Image
+                      source={{ uri: eventPhotos[0] }}
                       style={{
-                        backgroundColor: "black",
-                        height: 1,
-                        width: "95%",
+                        width: "100%",
+                        height: 200,
+                        borderTopLeftRadius: 10,
+                        borderTopRightRadius: 10,
                       }}
                     />
                   </View>
-                  <View style={{ marginBottom: 20, paddingHorizontal: 10 }}>
-                    <Text style={styles.boldText}>
-                      Start time:{" "}
-                      <Text style={styles.cardText}>{formattedTime}</Text>
-                    </Text>
-
-                    <Divider
-                      style={{
-                        backgroundColor: "black",
-                        height: 1,
-                        width: "95%",
-                        marginLeft: 2,
-                      }}
-                    />
-                  </View>
-                  <View style={{ marginBottom: 30, paddingHorizontal: 10 }}>
-                    <Text style={styles.boldText}>
-                      Location:{" "}
-                      <Text style={styles.cardText}>
-                        {eventDetails?.address}
+                  <View style={styles.cardTextConainer}>
+                    <View style={{ marginBottom: 30, paddingHorizontal: 10 }}>
+                      <Text style={styles.boldText}>
+                        Date:{" "}
+                        <Text style={styles.cardText}>
+                          {formattedDate} - {formattedEndDate}
+                        </Text>
                       </Text>
-                    </Text>
-                    <Divider
-                      style={{
-                        backgroundColor: "black",
-                        height: 1,
-                        width: "95%",
-                        marginLeft: 2,
-                      }}
-                    />
-                  </View>
-                  <View style={{ marginBottom: 20, paddingHorizontal: 10 }}>
-                    <Text style={styles.boldText}>
-                      What:{" "}
-                      <Text style={styles.cardText}>
-                        {eventDetails?.served}
+                      <Divider
+                        style={{
+                          backgroundColor: "black",
+                          height: 1,
+                          width: "95%",
+                        }}
+                      />
+                    </View>
+                    <View style={{ marginBottom: 20, paddingHorizontal: 10 }}>
+                      <Text style={styles.boldText}>
+                        Time:{" "}
+                        <Text style={styles.cardText}>
+                          {formattedTime}- {formattedEndTime}
+                        </Text>
                       </Text>
-                    </Text>
 
-                    <Divider
-                      style={{
-                        backgroundColor: "black",
-                        height: 1,
-                        width: "95%",
-                        marginLeft: 2,
-                      }}
-                    />
+                      <Divider
+                        style={{
+                          backgroundColor: "black",
+                          height: 1,
+                          width: "95%",
+                          marginLeft: 2,
+                        }}
+                      />
+                    </View>
+                    <View style={{ marginBottom: 30, paddingHorizontal: 10 }}>
+                      <Text style={styles.boldText}>
+                        Location:{" "}
+                        <Text style={styles.cardText}>
+                          {eventDetails?.address}
+                        </Text>
+                      </Text>
+                      <Divider
+                        style={{
+                          backgroundColor: "black",
+                          height: 1,
+                          width: "95%",
+                          marginLeft: 2,
+                        }}
+                      />
+                    </View>
+                    <View style={{ marginBottom: 20, paddingHorizontal: 10 }}>
+                      <Text style={styles.boldText}>
+                        What:{" "}
+                        <Text style={styles.cardText}>
+                          {eventDetails?.served}
+                        </Text>
+                      </Text>
+
+                      <Divider
+                        style={{
+                          backgroundColor: "black",
+                          height: 1,
+                          width: "95%",
+                          marginLeft: 2,
+                        }}
+                      />
+                    </View>
                   </View>
                 </View>
               </View>
-            </View>
-          </SafeAreaView>
+              <View
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginTop: h2dp("5"),
+                }}
+              >
+                <PrimaryButton
+                  title={"See All Events"}
+                  // title={localized.t("Sign in")}
+                  buttonStyle={styles.buttonStyles}
+                  titleStyle={styles.titleStyle}
+                  onPress={() => navigation.navigate("AllEventScreen")}
+                />
+              </View>
+            </SafeAreaView>
+          </ScrollView>
         </LinearGradient>
       </View>
     </TouchableWithoutFeedback>
@@ -266,8 +302,8 @@ const styles = StyleSheet.create({
     color: "black",
     borderRadius: 5,
     width: 190,
-    marginTop: 20,
-    marginLeft: 85,
+    // marginTop: 20,
+    // marginLeft: 85,
   },
   titleStyle: {
     color: "white",

@@ -1,36 +1,32 @@
+import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import { LinearGradient } from "expo-linear-gradient";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { Formik } from "formik";
 import React, { useState } from "react";
 import {
-  StyleSheet,
-  View,
-  Alert,
-  Modal,
   ActivityIndicator,
-  StatusBar,
-  TouchableWithoutFeedback,
+  Alert,
   Keyboard,
+  Modal,
+  StatusBar,
+  StyleSheet,
+  Text,
   TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
 } from "react-native";
 import { TextInput } from "react-native-paper";
-import { auth } from "../firebase/firebaseConfig";
-import { useNavigation } from "@react-navigation/native";
-import { localized } from "../locales/localization";
-import { LinearGradient } from "expo-linear-gradient";
-import PrimaryButton from "../Components/PrimaryButton";
+import { heightPercentageToDP as h2dp } from "react-native-responsive-screen";
 import SelectDropdown from "react-native-select-dropdown";
-import { MaterialIcons } from "@expo/vector-icons";
-import { signInWithEmailAndPassword } from "firebase/auth";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useDispatch, useSelector } from "react-redux";
-import { login } from "../redux/actions/authAction";
-import { Formik } from "formik";
-import { Text } from "react-native";
-import { loginSchema } from "../Components/validation";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { getLocation } from "../Components/getCurrentLocation";
-import {
-  widthPercentageToDP as w2dp,
-  heightPercentageToDP as h2dp,
-} from "react-native-responsive-screen";
+import PrimaryButton from "../Components/PrimaryButton";
+import { loginSchema } from "../Components/validation";
+import { auth } from "../firebase/firebaseConfig";
+import { localized } from "../locales/localization";
+import { login } from "../redux/actions/authAction";
 
 const LoginScreen = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -63,12 +59,10 @@ const LoginScreen = () => {
     setMenuOpen(!menuOpen);
   };
   const handleMenuItemPress = (item: any) => {
-    // console.log(`Selected menu item: ${item}`);
     setMenuOpen(false);
     navigation.navigate("HomeScreen");
   };
   const findFoodMenuItemPress = (item: any) => {
-    // console.log(`Selected menu item: ${item}`);
     getLocation().then((location: any) => {
       navigation.navigate("MapScreen", {
         location: location,
@@ -99,7 +93,6 @@ const LoginScreen = () => {
                 top: 125,
                 backgroundColor: "white",
                 borderColor: "white",
-                height: 100,
                 borderRadius: 5,
                 zIndex: 9999,
               }}
@@ -205,7 +198,19 @@ const LoginScreen = () => {
                     setLoading(false);
                     const errorCode = error.code;
                     const errorMessage = error.message;
-                    errorMessage ? Alert.alert("user not found") : "";
+                    errorMessage
+                      ? Alert.alert(
+                          "Invalid Credentials",
+                          "Incorrect email or password entered, please check your credentials and try again.",
+                          [
+                            {
+                              text: "Ok",
+                              style: "cancel",
+                            },
+                          ],
+                          { cancelable: true }
+                        )
+                      : "";
                     setError(errorMessage);
                   });
               }}
@@ -332,6 +337,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    marginTop: 22,
   },
   modalView: {
     margin: 20,

@@ -1,4 +1,5 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { createAsyncThunk } from "@reduxjs/toolkit";
 import API from "../../Utils/APIUtils";
 
 interface SignupData {
@@ -39,9 +40,45 @@ export const login = createAsyncThunk<LoginData, LoginData>(
         },
       };
       const result = await API.post("v1/api/login/", userData, config);
-      return result.data;
+      storeAuthData(result?.data);
+      return result?.data;
     } catch (error: any) {
       return rejectWithValue(error.response.data.message);
     }
   }
 );
+
+//Async storage
+
+const storeAuthData = async (value: any) => {
+  try {
+    const authValue = JSON.stringify(value);
+
+    console.log("checking authValue for asyncstorage", authValue);
+
+    await AsyncStorage.setItem("@authData", authValue);
+  } catch (e) {
+    console.log("checking error", e);
+  }
+};
+
+export const getAuthData = async () => {
+  try {
+    const jsonValue = await AsyncStorage.getItem("@authData");
+    console.log("checking authData for user", jsonValue);
+    return jsonValue != null ? JSON.parse(jsonValue) : null;
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+export const removeAuthData = async () => {
+  try {
+    await AsyncStorage.removeItem("@authData");
+
+    return true;
+  } catch (e) {
+    console.log(e);
+    return false;
+  }
+};

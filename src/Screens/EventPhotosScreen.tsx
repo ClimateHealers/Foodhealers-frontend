@@ -1,34 +1,41 @@
+import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { CommonActions, useNavigation } from "@react-navigation/native";
+import { LinearGradient } from "expo-linear-gradient";
 import React, { useState } from "react";
 import {
-  StyleSheet,
-  View,
-  Keyboard,
-  TouchableOpacity,
   Image,
+  Keyboard,
+  Modal,
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
   TouchableWithoutFeedback,
+  View
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { LinearGradient } from "expo-linear-gradient";
-import { Text } from "react-native";
-import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
-import PrimaryButton from "../Components/PrimaryButton";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { localized } from "../locales/localization";
-import {
-  widthPercentageToDP as w2dp,
-  heightPercentageToDP as h2dp,
-} from "react-native-responsive-screen";
-import { useDispatch, useSelector } from "react-redux";
-import { postEvent } from "../redux/actions/postEventaction";
+import { Button } from "react-native-elements";
 import Spinner from "react-native-loading-spinner-overlay";
+import {
+  heightPercentageToDP as h2dp,
+  widthPercentageToDP as w2dp
+} from "react-native-responsive-screen";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { useDispatch, useSelector } from "react-redux";
 import { getLocation } from "../Components/getCurrentLocation";
+import PrimaryButton from "../Components/PrimaryButton";
+import { postEvent } from "../redux/actions/postEventaction";
+import { logOut } from "../redux/reducers/authreducers";
 
 const EventPhotosScreen = ({ route }: any) => {
   const { eventPhotos, eventFormData } = route.params;
 
+  const isAuthenticated = useSelector(
+    (state: any) => state.auth.data.isAuthenticated
+  );
   const dispatch = useDispatch();
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState(false);
+  const [showDialog, setShowDialog] = useState<boolean>(false);
   const navigation: any = useNavigation<string>();
 
   const handlePressOutside = () => {
@@ -39,20 +46,34 @@ const EventPhotosScreen = ({ route }: any) => {
     setMenuOpen(!menuOpen);
   };
   const handleMenuItemPress = (item: any) => {
-    console.log(`Selected menu item: ${item}`);
     setMenuOpen(false);
     navigation.navigate("HomeScreen");
   };
   const findFoodMenuItemPress = (item: any) => {
-    getLocation().then((location: any) => { navigation.navigate("MapScreen", {
-      location: location,
-    })})
-    console.log(`Selected menu item: ${item}`);
+    getLocation().then((location: any) => {
+      navigation.navigate("MapScreen", {
+        location: location,
+      });
+    });
     setMenuOpen(false);
     // navigation.navigate("MapScreen");
   };
+  const logout = async (item: any) => {
+    // persistor.purge()
+    await dispatch(logOut({}) as any);
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: "LoginScreen" }],
+      })
+    );
+  };
 
-  const submitEvent = async () => {
+  const submitEvent = () => {
+    setShowDialog(true);
+  };
+
+  const naivgateToAllEvents = async () => {
     setLoading(true);
     const postEventData = {
       eventName: eventFormData?.eventName,
@@ -64,26 +85,19 @@ const EventPhotosScreen = ({ route }: any) => {
       state: eventFormData?.state,
       city: eventFormData?.city,
       eventStartDate: eventFormData?.eventDate,
+      eventEndDate: eventFormData?.eventEndDateTime,
       additionalInfo: eventFormData?.served,
       files: eventPhotos,
     };
+    console.log("checking post event Data", postEventData);
     await dispatch(postEvent(postEventData) as any);
-    if (eventFormData) {
-      setLoading(false);
-      navigation.navigate("PostEventDetailsScreen", {
-        eventDetails: eventFormData,
-        eventPhotos: eventPhotos,
-      });
-    }
+    setLoading(false);
+    navigation.navigate("AllEventScreen", {
+      eventDetails: eventFormData,
+      eventPhotos: eventPhotos,
+    });
+    setShowDialog(false);
   };
-
-  // const handleModalButtonPress = () => {
-  //   navigation.navigate("PostEventDetailsScreen", {
-  //     eventDetails: eventFormData,
-  //     eventPhotos: eventPhotos,
-  //   });
-  //   // setSuccess(false);
-  // };
   return (
     <LinearGradient
       colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
@@ -91,78 +105,108 @@ const EventPhotosScreen = ({ route }: any) => {
     >
       <SafeAreaView>
         {menuOpen && (
-          <TouchableWithoutFeedback onPress = {()=>setMenuOpen(false)}>
+          <TouchableWithoutFeedback onPress={() => setMenuOpen(false)}>
             <View
-            style={{
-              position: "absolute",
-              right: 60,
-              top: 110,
-              backgroundColor: "white",
-              borderColor: "white",
-              borderRadius: 5,
-              height: h2dp("13"),
-                  width: w2dp("32"),
-              zIndex: 9999,
-            }}
-          >
-            <TouchableOpacity onPress={() => handleMenuItemPress("Home")}>
-              <Text
-                style={{
-                  padding: 10,
-                  fontSize: 20,
-                  fontWeight: "300",
-                  lineHeight: 27.24,
-                }}
+              style={{
+                position: "absolute",
+                right: 60,
+                top: Platform.OS === "ios" ? h2dp(13.2) : h2dp(9),
+                backgroundColor: "white",
+                borderColor: "white",
+                borderRadius: 5,
+                height: h2dp("17"),
+                width: w2dp("32"),
+                zIndex: 9999,
+              }}
+            >
+              <TouchableOpacity onPress={() => handleMenuItemPress("Home")}>
+                <Text
+                  style={{
+                    padding: 10,
+                    fontSize: 20,
+                    fontWeight: "300",
+                    lineHeight: 27.24,
+                  }}
+                >
+                  Home
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => findFoodMenuItemPress("Find Food")}
               >
-                Home
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => findFoodMenuItemPress("Find Food")}>
-              <Text
-                style={{
-                  padding: 10,
-                  fontSize: 20,
-                  fontWeight: "300",
-                  lineHeight: 27.24,
-                }}
-              >
-                Find Food
-              </Text>
-            </TouchableOpacity>
-          </View>
+                <Text
+                  style={{
+                    padding: 10,
+                    fontSize: 20,
+                    fontWeight: "300",
+                    lineHeight: 27.24,
+                  }}
+                >
+                  Find Food
+                </Text>
+              </TouchableOpacity>
+              {isAuthenticated && (
+                <TouchableOpacity onPress={() => logout("logout")}>
+                  <Text
+                    style={{
+                      padding: 10,
+                      fontSize: 20,
+                      fontWeight: "300",
+                      lineHeight: 27.24,
+                    }}
+                  >
+                    Log out
+                  </Text>
+                </TouchableOpacity>
+              )}
+            </View>
           </TouchableWithoutFeedback>
         )}
         <View style={styles.row}>
-          {/* <Modal
-            visible={success}
-            onRequestClose={handleModalClose}
+          <Modal
+            visible={showDialog}
+            onRequestClose={() => navigation.navigate("EventPhotsScreen")}
             transparent
           >
             <View style={styles.modalContainer}>
               <View style={styles.modalContent}>
-                <Text style={styles.HeaderText}>
-                Success!
+                <Text style={styles.HeaderText}>Submitted your event</Text>
+                <Text style={styles.modalText}>
+                  Your event "{eventFormData?.eventName}" has been submitted,
+                  awaiting approval from Admin. If you wish to change event
+                  details, please click on Resubmit
                 </Text>
-                  <Text  style={styles.modalText}>Your Event {eventFormData?.eventName} has been posted successfully. Click to see the Event Details</Text>
                 <View style={styles.buttonContainer}>
                   <Button
-                    title="Next"
+                    title="Resubmit"
                     type="solid"
                     buttonStyle={{
                       backgroundColor: "green",
-                      paddingHorizontal: 25,
+                      paddingHorizontal: 20,
                       paddingVertical: 10,
                     }}
                     titleStyle={{
                       fontSize: 20,
                     }}
-                    onPress={handleModalButtonPress}
+                    onPress={() => navigation.navigate("PostEvent")}
                   />
-                  <Button title="Cancel" onPress={handleModalClose} />
+                  <Button
+                    title="Next"
+                    type="solid"
+                    buttonStyle={{
+                      backgroundColor: "green",
+                      paddingHorizontal: 20,
+                      paddingVertical: 10,
+                    }}
+                    titleStyle={{
+                      fontSize: 20,
+                    }}
+                    onPress={naivgateToAllEvents}
+                  />
                 </View>
               </View>
             </View>
-          </Modal> */}
+          </Modal>
 
           <View style={styles.item}>
             <Text style={styles.itemText}>{"Post an Event"}</Text>
@@ -327,7 +371,7 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flexDirection: "row",
-    justifyContent: "center",
+    justifyContent: "space-between",
     marginTop: 30,
   },
 });
