@@ -325,7 +325,7 @@ const PostEvent = () => {
                   listViewDisplayed="auto"
                   textInputProps={{ placeholderTextColor: "#000000" }}
                   query={{
-                    key: GOOGLE_API_KEY,
+                    key: API_KEY, //sachin
                     language: "en",
                   }}
                   enablePoweredByContainer={false}
@@ -699,7 +699,6 @@ const styles = StyleSheet.create({
   dateTimePickerContainer: {
     backgroundColor: "white",
     borderRadius: 3,
-    paddingRight: 250,
     paddingVertical: 5,
     marginBottom: 25,
     height: 50,

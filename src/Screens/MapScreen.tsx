@@ -60,7 +60,7 @@ const MapScreen = ({ route }: any) => {
     { id: 7, label: "Punjabi", value: "pu" },
     { id: 8, label: "Spanish", value: "es" },
   ]);
-  const [events, setEvents] = useState([]);
+  const [events, setEvents] = useState<[]>([]);
   const [menuOpen, setMenuOpen] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState(localized.locale);
   const [address, setAddress] = useState<any>();
@@ -160,8 +160,8 @@ const MapScreen = ({ route }: any) => {
 
   const navigateToEvent = (event: any, eventName: any) => {
     Alert.alert(
-      "Navigate to event",
-      "Do you want to navigate to google maps ?",
+      `Navigate to ${eventName} event`,
+      "Do you want to navigate to Google maps ?",
       [
         {
           text: "Navigate",
@@ -292,6 +292,7 @@ const MapScreen = ({ route }: any) => {
             <GooglePlacesAutocomplete
               placeholder={localized.t("Address or nearest cross streets")}
               onPress={async (data, details) => {
+                console.log("checking data from input...", data, details);
                 setAddress(details);
                 setLat(details?.geometry?.location?.lat);
                 setLong(details?.geometry?.location?.lng);

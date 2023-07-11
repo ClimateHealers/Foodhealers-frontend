@@ -242,14 +242,75 @@ const LoginScreen = () => {
                     style={styles.icon}
                     onPress={() => setShowPassword(!showPassword)}
                   />
-                  <Text style={styles.inputError}>{errors.password}</Text>
-
-                  <PrimaryButton
-                    title={localized.t("Sign in")}
-                    buttonStyle={styles.buttonStyles}
-                    titleStyle={styles.titleStyle}
-                    onPress={handleSubmit}
-                  />
+                  <View style={{ display: "flex", flexDirection: "column" }}>
+                    <Text style={styles.inputError}>{errors.password}</Text>
+                    <TouchableOpacity
+                      onPress={() => navigation.navigate("ForgotPassword")}
+                    >
+                      <Text
+                        style={{
+                          alignSelf: "flex-end",
+                          color: "white",
+                          fontSize: 15,
+                          // marginTop: 10,
+                          textDecorationLine: "underline",
+                        }}
+                      >
+                        Forgot password?
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                  <View
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      marginTop: h2dp("5"),
+                    }}
+                  >
+                    <PrimaryButton
+                      title={localized.t("Sign in")}
+                      buttonStyle={styles.buttonStyles}
+                      titleStyle={styles.titleStyle}
+                      onPress={handleSubmit}
+                    />
+                  </View>
+                  <View
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      marginTop: h2dp("20"),
+                    }}
+                  >
+                    <Text
+                      style={{
+                        textAlign: "center",
+                        color: "white",
+                        fontSize: 18,
+                        marginTop: 10,
+                      }}
+                    >
+                      Not a user?
+                    </Text>
+                    <TouchableOpacity
+                      onPress={() => navigation.navigate("SignupScreen")}
+                    >
+                      <Text
+                        style={{
+                          color: "white",
+                          fontSize: 18,
+                          textDecorationLine: "underline",
+                          fontFamily: "OpenSans-Bold",
+                          textAlign: "center",
+                          marginTop: 10,
+                        }}
+                      >
+                        {`${" "}${localized.t("Sign up")}`}
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
                 </View>
               )}
             </Formik>
@@ -263,7 +324,7 @@ const LoginScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: "flex-start",
     padding: 16,
   },
   input: {
@@ -302,11 +363,9 @@ const styles = StyleSheet.create({
     color: "black",
     borderRadius: 5,
     width: 190,
-    marginTop: 280,
-    marginLeft: 75,
   },
   titleStyle: {
-    color: "black",
+    color: "white",
     fontSize: 26,
     fontWeight: "400",
     lineHeight: 35,
@@ -317,6 +376,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    marginTop: 60,
   },
   dropdown1BtnStyle: {
     marginTop: 15,
@@ -350,6 +410,7 @@ const styles = StyleSheet.create({
   textInput: {
     height: 45,
     marginBottom: 1,
+    backgroundColor: "white",
   },
   icon: {
     position: "absolute",

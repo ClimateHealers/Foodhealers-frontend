@@ -1,9 +1,22 @@
-{
+
+/*
+This file will automatically generate app.json config and fetch the variables from .env file
+purpose: the .env files variables will be hidden.
+we are fetchiing google maps api key for now
+*/ 
+const fs = require('fs');
+const dotenv = require('dotenv');
+
+dotenv.config();
+
+
+const appConfig = {
   "expo": {
     "name": "food-healers",
     "slug": "food-healers",
     "version": "1.0.9",
     "orientation": "portrait",
+    
     "icon": "./assets/Climate-Healers-Logo.png",
     "userInterfaceStyle": "automatic",
     "splash": {
@@ -32,7 +45,7 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.foodhealers.climatehealers",
       "config": {
-        "googleMapsApiKey": "AIzaSyDRj8-ZV2Soyar4D5ksAcf5ILW8JKH-eh0"
+        "googleMapsApiKey": process.env.GOOGLE_API_KEY || ""
       }
     },
     "android": {
@@ -48,7 +61,7 @@
       ],
       "config": {
         "googleMaps": {
-          "apiKey": "AIzaSyDRj8-ZV2Soyar4D5ksAcf5ILW8JKH-eh0"
+          "apiKey": process.env.GOOGLE_API_KEY || ""
         }
       },
       "package": "com.foodhealers.climatehealers"
@@ -64,10 +77,13 @@
     ],
     "extra": {
       "eas": {
-        "projectId": "e0f0f8a7-ffa0-4792-8f06-fc991a1d09fc"
+        "projectId":"e0f0f8a7-ffa0-4792-8f06-fc991a1d09fc",
       },
-      "googleMapsApiKey": "AIzaSyDRj8-ZV2Soyar4D5ksAcf5ILW8JKH-eh0"
+      "googleMapsApiKey" : process.env.GOOGLE_API_KEY || ""
     },
     "owner": "food-healers"
   }
-}
+};
+
+// Writing the dynamic configuration to app.json
+fs.writeFileSync('./app.json', JSON.stringify(appConfig, null, 2)); // 2 here indicates spaces indentation

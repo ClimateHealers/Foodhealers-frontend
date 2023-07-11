@@ -145,6 +145,7 @@ const WeekScreen = ({ route }: any) => {
   const handlePressOutside = () => {
     setlangOpen(false);
     Keyboard.dismiss();
+    setMenuOpen(false);
   };
 
   const changeLanguage = (itemValue: any, index: any) => {

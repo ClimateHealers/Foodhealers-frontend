@@ -40,6 +40,11 @@ const Navigation = () => {
             options={{ title: "", header: () => null }}
           />
           <Stack.Screen
+            name="ForgotPassword"
+            component={Forgotpassword}  
+            options={{ title: "", header: () => null }}
+          />
+          <Stack.Screen
             name="Camera"
             component={Camera}
             options={{ title: "", header: () => null }}

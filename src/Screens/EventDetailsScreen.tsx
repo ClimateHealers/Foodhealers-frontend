@@ -164,7 +164,7 @@ const EventDetailsScreen = ({ route }: any) => {
                       </Text>
                     </TouchableOpacity>
                     <TouchableOpacity
-                      onPress={() => handleMenuItemPress("Find Food")}
+                      onPress={() => findFoodMenuItemPress("Find Food")}
                     >
                       <Text
                         style={{
@@ -356,7 +356,7 @@ const styles = StyleSheet.create({
   },
   buttonStyles: {
     backgroundColor: "#FC5A56",
-    color: "black",
+    color: "white",
     borderRadius: 5,
     width: 190,
     marginTop: h2dp("1.5"),
