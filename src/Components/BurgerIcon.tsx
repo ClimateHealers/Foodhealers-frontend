@@ -17,7 +17,6 @@ const BurgerIcon = () => {
 
   const dispatch = useDispatch()
   const handleMenuItemPress = (item: any) => {
-    // console.log(`Selected menu item: ${item}`);
     setMenuOpen(false);
     if (isAuthenticated) {
       navigation.navigate("HomeScreen");
@@ -31,7 +30,6 @@ const BurgerIcon = () => {
         location: location,
       });
     });
-    // console.log(`Selected menu item: ${item}`);
     setMenuOpen(false);
   };
   const logout = async (item: any) => {

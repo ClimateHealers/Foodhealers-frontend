@@ -32,7 +32,7 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.foodhealers.climatehealers",
       "config": {
-        "googleMapsApiKey": "AIzaSyDRj8-ZV2Soyar4D5ksAcf5ILW8JKH-eh0"
+        "googleMapsApiKey": ""
       }
     },
     "android": {
@@ -48,7 +48,7 @@
       ],
       "config": {
         "googleMaps": {
-          "apiKey": "AIzaSyDRj8-ZV2Soyar4D5ksAcf5ILW8JKH-eh0"
+          "apiKey": ""
         }
       },
       "package": "com.foodhealers.climatehealers"
@@ -66,7 +66,7 @@
       "eas": {
         "projectId": "e0f0f8a7-ffa0-4792-8f06-fc991a1d09fc"
       },
-      "googleMapsApiKey": "AIzaSyDRj8-ZV2Soyar4D5ksAcf5ILW8JKH-eh0"
+      "googleMapsApiKey": ""
     },
     "owner": "food-healers"
   }

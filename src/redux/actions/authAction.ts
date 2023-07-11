@@ -65,7 +65,7 @@ const storeAuthData = async (value: any) => {
 export const getAuthData = async () => {
   try {
     const jsonValue = await AsyncStorage.getItem("@authData");
-    console.log("checking authData for malikshoaib", jsonValue);
+    console.log("checking authData for user", jsonValue);
     return jsonValue != null ? JSON.parse(jsonValue) : null;
   } catch (e) {
     console.log(e);
