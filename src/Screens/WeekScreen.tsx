@@ -72,7 +72,6 @@ const WeekScreen = ({ route }: any) => {
       eventEndDate: endDate,
     };
 
-    console.log("zzzzzzzzzzzzzzzzzzzzzzz",findFoodData)
 
     const response = await dispatch(findFood(findFoodData as any) as any);
 

@@ -10,9 +10,9 @@ export interface MyEvent {
 
 export const myEvents = createAsyncThunk<MyEvent, MyEvent>(
   "myEvents",
-  async (_, thnukAPI: any) => {
+  async (_, thunkAPI: any) => {
     try {
-        const token = thnukAPI.getState().auth.data.token;
+        const token = thunkAPI.getState().auth.data.token;
       const config = {
         headers: {
           "Content-Type": "application/json",
@@ -22,7 +22,7 @@ export const myEvents = createAsyncThunk<MyEvent, MyEvent>(
       const result = await API.get("v1/api/event/", config);
       return result?.data;
     } catch (error: any) {
-      return thnukAPI.rejectWithValue(error?.response?.data?.message);
+      return thunkAPI.rejectWithValue(error?.response?.data?.message);
     }
   }
 );

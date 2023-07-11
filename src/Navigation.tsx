@@ -7,13 +7,11 @@ import Camera from "./Screens/Camera";
 import EventDetailsScreen from "./Screens/EventDetailsScreen";
 import EventPhotosScreen from "./Screens/EventPhotosScreen";
 import EventsHomeScreen from "./Screens/EventsHomeScreen";
-// import Fixing from "./Screens/Fixing";
 import Forgotpassword from "./Screens/ForgotPassword";
 import HomeScreen from "./Screens/HomeScreen";
 import LinkingDemo from "./Screens/LinkingDemo";
 import LoginScreen from "./Screens/LoginScreen";
 import MapScreen from "./Screens/MapScreen";
-// import Notification from "./Screens/Notification";
 import PostEvent from "./Screens/PostEvent";
 import PostEventDetailsScreen from "./Screens/PostEventDetailsScreen";
 import SignupScreen from "./Screens/SignupScreen";
@@ -55,11 +53,6 @@ const Navigation = () => {
             component={LinkingDemo}
             options={{ title: "", header: () => null }}
           />
-          {/* <Stack.Screen
-            name="Notification"
-            component={Notification}
-            options={{ title: "", header: () => null }}
-          /> */}
           <Stack.Screen
             name="WelcomeScreen"
             component={WelcomeScreen}

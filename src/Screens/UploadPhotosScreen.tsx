@@ -63,9 +63,7 @@ const UploadPhotosScreen = ({ route }: any) => {
   const openImagePickerAsync = async () => {
     const res = await MediaLibrary.requestPermissionsAsync();
     if (res.granted) {
-      // MediaLibrary.getAlbumsAsync()
-      // .then((albums) => console.log(albums))
-      // .catch((err) => console.warn(err));
+      console.log(res.granted);
     }
 
     const result = await ImagePicker.launchImageLibraryAsync({
