@@ -67,14 +67,13 @@ export const login = createAsyncThunk<LoginData, LoginData>(
       };
       const result = await API.post("v1/api/login/", userData, config);
       storeAuthData(result?.data);
-      let accessToken;
       getAuthData().then(async (res) => {
         if (res.success) {
           const newToken = await refreshToken().then((res) =>
             JSON.stringify(res)
           );
-          accessToken = newToken;
-          dispatch(setAuthToken(accessToken));
+          const parsedToken = JSON.parse(newToken);
+          dispatch(setAuthToken(parsedToken));
         }
       });
       return result?.data;

@@ -2,7 +2,9 @@ import { createSlice } from "@reduxjs/toolkit";
 import { login } from "../actions/authAction";
 
 const initialState = {
-  data: {},
+  data: {
+    token :null
+  },
   error: null,
   loading: false,
 };
