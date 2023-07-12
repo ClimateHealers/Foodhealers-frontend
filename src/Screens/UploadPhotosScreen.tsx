@@ -7,7 +7,7 @@ import {
   Keyboard,
   TouchableOpacity,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { CommonActions, useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Text } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
@@ -16,6 +16,10 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { localized } from "../locales/localization";
 import * as ImagePicker from "expo-image-picker";
 import * as Permissions from "expo-permissions";
+import { useDispatch, useSelector } from "react-redux";
+import { getLocation } from "../Components/getCurrentLocation";
+import { removeAuthData } from "../redux/actions/authAction";
+import { logOut } from "../redux/reducers/authreducers";
 
 const UploadPhotosScreen = ({route}:any) => {
   const {eventFormData} = route.params;
@@ -26,6 +30,7 @@ const UploadPhotosScreen = ({route}:any) => {
   const [selectedImage, setSelectedImage] = useState<any | []>([]);
 
   const navigation: any = useNavigation<string>();
+  const dispatch = useDispatch();
 
   const handlePressOutside = () => {
     Keyboard.dismiss();
@@ -42,6 +47,17 @@ const UploadPhotosScreen = ({route}:any) => {
   const findFoodMenuItemPress = (item: any) => {
     // console.log(`Selected menu item: ${item}`);
     setMenuOpen(false);
+  };
+  const logout = async (item: any) => {
+    // persistor.purge()
+    await dispatch(logOut({}) as any);
+    await removeAuthData()
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: "LoginScreen" }],
+      })
+    );
   };
 
   const openImagePickerAsync = async () => {

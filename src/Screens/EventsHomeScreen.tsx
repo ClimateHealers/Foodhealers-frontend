@@ -7,13 +7,15 @@ import {
   Keyboard,
   TouchableOpacity,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { CommonActions, useNavigation } from "@react-navigation/native";
 import { localized } from "../locales/localization";
 import { LinearGradient } from "expo-linear-gradient";
 import { useDispatch, useSelector } from "react-redux";
 import { Text } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Image } from "react-native-elements";
+import { removeAuthData } from "../redux/actions/authAction";
+import { logOut } from "../redux/reducers/authreducers";
 
 const EventsHomeScreen = () => {
   const [selectedLanguage, setSelectedLanguage] = useState(localized.locale);
@@ -49,6 +51,17 @@ const EventsHomeScreen = () => {
   const findFoodMenuItemPress = (item: any) => {
     // console.log(`Selected menu item: ${item}`);
     setMenuOpen(false);
+  };
+  const logout = async (item: any) => {
+    // persistor.purge()
+    await dispatch(logOut({}) as any);
+    await removeAuthData()
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: "LoginScreen" }],
+      })
+    );
   };
 
   const navigation: any = useNavigation<string>();

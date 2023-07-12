@@ -1,12 +1,18 @@
 import React, { useState } from "react";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { TouchableOpacity, Text, View, StyleSheet } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { useSelector } from "react-redux";
+import { CommonActions, useNavigation } from "@react-navigation/native";
+
+
+import { useDispatch, useSelector } from "react-redux";
+import { removeAuthData } from "../redux/actions/authAction";
+import { logOut } from "../redux/reducers/authreducers";
+import { getLocation } from "../Components/getCurrentLocation";
 
 const BurgerIcon = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const navigation: any = useNavigation();
+  const dispatch = useDispatch();
   const isAuthenticated = useSelector(
     (state: any) => state.auth.data.isAuthenticated
   );
@@ -23,6 +29,17 @@ const BurgerIcon = () => {
   const findFoodMenuItemPress = (item: any) => {
     // console.log(`Selected menu item: ${item}`);
     setMenuOpen(false);
+  };
+  const logout = async (item: any) => {
+    // persistor.purge()
+    await dispatch(logOut({}) as any);
+    await removeAuthData()
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: "LoginScreen" }],
+      })
+    );
   };
 
   const toggleMenu = () => {

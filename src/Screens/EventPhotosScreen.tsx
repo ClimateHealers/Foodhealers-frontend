@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { CommonActions, useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Text } from "react-native";
 import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
@@ -15,8 +15,10 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { localized } from "../locales/localization";
 
 import { useDispatch, useSelector } from "react-redux";
+import { removeAuthData } from "../redux/actions/authAction";
 import { postEvent } from "../redux/actions/postEventaction";
 import Spinner from "react-native-loading-spinner-overlay";
+import { logOut } from "../redux/reducers/authreducers";
 
 const EventPhotosScreen = ({ route }: any) => {
   const { eventPhotos, eventFormData } = route.params;
@@ -42,6 +44,17 @@ const EventPhotosScreen = ({ route }: any) => {
     console.log(`Selected menu item: ${item}`);
     setMenuOpen(false);
     // navigation.navigate("MapScreen");
+  };
+  const logout = async (item: any) => {
+    // persistor.purge()
+    await dispatch(logOut({}) as any);
+    await removeAuthData()
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: "LoginScreen" }],
+      })
+    );
   };
 
   const submitEvent = async () => {

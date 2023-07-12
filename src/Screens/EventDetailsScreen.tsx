@@ -12,12 +12,16 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
-import { useNavigation } from "@react-navigation/native";
+import { CommonActions, useNavigation } from "@react-navigation/native";
 import { localized } from "../locales/localization";
 import PrimaryButton from "../Components/PrimaryButton";
 import { Divider } from "react-native-paper";
 import moment from "moment";
+import { useDispatch, useSelector } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
+import { getLocation } from "../Components/getCurrentLocation";
+import { removeAuthData } from "../redux/actions/authAction";
+import { logOut } from "../redux/reducers/authreducers";
 
 const EventDetailsScreen = ({ route }: any) => {
   const { eventDetails } = route.params;
@@ -37,6 +41,7 @@ const EventDetailsScreen = ({ route }: any) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState(localized.locale);
 
+  const dispatch = useDispatch();
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
@@ -49,6 +54,25 @@ const EventDetailsScreen = ({ route }: any) => {
     // console.log(`Selected menu item: ${item}`);
     setMenuOpen(false);
     navigation.navigate("HomeScreen");
+  };
+  const findFoodMenuItemPress = (item: any) => {
+    getLocation().then((location: any) => {
+      navigation.navigate("MapScreen", {
+        location: location,
+      });
+    });
+    setMenuOpen(false);
+  };
+  const logout = async (item: any) => {
+    // persistor.purge()
+    await dispatch(logOut({}) as any);
+    await removeAuthData()
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: "LoginScreen" }],
+      })
+    );
   };
 
   const changeLanguage = (itemValue: any, index: any) => {

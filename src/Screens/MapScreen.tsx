@@ -30,6 +30,9 @@ import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import { findFood } from "../redux/actions/findFoodaction";
 import { Image } from "react-native-elements";
+import { CommonActions } from "@react-navigation/native";
+import { logOut } from "../redux/reducers/authreducers";
+import { getAuthData, removeAuthData } from "../redux/actions/authAction";
 
 const MapScreen = ({ route }: any) => {
   const { location } = route.params;
@@ -112,6 +115,17 @@ const MapScreen = ({ route }: any) => {
   const findFoodMenuItemPress = (item: any) => {
     // console.log(`Selected menu item: ${item}`);
     setMenuOpen(false);
+  };
+  const logout = async (item: any) => {
+    // persistor.purge()
+    await dispatch(logOut({}) as any);
+    await removeAuthData()
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: "LoginScreen" }],
+      })
+    );
   };
 
   const clickHandler = () => {

@@ -13,13 +13,12 @@ import {
   Dimensions,
 } from "react-native";
 import { TextInput, Text } from "react-native-paper";
-import { useNavigation } from "@react-navigation/native";
+import { CommonActions, useNavigation } from "@react-navigation/native";
 import { localized } from "../locales/localization";
 import { LinearGradient } from "expo-linear-gradient";
 import PrimaryButton from "../Components/PrimaryButton";
 import { Formik } from "formik";
 import { GOOGLE_API_KEY } from "@env";
-import { useDispatch } from "react-redux";
 import { postEventSchema } from "../Components/validation";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import DateTimePicker, {
@@ -31,6 +30,10 @@ import {
   widthPercentageToDP as w2dp,
   heightPercentageToDP as h2dp,
 } from "react-native-responsive-screen";
+import { useDispatch, useSelector } from "react-redux";
+import { getLocation } from "../Components/getCurrentLocation";
+import { logOut } from "../redux/reducers/authreducers";
+import { removeAuthData } from "../redux/actions/authAction";
 
 const PostEvent = () => {
   const [loading, setLoading] = useState(false);
@@ -101,6 +104,17 @@ const PostEvent = () => {
   const findFoodMenuItemPress = (item: any) => {
     // console.log(`Selected menu item: ${item}`);
     setMenuOpen(false);
+  };
+  const logout = async (item: any) => {
+    // persistor.purge()
+    await dispatch(logOut({}) as any);
+    await removeAuthData()
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: "LoginScreen" }],
+      })
+    );
   };
 
   return (
