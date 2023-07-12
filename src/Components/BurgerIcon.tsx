@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { TouchableOpacity, Text, View, StyleSheet } from "react-native";
 import { CommonActions, useNavigation } from "@react-navigation/native";
@@ -8,6 +7,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { removeAuthData } from "../redux/actions/authAction";
 import { logOut } from "../redux/reducers/authreducers";
 import { getLocation } from "../Components/getCurrentLocation";
+import React, { useState } from "react";
+
 
 const BurgerIcon = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -18,7 +19,6 @@ const BurgerIcon = () => {
   );
 
   const handleMenuItemPress = (item: any) => {
-    // console.log(`Selected menu item: ${item}`);
     setMenuOpen(false);
     if (isAuthenticated) {
       navigation.navigate("HomeScreen");
@@ -27,7 +27,11 @@ const BurgerIcon = () => {
     }
   };
   const findFoodMenuItemPress = (item: any) => {
-    // console.log(`Selected menu item: ${item}`);
+    getLocation().then((location: any) => {
+      navigation.navigate("MapScreen", {
+        location: location,
+      });
+    });
     setMenuOpen(false);
   };
   const logout = async (item: any) => {
@@ -47,55 +51,65 @@ const BurgerIcon = () => {
   };
   return (
     <>
-        <MaterialCommunityIcons
-          name="menu"
-          size={40}
-          color="white"
-          onPress={() => toggleMenu()}
-        />
-        {menuOpen && (
-          <View
-            style={{
-              position: "absolute",
-              right: 60,
-              top: 65,
-              backgroundColor: "white",
-              borderColor: "white",
-              height: 100,
-              borderRadius: 5,
-              zIndex:9999
-
-            }}
-          >
-            <TouchableOpacity onPress={() => handleMenuItemPress("Home")}>
-              <Text
-                style={{
-                  padding: 10,
-                  fontSize: 20,
-                  fontWeight: "300",
-                  lineHeight: 27.24,
-                }}
-              >
-                Home
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => findFoodMenuItemPress("Find Food")}
+      <MaterialCommunityIcons
+        name="menu"
+        size={40}
+        color="white"
+        onPress={() => toggleMenu()}
+      />
+      {menuOpen && (
+        <View
+          style={{
+            position: "absolute",
+            right: 60,
+            top: 65,
+            backgroundColor: "white",
+            borderColor: "white",
+            
+            borderRadius: 5,
+            // zIndex: 9999,
+          }}
+        >
+          <TouchableOpacity onPress={() => handleMenuItemPress("Home")}>
+            <Text
+              style={{
+                padding: 10,
+                fontSize: 20,
+                fontWeight: "300",
+                lineHeight: 27.24,
+              }}
             >
-              <Text
-                style={{
-                  padding: 10,
-                  fontSize: 20,
-                  fontWeight: "300",
-                  lineHeight: 27.24,
-                }}
-              >
-                Find Food
-              </Text>
-            </TouchableOpacity>
-          </View>
-        )}
-
+              Home
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => findFoodMenuItemPress("Find Food")}>
+            <Text
+              style={{
+                padding: 10,
+                fontSize: 20,
+                fontWeight: "300",
+                lineHeight: 27.24,
+              }}
+            >
+              Find Food
+            </Text>
+          </TouchableOpacity>
+          {isAuthenticated && (
+                      <TouchableOpacity onPress={() => logout("logout")}>
+                        <Text
+                          style={{
+                            padding: 10,
+                            fontSize: 20,
+                            fontWeight: "300",
+                            lineHeight: 27.24,
+                          }}
+                        >
+                          Log out
+                        </Text>
+                      </TouchableOpacity>
+                    )}
+        </View>
+      )}
     </>
   );
 };
@@ -106,6 +120,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
+    zIndex: 9999,
   },
 });
 

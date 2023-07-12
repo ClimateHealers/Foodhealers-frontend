@@ -1,40 +1,28 @@
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import { LinearGradient } from "expo-linear-gradient";
+import moment from "moment";
 import React, { useState } from "react";
 import {
-  Alert,
-  Image,
-  Keyboard,
-  Linking,
-  Platform,
-  Share,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  View,
+    Alert, Image, Keyboard, Linking,
+    Share, StyleSheet,
+    Text, TouchableOpacity, TouchableWithoutFeedback, View
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { LinearGradient } from "expo-linear-gradient";
-import { CommonActions, useNavigation } from "@react-navigation/native";
-import { localized } from "../locales/localization";
-import PrimaryButton from "../Components/PrimaryButton";
 import { Divider } from "react-native-paper";
-import moment from "moment";
-import { useDispatch, useSelector } from "react-redux";
+import {
+    heightPercentageToDP as h2dp, widthPercentageToDP as w2dp
+} from "react-native-responsive-screen";
+import { SafeAreaView } from "react-native-safe-area-context";
 import BurgerIcon from "../Components/BurgerIcon";
 import { getLocation } from "../Components/getCurrentLocation";
-import { removeAuthData } from "../redux/actions/authAction";
-import { logOut } from "../redux/reducers/authreducers";
-import { heightPercentageToDP as h2dp, widthPercentageToDP as w2dp } from "react-native-responsive-screen";
+import PrimaryButton from "../Components/PrimaryButton";
+import { localized } from "../locales/localization";
 
-
-const EventDetailsScreen = ({ route }: any) => {
+const SingleEventDetails = ({ route }: any) => {
   const { eventDetails } = route.params;
-  const navigation: any = useNavigation();
 
-  const isAuthenticated = useSelector(
-    (state: any) => state.auth.data.isAuthenticated
-  );
+  console.log("Event Details", eventDetails);
+  const navigation: any = useNavigation();
 
   const [langOpen, setlangOpen] = useState(false);
   const [lang, setLang] = useState([
@@ -50,7 +38,6 @@ const EventDetailsScreen = ({ route }: any) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState(localized.locale);
 
-  const dispatch = useDispatch();
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
@@ -60,7 +47,6 @@ const EventDetailsScreen = ({ route }: any) => {
     Keyboard.dismiss();
   };
   const handleMenuItemPress = (item: any) => {
-    // console.log(`Selected menu item: ${item}`);
     setMenuOpen(false);
     navigation.navigate("HomeScreen");
   };
@@ -72,23 +58,6 @@ const EventDetailsScreen = ({ route }: any) => {
     });
     setMenuOpen(false);
   };
-  const logout = async (item: any) => {
-    // persistor.purge()
-    await dispatch(logOut({}) as any);
-    await removeAuthData()
-    navigation.dispatch(
-      CommonActions.reset({
-        index: 0,
-        routes: [{ name: "LoginScreen" }],
-      })
-    );
-  };
-
-  const changeLanguage = (itemValue: any, index: any) => {
-    const selectedLanguage = lang[index].value;
-    localized.locale = selectedLanguage;
-    setSelectedLanguage(selectedLanguage);
-  };
 
   const startTime = eventDetails?.eventStartDate;
   const formattedStartTime = moment(startTime).format("h:mm a");
@@ -96,12 +65,24 @@ const EventDetailsScreen = ({ route }: any) => {
   const EndTime = eventDetails?.eventEndDate;
   const formattedEndTime = moment(EndTime).format("h:mm a");
 
+  console.log(
+    "checking formatted start and end time",
+    formattedStartTime,
+    formattedEndTime
+  );
+
+  const changeLanguage = (itemValue: any, index: any) => {
+    const selectedLanguage = lang[index].value;
+    localized.locale = selectedLanguage;
+    setSelectedLanguage(selectedLanguage);
+  };
 
 
   const navigationHandler = () => {
-    const url = `https://www.google.com/maps/dir/?api=1&destination=${eventDetails?.address?.lat},${eventDetails?.address?.lng}`;
+    const url = `https://www.google.com/maps/dir/?api=1&destination=${eventDetails?.lat},${eventDetails?.long}`;
     Linking.openURL(url);
   };
+
   const onShare = async () => {
     try {
       const result = await Share.share({
@@ -109,10 +90,10 @@ const EventDetailsScreen = ({ route }: any) => {
       });
       if (result.action === Share.sharedAction) {
         if (result.activityType) {
-          
         } else {
         }
       } else if (result.action === Share.dismissedAction) {
+        // dismissed
       }
     } catch (error: any) {
       Alert.alert(error.message);
@@ -123,30 +104,30 @@ const EventDetailsScreen = ({ route }: any) => {
     <TouchableWithoutFeedback onPress={handlePressOutside}>
       <View style={styles.container}>
         <LinearGradient
-          colors={["#012e17", "#017439", "#009b4d"]}
+          colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
           style={styles.background}
         >
           <SafeAreaView>
             <View style={styles.row}>
-              <View style={styles.item}>
-                <Text style={styles.itemText}>{localized.t("Find Food")}</Text>
-              </View>
+              <Ionicons
+                name="chevron-back"
+                size={32}
+                color="white"
+                style={{ marginRight: w2dp(7), marginTop: h2dp(3) }}
+                onPress={() => navigation.goBack()}
+              />
+              <Text style={styles.itemText}>{"See all events"}</Text>
               <View style={styles.item}>
                 <BurgerIcon />
-                {/* <MaterialCommunityIcons
-                  name="menu"
-                  size={40}
-                  color="white"
-                  onPress={toggleMenu}
-                /> */}
                 {menuOpen && (
                   <View
                     style={{
                       position: "absolute",
                       right: 60,
-                      top: Platform.OS === "ios" ? h2dp(8) : h2dp(9),
+                      top: 70,
                       backgroundColor: "white",
                       borderColor: "white",
+                      height: 100,
                       borderRadius: 5,
                       zIndex: 9999,
                     }}
@@ -179,20 +160,6 @@ const EventDetailsScreen = ({ route }: any) => {
                         Find Food
                       </Text>
                     </TouchableOpacity>
-                    {isAuthenticated && (
-                      <TouchableOpacity onPress={() => logout("logout")}>
-                        <Text
-                          style={{
-                            padding: 10,
-                            fontSize: 20,
-                            fontWeight: "300",
-                            lineHeight: 27.24,
-                          }}
-                        >
-                          Log out
-                        </Text>
-                      </TouchableOpacity>
-                    )}
                   </View>
                 )}
               </View>
@@ -205,7 +172,7 @@ const EventDetailsScreen = ({ route }: any) => {
                     source={require("../../assets/images/hostingEvent.png")}
                     style={{
                       width: "100%",
-                      height: 200,
+                      height: 180,
                       borderTopLeftRadius: 10,
                       borderTopRightRadius: 10,
                     }}
@@ -214,8 +181,9 @@ const EventDetailsScreen = ({ route }: any) => {
                 <View style={styles.cardTextConainer}>
                   <View style={{ marginBottom: 20, paddingHorizontal: 10 }}>
                     <Text style={styles.boldText}>
-                      From:{" "}
+                      From:
                       <Text style={styles.cardText}>
+                        {" "}
                         {moment(eventDetails?.eventStartDate).format(
                           "ddd, MMM D"
                         )}{" "}
@@ -254,7 +222,7 @@ const EventDetailsScreen = ({ route }: any) => {
                     <Text style={styles.boldText}>
                       Location:{" "}
                       <Text style={styles.cardText}>
-                        {eventDetails.address?.fullAddress}
+                        {eventDetails.address}
                       </Text>
                     </Text>
 
@@ -266,7 +234,9 @@ const EventDetailsScreen = ({ route }: any) => {
                       }}
                     />
                   </View>
-                  <View style={{ marginBottom: 10, paddingHorizontal: 10 }}>
+                  <View
+                    style={{ marginBottom: h2dp("2%"), paddingHorizontal: 10 }}
+                  >
                     <Text style={styles.boldText}>
                       What:{" "}
                       <Text style={styles.cardText}>
@@ -345,6 +315,7 @@ const styles = StyleSheet.create({
   itemText: {
     fontSize: 25,
     color: "white",
+    marginTop: h2dp(3),
   },
   cardContainer: {
     // marginTop: 5,
@@ -352,7 +323,7 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: "white",
     width: "90%",
-    marginLeft: 20,
+    marginLeft: w2dp("5%"),
     borderRadius: 10,
     marginBottom: 10,
   },
@@ -362,6 +333,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     width: 190,
     marginTop: h2dp("1.5"),
+
   },
   titleStyle: {
     color: "white",
@@ -384,4 +356,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default EventDetailsScreen;
+export default SingleEventDetails;

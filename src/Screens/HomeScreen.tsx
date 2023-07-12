@@ -1,29 +1,35 @@
-import React, { useState } from "react";
-import {
-  View,
-  Text,
-  ImageBackground,
-  StyleSheet,
-  StatusBar,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  Modal,
-  ActivityIndicator,
-  Alert,
-} from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import * as Location from "expo-location";
+import React, { useState } from "react";
+import {
+  ActivityIndicator,
+  Alert,
+  ImageBackground,
+  Modal,
+  Platform,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
+} from "react-native";
+import { heightPercentageToDP as h2dp } from "react-native-responsive-screen";
 import SelectDropdown from "react-native-select-dropdown";
-import { MaterialIcons } from "@expo/vector-icons";
+import { useDispatch, useSelector } from "react-redux";
 import PrimaryButton from "../Components/PrimaryButton";
-import { myTheme } from "../myTheme";
 import { localized } from "../locales/localization";
-import { useSelector } from "react-redux";
+import { myTheme } from "../myTheme";
 
 const HomeScreen = ({ route }: any) => {
   const userDetails = useSelector((state: any) => state.auth);
 
   const { data } = userDetails;
+
+  const dispatch = useDispatch();
+
+  console.log("checkign userdetails", userDetails);
 
   const [loc, setLoc] = useState(false);
   const [langOpen, setlangOpen] = useState(false);
@@ -48,53 +54,6 @@ const HomeScreen = ({ route }: any) => {
     setSelectedLanguage(selectedLanguage);
   };
 
-  //  const getLocation = async () => {
-  //     try {
-  //       setLoc(true);
-  //       let { status } = await Location.requestForegroundPermissionsAsync();
-  //       if (status !== "granted") {
-  //         console.log("permission to access location was denied");
-  //         setLoc(false);
-  //         Alert.alert(
-  //           "Location permission denied",
-  //           "Please grant permission to access your location to use this feature.",
-  //           [{ text: "OK" }],
-  //           { cancelable: false }
-  //         );
-  //         return;
-  //       }
-  //       let askLocationPermission = await Location.getCurrentPositionAsync({});
-  //      if(askLocationPermission){
-  //       let location =  await Location.watchPositionAsync(
-  //         { distanceInterval: 5 }, // Minimum distance (in meters) for updates
-  //         (newLocation) => {
-  //           // setLocation(newLocation.coords);
-  //           // console.log("checking live location", newLocation.coords)
-  //           if (location) {
-  //             setLoc(false);
-  //             navigation.navigate("MapScreen", {
-  //               location: newLocation,
-  //             });
-  //           } else {
-  //             setLoc(false);
-  //           }
-  //         }
-  //       );
-  //      }
-
-  //       // if (location) {
-  //       //   setLoc(false);
-  //       //   navigation.navigate("MapScreen", {
-  //       //     location: location,
-  //       //   });
-  //       // } else {
-  //       //   setLoc(false);
-  //       // }
-  //     } catch (error) {
-  //       setLoc(true);
-  //       console.error(error);
-  //     }
-  //   };
   const getLocation = async () => {
     try {
       setLoc(true);
@@ -138,12 +97,42 @@ const HomeScreen = ({ route }: any) => {
       </View>
     );
   };
+  // useFocusEffect(useCallback(()=>{
+  //   findExistingSession()
+  // },[]))
+  const postEvent = () => {
+    if (Object.keys(data).length) {
+      navigation.navigate("EventsHomeScreen");
+    } else {
+      Alert.alert(
+        `Registration Required !`,
+        "Only a registered user can post an event. Please login.",
+        [
+          {
+            text: "Login",
+            onPress: () => {
+              navigation.navigate("LoginScreen");
+            },
+            style: "default",
+          },
+          {
+            text: "Cancel",
+            onPress: () => {},
+            style: "default",
+          },
+        ],
+        {
+          cancelable: true,
+        }
+      );
+    }
+  };
 
   const navigation: any = useNavigation();
   return (
     <TouchableWithoutFeedback onPress={handlePressOutside}>
       <View style={styles.container}>
-        <StatusBar backgroundColor="auto" barStyle="default" />
+        <StatusBar backgroundColor="auto" barStyle="light-content" />
         <ImageBackground
           source={require("../../assets/homeScreen.jpg")}
           style={styles.backgroundImage}
@@ -187,9 +176,7 @@ const HomeScreen = ({ route }: any) => {
             <PrimaryButton
               title={localized.t("Post Event")}
               buttonStyle={styles.postEventButton}
-              onPress={() => {
-                navigation.navigate("EventsHomeScreen");
-              }}
+              onPress={postEvent}
               titleStyle={styles.titleStyle}
             />
             {data?.user?.name ? (
@@ -207,21 +194,21 @@ const HomeScreen = ({ route }: any) => {
               </Text>
             )}
 
-            <TouchableOpacity
-              onPress={() => navigation.navigate("LoginScreen")}
-            >
-              {data?.user?.name ? (
-                <Text
-                  style={{
-                    color: "white",
-                    fontSize: 18,
-                    fontFamily: "OpenSans-Bold",
-                  }}
-                >
-                  {localized.t("Welcome")}{" "}
-                  {data?.user?.name ? data?.user?.name : ""}
-                </Text>
-              ) : (
+            {data?.user?.name ? (
+              <Text
+                style={{
+                  color: "white",
+                  fontSize: 18,
+                  fontFamily: "OpenSans-bold",
+                }}
+              >
+                {localized.t("Welcome")}{" "}
+                {data?.user?.name ? data?.user?.name : ""}
+              </Text>
+            ) : (
+              <TouchableOpacity
+                onPress={() => navigation.navigate("LoginScreen")}
+              >
                 <Text
                   style={{
                     color: "white",
@@ -232,8 +219,8 @@ const HomeScreen = ({ route }: any) => {
                 >
                   {localized.t("Sign in")}
                 </Text>
-              )}
-            </TouchableOpacity>
+              </TouchableOpacity>
+            )}
           </View>
         </ImageBackground>
       </View>
@@ -259,7 +246,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.5)",
     alignItems: "center",
     width: "100%",
-    height: 250,
+    height: Platform.OS === "ios" ? h2dp(37) : h2dp(36),
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
   },
@@ -300,9 +287,9 @@ const styles = StyleSheet.create({
   titleStyle: {
     color: "black",
     fontSize: 26,
-    fontWeight: "400",
+    fontWeight: "200",
     lineHeight: 35,
-    fontFamily: "OpenSans-Regular",
+    fontFamily: "OpenSans-bold",
   },
   centeredView: {
     flex: 1,

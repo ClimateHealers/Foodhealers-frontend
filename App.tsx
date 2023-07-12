@@ -3,9 +3,9 @@ import { LogBox, StyleSheet, Text, View } from "react-native";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import Navigation from "./src/Navigation";
-import { store, persistor } from "./src/redux/store";
+import { persistor, store, } from "./src/redux/store";
 import { ThemeProvider } from "react-native-elements";
-import { customFonts } from "./src/font";
+import { customFonts, loadFonts } from "./src/font";
 import * as Font from "expo-font";
 import SplashScreen from "./src/Screens/SplashScreen";
 
@@ -22,21 +22,21 @@ export default function App() {
   }
 
   useEffect(() => {
-    loadFonts();
+     loadFonts();
     setAppIsReady(true);
   }, []);
   if (!fontsLoaded) {
-    return <Text>loading....</Text>;
+    return;
   }
  
   return (
     <ThemeProvider>
       <Provider store={store}>
-      {/* <PersistGate loading={null} persistor={persistor}> */}
+      <PersistGate loading={null} persistor={persistor}>
       <SplashScreen isAppReady={appIsReady}>
         <Navigation />
       </SplashScreen>
-      {/* </PersistGate> */}
+      </PersistGate>
       </Provider>
     </ThemeProvider>
   );

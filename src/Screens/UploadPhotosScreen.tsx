@@ -1,28 +1,28 @@
+import { AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
+import { CommonActions, useNavigation } from "@react-navigation/native";
+import * as ImagePicker from "expo-image-picker";
+import { LinearGradient } from "expo-linear-gradient";
+import * as MediaLibrary from "expo-media-library";
 import React, { useState } from "react";
 import {
-  StyleSheet,
-  View,
-  Modal,
   ActivityIndicator,
-  Keyboard,
-  TouchableOpacity,
+  Keyboard, Modal, Platform, StyleSheet, Text, TouchableOpacity, View
 } from "react-native";
-import { CommonActions, useNavigation } from "@react-navigation/native";
-import { LinearGradient } from "expo-linear-gradient";
-import { Text } from "react-native";
-import { AntDesign } from "@expo/vector-icons";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+
 import { SafeAreaView } from "react-native-safe-area-context";
 import { localized } from "../locales/localization";
-import * as ImagePicker from "expo-image-picker";
 import * as Permissions from "expo-permissions";
+
+import { removeAuthData } from "../redux/actions/authAction";
+import {
+  heightPercentageToDP as h2dp, widthPercentageToDP as w2dp
+} from "react-native-responsive-screen";
 import { useDispatch, useSelector } from "react-redux";
 import { getLocation } from "../Components/getCurrentLocation";
-import { removeAuthData } from "../redux/actions/authAction";
 import { logOut } from "../redux/reducers/authreducers";
 
-const UploadPhotosScreen = ({route}:any) => {
-  const {eventFormData} = route.params;
+const UploadPhotosScreen = ({ route }: any) => {
+  const { eventFormData } = route.params;
 
   console.log("checking data from post event form", eventFormData);
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
@@ -32,6 +32,9 @@ const UploadPhotosScreen = ({route}:any) => {
   const navigation: any = useNavigation<string>();
   const dispatch = useDispatch();
 
+  const isAuthenticated = useSelector(
+    (state: any) => state.auth.data.isAuthenticated
+  );
   const handlePressOutside = () => {
     Keyboard.dismiss();
   };
@@ -40,12 +43,15 @@ const UploadPhotosScreen = ({route}:any) => {
     setMenuOpen(!menuOpen);
   };
   const handleMenuItemPress = (item: any) => {
-    // console.log(`Selected menu item: ${item}`);
     setMenuOpen(false);
     navigation.navigate("HomeScreen");
   };
   const findFoodMenuItemPress = (item: any) => {
-    // console.log(`Selected menu item: ${item}`);
+    getLocation().then((location: any) => {
+      navigation.navigate("MapScreen", {
+        location: location,
+      });
+    });
     setMenuOpen(false);
   };
   const logout = async (item: any) => {
@@ -61,20 +67,21 @@ const UploadPhotosScreen = ({route}:any) => {
   };
 
   const openImagePickerAsync = async () => {
-    const { status } = await Permissions.askAsync(Permissions.MEDIA_LIBRARY);
-    if (status !== "granted") {
-      alert("Permission to access the media library was denied");
-      return;
+    const res = await MediaLibrary.requestPermissionsAsync();
+    if (res.granted) {
+      console.log(res.granted);
     }
+
     const result = await ImagePicker.launchImageLibraryAsync({
       allowsMultipleSelection: true,
       selectionLimit: 1,
     });
-  
+
     if (!result.canceled) {
+      console.log("checking image from library", result.assets)
       const multipleImages = result.assets.map((image) => image.uri);
       const formData = new FormData();
-  
+
       multipleImages.forEach((image, index) => {
         formData.append(`image_${index}`, {
           uri: image,
@@ -82,19 +89,24 @@ const UploadPhotosScreen = ({route}:any) => {
           name: `image_${index}.jpg`,
         });
       });
-  
-  
-      console.log("checking image data uploaded from phone", formData);
+      // const binaryImages = await Promise.all(
+      //   multipleImages.map(async (image, index) => {
+      //     const response = await fetch(image);
+      //     const blob = await response.blob();
+      //     formData.append(`image_${index}`, blob, `image_${index}.jpg`);
+      //     const uri = URL.createObjectURL(blob); // Convert Blob to URI
+      //     return uri;
+      //   })
+      // );
 
+      console.log("checking image data uploaded from phone", multipleImages);
 
-  
       navigation.navigate("EventPhotosScreen", {
         eventFormData: eventFormData,
         eventPhotos: multipleImages,
       });
     }
   };
-  
 
   const appLoader = (loader: any) => {
     return (
@@ -116,48 +128,62 @@ const UploadPhotosScreen = ({route}:any) => {
       style={styles.background}
     >
       <SafeAreaView>
-      {menuOpen && (
-              <View
+        {menuOpen && (
+          <View
+            style={{
+              position: "absolute",
+              right: w2dp("16"),
+              top: Platform.OS === "ios" ? h2dp(13.2) : h2dp(9),
+              backgroundColor: "white",
+              borderColor: "black",
+              borderRadius: 5,
+              height: h2dp("13"),
+              width: w2dp("32"),
+              zIndex: 9999,
+            }}
+          >
+            <TouchableOpacity onPress={() => handleMenuItemPress("Home")}>
+              <Text
                 style={{
-                  position: "absolute",
-                  right: 60,
-                  top: 110,
-                  backgroundColor: "white",
-                  borderColor: "white",
-                  borderRadius: 5,
-                  height: 100,
-                  width: 105,
-                  zIndex: 9999,
+                  padding: 10,
+                  fontSize: 20,
+                  fontWeight: "300",
+                  lineHeight: 27.24,
                 }}
               >
-                <TouchableOpacity onPress={() => handleMenuItemPress("Home")}>
-                  <Text
-                    style={{
-                      padding: 10,
-                      fontSize: 20,
-                      fontWeight: "300",
-                      lineHeight: 27.24,
-                    }}
-                  >
-                    Home
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => handleMenuItemPress("Find Food")}
+                Home
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => findFoodMenuItemPress("Find Food")}
+            >
+              <Text
+                style={{
+                  padding: 10,
+                  fontSize: 20,
+                  fontWeight: "300",
+                  lineHeight: 27.24,
+                }}
+              >
+                Find Food
+              </Text>
+            </TouchableOpacity>
+            {isAuthenticated && (
+              <TouchableOpacity onPress={() => logout("logout")}>
+                <Text
+                  style={{
+                    padding: 10,
+                    fontSize: 20,
+                    fontWeight: "300",
+                    lineHeight: 27.24,
+                  }}
                 >
-                  <Text
-                    style={{
-                      padding: 10,
-                      fontSize: 20,
-                      fontWeight: "300",
-                      lineHeight: 27.24,
-                    }}
-                  >
-                    Find Food
-                  </Text>
-                </TouchableOpacity>
-              </View>
+                  Log out
+                </Text>
+              </TouchableOpacity>
             )}
+          </View>
+        )}
         <View style={styles.row}>
           <View style={styles.item}>
             <Text style={styles.itemText}>{"Post an Event"}</Text>
@@ -169,7 +195,6 @@ const UploadPhotosScreen = ({route}:any) => {
               color="white"
               onPress={toggleMenu}
             />
-            
           </View>
         </View>
 
@@ -189,7 +214,6 @@ const UploadPhotosScreen = ({route}:any) => {
           <Text style={{ fontSize: 20, marginTop: 10 }}>
             Upload event photo
           </Text>
-            
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <Text
               style={{
@@ -198,7 +222,7 @@ const UploadPhotosScreen = ({route}:any) => {
                 textDecorationLine: "underline",
               }}
             >
-              Skip
+              Back
             </Text>
           </TouchableOpacity>
         </View>
