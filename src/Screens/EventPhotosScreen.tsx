@@ -13,6 +13,9 @@ import {
   TouchableWithoutFeedback,
   View
 } from "react-native";
+import { localized } from "../locales/localization";
+
+import { removeAuthData } from "../redux/actions/authAction";
 import { Button } from "react-native-elements";
 import Spinner from "react-native-loading-spinner-overlay";
 import {
@@ -61,6 +64,7 @@ const EventPhotosScreen = ({ route }: any) => {
   const logout = async (item: any) => {
     // persistor.purge()
     await dispatch(logOut({}) as any);
+    await removeAuthData()
     navigation.dispatch(
       CommonActions.reset({
         index: 0,

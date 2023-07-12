@@ -8,10 +8,15 @@ import {
   ActivityIndicator,
   Keyboard, Modal, Platform, StyleSheet, Text, TouchableOpacity, View
 } from "react-native";
+
+import { SafeAreaView } from "react-native-safe-area-context";
+import { localized } from "../locales/localization";
+import * as Permissions from "expo-permissions";
+
+import { removeAuthData } from "../redux/actions/authAction";
 import {
   heightPercentageToDP as h2dp, widthPercentageToDP as w2dp
 } from "react-native-responsive-screen";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
 import { getLocation } from "../Components/getCurrentLocation";
 import { logOut } from "../redux/reducers/authreducers";
@@ -52,6 +57,7 @@ const UploadPhotosScreen = ({ route }: any) => {
   const logout = async (item: any) => {
     // persistor.purge()
     await dispatch(logOut({}) as any);
+    await removeAuthData()
     navigation.dispatch(
       CommonActions.reset({
         index: 0,

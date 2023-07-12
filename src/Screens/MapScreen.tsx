@@ -33,6 +33,7 @@ import { localized } from "../locales/localization";
 import { findFood } from "../redux/actions/findFoodaction";
 import { CommonActions } from "@react-navigation/native";
 import { logOut } from "../redux/reducers/authreducers";
+import { removeAuthData } from "../redux/actions/authAction";
 
 const MapScreen = ({ route }: any) => {
   const { location } = route.params;
@@ -128,6 +129,7 @@ const MapScreen = ({ route }: any) => {
   const logout = async (item: any) => {
     // persistor.purge()
     await dispatch(logOut({}) as any);
+    await removeAuthData()
     navigation.dispatch(
       CommonActions.reset({
         index: 0,

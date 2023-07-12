@@ -1,21 +1,23 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { TouchableOpacity, Text, View, StyleSheet } from "react-native";
 import { CommonActions, useNavigation } from "@react-navigation/native";
-import React, { useState } from "react";
-import {
-  StyleSheet, Text, TouchableOpacity, View
-} from "react-native";
+
+
 import { useDispatch, useSelector } from "react-redux";
+import { removeAuthData } from "../redux/actions/authAction";
 import { logOut } from "../redux/reducers/authreducers";
-import { getLocation } from "./getCurrentLocation";
+import { getLocation } from "../Components/getCurrentLocation";
+import React, { useState } from "react";
+
 
 const BurgerIcon = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const navigation: any = useNavigation();
+  const dispatch = useDispatch();
   const isAuthenticated = useSelector(
     (state: any) => state.auth.data.isAuthenticated
   );
 
-  const dispatch = useDispatch()
   const handleMenuItemPress = (item: any) => {
     setMenuOpen(false);
     if (isAuthenticated) {
@@ -35,6 +37,7 @@ const BurgerIcon = () => {
   const logout = async (item: any) => {
     // persistor.purge()
     await dispatch(logOut({}) as any);
+    await removeAuthData()
     navigation.dispatch(
       CommonActions.reset({
         index: 0,

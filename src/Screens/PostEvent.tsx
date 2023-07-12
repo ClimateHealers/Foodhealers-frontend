@@ -17,6 +17,12 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
+
+import { GOOGLE_API_KEY } from "@env";
+
+import DateTimePicker, {
+  DateTimePickerEvent,
+} from "@react-native-community/datetimepicker";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { Text, TextInput } from "react-native-paper";
 import PrimaryButton from "../Components/PrimaryButton";
@@ -31,6 +37,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { getLocation } from "../Components/getCurrentLocation";
 import { logOut } from "../redux/reducers/authreducers";
+import { removeAuthData } from "../redux/actions/authAction";
 
 const PostEvent = () => {
   const [loading, setLoading] = useState(false);
@@ -161,6 +168,7 @@ const PostEvent = () => {
   const logout = async (item: any) => {
     // persistor.purge()
     await dispatch(logOut({}) as any);
+    await removeAuthData()
     navigation.dispatch(
       CommonActions.reset({
         index: 0,

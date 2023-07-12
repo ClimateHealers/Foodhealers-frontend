@@ -16,6 +16,7 @@ import { heightPercentageToDP as h2dp } from "react-native-responsive-screen";
 import { useDispatch, useSelector } from "react-redux";
 import { getLocation } from "../Components/getCurrentLocation";
 import { localized } from "../locales/localization";
+import { removeAuthData } from "../redux/actions/authAction";
 import { logOut } from "../redux/reducers/authreducers";
 
 const EventsHomeScreen = () => {
@@ -63,6 +64,7 @@ const EventsHomeScreen = () => {
   const logout = async (item: any) => {
     // persistor.purge()
     await dispatch(logOut({}) as any);
+    await removeAuthData()
     navigation.dispatch(
       CommonActions.reset({
         index: 0,

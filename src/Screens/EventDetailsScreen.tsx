@@ -1,7 +1,4 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { CommonActions, useNavigation } from "@react-navigation/native";
-import { LinearGradient } from "expo-linear-gradient";
-import moment from "moment";
 import React, { useState } from "react";
 import {
   Alert,
@@ -16,17 +13,20 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import { Divider } from "react-native-paper";
-import {
-  heightPercentageToDP as h2dp,
-  widthPercentageToDP as w2dp,
-} from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useDispatch, useSelector } from "react-redux";
-import { getLocation } from "../Components/getCurrentLocation";
-import PrimaryButton from "../Components/PrimaryButton";
+import { LinearGradient } from "expo-linear-gradient";
+import { CommonActions, useNavigation } from "@react-navigation/native";
 import { localized } from "../locales/localization";
+import PrimaryButton from "../Components/PrimaryButton";
+import { Divider } from "react-native-paper";
+import moment from "moment";
+import { useDispatch, useSelector } from "react-redux";
+import BurgerIcon from "../Components/BurgerIcon";
+import { getLocation } from "../Components/getCurrentLocation";
+import { removeAuthData } from "../redux/actions/authAction";
 import { logOut } from "../redux/reducers/authreducers";
+import { heightPercentageToDP as h2dp, widthPercentageToDP as w2dp } from "react-native-responsive-screen";
+
 
 const EventDetailsScreen = ({ route }: any) => {
   const { eventDetails } = route.params;
@@ -36,7 +36,6 @@ const EventDetailsScreen = ({ route }: any) => {
     (state: any) => state.auth.data.isAuthenticated
   );
 
-  const dispatch = useDispatch();
   const [langOpen, setlangOpen] = useState(false);
   const [lang, setLang] = useState([
     { id: 1, label: "French", value: "fr" },
@@ -51,6 +50,7 @@ const EventDetailsScreen = ({ route }: any) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState(localized.locale);
 
+  const dispatch = useDispatch();
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
@@ -75,6 +75,7 @@ const EventDetailsScreen = ({ route }: any) => {
   const logout = async (item: any) => {
     // persistor.purge()
     await dispatch(logOut({}) as any);
+    await removeAuthData()
     navigation.dispatch(
       CommonActions.reset({
         index: 0,

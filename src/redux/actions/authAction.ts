@@ -1,6 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import API from "../../Utils/APIUtils";
+import { setAuthToken } from "../reducers/authreducers";
 
 interface SignupData {
   tokenId: string;
@@ -30,9 +31,28 @@ export const registerUser = createAsyncThunk<SignupData, SignupData>(
   }
 );
 
+const refreshToken = async () => {
+  try {
+    const refreshToken = await AsyncStorage.getItem("refreshToken");
+
+    const response = await API.post("v1/api/refresh-token/", {
+      refreshTokenId: refreshToken,
+    });
+
+    const { token } = response.data;
+
+    await AsyncStorage.setItem("token", token);
+
+    return token;
+  } catch (error) {
+    console.error("Error refreshing token:", error);
+    throw error;
+  }
+};
+
 export const login = createAsyncThunk<LoginData, LoginData>(
   "auth/login",
-  async (userData: LoginData, { rejectWithValue }: any) => {
+  async (userData: LoginData, { rejectWithValue, dispatch }: any) => {
     try {
       const config = {
         headers: {
@@ -41,6 +61,15 @@ export const login = createAsyncThunk<LoginData, LoginData>(
       };
       const result = await API.post("v1/api/login/", userData, config);
       storeAuthData(result?.data);
+      getAuthData().then(async (res) => {
+        if (res.success) {
+          const newToken = await refreshToken().then((res) =>
+            JSON.stringify(res)
+          );
+          const parsedToken = JSON.parse(newToken);
+          dispatch(setAuthToken(parsedToken));
+        }
+      });
       return result?.data;
     } catch (error: any) {
       return rejectWithValue(error.response.data.message);
@@ -54,9 +83,9 @@ const storeAuthData = async (value: any) => {
   try {
     const authValue = JSON.stringify(value);
 
-    console.log("checking authValue for asyncstorage", authValue);
-
-    await AsyncStorage.setItem("@authData", authValue);
+    await AsyncStorage.setItem("authData", authValue);
+    await AsyncStorage.setItem("refreshToken", value?.refreshToken);
+    await AsyncStorage.setItem("token", value?.token);
   } catch (e) {
     console.log("checking error", e);
   }
@@ -64,8 +93,7 @@ const storeAuthData = async (value: any) => {
 
 export const getAuthData = async () => {
   try {
-    const jsonValue = await AsyncStorage.getItem("@authData");
-    console.log("checking authData for user", jsonValue);
+    const jsonValue = await AsyncStorage.getItem("authData");
     return jsonValue != null ? JSON.parse(jsonValue) : null;
   } catch (e) {
     console.log(e);
@@ -74,7 +102,9 @@ export const getAuthData = async () => {
 
 export const removeAuthData = async () => {
   try {
-    await AsyncStorage.removeItem("@authData");
+    await AsyncStorage.removeItem("authData");
+    await AsyncStorage.removeItem("refreshToken");
+    await AsyncStorage.removeItem("token");
 
     return true;
   } catch (e) {
