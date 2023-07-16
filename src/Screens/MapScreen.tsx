@@ -34,6 +34,7 @@ import { findFood } from "../redux/actions/findFoodaction";
 import { CommonActions } from "@react-navigation/native";
 import { logOut } from "../redux/reducers/authreducers";
 import { removeAuthData } from "../redux/actions/authAction";
+import { setLanguage } from "../redux/reducers/langReducer";
 
 const MapScreen = ({ route }: any) => {
   const { location } = route.params;
@@ -79,6 +80,7 @@ const MapScreen = ({ route }: any) => {
   const API_KEY = Constants?.manifest?.extra?.googleMapsApiKey;
 
   const dispatch = useDispatch();
+  const languageName = useSelector((state:any) => state.language)
 
   const isAuthenticated = useSelector(
     (state: any) => state?.auth?.data?.isAuthenticated
@@ -150,6 +152,7 @@ const MapScreen = ({ route }: any) => {
 
   const changeLanguage = (itemValue: any, index: any) => {
     const selectedLanguage = lang[index].value;
+    dispatch(setLanguage(selectedLanguage))
     localized.locale = selectedLanguage;
     setSelectedLanguage(selectedLanguage);
   };
@@ -212,7 +215,8 @@ const MapScreen = ({ route }: any) => {
                   rowTextStyle={styles.dropdown1RowTxtStyle}
                   data={lang && lang.map((dd) => dd.label)}
                   onSelect={changeLanguage}
-                  defaultButtonText={"EN"}
+                  // defaultButtonText={"EN"}
+                  defaultButtonText={languageName.toUpperCase()}
                   buttonTextAfterSelection={(itemValue, index) => {
                     return lang[index].value.toUpperCase();
                   }}
@@ -342,8 +346,9 @@ const MapScreen = ({ route }: any) => {
                 const verifiedFoodEvents = foodEvents?.filter(
                   (event: any) => event.status === "approved"
                 );
+
+                console.log("checking verified events", verifiedFoodEvents)
                 if (verifiedFoodEvents.length > 0) {
-                  setEvents(verifiedFoodEvents);
                   setEmptyEvents(false);
                 } else {
                   setEmptyEvents(true);

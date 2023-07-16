@@ -307,7 +307,7 @@ const PostEvent = () => {
                   postalCode: Number(postalCode) ? Number(postalCode) : 0,
                 },
               })
-            }
+            }}
           >
             {({
               handleSubmit,

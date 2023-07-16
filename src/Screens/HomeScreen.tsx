@@ -21,9 +21,12 @@ import { useDispatch, useSelector } from "react-redux";
 import PrimaryButton from "../Components/PrimaryButton";
 import { localized } from "../locales/localization";
 import { myTheme } from "../myTheme";
+import { setLanguage } from "../redux/reducers/langReducer";
 
 const HomeScreen = ({ route }: any) => {
   const userDetails = useSelector((state: any) => state.auth);
+  const languageName = useSelector((state:any) => state.language)
+
 
   const { data } = userDetails;
 
@@ -51,6 +54,8 @@ const HomeScreen = ({ route }: any) => {
   const changeLanguage = (itemValue: any, index: any) => {
     const selectedLanguage = lang[index].value;
     localized.locale = selectedLanguage;
+    dispatch(setLanguage(selectedLanguage))
+
     setSelectedLanguage(selectedLanguage);
   };
 
@@ -156,7 +161,8 @@ const HomeScreen = ({ route }: any) => {
               rowTextStyle={styles.dropdown1RowTxtStyle}
               data={lang && lang.map((dd) => dd.label)}
               onSelect={changeLanguage}
-              defaultButtonText={"EN"}
+              // defaultButtonText={"EN"}
+              defaultButtonText={languageName.toUpperCase()}
               buttonTextAfterSelection={(itemValue, index) => {
                 return lang[index].value.toUpperCase();
               }}
