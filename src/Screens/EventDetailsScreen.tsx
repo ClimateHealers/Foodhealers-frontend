@@ -6,6 +6,7 @@ import {
   Keyboard,
   Linking,
   Platform,
+  ScrollView,
   Share,
   StyleSheet,
   Text,
@@ -105,7 +106,8 @@ const EventDetailsScreen = ({ route }: any) => {
   const onShare = async () => {
     try {
       const result = await Share.share({
-        message: `${eventDetails?.additionalInfo}`,
+        // message: `${eventDetails?.additionalInfo}`,
+        message: `Coming soon!`,
       });
       if (result.action === Share.sharedAction) {
         if (result.activityType) {
@@ -127,6 +129,7 @@ const EventDetailsScreen = ({ route }: any) => {
           style={styles.background}
         >
           <SafeAreaView>
+            <ScrollView>
             <View style={styles.row}>
               <View style={styles.item}>
                 <Text style={styles.itemText}>{localized.t("Find Food")}</Text>
@@ -311,6 +314,7 @@ const EventDetailsScreen = ({ route }: any) => {
                 </TouchableOpacity>
               </View>
             </View>
+            </ScrollView>
           </SafeAreaView>
         </LinearGradient>
       </View>

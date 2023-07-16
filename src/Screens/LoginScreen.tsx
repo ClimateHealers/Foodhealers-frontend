@@ -9,6 +9,7 @@ import {
   Alert,
   Keyboard,
   Modal,
+  ScrollView,
   StatusBar,
   StyleSheet,
   Text,
@@ -17,7 +18,10 @@ import {
   View,
 } from "react-native";
 import { TextInput } from "react-native-paper";
-import { heightPercentageToDP as h2dp } from "react-native-responsive-screen";
+import {
+  heightPercentageToDP as h2dp,
+  widthPercentageToDP as w2dp,
+} from "react-native-responsive-screen";
 import SelectDropdown from "react-native-select-dropdown";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useDispatch, useSelector } from "react-redux";
@@ -83,239 +87,249 @@ const LoginScreen = () => {
       style={styles.background}
     >
       <TouchableWithoutFeedback onPress={handlePressOutside}>
-        <View style={styles.container}>
-          <StatusBar animated={true} backgroundColor="auto" />
-          {menuOpen && (
-            <View
-              style={{
-                position: "absolute",
-                right: 60,
-                top: 125,
-                backgroundColor: "white",
-                borderColor: "white",
-                borderRadius: 5,
-                zIndex: 9999,
-              }}
-            >
-              <TouchableOpacity onPress={() => handleMenuItemPress("Home")}>
-                <Text
-                  style={{
-                    padding: 10,
-                    fontSize: 20,
-                    fontWeight: "300",
-                    lineHeight: 27.24,
-                  }}
-                >
-                  Home
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => findFoodMenuItemPress("Find Food")}
+        <ScrollView>
+          <View style={styles.container}>
+            <StatusBar animated={true} backgroundColor="auto" />
+            {menuOpen && (
+              <View
+                style={{
+                  position: "absolute",
+                  right: 60,
+                  top: 125,
+                  backgroundColor: "white",
+                  borderColor: "white",
+                  borderRadius: 5,
+                  zIndex: 9999,
+                }}
               >
-                <Text
-                  style={{
-                    padding: 10,
-                    fontSize: 20,
-                    fontWeight: "300",
-                    lineHeight: 27.24,
-                  }}
+                <TouchableOpacity onPress={() => handleMenuItemPress("Home")}>
+                  <Text
+                    style={{
+                      padding: 10,
+                      fontSize: 20,
+                      fontWeight: "300",
+                      lineHeight: 27.24,
+                    }}
+                  >
+                    Home
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => findFoodMenuItemPress("Find Food")}
                 >
-                  Find Food
-                </Text>
-              </TouchableOpacity>
-            </View>
-          )}
-          <View style={styles.dropdownContainer}>
-            <SelectDropdown
-              buttonStyle={styles.dropdown1BtnStyle}
-              buttonTextStyle={styles.dropdown1BtnTxtStyle}
-              renderDropdownIcon={() => {
-                return (
-                  <MaterialIcons
-                    name="keyboard-arrow-down"
-                    size={18}
-                    color="#B50000"
-                  />
-                );
-              }}
-              dropdownIconPosition={"right"}
-              dropdownStyle={styles.dropdown1DropdownStyle}
-              rowStyle={styles.dropdown1RowStyle}
-              rowTextStyle={styles.dropdown1RowTxtStyle}
-              data={lang && lang.map((dd) => dd.label)}
-              onSelect={changeLanguage}
-              defaultButtonText={"EN"}
-              buttonTextAfterSelection={(itemValue, index) => {
-                return lang[index].value.toUpperCase();
-              }}
-              rowTextForSelection={(item, index) => {
-                return item;
-              }}
-            />
-            <MaterialCommunityIcons
-              name="menu"
-              size={40}
-              color="white"
-              onPress={toggleMenu}
-              style={{
-                marginRight: 20,
-              }}
-            />
-          </View>
-          <Modal visible={loading} animationType="slide" transparent={true}>
-            <View style={styles.centeredView}>
-              <View style={styles.modalView}>
-                <ActivityIndicator size={"large"} />
+                  <Text
+                    style={{
+                      padding: 10,
+                      fontSize: 20,
+                      fontWeight: "300",
+                      lineHeight: 27.24,
+                    }}
+                  >
+                    Find Food
+                  </Text>
+                </TouchableOpacity>
               </View>
-            </View>
-          </Modal>
-          <View style={{ marginTop: 30 }}>
-            <Formik
-              initialValues={{
-                email: "",
-                password: "",
-              }}
-              validationSchema={loginSchema}
-              onSubmit={async ({ email, password }) => {
-                setLoading(true);
-                signInWithEmailAndPassword(auth, email, password)
-                  .then((userCredential) => {
-                    // Signed in
-                    const user = userCredential.user;
-                    setLoading(false);
-                    console.log("user signed in successfully");
-                    navigation.navigate("HomeScreen");
-                    return user.getIdToken();
-                  })
-                  .then((token) => {
-                    const data = {
-                      tokenId: token,
-                    };
-                    dispatch(login(data) as any);
-                    console.log("Firebase token:", token);
-                  })
-                  .catch((error) => {
-                    setLoading(false);
-                    const errorCode = error.code;
-                    const errorMessage = error.message;
-                    errorMessage
-                      ? Alert.alert(
-                          "Invalid Credentials",
-                          "Incorrect email or password entered, please check your credentials and try again.",
-                          [
-                            {
-                              text: "Ok",
-                              style: "cancel",
-                            },
-                          ],
-                          { cancelable: true }
-                        )
-                      : "";
-                    setError(errorMessage);
-                  });
-              }}
-            >
-              {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
-                <View style={{ marginTop: 100 }}>
-                  <TextInput
-                    onChangeText={handleChange("email")}
-                    onBlur={handleBlur("email")}
-                    value={values.email.toLocaleLowerCase()}
-                    placeholder={localized.t("Email")}
-                    placeholderTextColor={"black"}
-                    style={styles.textInput}
-                  />
-                  <Text style={styles.inputError}>{errors.email}</Text>
-                  <TextInput
-                    secureTextEntry={showPassword ? false : true}
-                    onChangeText={handleChange("password")}
-                    onBlur={handleBlur("password")}
-                    value={values.password}
-                    placeholder={localized.t("Password")}
-                    placeholderTextColor={"black"}
-                    style={styles.textInput}
-                  />
-                  <Icon
-                    name={"eye"}
-                    size={20}
-                    color="#A5A5A5"
-                    style={styles.icon}
-                    onPress={() => setShowPassword(!showPassword)}
-                  />
-                  <View style={{ display: "flex", flexDirection: "column" }}>
-                    <Text style={styles.inputError}>{errors.password}</Text>
-                    <TouchableOpacity
-                      onPress={() => navigation.navigate("ForgotPassword")}
-                    >
-                      <Text
-                        style={{
-                          alignSelf: "flex-end",
-                          color: "white",
-                          fontSize: 15,
-                          // marginTop: 10,
-                          textDecorationLine: "underline",
-                        }}
-                      >
-                        Forgot password?
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-                  <View
-                    style={{
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      marginTop: h2dp("5"),
-                    }}
-                  >
-                    <PrimaryButton
-                      title={localized.t("Sign in")}
-                      buttonStyle={styles.buttonStyles}
-                      titleStyle={styles.titleStyle}
-                      onPress={handleSubmit}
+            )}
+            <View style={styles.dropdownContainer}>
+              <SelectDropdown
+                buttonStyle={styles.dropdown1BtnStyle}
+                buttonTextStyle={styles.dropdown1BtnTxtStyle}
+                renderDropdownIcon={() => {
+                  return (
+                    <MaterialIcons
+                      name="keyboard-arrow-down"
+                      size={18}
+                      color="#B50000"
                     />
-                  </View>
-                  <View
-                    style={{
-                      display: "flex",
-                      flexDirection: "row",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      marginTop: h2dp("20"),
-                    }}
-                  >
-                    <Text
+                  );
+                }}
+                dropdownIconPosition={"right"}
+                dropdownStyle={styles.dropdown1DropdownStyle}
+                rowStyle={styles.dropdown1RowStyle}
+                rowTextStyle={styles.dropdown1RowTxtStyle}
+                data={lang && lang.map((dd) => dd.label)}
+                onSelect={changeLanguage}
+              defaultButtonText={"EN"}
+                buttonTextAfterSelection={(itemValue, index) => {
+                  return lang[index].value.toUpperCase();
+                }}
+                rowTextForSelection={(item, index) => {
+                  return item;
+                }}
+              />
+              <MaterialCommunityIcons
+                name="menu"
+                size={40}
+                color="white"
+                onPress={toggleMenu}
+                style={{
+                  marginRight: 20,
+                }}
+              />
+            </View>
+            <Modal visible={loading} animationType="slide" transparent={true}>
+              <View style={styles.centeredView}>
+                <View style={styles.modalView}>
+                  <ActivityIndicator size={"large"} />
+                </View>
+              </View>
+            </Modal>
+            <View style={{ marginTop: 30 }}>
+              <Formik
+                initialValues={{
+                  email: "",
+                  password: "",
+                }}
+                validationSchema={loginSchema}
+                onSubmit={async ({ email, password }) => {
+                  setLoading(true);
+                  signInWithEmailAndPassword(auth, email, password)
+                    .then((userCredential) => {
+                      // Signed in
+                      const user = userCredential.user;
+                      setLoading(false);
+                      console.log("user signed in successfully");
+                      navigation.navigate("HomeScreen");
+                      return user.getIdToken();
+                    })
+                    .then((token) => {
+                      const data = {
+                        tokenId: token,
+                      };
+                      dispatch(login(data) as any);
+                      console.log("Firebase token:", token);
+                    })
+                    .catch((error) => {
+                      setLoading(false);
+                      const errorCode = error.code;
+                      const errorMessage = error.message;
+                      errorMessage
+                        ? Alert.alert(
+                            "Invalid Credentials",
+                            "Incorrect email or password entered, please check your credentials and try again.",
+                            [
+                              {
+                                text: "Ok",
+                                style: "cancel",
+                              },
+                            ],
+                            { cancelable: true }
+                          )
+                        : "";
+                      setError(errorMessage);
+                    });
+                }}
+              >
+                {({
+                  handleChange,
+                  handleBlur,
+                  handleSubmit,
+                  values,
+                  errors,
+                }) => (
+                  <View style={{ marginTop: 100 }}>
+                    <TextInput
+                      onChangeText={handleChange("email")}
+                      onBlur={handleBlur("email")}
+                      value={values.email.toLocaleLowerCase()}
+                      placeholder={localized.t("Email")}
+                      placeholderTextColor={"black"}
+                      style={styles.textInput}
+                    />
+                    <Text style={styles.inputError}>{errors.email}</Text>
+                    <View style={styles.inputContainer}>
+                      <TextInput
+                        secureTextEntry={showPassword ? false : true}
+                        onChangeText={handleChange("password")}
+                        onBlur={handleBlur("password")}
+                        value={values.password}
+                        placeholder={localized.t("Password")}
+                        placeholderTextColor={"black"}
+                        style={styles.textInput}
+                      />
+                      <Icon
+                        name={"eye"}
+                        size={20}
+                        color="#A5A5A5"
+                        style={styles.icon}
+                        onPress={() => setShowPassword(!showPassword)}
+                      />
+                    </View>
+
+                    <View style={{ display: "flex", flexDirection: "column" }}>
+                      <Text style={styles.inputError}>{errors.password}</Text>
+                      <TouchableOpacity
+                        onPress={() => navigation.navigate("ForgotPassword")}
+                        style= {{ alignSelf:"flex-end"}}
+                      >
+                        <Text
+                          style={{
+                            color: "white",
+                            fontSize: 15,
+                            textDecorationLine: "underline",
+                          }}
+                        >
+                          Forgot password?
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
+                    <View
                       style={{
-                        textAlign: "center",
-                        color: "white",
-                        fontSize: 18,
-                        marginTop: 10,
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        marginTop: h2dp("5"),
                       }}
                     >
-                      Not a user?
-                    </Text>
-                    <TouchableOpacity
-                      onPress={() => navigation.navigate("SignupScreen")}
+                      <PrimaryButton
+                        title={localized.t("Sign in")}
+                        buttonStyle={styles.buttonStyles}
+                        titleStyle={styles.titleStyle}
+                        onPress={handleSubmit}
+                      />
+                    </View>
+                    <View
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        marginTop: h2dp("20"),
+                      }}
                     >
                       <Text
                         style={{
+                          textAlign: "center",
                           color: "white",
                           fontSize: 18,
-                          textDecorationLine: "underline",
-                          fontFamily: "OpenSans-Bold",
-                          textAlign: "center",
                           marginTop: 10,
                         }}
                       >
-                        {`${" "}${localized.t("Sign up")}`}
+                        Not a user?
                       </Text>
-                    </TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={() => navigation.navigate("SignupScreen")}
+                      >
+                        <Text
+                          style={{
+                            color: "white",
+                            fontSize: 18,
+                            textDecorationLine: "underline",
+                            fontFamily: "OpenSans-Bold",
+                            textAlign: "center",
+                            marginTop: 10,
+                          }}
+                        >
+                          {`${" "}${localized.t("Sign up")}`}
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
                   </View>
-                </View>
-              )}
-            </Formik>
+                )}
+              </Formik>
+            </View>
           </View>
-        </View>
+        </ScrollView>
       </TouchableWithoutFeedback>
     </LinearGradient>
   );
@@ -407,6 +421,9 @@ const styles = StyleSheet.create({
     color: "red",
     marginBottom: 10,
   },
+  inputContainer: {
+    position: "relative",
+  },
   textInput: {
     height: 45,
     marginBottom: 1,
@@ -414,8 +431,8 @@ const styles = StyleSheet.create({
   },
   icon: {
     position: "absolute",
-    top: 85,
-    left: 300,
+    top: h2dp(1.5),
+    left: w2dp("80%"),
   },
 });
 

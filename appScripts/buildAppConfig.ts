@@ -14,7 +14,7 @@ const appConfig = {
   "expo": {
     "name": "food-healers",
     "slug": "food-healers",
-    "version": "1.0.9",
+    "version": "1.1.2",
     "orientation": "portrait",
     
     "icon": "./assets/Climate-Healers-Logo.png",

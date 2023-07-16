@@ -32,14 +32,14 @@ const Navigation = () => {
             component={LoginScreen}
             options={{ title: "", header: () => null }}
           />
-            <Stack.Screen
-              name="SignupScreen"
-              component={SignupScreen}  
+          <Stack.Screen
+            name="SignupScreen"
+            component={SignupScreen}
             options={{ title: "", header: () => null }}
           />
           <Stack.Screen
             name="ForgotPassword"
-            component={Forgotpassword}  
+            component={Forgotpassword}
             options={{ title: "", header: () => null }}
           />
           <Stack.Screen
@@ -106,7 +106,13 @@ const Navigation = () => {
           <Stack.Screen
             name="AllEventScreen"
             component={AllEventScreen}
-            options={{ title: "", header: () => null }}
+            options={({ navigation, route }) => ({
+              title: "",
+              gestureEnabled: route.params?.fromEventPhotosScreen
+                ? false
+                : true,
+              header: () => null,
+            })}
           />
           <Stack.Screen
             name="SingleEventDetails"

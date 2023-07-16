@@ -162,7 +162,7 @@ const PostEvent = () => {
         location: location,
       });
     });
-    
+
     setMenuOpen(false);
   };
   const logout = async (item: any) => {
@@ -287,7 +287,12 @@ const PostEvent = () => {
               city,
               state,
               postalCode,
-            }) =>
+            }) => {
+              if (!city) {
+                alert('Please enter the full address.');
+                return;
+              }
+            
               await navigation.navigate("UploadPhotosScreen", {
                 eventFormData: {
                   eventName: eventName,

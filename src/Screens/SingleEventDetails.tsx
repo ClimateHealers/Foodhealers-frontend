@@ -5,6 +5,7 @@ import moment from "moment";
 import React, { useState } from "react";
 import {
     Alert, Image, Keyboard, Linking,
+    ScrollView,
     Share, StyleSheet,
     Text, TouchableOpacity, TouchableWithoutFeedback, View
 } from "react-native";
@@ -86,7 +87,8 @@ const SingleEventDetails = ({ route }: any) => {
   const onShare = async () => {
     try {
       const result = await Share.share({
-        message: `${eventDetails?.additionalInfo}`,
+        // message: `${eventDetails?.additionalInfo}`,
+        message: `Coming soon!`,
       });
       if (result.action === Share.sharedAction) {
         if (result.activityType) {
@@ -108,6 +110,7 @@ const SingleEventDetails = ({ route }: any) => {
           style={styles.background}
         >
           <SafeAreaView>
+            <ScrollView>
             <View style={styles.row}>
               <Ionicons
                 name="chevron-back"
@@ -169,7 +172,7 @@ const SingleEventDetails = ({ route }: any) => {
               <View style={styles.card}>
                 <View>
                   <Image
-                    source={require("../../assets/images/hostingEvent.png")}
+                    source={{ uri: eventDetails?.eventPhoto }}
                     style={{
                       width: "100%",
                       height: 180,
@@ -281,6 +284,7 @@ const SingleEventDetails = ({ route }: any) => {
                 </TouchableOpacity>
               </View>
             </View>
+            </ScrollView>
           </SafeAreaView>
         </LinearGradient>
       </View>

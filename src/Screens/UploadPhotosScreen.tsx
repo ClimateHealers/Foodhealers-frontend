@@ -80,30 +80,14 @@ const UploadPhotosScreen = ({ route }: any) => {
     if (!result.canceled) {
       console.log("checking image from library", result.assets)
       const multipleImages = result.assets.map((image) => image.uri);
-      const formData = new FormData();
+      const singlePhoto = result.assets[0].uri;
+      
 
-      multipleImages.forEach((image, index) => {
-        formData.append(`image_${index}`, {
-          uri: image,
-          type: "image/jpeg",
-          name: `image_${index}.jpg`,
-        });
-      });
-      // const binaryImages = await Promise.all(
-      //   multipleImages.map(async (image, index) => {
-      //     const response = await fetch(image);
-      //     const blob = await response.blob();
-      //     formData.append(`image_${index}`, blob, `image_${index}.jpg`);
-      //     const uri = URL.createObjectURL(blob); // Convert Blob to URI
-      //     return uri;
-      //   })
-      // );
-
-      console.log("checking image data uploaded from phone", multipleImages);
 
       navigation.navigate("EventPhotosScreen", {
         eventFormData: eventFormData,
         eventPhotos: multipleImages,
+        singlePhoto :singlePhoto
       });
     }
   };

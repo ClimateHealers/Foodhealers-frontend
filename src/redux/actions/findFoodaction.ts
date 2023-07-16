@@ -7,6 +7,10 @@ export interface FindFood {
   alt: number;
   eventStartDate: string;
   eventEndDate: string;
+  city: string;
+  fullAddress: string;
+  postalCode: number;
+  state: string;
 }
 
 export const findFood = createAsyncThunk<FindFood, FindFood>(
@@ -18,7 +22,9 @@ export const findFood = createAsyncThunk<FindFood, FindFood>(
           "Content-Type": "application/json",
         },
       };
-      const result = await API.post("v1/api/find-food/", findFood, config);
+      const result = await API.get(
+        `v1/api/find-food/?alt=${findFood.alt}&&city=${findFood?.city}&&lat=${findFood?.lat}&&lng=${findFood?.lng}&&eventStartDate=${findFood?.eventStartDate}&&fullAddress=${findFood.fullAddress}&&postalCode=${findFood.postalCode}&&eventEndDate=${findFood.eventEndDate}&&state=${findFood.state}`
+      );
       return result.data;
     } catch (error: any) {
       return rejectWithValue(error?.response?.data?.message);
