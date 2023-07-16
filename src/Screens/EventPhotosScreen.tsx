@@ -11,7 +11,7 @@ import {
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  View
+  View,
 } from "react-native";
 import { localized } from "../locales/localization";
 
@@ -20,7 +20,7 @@ import { Button } from "react-native-elements";
 import Spinner from "react-native-loading-spinner-overlay";
 import {
   heightPercentageToDP as h2dp,
-  widthPercentageToDP as w2dp
+  widthPercentageToDP as w2dp,
 } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
@@ -28,9 +28,10 @@ import { getLocation } from "../Components/getCurrentLocation";
 import PrimaryButton from "../Components/PrimaryButton";
 import { postEvent } from "../redux/actions/postEventaction";
 import { logOut } from "../redux/reducers/authreducers";
+// import { NavigationActions } from 'react-navigation';
 
 const EventPhotosScreen = ({ route }: any) => {
-  const { eventPhotos, eventFormData } = route.params;
+  const { eventPhotos, eventFormData, singlePhoto } = route.params;
 
   const isAuthenticated = useSelector(
     (state: any) => state.auth.data.isAuthenticated
@@ -64,7 +65,7 @@ const EventPhotosScreen = ({ route }: any) => {
   const logout = async (item: any) => {
     // persistor.purge()
     await dispatch(logOut({}) as any);
-    await removeAuthData()
+    await removeAuthData();
     navigation.dispatch(
       CommonActions.reset({
         index: 0,
@@ -76,32 +77,40 @@ const EventPhotosScreen = ({ route }: any) => {
   const submitEvent = () => {
     setShowDialog(true);
   };
+  const formData = new FormData();
+  formData.append("eventName", eventFormData?.eventName);
+  formData.append("lat", eventFormData?.lat);
+  formData.append("lng", eventFormData?.long);
+  formData.append("alt", "0");
+  formData.append("fullAddress", eventFormData?.address);
+  formData.append("postalCode", eventFormData?.postalCode);
+  formData.append("state", eventFormData?.state);
+  formData.append("city", eventFormData?.city);
+  formData.append("eventStartDate", eventFormData?.eventDate);
+  formData.append("eventEndDate", eventFormData?.eventEndDateTime);
+  formData.append("additionalInfo", eventFormData?.served);
+  // formData.append("files",photo)
+  formData.append("files", {
+    uri: singlePhoto,
+    type: "image/jpeg",
+    name: `${eventFormData?.eventDate}.jpg`,
+  });
 
   const naivgateToAllEvents = async () => {
-    setLoading(true);
-    const postEventData = {
-      eventName: eventFormData?.eventName,
-      lat: eventFormData?.lat,
-      lng: eventFormData?.long,
-      alt: 0,
-      fullAddress: eventFormData?.address,
-      postalCode: eventFormData?.postalCode,
-      state: eventFormData?.state,
-      city: eventFormData?.city,
-      eventStartDate: eventFormData?.eventDate,
-      eventEndDate: eventFormData?.eventEndDateTime,
-      additionalInfo: eventFormData?.served,
-      files: eventPhotos,
-    };
-    console.log("checking post event Data", postEventData);
-    await dispatch(postEvent(postEventData) as any);
-    setLoading(false);
-    navigation.navigate("AllEventScreen", {
-      eventDetails: eventFormData,
-      eventPhotos: eventPhotos,
-    });
-    setShowDialog(false);
+    try {
+      setLoading(true);
+
+      await dispatch(postEvent(formData as any) as any);
+
+      setLoading(false);
+
+      navigation.navigate("AllEventScreen", { fromEventPhotosScreen: true });
+      setShowDialog(false);
+    } catch (error) {
+      console.log("firstfirstfirstfirst", error);
+    }
   };
+
   return (
     <LinearGradient
       colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}

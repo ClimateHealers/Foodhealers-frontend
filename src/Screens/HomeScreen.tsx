@@ -101,7 +101,7 @@ const HomeScreen = ({ route }: any) => {
   //   findExistingSession()
   // },[]))
   const postEvent = () => {
-    if (Object.keys(data).length) {
+    if (data.token) {
       navigation.navigate("EventsHomeScreen");
     } else {
       Alert.alert(

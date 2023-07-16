@@ -90,6 +90,7 @@ const AllEventScreen = () => {
     long,
     verified,
     status,
+    eventPhoto
   }: any) => (
     <View style={styles.cardContainer}>
       {status === "approved" ? (
@@ -138,6 +139,7 @@ const AllEventScreen = () => {
               eventEndDate: eventEndDate,
               lat: lat,
               long: long,
+              eventPhoto: eventPhoto,
             },
           })
         }
@@ -248,6 +250,7 @@ const AllEventScreen = () => {
                     eventEndDate={item?.eventEndDate}
                     verified={item?.verified}
                     status={item?.status}
+                    eventPhoto = {item?.eventPhoto}
                   />
                 )}
                 keyExtractor={(item) => item?.id}
@@ -303,7 +306,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginVertical: h2dp(1),
     backgroundColor: "white",
-    marginHorizontal: 10,
+    marginHorizontal: w2dp(3),
     height: h2dp(13),
     borderRadius: 5,
   },

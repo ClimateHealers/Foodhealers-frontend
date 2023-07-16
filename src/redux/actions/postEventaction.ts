@@ -21,7 +21,7 @@ export const postEvent = createAsyncThunk<PostEvent, PostEvent>(
       const token = getState().auth.data.token;
       const config = {
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "multipart/form-data",
           Authorization: `Token ${token} `,
         },
       };

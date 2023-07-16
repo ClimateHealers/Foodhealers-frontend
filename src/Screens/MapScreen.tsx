@@ -39,8 +39,8 @@ const MapScreen = ({ route }: any) => {
   const { location } = route.params;
 
   const startDate = moment(new Date().setHours(0, 0, 0, 0)).utc().unix();
-  const endDate = moment(new Date().setHours(23, 59, 59, 1000))
-    .add(5, "d")
+  const endDate = moment(new Date().setHours(23, 59, 59, 0))
+    .add(6, "d")
     .utc()
     .unix();
 
@@ -129,7 +129,7 @@ const MapScreen = ({ route }: any) => {
   const logout = async (item: any) => {
     // persistor.purge()
     await dispatch(logOut({}) as any);
-    await removeAuthData()
+    await removeAuthData();
     navigation.dispatch(
       CommonActions.reset({
         index: 0,
@@ -319,16 +319,20 @@ const MapScreen = ({ route }: any) => {
                   }
                 });
                 const findFoodData = {
-                  lat: details?.geometry?.location?.lat,
-                  lng: details?.geometry?.location?.lng,
+                  lat: details?.geometry?.location?.lat
+                    ? details?.geometry?.location?.lat
+                    : 0,
+                  lng: details?.geometry?.location?.lng
+                    ? details?.geometry?.location?.lng
+                    : 0,
                   alt: 0,
-                  eventStartDate: startDate,
+                  eventStartDate: startDate ? startDate : 0,
                   fullAddress: details?.formatted_address,
                   city: city,
                   state: state,
                   postalCode: postalCode ? Number(postalCode) : 0,
 
-                  eventEndDate: endDate,
+                  eventEndDate: endDate ? endDate : 0,
                 };
 
                 const response = await dispatch(
@@ -338,17 +342,12 @@ const MapScreen = ({ route }: any) => {
                 const verifiedFoodEvents = foodEvents?.filter(
                   (event: any) => event.status === "approved"
                 );
-                console.log(
-                  "checking events from find food api that are approved",
-                  verifiedFoodEvents
-                );
                 if (verifiedFoodEvents.length > 0) {
                   setEvents(verifiedFoodEvents);
                   setEmptyEvents(false);
                 } else {
                   setEmptyEvents(true);
                 }
-
               }}
               fetchDetails={true}
               textInputProps={{ placeholderTextColor: "#000000" }}

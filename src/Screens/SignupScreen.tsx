@@ -10,14 +10,18 @@ import {
   Keyboard,
   Modal,
   Platform,
+  ScrollView,
   StatusBar,
   StyleSheet,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
 } from "react-native";
+import {
+  heightPercentageToDP as h2dp,
+  widthPercentageToDP as w2dp,
+} from "react-native-responsive-screen";
 import { Text, TextInput } from "react-native-paper";
-import { heightPercentageToDP as h2dp } from "react-native-responsive-screen";
 import SelectDropdown from "react-native-select-dropdown";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useDispatch } from "react-redux";
@@ -81,6 +85,7 @@ const SignupScreen = () => {
       style={styles.background}
     >
       <TouchableWithoutFeedback onPress={handlePressOutside}>
+        <ScrollView>
         <View style={styles.container}>
           <StatusBar animated={true} backgroundColor="auto" />
           {menuOpen && (
@@ -250,6 +255,7 @@ const SignupScreen = () => {
                   style={styles.textInput}
                 />
                 <Text style={styles.inputError}>{errors.email}</Text>
+                <View style = {{position:"relative"}}>
                 <TextInput
                   secureTextEntry={showPassword ? false : true}
                   onChangeText={handleChange("password")}
@@ -266,15 +272,11 @@ const SignupScreen = () => {
                   style={styles.icon}
                   onPress={() => setShowPassword(!showPassword)}
                 />
-                <Icon
-                  name={"eye"}
-                  size={20}
-                  color="#A5A5A5"
-                  onPress={() => setShowConfirmPassword(!showConfirmPassword)}
-                  style={styles.eye}
-                />
+                </View>
+            
 
                 <Text style={styles.inputError}>{errors.password}</Text>
+                <View style = {{position:"relative"}}>
                 <TextInput
                   secureTextEntry={showConfirmPassword ? false : true}
                   onChangeText={handleChange("confirmPassword")}
@@ -284,6 +286,14 @@ const SignupScreen = () => {
                   placeholderTextColor={"black"}
                   style={styles.textInput}
                 />
+                    <Icon
+                  name={"eye"}
+                  size={20}
+                  color="#A5A5A5"
+                  onPress={() => setShowConfirmPassword(!showConfirmPassword)}
+                  style={styles.eye}
+                />
+                </View>
                 <Text style={styles.inputError}>{errors.confirmPassword}</Text>
 
                 <View
@@ -331,6 +341,7 @@ const SignupScreen = () => {
             )}
           </Formik>
         </View>
+        </ScrollView>
       </TouchableWithoutFeedback>
     </LinearGradient>
   );
@@ -394,6 +405,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     marginTop: 40,
+    position:"relative"
   },
   dropdown1BtnStyle: {
     marginTop: 15,
@@ -432,13 +444,13 @@ const styles = StyleSheet.create({
   },
   icon: {
     position: "absolute",
-    top: 152,
-    left: 300,
+    top: h2dp(1.5),
+    left: w2dp("80%"),
   },
   eye: {
     position: "absolute",
-    top: 222,
-    left: 300,
+    top: h2dp(1.5),
+    left: w2dp("80%"),
     zIndex: 9999,
   },
 });

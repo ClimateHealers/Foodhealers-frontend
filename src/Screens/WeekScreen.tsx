@@ -61,17 +61,17 @@ const WeekScreen = ({ route }: any) => {
 
   const gettingEvents = async () => {
     const findFoodData = {
-      lat: location?.coords?.latitude,
-      lng: location?.coords?.longitude,
+      lat: location?.coords?.latitude ? location?.coords?.latitude : 0,
+      lng: location?.coords?.longitude ? location?.coords?.longitude : 0,
       alt: 0,
       city: city,
       state: state,
-      postalCode: postalCode,
+      postalCode: postalCode ? Number(postalCode) : 0,
       fullAddress: fullAddress,
-      eventStartDate: startDate,
-      eventEndDate: endDate,
+      eventStartDate: startDate ? startDate : 0,
+      eventEndDate: endDate ? endDate : 0,
     };
-
+    console.log(".....................", findFoodData);
 
     const response = await dispatch(findFood(findFoodData as any) as any);
 
@@ -104,16 +104,17 @@ const WeekScreen = ({ route }: any) => {
     setSelectedIndex(index);
     if (index === 0) {
       const oneDayData = {
-        lat: location?.coords?.latitude,
-        lng: location?.coords?.longitude,
+        lat: location?.coords?.latitude ? location?.coords?.latitude : 0,
+        lng: location?.coords?.longitude ? location?.coords?.longitude : 0,
         alt: 0,
         city: city,
         state: state,
-        postalCode: postalCode,
+        postalCode: postalCode ? Number(postalCode) : 0,
         fullAddress: fullAddress,
-        eventStartDate: startDate,
-        eventEndDate: endDate,
+        eventStartDate: startDate ? startDate : 0,
+        eventEndDate: endDate ? endDate : 0,
       };
+      console.log("checking one day data", oneDayData);
       const response = await dispatch(findFood(oneDayData as any) as any);
       const foodEvents = response?.payload?.foodEvents;
       const verifiedFoodEvents = foodEvents?.filter(
@@ -122,15 +123,15 @@ const WeekScreen = ({ route }: any) => {
       setEvents(verifiedFoodEvents);
     } else if (index === 1) {
       const thisWeekData = {
-        lat: location?.coords?.latitude,
-        lng: location?.coords?.longitude,
+        lat: location?.coords?.latitude ? location?.coords?.latitude : 0,
+        lng: location?.coords?.longitude ? location?.coords?.longitude : 0,
         alt: 0,
         city: city,
         state: state,
-        postalCode: postalCode,
+        postalCode: postalCode ? Number(postalCode) : 0,
         fullAddress: fullAddress,
-        eventStartDate: startDate,
-        eventEndDate: oneWeek,
+        eventStartDate: startDate ? startDate : 0,
+        eventEndDate: oneWeek ? oneWeek : 0,
       };
       const response = await dispatch(findFood(thisWeekData as any) as any);
       const foodEvents = response?.payload?.foodEvents;
