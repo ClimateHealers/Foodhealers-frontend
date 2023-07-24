@@ -14,10 +14,10 @@ const appConfig = {
   "expo": {
     "name": "food-healers",
     "slug": "food-healers",
-    "version": "1.1.2",
+    "version": "1.1.6",
     "orientation": "portrait",
     
-    "icon": "./assets/Climate-Healers-Logo.png",
+    "icon": "./assets/FH-logo.jpg",
     "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/splash.png",

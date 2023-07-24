@@ -27,10 +27,12 @@ import { getLocation } from "../Components/getCurrentLocation";
 import { removeAuthData } from "../redux/actions/authAction";
 import { logOut } from "../redux/reducers/authreducers";
 import { heightPercentageToDP as h2dp, widthPercentageToDP as w2dp } from "react-native-responsive-screen";
+import { Ionicons } from "@expo/vector-icons";
+
 
 
 const EventDetailsScreen = ({ route }: any) => {
-  const { eventDetails } = route.params;
+  const { eventDetails, lat, lng } = route.params;
   const navigation: any = useNavigation();
 
   const isAuthenticated = useSelector(
@@ -100,7 +102,7 @@ const EventDetailsScreen = ({ route }: any) => {
 
 
   const navigationHandler = () => {
-    const url = `https://www.google.com/maps/dir/?api=1&destination=${eventDetails?.address?.lat},${eventDetails?.address?.lng}`;
+    const url = `https://www.google.com/maps/dir/?api=1&origin=${lat},${lng}&destination=${eventDetails?.address?.lat},${eventDetails?.address?.lng}`;
     Linking.openURL(url);
   };
   const onShare = async () => {
@@ -131,6 +133,13 @@ const EventDetailsScreen = ({ route }: any) => {
           <SafeAreaView>
             <ScrollView>
             <View style={styles.row}>
+            <Ionicons
+                name="chevron-back"
+                size={32}
+                color="white"
+                style={{ marginRight: w2dp(7), marginTop: h2dp(3) }}
+                onPress={() => navigation.goBack()}
+              />
               <View style={styles.item}>
                 <Text style={styles.itemText}>{localized.t("Find Food")}</Text>
               </View>

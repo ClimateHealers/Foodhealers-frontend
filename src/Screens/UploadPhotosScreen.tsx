@@ -153,7 +153,7 @@ const UploadPhotosScreen = ({ route }: any) => {
               </Text>
             </TouchableOpacity>
             {isAuthenticated && (
-              <TouchableOpacity onPress={() => logout("logout")}>
+              <TouchableOpacity onPress={() => navigation.navigate("ProfileScreen")}>
                 <Text
                   style={{
                     padding: 10,
@@ -162,7 +162,7 @@ const UploadPhotosScreen = ({ route }: any) => {
                     lineHeight: 27.24,
                   }}
                 >
-                  Log out
+                  Account
                 </Text>
               </TouchableOpacity>
             )}

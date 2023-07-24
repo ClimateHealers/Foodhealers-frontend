@@ -6,6 +6,7 @@ import {
   ActivityIndicator,
   Alert,
   ImageBackground,
+  Linking,
   Modal,
   Platform,
   StatusBar,
@@ -15,7 +16,10 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import { heightPercentageToDP as h2dp } from "react-native-responsive-screen";
+import {
+  heightPercentageToDP as h2dp,
+  widthPercentageToDP as w2dp,
+} from "react-native-responsive-screen";
 import SelectDropdown from "react-native-select-dropdown";
 import { useDispatch, useSelector } from "react-redux";
 import PrimaryButton from "../Components/PrimaryButton";
@@ -29,7 +33,7 @@ const HomeScreen = ({ route }: any) => {
 
   const dispatch = useDispatch();
 
-  console.log("checkign userdetails", userDetails);
+  console.log("checking userdetails from login API", userDetails);
 
   const [loc, setLoc] = useState(false);
   const [langOpen, setlangOpen] = useState(false);
@@ -64,7 +68,7 @@ const HomeScreen = ({ route }: any) => {
         Alert.alert(
           "Location permission denied",
           "Please grant permission to access your location to use this feature.",
-          [{ text: "OK" }],
+          [{ text: "Open settings", onPress: () => Linking.openSettings() }],
           { cancelable: false }
         );
         return;
@@ -97,9 +101,6 @@ const HomeScreen = ({ route }: any) => {
       </View>
     );
   };
-  // useFocusEffect(useCallback(()=>{
-  //   findExistingSession()
-  // },[]))
   const postEvent = () => {
     if (data.token) {
       navigation.navigate("EventsHomeScreen");
@@ -136,7 +137,7 @@ const HomeScreen = ({ route }: any) => {
         <ImageBackground
           source={require("../../assets/homeScreen.jpg")}
           style={styles.backgroundImage}
-        >
+          >
           <View style={styles.dropdownContainer}>
             <SelectDropdown
               buttonStyle={styles.dropdown1BtnStyle}
@@ -164,7 +165,7 @@ const HomeScreen = ({ route }: any) => {
                 return item;
               }}
             />
-          </View>
+            </View>
           <View style={{ flex: 1 }}>{appLoader(loc == true)}</View>
           <View style={styles.headerContainer}>
             <PrimaryButton

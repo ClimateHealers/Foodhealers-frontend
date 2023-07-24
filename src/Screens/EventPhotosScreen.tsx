@@ -159,7 +159,7 @@ const EventPhotosScreen = ({ route }: any) => {
                 </Text>
               </TouchableOpacity>
               {isAuthenticated && (
-                <TouchableOpacity onPress={() => logout("logout")}>
+                <TouchableOpacity onPress={() => navigation.navigate("ProfileScreen")}>
                   <Text
                     style={{
                       padding: 10,
@@ -168,7 +168,7 @@ const EventPhotosScreen = ({ route }: any) => {
                       lineHeight: 27.24,
                     }}
                   >
-                    Log out
+                    Account
                   </Text>
                 </TouchableOpacity>
               )}

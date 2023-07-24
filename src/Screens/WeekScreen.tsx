@@ -9,12 +9,16 @@ import {
   StatusBar,
   StyleSheet,
   Text,
+  TouchableOpacity,
   TouchableWithoutFeedback,
-  View,
+  View
 } from "react-native";
 import { Image } from "react-native-elements";
 import MapView, { Marker } from "react-native-maps";
-import { widthPercentageToDP as w2dp } from "react-native-responsive-screen";
+import {
+  heightPercentageToDP as h2dp,
+  widthPercentageToDP as w2dp
+} from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
 import SegmentedControlTab from "react-native-segmented-control-tab";
 import SelectDropdown from "react-native-select-dropdown";
@@ -24,7 +28,8 @@ import { localized } from "../locales/localization";
 import { findFood } from "../redux/actions/findFoodaction";
 
 const WeekScreen = ({ route }: any) => {
-  const { location, city, postalCode, state, fullAddress } = route.params;
+  const { location, city, postalCode, state, fullAddress, lat, lng, address } =
+    route.params;
   const { width, height } = Dimensions.get("window");
   const navigation: any = useNavigation();
   const ASPECT_RATIO = width / height;
@@ -58,6 +63,41 @@ const WeekScreen = ({ route }: any) => {
     .add(6, "d")
     .utc()
     .unix();
+  const focusMarker = () => {
+    if (mapRef.current) {
+      const markerCoordinate = { latitude: lat, longitude: lng };
+
+      const region = {
+        latitude: markerCoordinate.latitude,
+        longitude: markerCoordinate.longitude,
+        latitudeDelta: LATITUDE_DELTA,
+        longitudeDelta: LONGITUDE_DELTA,
+      };
+
+      mapRef.current.animateToRegion(region, 2000);
+    }
+  };
+  if (lat && lng) {
+    focusMarker();
+  }
+
+
+  const focusCurrentLocation = () => {
+    if (mapRef.current) {
+      const markerCoordinate = { latitude: location?.coords?.latitude, longitude: location?.coords?.longitude };
+
+      const region = {
+        latitude: markerCoordinate.latitude,
+        longitude: markerCoordinate.longitude,
+        latitudeDelta: LATITUDE_DELTA,
+        longitudeDelta: LONGITUDE_DELTA,
+      };
+
+      mapRef.current.animateToRegion(region, 2000);
+    }
+  };
+
+
 
   const gettingEvents = async () => {
     const findFoodData = {
@@ -89,6 +129,8 @@ const WeekScreen = ({ route }: any) => {
   const navigateToEvent = (eventData: any) => {
     navigation.navigate("EventDetailsScreen", {
       eventDetails: eventData,
+      lat:lat,
+      lng:lng
     });
   };
 
@@ -221,6 +263,26 @@ const WeekScreen = ({ route }: any) => {
                 onTabPress={handleSingleIndexSelect}
               />
             </View>
+            <View style={{ marginTop: h2dp(1) }}>
+              <Text style={styles.boldText}>
+                <Text style={styles.cardText}>You are seeing event for </Text>
+                {fullAddress}
+              </Text>
+              <TouchableOpacity onPress={focusCurrentLocation}>
+                <Text
+                  style={{
+                    marginLeft: w2dp(5),
+                    color: "orange",
+                    textDecorationLine: "underline",
+                    marginTop: h2dp(1),
+                    fontSize: 15,
+                    fontWeight: "300",
+                  }}
+                >
+                  Click here to see events in your current location
+                </Text>
+              </TouchableOpacity>
+            </View>
 
             <View style={styles.mapContainer}>
               <MapView
@@ -235,6 +297,24 @@ const WeekScreen = ({ route }: any) => {
                 }}
                 showsUserLocation={true}
               >
+                {address ? (
+                  <Marker
+                    pinColor="#FC5A56"
+                    coordinate={{
+                      latitude: lat ? lat : 0,
+                      longitude: lng ? lng : 0,
+                      latitudeDelta: LATITUDE_DELTA,
+                      longitudeDelta: LONGITUDE_DELTA,
+                    }}
+                    title={"selected location"}
+                  >
+                    <Image
+                      source={require("../../assets/currentLocationPin.png")}
+                      style={styles.markerIcon}
+                    />
+                  </Marker>
+                ) : null}
+
                 {events?.map((marker: any) => {
                   const coordinates = {
                     latitude: marker?.address?.lat,
@@ -324,7 +404,7 @@ const styles = StyleSheet.create({
     zIndex: 9999,
   },
   mapContainer: {
-    marginTop: 50,
+    marginTop: 30,
   },
   dropdown1BtnStyle: {
     marginTop: 15,
@@ -401,6 +481,18 @@ const styles = StyleSheet.create({
   activeTabStyle: {
     backgroundColor: "#EDC258",
     color: "black",
+  },
+  cardText: {
+    fontSize: 15,
+    fontFamily: "OpenSans-Light",
+    color: "white",
+    fontWeight: "300",
+  },
+  boldText: {
+    fontWeight: "300",
+    fontSize: 15,
+    color: "orange",
+    marginLeft: w2dp(5),
   },
 });
 

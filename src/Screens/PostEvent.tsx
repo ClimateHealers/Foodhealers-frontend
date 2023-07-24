@@ -4,9 +4,10 @@ import Constants from "expo-constants";
 import { LinearGradient } from "expo-linear-gradient";
 import { Formik } from "formik";
 import moment from "moment";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
+  Alert,
   Keyboard,
   Modal,
   Platform,
@@ -59,45 +60,25 @@ const PostEvent = () => {
     { id: 8, label: "Spanish", value: "es" },
   ]);
   const [selectedDate, setSelectedDate] = useState<Date | any>(new Date());
-  const [selectedTime, setSelectedTime] = useState<Date | undefined>(
-    new Date()
-  );
+  const [selectedTime, setSelectedTime] = useState<Date | any>(new Date());
   const [selectedEndDate, setSelectedEndDate] = useState<Date | any>(
-    new Date()
+    moment().add(1, "hour")
   );
-  const [selectedEndTime, setSelectedEndTime] = useState<Date | undefined>(
-    new Date()
+  const [minmumEndDate, setMinmumEndDate] = useState<Date | any>(
+    moment().add(1, "hour")
   );
-  const [validation, setValidation] = useState(false);
-  const minTime =
-    moment(selectedDate).format("YYYY-MM-DD") == moment().format("YYYY-MM-DD")
-      ? new Date()
-      : moment(selectedDate).startOf("day");
+  const [selectedEndTime, setSelectedEndTime] = useState<Date | any>(
+    moment(new Date(selectedTime)).add(1, "hour")
+  );
 
   const dispatch = useDispatch();
 
   const API_KEY = Constants?.manifest?.extra?.googleMapsApiKey;
 
-  const eventDate = moment(selectedDate);
-  const eventTime = moment(selectedTime);
 
-  const eventEndDate = moment(selectedEndDate);
-  const eventEndTime = moment(selectedEndTime);
+  const eventDateTime = moment(selectedDate).utc().unix();
 
-  eventDate.set({
-    hour: eventTime.hour(),
-    minute: eventTime.minute(),
-    second: eventTime.second(),
-  });
-  eventEndDate.set({
-    hour: eventEndTime.hour(),
-    minute: eventEndTime.minute(),
-    second: eventEndTime.second(),
-  });
-
-  const eventDateTime = eventDate.utc().unix();
-
-  const eventEndDateTime = eventEndDate.utc().unix();
+  const eventEndDateTime = moment(selectedEndDate).utc().unix();
 
   console.log("checking evenntDate Time", eventDateTime);
   console.log("checking eventEndDateTime Time", eventEndDateTime);
@@ -125,22 +106,39 @@ const PostEvent = () => {
 
   const handleTimeChange = (time: any) => {
     setSelectedTime(time);
-    if (selectedTime > selectedEndTime) {
-      setSelectedEndTime(selectedTime);
-    } else {
-      setSelectedEndTime(time);
+    if (moment(selectedDate).isSame(selectedEndDate, "day")) {
+      setSelectedEndTime(moment(selectedTime).add(1, "hour"));
     }
     setShowTimePicker(false);
   };
 
-  const handleEndDateChange = (newDate: any) => {
-    console.log("checking selected end date", newDate);
-    setSelectedEndDate(newDate);
+  const handleEndDateChange = (endDate: any) => {
+    console.log("checking selected end date", endDate);
+    if (moment(endDate).isBefore(moment(selectedDate).add(1, "hour"))) {
+      Alert.alert(
+        "Alert",
+        `You can't select a time before ${moment(selectedDate)
+          .add(1, "hour")
+          .format("MMM DD, YYYY hh:mm A")}`
+      );
+    } else {
+      setSelectedEndDate(endDate);
+    }
     setShowEndDatePicker(false);
   };
 
   const handleEndTimeChange = (newTime: any) => {
-    setSelectedEndTime(newTime);
+    if (moment(selectedDate).isSame(selectedEndDate, "day")) {
+      const minEndTime = moment(selectedTime).add(1, "hour");
+      if (moment(newTime).isBefore(minEndTime)) {
+        setSelectedEndTime(minEndTime);
+      } else {
+        setSelectedEndTime(newTime);
+      }
+    } else {
+      setSelectedEndTime(newTime);
+    }
+
     setShowEndTimePicker(false);
   };
 
@@ -168,7 +166,7 @@ const PostEvent = () => {
   const logout = async (item: any) => {
     // persistor.purge()
     await dispatch(logOut({}) as any);
-    await removeAuthData()
+    await removeAuthData();
     navigation.dispatch(
       CommonActions.reset({
         index: 0,
@@ -177,6 +175,10 @@ const PostEvent = () => {
     );
   };
 
+  useEffect(() => {
+    setSelectedEndDate(moment(selectedDate).add(1, "hour"));
+    setMinmumEndDate(moment(new Date(selectedTime)).add(1, "hour"));
+  }, [selectedDate]);
   return (
     <LinearGradient
       colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
@@ -225,7 +227,9 @@ const PostEvent = () => {
                 </Text>
               </TouchableOpacity>
               {isAuthenticated && (
-                <TouchableOpacity onPress={() => logout("logout")}>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate("ProfileScreen")}
+                >
                   <Text
                     style={{
                       padding: 10,
@@ -234,7 +238,7 @@ const PostEvent = () => {
                       lineHeight: 27.24,
                     }}
                   >
-                    Log out
+                    Account
                   </Text>
                 </TouchableOpacity>
               )}
@@ -267,8 +271,6 @@ const PostEvent = () => {
             initialValues={{
               eventName: "",
               served: "",
-              eventDate: eventDate,
-              eventTime: eventTime,
               lat: 0,
               long: 0,
               address: "",
@@ -279,8 +281,8 @@ const PostEvent = () => {
             onSubmit={async ({
               eventName,
               served,
-              eventDate,
-              eventTime,
+              // eventDate,
+              // eventTime,
               lat,
               long,
               address,
@@ -289,10 +291,10 @@ const PostEvent = () => {
               postalCode,
             }) => {
               if (!city) {
-                alert('Please enter the full address.');
+                alert("Please enter the full address.");
                 return;
               }
-            
+
               await navigation.navigate("UploadPhotosScreen", {
                 eventFormData: {
                   eventName: eventName,
@@ -306,8 +308,8 @@ const PostEvent = () => {
                   state: state,
                   postalCode: Number(postalCode) ? Number(postalCode) : 0,
                 },
-              })
-            }
+              });
+            }}
           >
             {({
               handleSubmit,
@@ -425,17 +427,31 @@ const PostEvent = () => {
                           {moment(selectedDate).format("MMM DD, YYYY")}
                         </Text>
                       </View>
-                      <DateTimePickerModal
-                        isVisible={showDatePicker}
-                        minimumDate={new Date()}
-                        mode="date"
-                        onConfirm={handleDateChange}
-                        onCancel={() => setShowDatePicker(false)}
-                      />
+                      {showDatePicker && (
+                        <DateTimePickerModal
+                          isVisible={showDatePicker}
+                          minimumDate={new Date()}
+                          date={
+                            selectedDate ? new Date(selectedDate) : undefined
+                          }
+                          mode="datetime"
+                          is24Hour={true}
+                          onConfirm={handleDateChange}
+                          onCancel={() => setShowDatePicker(false)}
+                        />
+                      )}
                     </View>
                   </TouchableOpacity>
-                  <TouchableOpacity onPress={() => setShowTimePicker(true)}>
-                    <View style={styles.dateTimePickerContainer}>
+                  <TouchableOpacity
+                    disabled={true}
+                    onPress={() => setShowDatePicker(true)}
+                  >
+                    <View
+                      style={[
+                        styles.dateTimePickerContainer,
+                        { backgroundColor: "#deddd9" },
+                      ]}
+                    >
                       {/* <IconButton icon="calendar" size={20} /> */}
                       <View>
                         <Text
@@ -458,17 +474,9 @@ const PostEvent = () => {
                             marginLeft: 15,
                           }}
                         >
-                          {moment(selectedTime).format("hh:mm A")}
+                          {moment(selectedDate).format("hh:mm A")}
                         </Text>
                       </View>
-                      <DateTimePickerModal
-                        isVisible={showTimePicker}
-                        // is24Hour={true}
-                        minimumDate={new Date(minTime)}
-                        mode="time"
-                        onConfirm={handleTimeChange}
-                        onCancel={() => setShowTimePicker(false)}
-                      />
                     </View>
                   </TouchableOpacity>
                 </View>
@@ -503,22 +511,38 @@ const PostEvent = () => {
                             marginLeft: 15,
                           }}
                         >
-                          {selectedDate > selectedEndDate
-                            ? moment(selectedDate).format("MMM DD, YYYY")
-                            : moment(selectedEndDate).format("MMM DD, YYYY")}
+                          {moment(selectedEndDate).format("MMM DD, YYYY")}
                         </Text>
                       </View>
-                      <DateTimePickerModal
-                        isVisible={showEndDatePicker}
-                        minimumDate={selectedDate}
-                        mode="date"
-                        onConfirm={handleEndDateChange}
-                        onCancel={() => setShowEndDatePicker(false)}
-                      />
+                      {showEndDatePicker && (
+                        <DateTimePickerModal
+                          isVisible={showEndDatePicker}
+                          minimumDate={
+                            new Date(moment(selectedDate).add(1, "hour"))
+                          }
+                          is24Hour={true}
+                          date={
+                            selectedEndDate
+                              ? new Date(selectedEndDate)
+                              : undefined
+                          }
+                          mode="datetime"
+                          onConfirm={handleEndDateChange}
+                          onCancel={() => setShowEndDatePicker(false)}
+                        />
+                      )}
                     </View>
                   </TouchableOpacity>
-                  <TouchableOpacity onPress={() => setShowEndTimePicker(true)}>
-                    <View style={styles.dateTimePickerContainer}>
+                  <TouchableOpacity
+                    disabled={true}
+                    onPress={() => setShowEndTimePicker(true)}
+                  >
+                    <View
+                      style={[
+                        styles.dateTimePickerContainer,
+                        { backgroundColor: "#deddd9" },
+                      ]}
+                    >
                       {/* <IconButton icon="calendar" size={20} /> */}
                       <View>
                         <Text
@@ -541,20 +565,10 @@ const PostEvent = () => {
                             marginLeft: 15,
                           }}
                         >
-                          {/* {moment(selectedEndTime).format("hh:mm A")} */}
-                          {selectedTime > selectedEndTime
-                            ? moment(selectedTime).format("hh:mm A")
-                            : moment(selectedEndTime).format("hh:mm A")}
+                          {moment(selectedEndDate).format("hh:mm A")}
                         </Text>
                       </View>
-                      <DateTimePickerModal
-                        isVisible={showEndTimePicker}
-                        // is24Hour={true}
-                        minimumDate={selectedTime} // selectedEndDate!==selectedDate ? null:selectedTime
-                        mode="time"
-                        onConfirm={handleEndTimeChange}
-                        onCancel={() => setShowEndTimePicker(false)}
-                      />
+                  
                     </View>
                   </TouchableOpacity>
                 </View>

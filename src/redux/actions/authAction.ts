@@ -13,6 +13,9 @@ interface SignupData {
 interface LoginData {
   tokenId: string;
 }
+interface DeleteUser {
+  tokenId: string;
+}
 
 export const registerUser = createAsyncThunk<SignupData, SignupData>(
   "auth/register",
@@ -76,6 +79,26 @@ export const login = createAsyncThunk<LoginData, LoginData>(
     }
   }
 );
+
+
+export const deleteUser = createAsyncThunk<DeleteUser,DeleteUser >(
+  "auth/deleteUser",
+  async (_, thunkAPI: any) => {
+    try {
+      const token = thunkAPI.getState().auth.data.token;
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Token ${token}`,
+        },
+      };
+      const result = await API.delete("v1/api/volunteer-profile/", config);
+      return result?.data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.response.data.message);
+    }
+  }
+)
 
 //Async storage
 
