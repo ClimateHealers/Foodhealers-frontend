@@ -218,7 +218,6 @@ const LoginScreen = () => {
                           );
                         }
                       })
-                      console.log("Firebase token:", token);
                     })
                     .catch((error) => {
                       setLoading(false);

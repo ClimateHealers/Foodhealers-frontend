@@ -29,7 +29,6 @@ const DeleteAccount = () => {
 
   const deleteAccount = async () => {
     const res = await dispatch(deleteUser({}) as any);
-    console.log("checking deleteAccount response", res?.payload?.success)
 
     if (res?.payload?.success) {
       removeAuthData()

@@ -68,7 +68,7 @@ const HomeScreen = ({ route }: any) => {
         Alert.alert(
           "Location permission denied",
           "Please grant permission to access your location to use this feature.",
-          [{ text: "open settings", onPress: () => Linking.openSettings() }],
+          [{ text: "Open settings", onPress: () => Linking.openSettings() }],
           { cancelable: false }
         );
         return;
