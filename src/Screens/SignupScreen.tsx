@@ -440,7 +440,7 @@ const styles = StyleSheet.create({
   textInput: {
     height: 45,
     marginBottom: 1,
-    color: "white",
+    backgroundColor: "white",
   },
   icon: {
     position: "absolute",

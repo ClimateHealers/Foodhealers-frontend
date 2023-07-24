@@ -4,6 +4,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import AllEventScreen from "./Screens/AllEventScreen";
 import Camera from "./Screens/Camera";
+import DeleteAccount from "./Screens/DeleteAccount";
 import EventDetailsScreen from "./Screens/EventDetailsScreen";
 import EventPhotosScreen from "./Screens/EventPhotosScreen";
 import EventsHomeScreen from "./Screens/EventsHomeScreen";
@@ -14,6 +15,7 @@ import LoginScreen from "./Screens/LoginScreen";
 import MapScreen from "./Screens/MapScreen";
 import PostEvent from "./Screens/PostEvent";
 import PostEventDetailsScreen from "./Screens/PostEventDetailsScreen";
+import ProfileScreen from "./Screens/ProfileScreen";
 import SignupScreen from "./Screens/SignupScreen";
 import SingleEventDetails from "./Screens/SingleEventDetails";
 import UploadPhotosScreen from "./Screens/UploadPhotosScreen";
@@ -117,6 +119,16 @@ const Navigation = () => {
           <Stack.Screen
             name="SingleEventDetails"
             component={SingleEventDetails}
+            options={{ title: "", header: () => null }}
+          />
+          <Stack.Screen
+            name="ProfileScreen"
+            component={ProfileScreen}
+            options={{ title: "", header: () => null }}
+          />
+          <Stack.Screen
+            name="DeleteAccount"
+            component={DeleteAccount}
             options={{ title: "", header: () => null }}
           />
         </Stack.Navigator>

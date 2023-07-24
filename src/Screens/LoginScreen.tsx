@@ -1,5 +1,5 @@
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { CommonActions, useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { Formik } from "formik";
@@ -53,7 +53,6 @@ const LoginScreen = () => {
 
   const dispatch = useDispatch();
 
-  const data = useSelector((state: any) => state.auth.data);
 
   const handlePressOutside = () => {
     setlangOpen(false);
@@ -189,14 +188,36 @@ const LoginScreen = () => {
                       const user = userCredential.user;
                       setLoading(false);
                       console.log("user signed in successfully");
-                      navigation.navigate("HomeScreen");
+                      
                       return user.getIdToken();
                     })
                     .then((token) => {
                       const data = {
                         tokenId: token,
                       };
-                      dispatch(login(data) as any);
+                      dispatch(login(data) as any).then((res:any)=>{
+                        if(!res?.payload?.success){
+                          Alert.alert(
+                            "Account does not exist",
+                            "Please Sign up",
+                            [
+                              {
+                                text: "Sign up",
+                                onPress : ()=>{navigation.navigate("SignupScreen")},
+                                style: "cancel",
+                              },
+                            ],
+                            { cancelable: true }
+                          );
+                        }else{
+                          navigation.dispatch(
+                            CommonActions.reset({
+                              index: 0,
+                              routes: [{ name: "HomeScreen" }],
+                            })
+                          );
+                        }
+                      })
                       console.log("Firebase token:", token);
                     })
                     .catch((error) => {

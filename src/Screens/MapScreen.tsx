@@ -126,17 +126,18 @@ const MapScreen = ({ route }: any) => {
     });
     setMenuOpen(false);
   };
-  const logout = async (item: any) => {
-    // persistor.purge()
-    await dispatch(logOut({}) as any);
-    await removeAuthData();
-    navigation.dispatch(
-      CommonActions.reset({
-        index: 0,
-        routes: [{ name: "LoginScreen" }],
-      })
-    );
-  };
+  // const logout = async (item: any) => {
+  //   // persistor.purge()
+  //   // await dispatch(logOut({}) as any);
+  //   // await removeAuthData();
+  //   // navigation.dispatch(
+  //   //   CommonActions.reset({
+  //   //     index: 0,
+  //   //     routes: [{ name: "LoginScreen" }],
+  //   //   })
+  //   // );
+  //   navigation.navigate("ProfileScreen")
+  // };
 
   const clickHandler = () => {
     navigation.navigate("WeekScreen", {
@@ -145,6 +146,9 @@ const MapScreen = ({ route }: any) => {
       state: state,
       fullAddress: fullAddress,
       postalCode: postalCode,
+      lat: lat,
+      lng: long,
+      address: address,
     });
   };
 
@@ -168,7 +172,7 @@ const MapScreen = ({ route }: any) => {
         {
           text: "Navigate",
           onPress: () => {
-            const url = `https://www.google.com/maps/dir/?api=1&destination=${event?.latitude},${event?.longitude}`;
+            const url = `https://www.google.com/maps/dir/?api=1&origin=${lat},${long}&destination=${event?.latitude},${event?.longitude}`;
             Linking.openURL(url);
           },
           style: "default",
@@ -184,6 +188,16 @@ const MapScreen = ({ route }: any) => {
       }
     );
   };
+
+  // const fetchDetailsAboutPlaces = async (placeId: any, data:any) => {
+  //   fetch(`https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&fields=formatted_address&key=${API_KEY}`).then(response => response.json()).then((response) => {
+  //     {
+  //       console.log("fetchDetailsAboutPlaces :: ", JSON.stringify(response));
+  //       console.log("fetchDetailsAboutPlaces:: placeId", placeId)
+  //     };
+  //   });
+  // };
+
   return (
     <TouchableWithoutFeedback onPress={handlePressOutside}>
       <LinearGradient
@@ -225,7 +239,6 @@ const MapScreen = ({ route }: any) => {
                 <Text style={styles.itemText}>{localized.t("Find Food")}</Text>
               </View>
               <View style={styles.item}>
-                {/* <BurgerIcon/> */}
                 <MaterialCommunityIcons
                   name="menu"
                   size={40}
@@ -274,7 +287,9 @@ const MapScreen = ({ route }: any) => {
                       </Text>
                     </TouchableOpacity>
                     {isAuthenticated && (
-                      <TouchableOpacity onPress={() => logout("logout")}>
+                      <TouchableOpacity
+                        onPress={() => navigation.navigate("ProfileScreen")}
+                      >
                         <Text
                           style={{
                             padding: 10,
@@ -283,7 +298,7 @@ const MapScreen = ({ route }: any) => {
                             lineHeight: 27.24,
                           }}
                         >
-                          Log out
+                          Account
                         </Text>
                       </TouchableOpacity>
                     )}
@@ -295,7 +310,8 @@ const MapScreen = ({ route }: any) => {
             <GooglePlacesAutocomplete
               placeholder={localized.t("Address or nearest cross streets")}
               onPress={async (data, details) => {
-                console.log("checking data from input...", data, details);
+                console.log("checking data from input...postal_code", details);
+
                 setAddress(details);
                 setLat(details?.geometry?.location?.lat);
                 setLong(details?.geometry?.location?.lng);
@@ -306,11 +322,15 @@ const MapScreen = ({ route }: any) => {
                   if (component.types.includes("administrative_area_level_1")) {
                     const state = component.long_name;
                     setState(state);
+                  } else {
+                    setState("");
                   }
 
                   if (component.types.includes("locality")) {
                     const city = component.long_name;
                     setCity(city);
+                  } else {
+                    setCity("");
                   }
 
                   if (component.types.includes("postal_code")) {

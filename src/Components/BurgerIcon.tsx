@@ -34,17 +34,17 @@ const BurgerIcon = () => {
     });
     setMenuOpen(false);
   };
-  const logout = async (item: any) => {
-    // persistor.purge()
-    await dispatch(logOut({}) as any);
-    await removeAuthData()
-    navigation.dispatch(
-      CommonActions.reset({
-        index: 0,
-        routes: [{ name: "LoginScreen" }],
-      })
-    );
-  };
+  // const logout = async (item: any) => {
+  //   // persistor.purge()
+  //   await dispatch(logOut({}) as any);
+  //   await removeAuthData();
+  //   navigation.dispatch(
+  //     CommonActions.reset({
+  //       index: 0,
+  //       routes: [{ name: "LoginScreen" }],
+  //     })
+  //   );
+  // };
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
@@ -65,7 +65,7 @@ const BurgerIcon = () => {
             top: 65,
             backgroundColor: "white",
             borderColor: "white",
-            
+
             borderRadius: 5,
             // zIndex: 9999,
           }}
@@ -95,19 +95,21 @@ const BurgerIcon = () => {
             </Text>
           </TouchableOpacity>
           {isAuthenticated && (
-                      <TouchableOpacity onPress={() => logout("logout")}>
-                        <Text
-                          style={{
-                            padding: 10,
-                            fontSize: 20,
-                            fontWeight: "300",
-                            lineHeight: 27.24,
-                          }}
-                        >
-                          Log out
-                        </Text>
-                      </TouchableOpacity>
-                    )}
+            <TouchableOpacity
+              onPress={() => navigation.navigate("ProfileScreen")}
+            >
+              <Text
+                style={{
+                  padding: 10,
+                  fontSize: 20,
+                  fontWeight: "300",
+                  lineHeight: 27.24,
+                }}
+              >
+                Account
+              </Text>
+            </TouchableOpacity>
+          )}
         </View>
       )}
     </>
