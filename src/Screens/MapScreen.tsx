@@ -38,7 +38,7 @@ import { removeAuthData } from "../redux/actions/authAction";
 const MapScreen = ({ route }: any) => {
   const { location } = route.params;
 
-  const startDate = moment(new Date().setHours(0, 0, 0, 0)).utc().unix();
+  const startDate = moment(new Date().setHours(0, 0, 0, 0)).utc().unix()
   const endDate = moment(new Date().setHours(23, 59, 59, 0))
     .add(6, "d")
     .utc()
@@ -120,9 +120,11 @@ const MapScreen = ({ route }: any) => {
   };
   const findFoodMenuItemPress = (item: any) => {
     getLocation().then((location: any) => {
-      navigation.navigate("MapScreen", {
-        location: location,
-      });
+      if(location){
+        navigation?.navigate("MapScreen", {
+          location: location,
+        });
+      }
     });
     setMenuOpen(false);
   };
@@ -358,7 +360,7 @@ const MapScreen = ({ route }: any) => {
                 const response = await dispatch(
                   findFood(findFoodData as any) as any
                 );
-                const foodEvents = response?.payload?.foodEvents;
+                const foodEvents = response?.payload?.results?.foodEvents;
                 const verifiedFoodEvents = foodEvents?.filter(
                   (event: any) => event.status === "approved"
                 );
@@ -457,7 +459,7 @@ const MapScreen = ({ route }: any) => {
                       key={marker?.id}
                       pinColor="#00693D"
                       coordinate={coordinates}
-                      onPress={() => navigateToEvent(coordinates, marker?.name)}
+                      // onPress={() => navigateToEvent(coordinates, marker?.name)}
                     >
                       <View>
                         <Text

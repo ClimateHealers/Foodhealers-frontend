@@ -81,10 +81,35 @@ const WeekScreen = ({ route }: any) => {
     focusMarker();
   }
 
+  const focusCurrentLocation = async () => {
+    const CurrentLocationPayload = {
+      lat: location?.coords?.latitude ? location?.coords?.latitude : 0,
+      lng: location?.coords?.longitude ? location?.coords?.longitude : 0,
+      // lat: lat ? lat : 0,
+      // lng: lng ? lng : 0,
+      alt: 0,
+      city: city,
+      state: state,
+      postalCode: postalCode ? Number(postalCode) : 0,
+      fullAddress: fullAddress,
+      eventStartDate: startDate ? startDate : 0,
+      eventEndDate: oneWeek ? oneWeek : 0,
+    };
+    const response = await dispatch(
+      findFood(CurrentLocationPayload as any) as any
+    );
+    const foodEvents = response?.payload?.results?.foodEvents;
+    console.log("checking events for current location: ", foodEvents);
+    const verifiedFoodEvents = foodEvents?.filter(
+      (event: any) => event.status === "approved"
+    );
+    setEvents(verifiedFoodEvents);
 
-  const focusCurrentLocation = () => {
     if (mapRef.current) {
-      const markerCoordinate = { latitude: location?.coords?.latitude, longitude: location?.coords?.longitude };
+      const markerCoordinate = {
+        latitude: location?.coords?.latitude,
+        longitude: location?.coords?.longitude,
+      };
 
       const region = {
         latitude: markerCoordinate.latitude,
@@ -97,12 +122,12 @@ const WeekScreen = ({ route }: any) => {
     }
   };
 
-
-
   const gettingEvents = async () => {
     const findFoodData = {
-      lat: location?.coords?.latitude ? location?.coords?.latitude : 0,
-      lng: location?.coords?.longitude ? location?.coords?.longitude : 0,
+      // lat: location?.coords?.latitude ? location?.coords?.latitude : 0,
+      // lng: location?.coords?.longitude ? location?.coords?.longitude : 0,
+      lat: lat ? lat : 0,
+      lng: lng ? lng : 0,
       alt: 0,
       city: city,
       state: state,
@@ -115,7 +140,7 @@ const WeekScreen = ({ route }: any) => {
 
     const response = await dispatch(findFood(findFoodData as any) as any);
 
-    const foodEvents = response?.payload?.foodEvents;
+    const foodEvents = response?.payload?.results?.foodEvents;
     const verifiedFoodEvents = foodEvents?.filter(
       (event: any) => event.status === "approved"
     );
@@ -129,8 +154,8 @@ const WeekScreen = ({ route }: any) => {
   const navigateToEvent = (eventData: any) => {
     navigation.navigate("EventDetailsScreen", {
       eventDetails: eventData,
-      lat:lat,
-      lng:lng
+      lat: lat,
+      lng: lng,
     });
   };
 
@@ -146,8 +171,10 @@ const WeekScreen = ({ route }: any) => {
     setSelectedIndex(index);
     if (index === 0) {
       const oneDayData = {
-        lat: location?.coords?.latitude ? location?.coords?.latitude : 0,
-        lng: location?.coords?.longitude ? location?.coords?.longitude : 0,
+        // lat: location?.coords?.latitude ? location?.coords?.latitude : 0,
+        // lng: location?.coords?.longitude ? location?.coords?.longitude : 0,
+        lat: lat ? lat : 0,
+        lng: lng ? lng : 0,
         alt: 0,
         city: city,
         state: state,
@@ -158,15 +185,17 @@ const WeekScreen = ({ route }: any) => {
       };
       console.log("checking one day data", oneDayData);
       const response = await dispatch(findFood(oneDayData as any) as any);
-      const foodEvents = response?.payload?.foodEvents;
+      const foodEvents = response?.payload?.results?.foodEvents;
       const verifiedFoodEvents = foodEvents?.filter(
         (event: any) => event.status === "approved"
       );
       setEvents(verifiedFoodEvents);
     } else if (index === 1) {
       const thisWeekData = {
-        lat: location?.coords?.latitude ? location?.coords?.latitude : 0,
-        lng: location?.coords?.longitude ? location?.coords?.longitude : 0,
+        // lat: location?.coords?.latitude ? location?.coords?.latitude : 0,
+        // lng: location?.coords?.longitude ? location?.coords?.longitude : 0,
+        lat: lat ? lat : 0,
+        lng: lng ? lng : 0,
         alt: 0,
         city: city,
         state: state,
@@ -176,7 +205,7 @@ const WeekScreen = ({ route }: any) => {
         eventEndDate: oneWeek ? oneWeek : 0,
       };
       const response = await dispatch(findFood(thisWeekData as any) as any);
-      const foodEvents = response?.payload?.foodEvents;
+      const foodEvents = response?.payload?.results?.foodEvents;
       const verifiedFoodEvents = foodEvents?.filter(
         (event: any) => event.status === "approved"
       );

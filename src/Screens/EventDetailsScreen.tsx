@@ -26,10 +26,11 @@ import BurgerIcon from "../Components/BurgerIcon";
 import { getLocation } from "../Components/getCurrentLocation";
 import { removeAuthData } from "../redux/actions/authAction";
 import { logOut } from "../redux/reducers/authreducers";
-import { heightPercentageToDP as h2dp, widthPercentageToDP as w2dp } from "react-native-responsive-screen";
+import {
+  heightPercentageToDP as h2dp,
+  widthPercentageToDP as w2dp,
+} from "react-native-responsive-screen";
 import { Ionicons } from "@expo/vector-icons";
-
-
 
 const EventDetailsScreen = ({ route }: any) => {
   const { eventDetails, lat, lng } = route.params;
@@ -69,16 +70,18 @@ const EventDetailsScreen = ({ route }: any) => {
   };
   const findFoodMenuItemPress = (item: any) => {
     getLocation().then((location: any) => {
-      navigation.navigate("MapScreen", {
-        location: location,
-      });
+      if (location) {
+        navigation?.navigate("MapScreen", {
+          location: location,
+        });
+      }
     });
     setMenuOpen(false);
   };
   const logout = async (item: any) => {
     // persistor.purge()
     await dispatch(logOut({}) as any);
-    await removeAuthData()
+    await removeAuthData();
     navigation.dispatch(
       CommonActions.reset({
         index: 0,
@@ -99,8 +102,6 @@ const EventDetailsScreen = ({ route }: any) => {
   const EndTime = eventDetails?.eventEndDate;
   const formattedEndTime = moment(EndTime).format("h:mm a");
 
-
-
   const navigationHandler = () => {
     const url = `https://www.google.com/maps/dir/?api=1&origin=${lat},${lng}&destination=${eventDetails?.address?.lat},${eventDetails?.address?.lng}`;
     Linking.openURL(url);
@@ -113,7 +114,6 @@ const EventDetailsScreen = ({ route }: any) => {
       });
       if (result.action === Share.sharedAction) {
         if (result.activityType) {
-          
         } else {
         }
       } else if (result.action === Share.dismissedAction) {
@@ -123,6 +123,7 @@ const EventDetailsScreen = ({ route }: any) => {
     }
   };
 
+  const expired = moment(eventDetails?.eventEndDate).isBefore(moment());
   return (
     <TouchableWithoutFeedback onPress={handlePressOutside}>
       <View style={styles.container}>
@@ -132,67 +133,42 @@ const EventDetailsScreen = ({ route }: any) => {
         >
           <SafeAreaView>
             <ScrollView>
-            <View style={styles.row}>
-            <Ionicons
-                name="chevron-back"
-                size={32}
-                color="white"
-                style={{ marginRight: w2dp(7), marginTop: h2dp(3) }}
-                onPress={() => navigation.goBack()}
-              />
-              <View style={styles.item}>
-                <Text style={styles.itemText}>{localized.t("Find Food")}</Text>
-              </View>
-              <View style={styles.item}>
-                <BurgerIcon />
-                {/* <MaterialCommunityIcons
+              <View style={styles.row}>
+                <Ionicons
+                  name="chevron-back"
+                  size={32}
+                  color="white"
+                  style={{ marginRight: w2dp(7), marginTop: h2dp(3) }}
+                  onPress={() => navigation.goBack()}
+                />
+                <View style={styles.item}>
+                  <Text style={styles.itemText}>
+                    {localized.t("Find Food")}
+                  </Text>
+                </View>
+                <View style={styles.item}>
+                  <BurgerIcon />
+                  {/* <MaterialCommunityIcons
                   name="menu"
                   size={40}
                   color="white"
                   onPress={toggleMenu}
                 /> */}
-                {menuOpen && (
-                  <View
-                    style={{
-                      position: "absolute",
-                      right: 60,
-                      top: Platform.OS === "ios" ? h2dp(8) : h2dp(9),
-                      backgroundColor: "white",
-                      borderColor: "white",
-                      borderRadius: 5,
-                      zIndex: 9999,
-                    }}
-                  >
-                    <TouchableOpacity
-                      onPress={() => handleMenuItemPress("Home")}
+                  {menuOpen && (
+                    <View
+                      style={{
+                        position: "absolute",
+                        right: 60,
+                        top: Platform.OS === "ios" ? h2dp(8) : h2dp(9),
+                        backgroundColor: "white",
+                        borderColor: "white",
+                        borderRadius: 5,
+                        zIndex: 9999,
+                      }}
                     >
-                      <Text
-                        style={{
-                          padding: 10,
-                          fontSize: 20,
-                          fontWeight: "300",
-                          lineHeight: 27.24,
-                        }}
+                      <TouchableOpacity
+                        onPress={() => handleMenuItemPress("Home")}
                       >
-                        Home
-                      </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={() => findFoodMenuItemPress("Find Food")}
-                    >
-                      <Text
-                        style={{
-                          padding: 10,
-                          fontSize: 20,
-                          fontWeight: "300",
-                          lineHeight: 27.24,
-                        }}
-                      >
-                        Find Food
-                      </Text>
-                    </TouchableOpacity>
-                    {isAuthenticated && (
-                      <TouchableOpacity onPress={() => logout("logout")}>
                         <Text
                           style={{
                             padding: 10,
@@ -201,128 +177,167 @@ const EventDetailsScreen = ({ route }: any) => {
                             lineHeight: 27.24,
                           }}
                         >
-                          Log out
+                          Home
                         </Text>
                       </TouchableOpacity>
-                    )}
-                  </View>
-                )}
+                      <TouchableOpacity
+                        onPress={() => findFoodMenuItemPress("Find Food")}
+                      >
+                        <Text
+                          style={{
+                            padding: 10,
+                            fontSize: 20,
+                            fontWeight: "300",
+                            lineHeight: 27.24,
+                          }}
+                        >
+                          Find Food
+                        </Text>
+                      </TouchableOpacity>
+                      {isAuthenticated && (
+                        <TouchableOpacity onPress={() => logout("logout")}>
+                          <Text
+                            style={{
+                              padding: 10,
+                              fontSize: 20,
+                              fontWeight: "300",
+                              lineHeight: 27.24,
+                            }}
+                          >
+                            Log out
+                          </Text>
+                        </TouchableOpacity>
+                      )}
+                    </View>
+                  )}
+                </View>
               </View>
-            </View>
 
-            <View style={styles.cardContainer}>
-              <View style={styles.card}>
-                <View>
-                  <Image
-                    source={require("../../assets/images/hostingEvent.png")}
-                    style={{
-                      width: "100%",
-                      height: 200,
-                      borderTopLeftRadius: 10,
-                      borderTopRightRadius: 10,
-                    }}
+              <View style={styles.cardContainer}>
+                <View
+                  style={[
+                    styles.card,
+                    { backgroundColor: expired ? "#bab7b6" : "white" },
+                  ]}
+                >
+                  <View>
+                    <Image
+                      source={require("../../assets/images/hostingEvent.png")}
+                      // source={{ uri: eventDetails?.eventPhoto }}
+                      style={{
+                        // tintColor:"blue",
+                        width: "100%",
+                        height: 200,
+                        borderTopLeftRadius: 10,
+                        borderTopRightRadius: 10,
+                        opacity: expired ? 0.3 : 1,
+                      }}
+                    />
+                  </View>
+                  <View style={styles.cardTextConainer}>
+                    <View style={{ marginBottom: 20, paddingHorizontal: 10 }}>
+                      <Text style={styles.boldText}>
+                        From:{" "}
+                        <Text style={styles.cardText}>
+                          {moment(eventDetails?.eventStartDate).format(
+                            "ddd, MMM D"
+                          )}{" "}
+                          {formattedStartTime}
+                        </Text>
+                      </Text>
+
+                      <Divider
+                        style={{
+                          backgroundColor: "black",
+                          height: 1,
+                          width: "95%",
+                        }}
+                      />
+                    </View>
+                    <View style={{ marginBottom: 20, paddingHorizontal: 10 }}>
+                      <Text style={styles.boldText}>
+                        To:{" "}
+                        <Text style={styles.cardText}>
+                          {moment(eventDetails?.eventEndDate).format(
+                            "ddd, MMM D"
+                          )}{" "}
+                          {formattedEndTime}
+                        </Text>
+                      </Text>
+
+                      <Divider
+                        style={{
+                          backgroundColor: "black",
+                          height: 1,
+                          width: "95%",
+                        }}
+                      />
+                    </View>
+                    <View style={{ marginBottom: 20, paddingHorizontal: 10 }}>
+                      <Text style={styles.boldText}>
+                        Location:{" "}
+                        <Text style={styles.cardText}>
+                          {eventDetails.address?.fullAddress}
+                        </Text>
+                      </Text>
+
+                      <Divider
+                        style={{
+                          backgroundColor: "black",
+                          height: 1,
+                          width: "95%",
+                        }}
+                      />
+                    </View>
+                    <View style={{ marginBottom: 10, paddingHorizontal: 10 }}>
+                      <Text style={styles.boldText}>
+                        What:{" "}
+                        <Text style={styles.cardText}>
+                          {eventDetails?.additionalInfo}
+                        </Text>
+                      </Text>
+
+                      <Divider
+                        style={{
+                          backgroundColor: "black",
+                          height: 1,
+                          width: "95%",
+                        }}
+                      />
+                    </View>
+                  </View>
+                </View>
+                <View
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <PrimaryButton
+                    disabled={expired}
+                    title={expired ? "Event Expired" : "Get directions"}
+                    onPress={navigationHandler}
+                    buttonStyle={styles.buttonStyles}
+                    titleStyle={styles.titleStyle}
                   />
-                </View>
-                <View style={styles.cardTextConainer}>
-                  <View style={{ marginBottom: 20, paddingHorizontal: 10 }}>
-                    <Text style={styles.boldText}>
-                      From:{" "}
-                      <Text style={styles.cardText}>
-                        {moment(eventDetails?.eventStartDate).format(
-                          "ddd, MMM D"
-                        )}{" "}
-                        {formattedStartTime}
-                      </Text>
-                    </Text>
 
-                    <Divider
-                      style={{
-                        backgroundColor: "black",
-                        height: 1,
-                        width: "95%",
-                      }}
-                    />
-                  </View>
-                  <View style={{ marginBottom: 20, paddingHorizontal: 10 }}>
-                    <Text style={styles.boldText}>
-                      To:{" "}
-                      <Text style={styles.cardText}>
-                        {moment(eventDetails?.eventEndDate).format(
-                          "ddd, MMM D"
-                        )}{" "}
-                        {formattedEndTime}
+                  {!expired && (
+                    <TouchableOpacity onPress={onShare}>
+                      <Text
+                        style={{
+                          color: "white",
+                          fontSize: 20,
+                          marginTop: w2dp(5),
+                          textDecorationLine: "underline",
+                        }}
+                      >
+                        Share
                       </Text>
-                    </Text>
-
-                    <Divider
-                      style={{
-                        backgroundColor: "black",
-                        height: 1,
-                        width: "95%",
-                      }}
-                    />
-                  </View>
-                  <View style={{ marginBottom: 20, paddingHorizontal: 10 }}>
-                    <Text style={styles.boldText}>
-                      Location:{" "}
-                      <Text style={styles.cardText}>
-                        {eventDetails.address?.fullAddress}
-                      </Text>
-                    </Text>
-
-                    <Divider
-                      style={{
-                        backgroundColor: "black",
-                        height: 1,
-                        width: "95%",
-                      }}
-                    />
-                  </View>
-                  <View style={{ marginBottom: 10, paddingHorizontal: 10 }}>
-                    <Text style={styles.boldText}>
-                      What:{" "}
-                      <Text style={styles.cardText}>
-                        {eventDetails?.additionalInfo}
-                      </Text>
-                    </Text>
-
-                    <Divider
-                      style={{
-                        backgroundColor: "black",
-                        height: 1,
-                        width: "95%",
-                      }}
-                    />
-                  </View>
+                    </TouchableOpacity>
+                  )}
                 </View>
               </View>
-              <View
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <PrimaryButton
-                  title={"Get directions"}
-                  onPress={navigationHandler}
-                  buttonStyle={styles.buttonStyles}
-                  titleStyle={styles.titleStyle}
-                />
-                <TouchableOpacity onPress={onShare}>
-                  <Text
-                    style={{
-                      color: "white",
-                      fontSize: 20,
-                      marginTop: w2dp(5),
-                      textDecorationLine: "underline",
-                    }}
-                  >
-                    Share
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </View>
             </ScrollView>
           </SafeAreaView>
         </LinearGradient>
@@ -363,7 +378,6 @@ const styles = StyleSheet.create({
     // marginTop: 5,
   },
   card: {
-    backgroundColor: "white",
     width: "90%",
     marginLeft: 20,
     borderRadius: 10,

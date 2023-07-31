@@ -2,20 +2,21 @@ import React from "react";
 import { StyleSheet } from "react-native";
 import { Button } from "react-native-elements";
 
-const PrimaryButton = ({ onPress, title, buttonStyle, titleStyle }: any) => {
+const PrimaryButton = ({ onPress, title, buttonStyle, titleStyle, disabled }: any) => {
   return (
     <Button
       title={title}
       buttonStyle={buttonStyle}
       titleStyle={titleStyle}
       onPress={onPress}
+      disabled={disabled}
     />
   );
 };
 
 const styles = StyleSheet.create({
   buttonStyles: {
-    backgroundColor: "#5FBB3F",
+    // backgroundColor: "#5FBB3F",
     color: "black",
     borderRadius: 5,
     width: 190,

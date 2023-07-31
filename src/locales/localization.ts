@@ -11,7 +11,7 @@ import { es } from "../locales/es.json";
 import { fr } from "../locales/fr.json";
 
 // Set the key-value pairs for the different languages you want to support.
-export const localized = new I18n({
+const localized = new I18n({
   en: en,
   be: be,
   ch: ch,
@@ -24,8 +24,20 @@ export const localized = new I18n({
 
 localized.locale = Localization.locale;
 
-// Use the first language in the device's preferred locales as the default language
 const preferredLocales = getLocales();
-if (preferredLocales && preferredLocales.length > 0) {
-  localized.locale = preferredLocales[0].languageCode;
+
+function settingFallback(locale: any) {
+  if (localized.translations[locale]) {
+    localized.locale = locale;
+  } else {
+    if (preferredLocales && preferredLocales.length > 0) {
+      localized.locale = preferredLocales[0].languageCode;
+    } else {
+      localized.locale = "en";
+    }
+  }
 }
+
+settingFallback(Localization.locale);
+
+export { localized };

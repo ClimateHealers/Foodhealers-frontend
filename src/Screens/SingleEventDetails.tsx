@@ -102,6 +102,7 @@ const SingleEventDetails = ({ route }: any) => {
     }
   };
 
+  const expired = moment(eventDetails?.eventEndDate).isBefore(moment());
   return (
     <TouchableWithoutFeedback onPress={handlePressOutside}>
       <View style={styles.container}>
@@ -169,7 +170,11 @@ const SingleEventDetails = ({ route }: any) => {
             </View>
 
             <View style={styles.cardContainer}>
-              <View style={styles.card}>
+              <View style={[
+                    styles.card,
+                    { backgroundColor: expired ? "#bab7b6" : "white" },
+                  ]}
+                >
                 <View>
                   <Image
                     source={{ uri: eventDetails?.eventPhoto }}
@@ -178,6 +183,7 @@ const SingleEventDetails = ({ route }: any) => {
                       height: 180,
                       borderTopLeftRadius: 10,
                       borderTopRightRadius: 10,
+                      opacity: expired ? 0.3 : 1,
                     }}
                   />
                 </View>
@@ -265,23 +271,27 @@ const SingleEventDetails = ({ route }: any) => {
                 }}
               >
                 <PrimaryButton
-                  title={"Get directions"}
+                 disabled={expired}
+                 title={expired ? "Event Expired" : "Get directions"}
+                  // title={"Get directions"}
                   onPress={navigationHandler}
                   buttonStyle={styles.buttonStyles}
                   titleStyle={styles.titleStyle}
                 />
-                <TouchableOpacity onPress={onShare}>
-                  <Text
-                    style={{
-                      color: "white",
-                      fontSize: 20,
-                      marginTop: w2dp(5),
-                      textDecorationLine: "underline",
-                    }}
-                  >
-                    Share
-                  </Text>
-                </TouchableOpacity>
+                {!expired && (
+                    <TouchableOpacity onPress={onShare}>
+                      <Text
+                        style={{
+                          color: "white",
+                          fontSize: 20,
+                          marginTop: w2dp(5),
+                          textDecorationLine: "underline",
+                        }}
+                      >
+                        Share
+                      </Text>
+                    </TouchableOpacity>
+                  )}
               </View>
             </View>
             </ScrollView>

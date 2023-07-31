@@ -240,7 +240,7 @@ const AllEventScreen = () => {
             <ScrollView style={{ flex: 1 }}>
               <FlatList
                 data={eventData}
-                renderItem={({ item }) => (
+                renderItem={({ item }:any) => (
                   <Item
                     additionalInfo={item?.additionalInfo}
                     address={item?.address?.fullAddress}
@@ -253,7 +253,7 @@ const AllEventScreen = () => {
                     eventPhoto = {item?.eventPhoto}
                   />
                 )}
-                keyExtractor={(item) => item?.id}
+                keyExtractor={(item:any) => item?.id}
               />
             </ScrollView>
           </View>
