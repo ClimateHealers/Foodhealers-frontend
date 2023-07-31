@@ -54,23 +54,14 @@ const EventsHomeScreen = () => {
     navigation.navigate("HomeScreen");
   };
   const findFoodMenuItemPress = (item: any) => {
-    getLocation().then((location: any) => {
-      navigation.navigate("MapScreen", {
+    getLocation()?.then((location: any) => {
+    if(location){
+      navigation?.navigate("MapScreen", {
         location: location,
       });
+    }
     });
     setMenuOpen(false);
-  };
-  const logout = async (item: any) => {
-    // persistor.purge()
-    await dispatch(logOut({}) as any);
-    await removeAuthData()
-    navigation.dispatch(
-      CommonActions.reset({
-        index: 0,
-        routes: [{ name: "LoginScreen" }],
-      })
-    );
   };
 
   const navigation: any = useNavigation<string>();

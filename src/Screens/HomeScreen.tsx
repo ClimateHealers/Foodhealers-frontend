@@ -28,7 +28,7 @@ import { myTheme } from "../myTheme";
 
 const HomeScreen = ({ route }: any) => {
   const userDetails = useSelector((state: any) => state.auth);
-
+  
   const { data } = userDetails;
 
   const dispatch = useDispatch();
@@ -60,27 +60,43 @@ const HomeScreen = ({ route }: any) => {
 
   const getLocation = async () => {
     try {
-      setLoc(true);
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        console.log("permission to access location was denied");
-        setLoc(false);
-        Alert.alert(
-          "Location permission denied",
-          "Please grant permission to access your location to use this feature.",
-          [{ text: "Open settings", onPress: () => Linking.openSettings() }],
-          { cancelable: false }
-        );
-        return;
-      }
-      let location = await Location.getLastKnownPositionAsync({});
-      if (location) {
-        setLoc(false);
-        navigation.navigate("MapScreen", {
-          location: location,
-        });
+      const checkingPermisssion = await Location.hasServicesEnabledAsync();
+      if (checkingPermisssion) {
+        setLoc(true);
+        let { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== "granted") {
+          console.log("permission to access location was denied");
+          setLoc(false);
+          Alert.alert(
+            "Location permission denied",
+            "Please grant permission to access your location to use this feature.",
+            [{ text: "Open settings", onPress: () => Linking.openSettings() }],
+            { cancelable: true }
+          );
+          return;
+        }
+        let location = Platform.OS === "ios" ?  await Location.getLastKnownPositionAsync({}) : await Location.getCurrentPositionAsync({}) 
+        if (location) {
+          setLoc(false);
+          navigation.navigate("MapScreen", {
+            location: location,
+          });
+        } else {
+          setLoc(false);
+        }
       } else {
-        setLoc(false);
+        Alert.alert(
+          "Please turn on your location",
+          "Please grant permission to access your location to use this feature.",
+          [{ text: "Open settings",   onPress: () => {
+            Platform?.OS === "ios"
+              ? Linking.openURL("App-Prefs:root=LOCATION_SERVICES")
+              : Linking.sendIntent(
+                  "android.settings.LOCATION_SOURCE_SETTINGS",
+                );
+          }}],
+          { cancelable: true }
+        );
       }
     } catch (error) {
       setLoc(true);
@@ -133,11 +149,11 @@ const HomeScreen = ({ route }: any) => {
   return (
     <TouchableWithoutFeedback onPress={handlePressOutside}>
       <View style={styles.container}>
-        <StatusBar backgroundColor="auto" barStyle="light-content" />
+        <StatusBar backgroundColor="auto" barStyle= {Platform.OS ==="ios"?"light-content":"dark-content"} />
         <ImageBackground
           source={require("../../assets/homeScreen.jpg")}
           style={styles.backgroundImage}
-          >
+        >
           <View style={styles.dropdownContainer}>
             <SelectDropdown
               buttonStyle={styles.dropdown1BtnStyle}
@@ -165,7 +181,7 @@ const HomeScreen = ({ route }: any) => {
                 return item;
               }}
             />
-            </View>
+          </View>
           <View style={{ flex: 1 }}>{appLoader(loc == true)}</View>
           <View style={styles.headerContainer}>
             <PrimaryButton

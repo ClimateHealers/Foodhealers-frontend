@@ -67,9 +67,11 @@ const LoginScreen = () => {
   };
   const findFoodMenuItemPress = (item: any) => {
     getLocation().then((location: any) => {
-      navigation.navigate("MapScreen", {
-        location: location,
-      });
+      if(location){
+        navigation?.navigate("MapScreen", {
+          location: location,
+        });
+      }
     });
     setMenuOpen(false);
   };

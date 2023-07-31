@@ -14,13 +14,13 @@ const appConfig = {
   "expo": {
     "name": "food-healers",
     "slug": "food-healers",
-    "version": "1.1.6",
+    "version": "1.1.9",
     "orientation": "portrait",
     
     "icon": "./assets/FH-logo.jpg",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/CH-Logo.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -44,11 +44,15 @@ const appConfig = {
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.foodhealers.climatehealers",
+      "googleServicesFile": "./GoogleService-Info.plist",
+      "useFrameworks": "static",
       "config": {
         "googleMapsApiKey": process.env.GOOGLE_API_KEY || ""
       }
     },
     "android": {
+      "versionCode": 3,
+      "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/Climate-Healers-Logo.png",
         "backgroundColor": "#ffffff"
@@ -73,7 +77,8 @@ const appConfig = {
       "expo-localization",
       "expo-location",
       "expo-image-picker",
-      "expo-notifications"
+      "expo-notifications",
+      "expo-build-properties",
     ],
     "extra": {
       "eas": {
