@@ -65,7 +65,7 @@ export const Splash = ({ isAppReady }:any) => {
       
       >
       <Animated.Image
-        source={require("../../assets/splashScreen.jpg")}
+        source={require("../../assets/homeImage.jpg")}
         fadeDuration={0}
         onLoad={() => {
           setState(FADE_IN_IMAGE);

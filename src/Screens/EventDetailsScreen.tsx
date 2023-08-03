@@ -222,8 +222,8 @@ const EventDetailsScreen = ({ route }: any) => {
                 >
                   <View>
                     <Image
-                      source={require("../../assets/images/hostingEvent.png")}
-                      // source={{ uri: eventDetails?.eventPhoto }}
+                      // source={require("../../assets/images/hostingEvent.png")}
+                      source={{ uri: eventDetails?.eventPhoto }}
                       style={{
                         // tintColor:"blue",
                         width: "100%",

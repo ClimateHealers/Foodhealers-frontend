@@ -151,7 +151,7 @@ const HomeScreen = ({ route }: any) => {
       <View style={styles.container}>
         <StatusBar backgroundColor="auto" barStyle= {Platform.OS ==="ios"?"light-content":"dark-content"} />
         <ImageBackground
-          source={require("../../assets/homeScreen.jpg")}
+          source={require("../../assets/homeImage2.jpg")}
           style={styles.backgroundImage}
         >
           <View style={styles.dropdownContainer}>
@@ -251,7 +251,7 @@ const styles = StyleSheet.create({
   },
   backgroundImage: {
     flex: 1,
-    width: "100%",
+    width: "110%",
     height: "100%",
     resizeMode: "cover",
     justifyContent: "flex-end",

@@ -14,7 +14,7 @@ const appConfig = {
   "expo": {
     "name": "food-healers",
     "slug": "food-healers",
-    "version": "1.1.9",
+    "version": "1.2.0",
     "orientation": "portrait",
     
     "icon": "./assets/FH-logo.jpg",
@@ -51,10 +51,10 @@ const appConfig = {
       }
     },
     "android": {
-      "versionCode": 3,
+      "versionCode": 4,
       "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/Climate-Healers-Logo.png",
+        "foregroundImage": "./assets/CH-Logo.png",
         "backgroundColor": "#ffffff"
       },
       "permissions": [

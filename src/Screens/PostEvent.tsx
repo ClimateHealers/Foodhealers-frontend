@@ -584,6 +584,7 @@ const PostEvent = () => {
                   placeholder={"What's being served"}
                   placeholderTextColor={"black"}
                   style={styles.textArea}
+                  id = {"served"}
                 />
                 <Text style={styles.inputError}>{errors.served}</Text>
                 <View
