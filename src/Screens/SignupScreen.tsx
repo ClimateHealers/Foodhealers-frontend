@@ -31,6 +31,7 @@ import { signupSchema } from "../Components/validation";
 import { auth } from "../firebase/firebaseConfig";
 import { localized } from "../locales/localization";
 import { login, registerUser } from "../redux/actions/authAction";
+import { setLanguage } from "../redux/reducers/langReducer";
 
 const SignupScreen = () => {
   const [loading, setLoading] = useState(false);
@@ -51,6 +52,7 @@ const SignupScreen = () => {
   ]);
 
   const dispatch = useDispatch();
+  const languageName = useSelector((state:any) => state.language)
 
   const handlePressOutside = () => {
     setlangOpen(false);
@@ -60,6 +62,7 @@ const SignupScreen = () => {
 
   const changeLanguage = (itemValue: any, index: any) => {
     const selectedLanguage = lang[index].value;
+    dispatch(setLanguage(selectedLanguage))
     localized.locale = selectedLanguage;
     setSelectedLanguage(selectedLanguage);
   };
@@ -150,7 +153,8 @@ const SignupScreen = () => {
               rowTextStyle={styles.dropdown1RowTxtStyle}
               data={lang && lang.map((dd) => dd.label)}
               onSelect={changeLanguage}
-              defaultButtonText={"EN"}
+              // defaultButtonText={"EN"}
+              defaultButtonText={languageName.toUpperCase()}
               buttonTextAfterSelection={(itemValue, index) => {
                 return lang[index].value.toUpperCase();
               }}

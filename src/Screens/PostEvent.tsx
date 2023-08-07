@@ -310,7 +310,7 @@ const PostEvent = () => {
                   state: state,
                   postalCode: Number(postalCode) ? Number(postalCode) : 0,
                 },
-              });
+              })
             }}
           >
             {({

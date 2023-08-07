@@ -31,6 +31,7 @@ import { loginSchema } from "../Components/validation";
 import { auth } from "../firebase/firebaseConfig";
 import { localized } from "../locales/localization";
 import { login } from "../redux/actions/authAction";
+import { setLanguage } from "../redux/reducers/langReducer";
 
 const LoginScreen = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -53,6 +54,8 @@ const LoginScreen = () => {
 
   const dispatch = useDispatch();
 
+  const data = useSelector((state: any) => state.auth.data);
+  const languageName = useSelector((state:any) => state.language)
 
   const handlePressOutside = () => {
     setlangOpen(false);
@@ -78,6 +81,7 @@ const LoginScreen = () => {
 
   const changeLanguage = (itemValue: any, index: any) => {
     const selectedLanguage = lang[index].value;
+    dispatch(setLanguage(selectedLanguage))
     localized.locale = selectedLanguage;
     setSelectedLanguage(selectedLanguage);
   };
@@ -150,7 +154,8 @@ const LoginScreen = () => {
                 rowTextStyle={styles.dropdown1RowTxtStyle}
                 data={lang && lang.map((dd) => dd.label)}
                 onSelect={changeLanguage}
-              defaultButtonText={"EN"}
+              // defaultButtonText={"EN"}
+              defaultButtonText={languageName.toUpperCase()}
                 buttonTextAfterSelection={(itemValue, index) => {
                   return lang[index].value.toUpperCase();
                 }}

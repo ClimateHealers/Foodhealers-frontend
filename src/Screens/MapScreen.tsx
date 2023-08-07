@@ -34,6 +34,7 @@ import { findFood } from "../redux/actions/findFoodaction";
 import { CommonActions } from "@react-navigation/native";
 import { logOut } from "../redux/reducers/authreducers";
 import { removeAuthData } from "../redux/actions/authAction";
+import { setLanguage } from "../redux/reducers/langReducer";
 
 const MapScreen = ({ route }: any) => {
   const { location } = route.params;
@@ -83,6 +84,7 @@ const MapScreen = ({ route }: any) => {
   const isAuthenticated = useSelector(
     (state: any) => state?.auth?.data?.isAuthenticated
   );
+  const languageName = useSelector((state:any) => state.language)
 
   const focusMarker = () => {
     if (mapRef.current) {
@@ -156,6 +158,7 @@ const MapScreen = ({ route }: any) => {
 
   const changeLanguage = (itemValue: any, index: any) => {
     const selectedLanguage = lang[index].value;
+    dispatch(setLanguage(selectedLanguage))
     localized.locale = selectedLanguage;
     setSelectedLanguage(selectedLanguage);
   };
@@ -228,7 +231,8 @@ const MapScreen = ({ route }: any) => {
                   rowTextStyle={styles.dropdown1RowTxtStyle}
                   data={lang && lang.map((dd) => dd.label)}
                   onSelect={changeLanguage}
-                  defaultButtonText={"EN"}
+                  // defaultButtonText={"EN"}
+                  defaultButtonText={languageName.toUpperCase()}
                   buttonTextAfterSelection={(itemValue, index) => {
                     return lang[index].value.toUpperCase();
                   }}
