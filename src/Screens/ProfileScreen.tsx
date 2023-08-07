@@ -1,20 +1,22 @@
 import React, { useState } from "react";
 import {
-    Platform,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
 } from "react-native";
 
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { CommonActions, useNavigation } from "@react-navigation/core";
+import Constants from "expo-constants";
 import { LinearGradient } from "expo-linear-gradient";
 import { Divider } from "react-native-elements";
+import { Badge } from "react-native-paper";
 import {
-    heightPercentageToDP as hp2dp,
-    widthPercentageToDP as wp2dp
+  heightPercentageToDP as hp2dp,
+  widthPercentageToDP as wp2dp
 } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { iOSColors, systemWeights } from "react-native-typography";
@@ -24,6 +26,7 @@ import { getLocation } from "../Components/getCurrentLocation";
 import PrimaryButton from "../Components/PrimaryButton";
 import { removeAuthData } from "../redux/actions/authAction";
 import { logOut } from "../redux/reducers/authreducers";
+
 
 const ProfileScreen = () => {
   const [imagePickerVisible, setImagePickerVisible] = useState(false);
@@ -40,6 +43,9 @@ const ProfileScreen = () => {
   const userInfo = useSelector((state: any) => state.auth.data.user);
 
 
+  const appVersion = Constants?.manifest?.version;
+
+  console.log("checking app version",appVersion)
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
@@ -126,6 +132,23 @@ const ProfileScreen = () => {
           <View style={styles.item}>
             <Text style={styles.itemText}>{"Account"}</Text>
           </View>
+          <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("NotificationScreen")
+          }}
+          style={styles.circleAvatar}>
+
+            <Badge style={styles.notificatioAvatarLogo}>
+              {/* {notificationList?.data ? notificationList?.data?.length : 0} */}
+              0
+            </Badge>
+
+          <Ionicons
+            name="md-notifications-outline"
+            style={styles.avatarLogo}
+            size={28}
+          />
+        </TouchableOpacity>
           <View style={styles.item}>
             <MaterialCommunityIcons
               name="menu"
@@ -246,6 +269,7 @@ const ProfileScreen = () => {
                 <Text style={styles.deleteProfileText}>Delete my Account</Text>
               </TouchableOpacity>
             </View>
+            <Text style={styles.appVersion}>App version {appVersion}</Text>
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -272,7 +296,7 @@ const styles = StyleSheet.create({
   itemText: {
     fontSize: 25,
     color: "white",
-    marginRight: wp2dp(15),
+    // marginRight: wp2dp(10),
   },
   mainContainer: {
     display: "flex",
@@ -342,6 +366,12 @@ const styles = StyleSheet.create({
   profileDetailsText1: {
     paddingTop: 8,
     fontSize: 25,
+    textAlign: "center",
+    color: "white",
+  },
+  appVersion: {
+    paddingTop: hp2dp(8),
+    fontSize: 15,
     textAlign: "center",
     color: "white",
   },
@@ -446,6 +476,25 @@ const styles = StyleSheet.create({
     paddingRight: 5,
     color: "red",
     fontSize: 12,
+  },
+  circleAvatar: {
+    borderRadius: 50,
+    width: Platform?.OS == "ios" ? wp2dp("17%") : wp2dp("10.5%"),
+    height: hp2dp("5%"),
+    // backgroundColor: "white",
+    alignItems: "center",
+    justifyContent: "center",
+    zIndex: 1,
+  },
+  notificatioAvatarLogo: {
+    position: "absolute",
+    top: -4,
+    right: 11,
+    zIndex: 1000,
+
+  },
+  avatarLogo: {
+    color: "white",
   },
 });
 

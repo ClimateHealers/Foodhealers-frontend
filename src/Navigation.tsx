@@ -13,6 +13,7 @@ import HomeScreen from "./Screens/HomeScreen";
 import LinkingDemo from "./Screens/LinkingDemo";
 import LoginScreen from "./Screens/LoginScreen";
 import MapScreen from "./Screens/MapScreen";
+import NotificationScreen from "./Screens/NotificationScreen";
 import PostEvent from "./Screens/PostEvent";
 import PostEventDetailsScreen from "./Screens/PostEventDetailsScreen";
 import ProfileScreen from "./Screens/ProfileScreen";
@@ -124,6 +125,11 @@ const Navigation = () => {
           <Stack.Screen
             name="ProfileScreen"
             component={ProfileScreen}
+            options={{ title: "", header: () => null }}
+          />
+          <Stack.Screen
+            name="NotificationScreen"
+            component={NotificationScreen}
             options={{ title: "", header: () => null }}
           />
           <Stack.Screen

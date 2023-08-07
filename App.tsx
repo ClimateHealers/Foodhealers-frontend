@@ -1,14 +1,18 @@
 import { useNetInfo } from "@react-native-community/netinfo";
 import * as Font from "expo-font";
+import * as Notifications from 'expo-notifications';
 import React, { useEffect, useState } from "react";
 import { Alert, Linking, LogBox, Platform, StyleSheet } from "react-native";
 import { ThemeProvider } from "react-native-elements";
 import { Provider } from "react-redux";
+import { AnyAction } from "redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { customFonts } from "./src/font";
 import Navigation from "./src/Navigation";
 import { persistor, store } from "./src/redux/store";
 import SplashScreen from "./src/Screens/SplashScreen";
+
+
 
 LogBox.ignoreLogs(["Warning: ..."]);
 LogBox.ignoreAllLogs();
@@ -23,6 +27,66 @@ export default function App() {
     await Font.loadAsync(customFonts);
     setFontsLoaded(true);
   }
+
+
+
+  Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+      shouldShowAlert: true,
+      shouldPlaySound: true,
+      shouldSetBadge: false,
+    }),
+  });
+
+  useEffect(() => {
+    const requestPermissionsAsync = async () => {
+      const { granted } = await Notifications.requestPermissionsAsync();
+      if (!granted) {
+        Alert.alert(
+          "notifications not allowed",
+          "Please grant permission to send notifications",
+          [{ text: "Open settings",   onPress: () => {
+            Platform?.OS === "ios"
+              ? Linking.openURL("App-Prefs:root=LOCATION_SERVICES")
+              : Linking.sendIntent(
+                  "android.settings.LOCATION_SOURCE_SETTINGS",
+                );
+          }}],
+          { cancelable: true }
+        );
+      }
+    };
+    requestPermissionsAsync();
+  }, []);
+
+  const sendPushNotification = async (expoPushToken:AnyAction) => {
+    const message = {
+      to: expoPushToken,
+      sound: 'default',
+      title: 'Food healers',
+      body: 'Your event is rejected',
+      data: { dataKey: 'dataValue',
+    
+    }, // Optional data payload
+    };
+
+    console.log("message: " , message);
+  
+    await Notifications.scheduleNotificationAsync({
+      content: message,
+      trigger: null, // Send immediately 
+    });
+  };
+  
+  useEffect(() => {
+    const getExpoPushToken = async () => {
+      const token = await Notifications.getExpoPushTokenAsync();
+      console.log("tokennnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn",token);
+      // sendPushNotification(token);
+    };
+    getExpoPushToken();
+  }, []);
+  
 
   const netInfo = useNetInfo();
   useEffect(() => {
