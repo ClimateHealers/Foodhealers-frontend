@@ -67,25 +67,28 @@ export default function App() {
       body: 'Your event is rejected',
       data: { dataKey: 'dataValue',
     
-    }, // Optional data payload
+    },  
     };
 
     console.log("message: " , message);
   
     await Notifications.scheduleNotificationAsync({
       content: message,
-      trigger: null, // Send immediately 
+      trigger: null, 
     });
   };
   
-  useEffect(() => {
-    const getExpoPushToken = async () => {
-      const token = await Notifications.getExpoPushTokenAsync();
-      console.log("tokennnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn",token);
-      // sendPushNotification(token);
-    };
-    getExpoPushToken();
-  }, []);
+  
+  // useEffect(() => {
+  //   const getExpoPushToken = async () => {
+  //     const token = await Notifications.getExpoPushTokenAsync({
+  //       projectId : Constants?.manifest?.extra?.eas?.projectID
+  //     });
+  //     console.log("tokennnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn",token);
+  //     // sendPushNotification(token);
+  //   };
+  //   getExpoPushToken();
+  // }, []);
   
 
   const netInfo = useNetInfo();

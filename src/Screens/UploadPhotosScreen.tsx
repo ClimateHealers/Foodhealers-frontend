@@ -122,6 +122,7 @@ const UploadPhotosScreen = ({ route }: any) => {
               top: Platform.OS === "ios" ? h2dp(13.2) : h2dp(9),
               backgroundColor: "white",
               borderColor: "black",
+              borderWidth:0.2,
               borderRadius: 5,
               height: h2dp("13"),
               width: w2dp("32"),
