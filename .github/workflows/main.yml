@@ -2,7 +2,7 @@ name: Build
 on:
   push:
     branches:
-      - sonarqubeTest/githubActions #test branch to test sonarqube analysis
+      - sonarqubeTest/githubActions #test branch to test sonarqube analysis frontend
 jobs:
   build:
     name: Build
