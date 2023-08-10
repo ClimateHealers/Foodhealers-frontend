@@ -87,8 +87,8 @@ const EventsHomeScreen = () => {
                 right: 55,
                 top: 135,
                 backgroundColor: "white",
-                borderColor: "white",
-
+                borderColor: "black",
+                borderWidth:0.2,
                 borderRadius: 5,
                 zIndex: 9999,
               }}

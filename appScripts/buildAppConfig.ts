@@ -1,94 +1,90 @@
-
 /*
 This file will automatically generate app.json config and fetch the variables from .env file
 purpose: the .env files variables will be hidden.
 we are fetchiing google maps api key for now
-*/ 
-const fs = require('fs');
-const dotenv = require('dotenv');
+*/
+const fs = require("fs");
+const dotenv = require("dotenv");
 
 dotenv.config();
 
-
 const appConfig = {
-  "expo": {
-    "name": "food-healers",
-    "slug": "food-healers",
-    "version": "1.2.0",
-    "orientation": "portrait",
-    
-    "icon": "./assets/FH-logo.jpg",
-    "userInterfaceStyle": "automatic",
-    "splash": {
-      "image": "./assets/CH-Logo.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+  expo: {
+    name: "food-healers",
+    slug: "food-healers",
+    version: "1.2.0",
+    orientation: "portrait",
+
+    icon: "./assets/FH-logo.jpg",
+    userInterfaceStyle: "automatic",
+    splash: {
+      image: "./assets/CH-Logo.png",
+      resizeMode: "contain",
+      backgroundColor: "#ffffff",
     },
-    "scheme": "foodhealers",
-    "hooks": {
-      "postPublish": [
+    scheme: "foodhealers",
+    hooks: {
+      postPublish: [
         {
-          "file": "sentry-expo/upload-sourcemaps",
-          "config": {
-            "organization": "alamance",
-            "project": "foodhealers",
-            "authToken": "366eb09849244d83a4e18e4c87c486af"
-          }
-        }
+          file: "sentry-expo/upload-sourcemaps",
+          config: {
+            organization: "alamance",
+            project: "foodhealers",
+            authToken: "366eb09849244d83a4e18e4c87c486af",
+          },
+        },
       ],
-      "appOwnership": "standalone"
+      appOwnership: "standalone",
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-    "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.foodhealers.climatehealers",
-      "googleServicesFile": "./GoogleService-Info.plist",
-      "useFrameworks": "static",
-      "config": {
-        "googleMapsApiKey": process.env.GOOGLE_API_KEY || ""
-      }
-    },
-    "android": {
-      "versionCode": 4,
-      "googleServicesFile": "./google-services.json",
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/FH-androidLogo.png",
-        "backgroundColor": "#ffffff"
+    assetBundlePatterns: ["**/*"],
+    ios: {
+      supportsTablet: true,
+      bundleIdentifier: "com.foodhealers.climatehealers",
+      googleServicesFile: "./GoogleService-Info.plist",
+      useFrameworks: "static",
+      config: {
+        googleMapsApiKey: process.env.GOOGLE_API_KEY || "",
       },
-      "permissions": [
+    },
+    android: {
+      versionCode: 4,
+      googleServicesFile: "./google-services.json",
+      adaptiveIcon: {
+        foregroundImage: "./assets/FH-androidLogo.png",
+        backgroundColor: "#ffffff",
+      },
+      permissions: [
         "android.permission.ACCESS_COARSE_LOCATION",
         "android.permission.ACCESS_FINE_LOCATION",
         "android.permission.FOREGROUND_SERVICE",
-        "android.permission.RECORD_AUDIO"
+        "android.permission.RECORD_AUDIO",
       ],
-      "config": {
-        "googleMaps": {
-          "apiKey": process.env.GOOGLE_API_KEY || ""
-        }
+      config: {
+        googleMaps: {
+          apiKey: process.env.GOOGLE_API_KEY || "",
+        },
       },
-      "package": "com.foodhealers.climatehealers"
+      package: "com.foodhealers.climatehealers",
     },
-    "web": {
-      "favicon": "./assets/favicon.png"
+    web: {
+      favicon: "./assets/favicon.png",
     },
-    "plugins": [
+    plugins: [
       "expo-localization",
       "expo-location",
       "expo-image-picker",
       "expo-notifications",
       "expo-build-properties",
     ],
-    "extra": {
-      "eas": {
-        "projectId":"e0f0f8a7-ffa0-4792-8f06-fc991a1d09fc",
+    extra: {
+      eas: {
+        projectId: "e0f0f8a7-ffa0-4792-8f06-fc991a1d09fc",
       },
-      "googleMapsApiKey" : process.env.GOOGLE_API_KEY || ""
+      googleMapsApiKey: process.env.GOOGLE_API_KEY || "",
     },
-    "owner": "food-healers"
-  }
+    owner: "food-healers",
+  },
 };
 
 // Writing the dynamic configuration to app.json
-fs.writeFileSync('./app.json', JSON.stringify(appConfig, null, 2)); // 2 here indicates spaces indentation
+fs.writeFileSync("./app.json", JSON.stringify(appConfig, null, 2)); // 2 here indicates spaces indentation

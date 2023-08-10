@@ -196,8 +196,8 @@ const PostEvent = () => {
                 right: 45,
                 top: 95,
                 backgroundColor: "white",
-                borderColor: "white",
-
+                borderColor: "black",
+                borderWidth:0.2,
                 borderRadius: 5,
                 zIndex: 9999,
               }}

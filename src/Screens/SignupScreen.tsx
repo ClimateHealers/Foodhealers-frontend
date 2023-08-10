@@ -31,6 +31,7 @@ import { signupSchema } from "../Components/validation";
 import { auth } from "../firebase/firebaseConfig";
 import { localized } from "../locales/localization";
 import { login, registerUser } from "../redux/actions/authAction";
+import { getExpoPushToken } from "../Components/notiification";
 import { setLanguage } from "../redux/reducers/langReducer";
 
 const SignupScreen = () => {
@@ -40,6 +41,7 @@ const SignupScreen = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState(localized.locale);
+  const [expoPushToken, setExpoPushToken] = useState("")
   const [lang, setLang] = useState([
     { id: 1, label: "Bengali", value: "be" },
     { id: 2, label: "Chinese", value: "ch" },
@@ -50,6 +52,13 @@ const SignupScreen = () => {
     { id: 7, label: "Punjabi", value: "pu" },
     { id: 8, label: "Spanish", value: "es" },
   ]);
+  
+
+  getExpoPushToken().then((res)=>{
+    console.log("vvvvvvvvvvvvv", res?.data);
+    setExpoPushToken(res?.data);
+  })
+
 
   const dispatch = useDispatch();
   const languageName = useSelector((state:any) => state.language)
@@ -202,6 +211,7 @@ const SignupScreen = () => {
                     name: name,
                     email: email,
                     isVolunteer: true,
+                    // expoToken: expoPushToken
                   };
 
                   const response = await dispatch(registerUser(data) as any);

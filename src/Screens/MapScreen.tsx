@@ -258,7 +258,8 @@ const MapScreen = ({ route }: any) => {
                       right: 60,
                       top: Platform.OS === "ios" ? h2dp(8) : h2dp(9),
                       backgroundColor: "white",
-                      borderColor: "white",
+                      borderColor: "black",
+                      borderWidth:0.2,
 
                       borderRadius: 5,
                       zIndex: 9999,
