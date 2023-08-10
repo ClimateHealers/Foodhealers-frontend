@@ -211,7 +211,7 @@ const SignupScreen = () => {
                     name: name,
                     email: email,
                     isVolunteer: true,
-                    expoToken: expoPushToken
+                    // expoToken: expoPushToken
                   };
 
                   const response = await dispatch(registerUser(data) as any);
