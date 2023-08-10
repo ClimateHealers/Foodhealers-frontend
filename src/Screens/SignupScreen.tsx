@@ -24,7 +24,7 @@ import {
 import { Text, TextInput } from "react-native-paper";
 import SelectDropdown from "react-native-select-dropdown";
 import Icon from "react-native-vector-icons/FontAwesome";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getLocation } from "../Components/getCurrentLocation";
 import PrimaryButton from "../Components/PrimaryButton";
 import { signupSchema } from "../Components/validation";
@@ -156,7 +156,7 @@ const SignupScreen = () => {
               // defaultButtonText={"EN"}
               defaultButtonText={languageName.toUpperCase()}
               buttonTextAfterSelection={(itemValue, index) => {
-                return lang[index].value.toUpperCase();
+                return languageName.toUpperCase();
               }}
               rowTextForSelection={(item, index) => {
                 return item;

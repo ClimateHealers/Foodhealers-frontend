@@ -232,9 +232,9 @@ const MapScreen = ({ route }: any) => {
                   data={lang && lang.map((dd) => dd.label)}
                   onSelect={changeLanguage}
                   // defaultButtonText={"EN"}
-                  defaultButtonText={languageName.toUpperCase()}
+                  defaultButtonText={ selectedLanguage.toUpperCase()}
                   buttonTextAfterSelection={(itemValue, index) => {
-                    return lang[index].value.toUpperCase();
+                    return languageName.toUpperCase();
                   }}
                   rowTextForSelection={(item, index) => {
                     return item;

@@ -157,7 +157,7 @@ const LoginScreen = () => {
               // defaultButtonText={"EN"}
               defaultButtonText={languageName.toUpperCase()}
                 buttonTextAfterSelection={(itemValue, index) => {
-                  return lang[index].value.toUpperCase();
+                  return languageName.toUpperCase();
                 }}
                 rowTextForSelection={(item, index) => {
                   return item;

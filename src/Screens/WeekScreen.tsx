@@ -260,10 +260,10 @@ const WeekScreen = ({ route }: any) => {
                   data={lang && lang.map((dd) => dd.label)}
                   onSelect={changeLanguage}
                   // defaultButtonText={"EN"}
-                  defaultButtonText={languageName.toUpperCase()}
-                  buttonTextAfterSelection={(itemValue, index) => {
-                    return lang[index].value.toUpperCase();
-                  }}
+                  defaultButtonText={ selectedLanguage.toUpperCase()}
+              buttonTextAfterSelection={(itemValue, index) => {
+                return languageName.toUpperCase();
+              }}
                   rowTextForSelection={(item, index) => {
                     return item;
                   }}
