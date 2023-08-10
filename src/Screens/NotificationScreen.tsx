@@ -62,7 +62,7 @@ export default function NotificationScreen() {
                   color: "white",
                 }}
               >
-                You're all caught up! Come back later!
+                Coming Soon!
               </Text>
             </View>
           }
