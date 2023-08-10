@@ -3,6 +3,8 @@ import { StyleSheet } from "react-native";
 import SelectDropdown from "react-native-select-dropdown";
 import { MaterialIcons } from "@expo/vector-icons";
 import { localized } from "../locales/localization";
+import { useDispatch, useSelector } from "react-redux";
+import { setLanguage } from "../redux/reducers/langReducer";
 
 const Dropdown = () => {
   const [langOpen, setlangOpen] = useState(false);
@@ -18,34 +20,43 @@ const Dropdown = () => {
     { id: 8, label: "Spanish", value: "es" },
   ]);
 
+  const dispatch = useDispatch()
+  const languageName = useSelector((state:any) => state.language)
+  let selectedLang; 
   const changeLanguage = (itemValue: any, index: any) => {
-    const selectedLanguage = lang[index].value;
-    localized.locale = selectedLanguage;
-    setSelectedLanguage(selectedLanguage);
+     selectedLang = lang[index].value;
+    dispatch(setLanguage(selectedLang))
+    localized.locale = selectedLang;
+    setSelectedLanguage(selectedLang);
   };
   return (
     <SelectDropdown
-      buttonStyle={styles.dropdown1BtnStyle}
-      buttonTextStyle={styles.dropdown1BtnTxtStyle}
-      renderDropdownIcon={() => {
-        return (
-          <MaterialIcons name="keyboard-arrow-down" size={18} color="#B50000" />
-        );
-      }}
-      dropdownIconPosition={"right"}
-      dropdownStyle={styles.dropdown1DropdownStyle}
-      rowStyle={styles.dropdown1RowStyle}
-      rowTextStyle={styles.dropdown1RowTxtStyle}
-      data={lang && lang.map((dd) => dd.label)}
-      onSelect={changeLanguage}
-      defaultButtonText={"EN"}
-      buttonTextAfterSelection={(itemValue, index) => {
-        return lang[index].value.toUpperCase();
-      }}
-      rowTextForSelection={(item, index) => {
-        return item;
-      }}
-    />
+              buttonStyle={styles.dropdown1BtnStyle}
+              buttonTextStyle={styles.dropdown1BtnTxtStyle}
+              renderDropdownIcon={() => {
+                return (
+                  <MaterialIcons
+                    name="keyboard-arrow-down"
+                    size={18}
+                    color="#B50000"
+                  />
+                );
+              }}
+              dropdownIconPosition={"right"}
+              dropdownStyle={styles.dropdown1DropdownStyle}
+              rowStyle={styles.dropdown1RowStyle}
+              rowTextStyle={styles.dropdown1RowTxtStyle}
+              data={lang && lang.map((dd) => dd.label)}
+              onSelect={changeLanguage}
+              // defaultButtonText={"EN"}
+              defaultButtonText={selectedLanguage}
+              buttonTextAfterSelection={(itemValue, index) => {
+                return lang[index].value.toUpperCase();
+              }}
+              rowTextForSelection={(item, index) => {
+                return item;
+              }}
+            />
   );
 };
 

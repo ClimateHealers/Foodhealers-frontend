@@ -22,10 +22,11 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import SegmentedControlTab from "react-native-segmented-control-tab";
 import SelectDropdown from "react-native-select-dropdown";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
 import { localized } from "../locales/localization";
 import { findFood } from "../redux/actions/findFoodaction";
+import { setLanguage } from "../redux/reducers/langReducer";
 
 const WeekScreen = ({ route }: any) => {
   const { location, city, postalCode, state, fullAddress, lat, lng, address } =
@@ -55,6 +56,9 @@ const WeekScreen = ({ route }: any) => {
   const [long, setLong] = useState<any>();
   const mapRef = useRef<any>(null);
   const dispatch = useDispatch();
+
+
+  const languageName = useSelector((state:any) => state.language)
 
   const startDate = moment(new Date().setHours(0, 0, 0, 0)).utc().unix();
   const endDate = moment(new Date().setHours(23, 59, 59, 0)).utc().unix();
@@ -221,6 +225,7 @@ const WeekScreen = ({ route }: any) => {
 
   const changeLanguage = (itemValue: any, index: any) => {
     const selectedLanguage = lang[index].value;
+    dispatch(setLanguage(selectedLanguage))
     localized.locale = selectedLanguage;
     setSelectedLanguage(selectedLanguage);
   };
@@ -254,10 +259,11 @@ const WeekScreen = ({ route }: any) => {
                   rowTextStyle={styles.dropdown1RowTxtStyle}
                   data={lang && lang.map((dd) => dd.label)}
                   onSelect={changeLanguage}
-                  defaultButtonText={"EN"}
-                  buttonTextAfterSelection={(itemValue, index) => {
-                    return lang[index].value.toUpperCase();
-                  }}
+                  // defaultButtonText={"EN"}
+                  defaultButtonText={ selectedLanguage.toUpperCase()}
+              buttonTextAfterSelection={(itemValue, index) => {
+                return languageName.toUpperCase();
+              }}
                   rowTextForSelection={(item, index) => {
                     return item;
                   }}

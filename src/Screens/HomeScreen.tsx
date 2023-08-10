@@ -1,5 +1,5 @@
 import { MaterialIcons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import * as Location from "expo-location";
 import React, { useState } from "react";
 import {
@@ -25,10 +25,13 @@ import { useDispatch, useSelector } from "react-redux";
 import PrimaryButton from "../Components/PrimaryButton";
 import { localized } from "../locales/localization";
 import { myTheme } from "../myTheme";
+import { setLanguage } from "../redux/reducers/langReducer";
 
 const HomeScreen = ({ route }: any) => {
   const userDetails = useSelector((state: any) => state.auth);
   
+  const languageName = useSelector((state:any) => state.language)
+
   const { data } = userDetails;
 
   const dispatch = useDispatch();
@@ -54,6 +57,7 @@ const HomeScreen = ({ route }: any) => {
   };
   const changeLanguage = (itemValue: any, index: any) => {
     const selectedLanguage = lang[index].value;
+    dispatch(setLanguage(selectedLanguage))
     localized.locale = selectedLanguage;
     setSelectedLanguage(selectedLanguage);
   };
@@ -173,9 +177,10 @@ const HomeScreen = ({ route }: any) => {
               rowTextStyle={styles.dropdown1RowTxtStyle}
               data={lang && lang.map((dd) => dd.label)}
               onSelect={changeLanguage}
-              defaultButtonText={"EN"}
+              // defaultButtonText={"EN"}
+              defaultButtonText={ selectedLanguage.toUpperCase()}
               buttonTextAfterSelection={(itemValue, index) => {
-                return lang[index].value.toUpperCase();
+                return languageName.toUpperCase();
               }}
               rowTextForSelection={(item, index) => {
                 return item;

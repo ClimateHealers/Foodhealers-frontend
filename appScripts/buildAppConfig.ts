@@ -54,7 +54,7 @@ const appConfig = {
       "versionCode": 4,
       "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/CH-Logo.png",
+        "foregroundImage": "./assets/FH-androidLogo.png",
         "backgroundColor": "#ffffff"
       },
       "permissions": [
