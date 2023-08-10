@@ -17,7 +17,7 @@ export const notfifications= createAsyncThunk<AllEvents, AllEvents>(
           Authorization: `Token ${token}`,
         },
       };
-      const result = await API.get("v1/api/all-events/", config);
+      const result = await API.get("v1/api/notifications/", config);
       return result?.data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error?.response?.data?.message);
