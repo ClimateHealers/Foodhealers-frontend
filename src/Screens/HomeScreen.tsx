@@ -79,7 +79,10 @@ const HomeScreen = ({ route }: any) => {
           );
           return;
         }
-        let location = Platform.OS === "ios" ?  await Location.getLastKnownPositionAsync({}) : await Location.getCurrentPositionAsync({}) 
+        let location =
+          Platform.OS === "ios"
+            ? await Location.getLastKnownPositionAsync({})
+            : await Location.getLastKnownPositionAsync({});
         if (location) {
           setLoc(false);
           navigation.navigate("MapScreen", {

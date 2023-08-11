@@ -374,6 +374,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     textAlign: "center",
     color: "white",
+    marginBottom:hp2dp(3)
   },
   editProfileRoot: {
     marginTop: 10,
