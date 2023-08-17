@@ -130,7 +130,9 @@ const AllEventScreen = () => {
         <Text style={{ marginLeft: h2dp(1.5),fontSize:11,color:"red",marginTop:h2dp(0.5)}}>Rejected</Text>
           </View>
       )}
-      <ScrollView>
+      <ScrollView
+      showsVerticalScrollIndicator={false}
+      >
         <Text
           style={{
             marginLeft: w2dp(5),
