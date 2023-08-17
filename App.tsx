@@ -43,15 +43,20 @@ export default function App() {
       const { granted } = await Notifications.requestPermissionsAsync();
       if (!granted) {
         Alert.alert(
-          "notifications not allowed",
-          "Please grant permission to send notifications",
-          [{ text: "Open settings",   onPress: () => {
-            Platform?.OS === "ios"
-              ? Linking.openURL("App-Prefs:root=LOCATION_SERVICES")
-              : Linking.sendIntent(
-                  "android.settings.LOCATION_SOURCE_SETTINGS",
-                );
-          }}],
+          "Enable Notifications",
+          "Food Healers app requires notifications in order to provide you real time updates about food events.",
+          [
+            {
+              text: "Open settings",
+              onPress: () => {
+                Platform?.OS === "ios"
+                  ? Linking.openURL("App-Prefs:root=LOCATION_SERVICES")
+                  : Linking.sendIntent(
+                      "android.settings.LOCATION_SOURCE_SETTINGS"
+                    );
+              },
+            },
+          ],
           { cancelable: true }
         );
       }
@@ -70,11 +75,11 @@ export default function App() {
     },  
     };
 
-    console.log("message: " , message);
-  
+    console.log("message: ", message);
+
     await Notifications.scheduleNotificationAsync({
       content: message,
-      trigger: null, 
+      trigger: null,
     });
   };
   
@@ -120,15 +125,15 @@ export default function App() {
   if (!fontsLoaded) {
     return;
   }
- 
+
   return (
     <ThemeProvider>
       <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-      <SplashScreen isAppReady={appIsReady}>
-        <Navigation />
-      </SplashScreen>
-      </PersistGate>
+        <PersistGate loading={null} persistor={persistor}>
+          <SplashScreen isAppReady={appIsReady}>
+            <Navigation />
+          </SplashScreen>
+        </PersistGate>
       </Provider>
     </ThemeProvider>
   );

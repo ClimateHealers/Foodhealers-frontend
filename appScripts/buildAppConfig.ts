@@ -45,6 +45,12 @@ const appConfig = {
       config: {
         googleMapsApiKey: process.env.GOOGLE_API_KEY || "",
       },
+      infoPlist: {
+        NSLocationWhenInUseUsageDescription:
+          "Food healers app requires location permission to provide you with directions to food events from your present location and to notify you of any events nearby.",
+        NSPhotoLibraryUsageDescription:
+          "Food Healers app requires Media access in order for you to post event photos.",
+      },
     },
     android: {
       versionCode: 5,
