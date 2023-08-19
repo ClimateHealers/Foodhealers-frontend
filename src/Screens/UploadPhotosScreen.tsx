@@ -6,7 +6,8 @@ import * as MediaLibrary from "expo-media-library";
 import React, { useState } from "react";
 import {
   ActivityIndicator,
-  Keyboard, Modal, Platform, StyleSheet, Text, TouchableOpacity, View
+  Alert,
+  Keyboard, Linking, Modal, Platform, StyleSheet, Text, TouchableOpacity, View
 } from "react-native";
 
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -70,28 +71,48 @@ const UploadPhotosScreen = ({ route }: any) => {
 
   const openImagePickerAsync = async () => {
     const res = await MediaLibrary.requestPermissionsAsync();
+    console.log("jfbvdjkbdbfkjd", res.granted)
     if (res.granted) {
-      console.log(res.granted);
-    }
-
-    const result = await ImagePicker.launchImageLibraryAsync({
-      allowsMultipleSelection: true,
-      selectionLimit: 1,
-    });
-
-    if (!result.canceled) {
-      console.log("checking image from library", result.assets)
-      const multipleImages = result.assets.map((image) => image.uri);
-      const singlePhoto = result.assets[0].uri;
-      
-
-
-      navigation.navigate("EventPhotosScreen", {
-        eventFormData: eventFormData,
-        eventPhotos: multipleImages,
-        singlePhoto :singlePhoto
+      console.log("sdvskdvjnsdkvjnkdbn",res.granted);
+      const result = await ImagePicker.launchImageLibraryAsync({
+        allowsMultipleSelection: true,
+        selectionLimit: 1,
       });
+  
+      if (!result.canceled) {
+        console.log("checking image from library", result.assets)
+        const multipleImages = result.assets.map((image) => image.uri);
+        const singlePhoto = result.assets[0].uri;
+        
+  
+  
+        navigation.navigate("EventPhotosScreen", {
+          eventFormData: eventFormData,
+          eventPhotos: multipleImages,
+          singlePhoto :singlePhoto
+        });
+      }
+    }else if(!res.granted){
+      Alert.alert(
+        "Please allow library access",
+        "Food Healers app requires Media access in order for you to post event photos.",
+        [
+          {
+            text: "Open settings",
+            onPress: () => {
+              Platform?.OS === "ios"
+                ? Linking.openURL("app-settings:root=Photos")
+                : Linking.sendIntent(
+                    "android.settings.LOCATION_SOURCE_SETTINGS"
+                  );
+            },
+          },
+        ],
+        { cancelable: true }
+      );
     }
+
+    
   };
 
   const appLoader = (loader: any) => {

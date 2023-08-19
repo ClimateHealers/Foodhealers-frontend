@@ -38,18 +38,18 @@ const appConfig = {
     },
     assetBundlePatterns: ["**/*"],
     ios: {
-      supportsTablet: true,
+      supportsTablet: false,
       bundleIdentifier: "com.foodhealers.climatehealers",
       googleServicesFile: "./GoogleService-Info.plist",
-      useFrameworks: "static",
-      config: {
-        googleMapsApiKey: process.env.GOOGLE_API_KEY || "",
-      },
       infoPlist: {
         NSLocationWhenInUseUsageDescription:
           "Food healers app requires location permission to provide you with directions to food events from your present location and to notify you of any events nearby.",
-        NSPhotoLibraryUsageDescription:
+          NSPhotoLibraryAddUsageDescription:
           "Food Healers app requires Media access in order for you to post event photos.",
+      },
+      useFrameworks: "static",
+      config: {
+        googleMapsApiKey: process.env.GOOGLE_API_KEY || "",
       },
     },
     android: {
@@ -62,8 +62,6 @@ const appConfig = {
       permissions: [
         "android.permission.ACCESS_COARSE_LOCATION",
         "android.permission.ACCESS_FINE_LOCATION",
-        "android.permission.FOREGROUND_SERVICE",
-        "android.permission.RECORD_AUDIO",
       ],
       config: {
         googleMaps: {

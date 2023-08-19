@@ -221,6 +221,7 @@ const FindFoodHomeScreen = ({ route }: any) => {
               showsUserLocation={true}
               // followsUserLocation={true}
             >
+              <Text style = {{textAlign:"center",fontSize:w2dp(7),fontWeight:"300",marginTop:h2dp(0.5)}}>Today</Text>
               {address ? (
                 <Marker
                   pinColor="#FC5A56"

@@ -72,8 +72,8 @@ const HomeScreen = ({ route }: any) => {
           console.log("permission to access location was denied");
           setLoc(false);
           Alert.alert(
-            "Location permission denied",
-            "Please grant permission to access your location to use this feature.",
+            "Please turn on your location",
+            "Food healers app requires location permission to provide you with directions to food events from your present location and to notify you of any events nearby.",
             [{ text: "Open settings", onPress: () => Linking.openSettings() }],
             { cancelable: true }
           );
@@ -94,7 +94,7 @@ const HomeScreen = ({ route }: any) => {
       } else {
         Alert.alert(
           "Please turn on your location",
-          "Please grant permission to access your location to use this feature.",
+          "Food healers app requires location permission to provide you with directions to food events from your present location and to notify you of any events nearby.",
           [{ text: "Open settings",   onPress: () => {
             Platform?.OS === "ios"
               ? Linking.openURL("App-Prefs:root=LOCATION_SERVICES")
