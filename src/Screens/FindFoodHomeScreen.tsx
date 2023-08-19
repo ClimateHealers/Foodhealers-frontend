@@ -70,9 +70,12 @@ const FindFoodHomeScreen = ({ route }: any) => {
       mapRef.current.animateToRegion(region, 2000);
     }
   };
-  if (latitude && lng) {
-    focusMarker();
-  }
+
+   setTimeout(() => {
+    if (latitude && lng) {
+      focusMarker();
+    }
+   }, 500);
 
   const handlePressOutside = () => {
     setlangOpen(false);
@@ -110,17 +113,11 @@ const FindFoodHomeScreen = ({ route }: any) => {
       state: state,
       fullAddress: fullAddress,
       postalCode: postalCode,
-      latitude: latitude,
+      lat: latitude,
       lng: lng,
       address: address,
     });
   };
-
-  // useEffect(() => {
-  //   if (latitutde && lng) {
-  //     focusMarker();
-  //   }
-  // }, [latitutde, lng]);
 
   return (
     <TouchableWithoutFeedback onPress={handlePressOutside}>
