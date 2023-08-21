@@ -94,8 +94,8 @@ const UploadPhotosScreen = ({ route }: any) => {
       }
     }else if(!res.granted){
       Alert.alert(
-        "Please allow library access",
-        "Food Healers app requires Media access in order for you to post event photos.",
+        "Media Library Access",
+        "FoodHealers app needs PhotoLibrary permission to let you update your profile picture, and create/modify events with appropriate images for community",
         [
           {
             text: "Open settings",

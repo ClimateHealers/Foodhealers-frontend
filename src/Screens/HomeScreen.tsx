@@ -73,7 +73,7 @@ const HomeScreen = ({ route }: any) => {
           setLoc(false);
           Alert.alert(
             "Please turn on your location",
-            "Food healers app requires location permission to provide you with directions to food events from your present location and to notify you of any events nearby.",
+            "FoodHealers app needs your location to show nearby events and best transportation options for the selected event within the app.",
             [{ text: "Open settings", onPress: () => Linking.openSettings() }],
             { cancelable: true }
           );
@@ -94,7 +94,7 @@ const HomeScreen = ({ route }: any) => {
       } else {
         Alert.alert(
           "Please turn on your location",
-          "Food healers app requires location permission to provide you with directions to food events from your present location and to notify you of any events nearby.",
+          "FoodHealers app needs your location to show nearby events and best transportation options for the selected event within the app.",
           [{ text: "Open settings",   onPress: () => {
             Platform?.OS === "ios"
               ? Linking.openURL("App-Prefs:root=LOCATION_SERVICES")

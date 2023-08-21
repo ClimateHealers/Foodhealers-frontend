@@ -43,8 +43,8 @@ export default function App() {
       const { granted } = await Notifications.requestPermissionsAsync();
       if (!granted) {
         Alert.alert(
-          "Enable Notifications",
-          "Food Healers app requires notifications in order to provide you real time updates about food events.",
+          "Notification Permissions",
+          "FoodHealers app needs push notifications permission to send real-time updated on events and announcements from community.",
           [
             {
               text: "Open settings",
