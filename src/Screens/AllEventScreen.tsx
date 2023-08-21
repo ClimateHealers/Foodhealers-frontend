@@ -148,7 +148,7 @@ const AllEventScreen = () => {
         <Text
           style={{
             marginLeft: w2dp(5),
-            width: w2dp(52),
+            width: w2dp(47),
             fontWeight: "200",
             fontSize: 16,
             lineHeight:20,
