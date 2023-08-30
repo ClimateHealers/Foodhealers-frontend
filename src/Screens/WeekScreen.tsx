@@ -1,11 +1,13 @@
 import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
+import * as Location from "expo-location";
 import moment from "moment";
 import React, { useEffect, useRef, useState } from "react";
 import {
   Dimensions,
   Keyboard,
+  Platform,
   StatusBar,
   StyleSheet,
   Text,
@@ -29,7 +31,7 @@ import { findFood } from "../redux/actions/findFoodaction";
 import { setLanguage } from "../redux/reducers/langReducer";
 
 const WeekScreen = ({ route }: any) => {
-  const { location, city, postalCode, state, fullAddress, lat, lng, address } =
+  const { latitude, longitude, city, postalCode, state, fullAddress, lat, lng, address } =
     route.params;
   const { width, height } = Dimensions.get("window");
   const navigation: any = useNavigation();
@@ -52,8 +54,9 @@ const WeekScreen = ({ route }: any) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState(localized.locale);
-  const [activeButton, setActiveButton] = useState("Today");
-  const [long, setLong] = useState<any>();
+  const [currentLat, setCurrentlat] = useState(0);
+  const [currentLong, setCurrentlong] = useState(0);
+  const [result, setResult] = useState(false)
   const mapRef = useRef<any>(null);
   const dispatch = useDispatch();
 
@@ -85,12 +88,49 @@ const WeekScreen = ({ route }: any) => {
     focusMarker();
   }
 
+
+  const fetchUserLocation = async () => {
+    try {
+      const checkingPermission = await Location.hasServicesEnabledAsync();
+      if (checkingPermission) {
+        let { status } = await Location?.requestForegroundPermissionsAsync();
+        if (status !== "granted") {
+          console.log("Permission to access location was denied");
+          return null;
+        }
+        let location = Platform.OS === "ios" ? await Location.getLastKnownPositionAsync({}) : await Location.getCurrentPositionAsync({});
+        if (location) {
+          return location;
+        }
+      } else {
+        console.log("Location services are not enabled");
+        return null;
+      }
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  };
+  
   const focusCurrentLocation = async () => {
+    const locationResult = await fetchUserLocation();
+    let latitudeToUse, longitudeToUse;
+  
+    if (locationResult) {
+      setResult(true)
+      latitudeToUse = locationResult.coords.latitude;
+      longitudeToUse = locationResult.coords.longitude;
+    } else {
+      latitudeToUse = latitude;
+      longitudeToUse = longitude;
+    }
+  
+    setCurrentlat(latitudeToUse);
+    setCurrentlong(longitudeToUse);
+  
     const CurrentLocationPayload = {
-      lat: location?.coords?.latitude ? location?.coords?.latitude : 0,
-      lng: location?.coords?.longitude ? location?.coords?.longitude : 0,
-      // lat: lat ? lat : 0,
-      // lng: lng ? lng : 0,
+      lat: latitudeToUse,
+      lng: longitudeToUse,
       alt: 0,
       city: city,
       state: state,
@@ -103,16 +143,13 @@ const WeekScreen = ({ route }: any) => {
       findFood(CurrentLocationPayload as any) as any
     );
     const foodEvents = response?.payload?.results?.foodEvents;
-    console.log("checking events for current location: ", foodEvents);
-    const verifiedFoodEvents = foodEvents?.filter(
-      (event: any) => event.status === "approved"
-    );
+    const verifiedFoodEvents = foodEvents?.filter((event: any) => event.status === "approved");
     setEvents(verifiedFoodEvents);
 
     if (mapRef.current) {
       const markerCoordinate = {
-        latitude: location?.coords?.latitude,
-        longitude: location?.coords?.longitude,
+        latitude: latitudeToUse,
+        longitude: longitudeToUse,
       };
 
       const region = {
@@ -128,8 +165,6 @@ const WeekScreen = ({ route }: any) => {
 
   const gettingEvents = async () => {
     const findFoodData = {
-      // lat: location?.coords?.latitude ? location?.coords?.latitude : 0,
-      // lng: location?.coords?.longitude ? location?.coords?.longitude : 0,
       lat: lat ? lat : 0,
       lng: lng ? lng : 0,
       alt: 0,
@@ -140,7 +175,6 @@ const WeekScreen = ({ route }: any) => {
       eventStartDate: startDate ? startDate : 0,
       eventEndDate: endDate ? endDate : 0,
     };
-    console.log(".....................", findFoodData);
 
     const response = await dispatch(findFood(findFoodData as any) as any);
 
@@ -175,8 +209,6 @@ const WeekScreen = ({ route }: any) => {
     setSelectedIndex(index);
     if (index === 0) {
       const oneDayData = {
-        // lat: location?.coords?.latitude ? location?.coords?.latitude : 0,
-        // lng: location?.coords?.longitude ? location?.coords?.longitude : 0,
         lat: lat ? lat : 0,
         lng: lng ? lng : 0,
         alt: 0,
@@ -196,8 +228,6 @@ const WeekScreen = ({ route }: any) => {
       setEvents(verifiedFoodEvents);
     } else if (index === 1) {
       const thisWeekData = {
-        // lat: location?.coords?.latitude ? location?.coords?.latitude : 0,
-        // lng: location?.coords?.longitude ? location?.coords?.longitude : 0,
         lat: lat ? lat : 0,
         lng: lng ? lng : 0,
         alt: 0,
@@ -325,8 +355,8 @@ const WeekScreen = ({ route }: any) => {
                 provider={"google"}
                 style={{ alignSelf: "stretch", height: "65%" }}
                 initialRegion={{
-                  latitude: location?.coords?.latitude,
-                  longitude: location?.coords?.longitude,
+                  latitude: result ? currentLat : latitude,
+                  longitude: result ? currentLong : longitude,
                   latitudeDelta: LATITUDE_DELTA,
                   longitudeDelta: LONGITUDE_DELTA,
                 }}

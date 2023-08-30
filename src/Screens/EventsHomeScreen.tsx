@@ -54,12 +54,13 @@ const EventsHomeScreen = () => {
     navigation.navigate("HomeScreen");
   };
   const findFoodMenuItemPress = (item: any) => {
-    getLocation()?.then((location: any) => {
-    if(location){
-      navigation?.navigate("MapScreen", {
-        location: location,
-      });
-    }
+    getLocation().then((res) => {
+      if(res){
+        navigation?.navigate("MapScreen", {
+          latitude: res?.latitude,
+          longitude: res?.longitude,
+        });
+      }
     });
     setMenuOpen(false);
   };
