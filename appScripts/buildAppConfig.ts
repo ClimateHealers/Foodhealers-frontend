@@ -12,7 +12,7 @@ const appConfig = {
   expo: {
     name: "food-healers",
     slug: "food-healers",
-    version: "1.2.3",
+    version: "1.2.4",
     orientation: "portrait",
 
     icon: "./assets/FH-androidLogo.png",
@@ -40,7 +40,6 @@ const appConfig = {
     ios: {
       supportsTablet: false,
       bundleIdentifier: "com.foodhealers.climatehealers",
-      googleServicesFile: "./GoogleService-Info.plist",
       infoPlist: {
         NSLocationWhenInUseUsageDescription:
           "FoodHealers app needs your location to show nearby events and best transportation options for the selected event within the app.",

@@ -37,7 +37,7 @@ import { removeAuthData } from "../redux/actions/authAction";
 import { setLanguage } from "../redux/reducers/langReducer";
 
 const MapScreen = ({ route }: any) => {
-  const { location } = route.params;
+  const { latitude, longitude } = route.params;
 
   const startDate = moment(new Date().setHours(0, 0, 0, 0)).utc().unix()
   const endDate = moment(new Date().setHours(23, 59, 59, 0))
@@ -121,10 +121,12 @@ const MapScreen = ({ route }: any) => {
     }
   };
   const findFoodMenuItemPress = (item: any) => {
-    getLocation().then((location: any) => {
-      if(location){
+    getLocation().then((res) => {
+      if(res){
         navigation?.navigate("MapScreen", {
-          location: location,
+          latitude: res?.latitude,
+          longitude: res?.longitude,
+
         });
       }
     });
@@ -145,7 +147,8 @@ const MapScreen = ({ route }: any) => {
 
   const clickHandler = () => {
     navigation.navigate("WeekScreen", {
-      location: location,
+      latitude: latitude,
+      longitude: longitude,
       city: city,
       state: state,
       fullAddress: fullAddress,
@@ -429,8 +432,8 @@ const MapScreen = ({ route }: any) => {
                   height: Platform.OS === "ios" ? "55%" : "60%",
                 }}
                 initialRegion={{
-                  latitude: location?.coords?.latitude,
-                  longitude: location?.coords?.longitude,
+                  latitude: latitude ? latitude: 0,
+                  longitude: longitude ? longitude: 0,
                   latitudeDelta: LATITUDE_DELTA,
                   longitudeDelta: LONGITUDE_DELTA,
                 }}

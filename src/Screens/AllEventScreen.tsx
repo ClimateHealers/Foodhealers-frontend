@@ -39,10 +39,13 @@ const AllEventScreen = () => {
     navigation.navigate("HomeScreen");
   };
   const findFoodMenuItemPress = (item: any) => {
-    getLocation().then((location: any) => {
-      navigation.navigate("MapScreen", {
-        location: location,
-      });
+    getLocation().then((res) => {
+      if(res){
+        navigation?.navigate("MapScreen", {
+          latitude: res?.latitude,
+          longitude: res?.longitude,
+        });
+      }
     });
     // console.log(`Selected menu item: ${item}`);
     setMenuOpen(false);

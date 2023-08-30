@@ -48,10 +48,11 @@ const UploadPhotosScreen = ({ route }: any) => {
     navigation.navigate("HomeScreen");
   };
   const findFoodMenuItemPress = (item: any) => {
-    getLocation().then((location: any) => {
-      if(location){
+    getLocation().then((res) => {
+      if(res){
         navigation?.navigate("MapScreen", {
-          location: location,
+          latitude: res?.latitude,
+          longitude: res?.longitude,
         });
       }
     });
@@ -92,20 +93,20 @@ const UploadPhotosScreen = ({ route }: any) => {
           singlePhoto :singlePhoto
         });
       }
-    }else if(!res.granted){
+    }else if(!res.granted){      
       Alert.alert(
         "Media Library Access",
-        "FoodHealers app needs PhotoLibrary permission to let you update your profile picture, and create/modify events with appropriate images for community",
+        "FoodHealers app needs PhotoLibrary permission to let you update your profile picture, and create/modify events with appropriate images for community.You can enable it anytime from settings.",
         [
           {
-            text: "Open settings",
-            onPress: () => {
-              Platform?.OS === "ios"
-                ? Linking.openURL("app-settings:root=Photos")
-                : Linking.sendIntent(
-                    "android.settings.LOCATION_SOURCE_SETTINGS"
-                  );
-            },
+            text: "Ok",
+            // onPress: () => {
+            //   Platform?.OS === "ios"
+            //     ? Linking.openURL("app-settings:root=Photos")
+            //     : Linking.sendIntent(
+            //         "android.settings.LOCATION_SOURCE_SETTINGS"
+            //       );
+            // },
           },
         ],
         { cancelable: true }
@@ -145,7 +146,6 @@ const UploadPhotosScreen = ({ route }: any) => {
               borderColor: "black",
               borderWidth:0.2,
               borderRadius: 5,
-              height: h2dp("13"),
               width: w2dp("32"),
               zIndex: 9999,
             }}
