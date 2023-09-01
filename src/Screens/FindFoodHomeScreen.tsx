@@ -20,11 +20,12 @@ import {
   heightPercentageToDP as h2dp,
   widthPercentageToDP as w2dp,
 } from "react-native-responsive-screen";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getLocation } from "../Components/getCurrentLocation";
 import { localized } from "../locales/localization";
 import PrimaryButton from "../Components/PrimaryButton";
 import MapView, { Marker } from "react-native-maps";
+import { VeganRecipesCategories } from "../redux/actions/veganRecipes";
 
 const FindFoodHomeScreen = ({ route }: any) => {
   const {
@@ -46,8 +47,6 @@ const FindFoodHomeScreen = ({ route }: any) => {
   const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
   const [langOpen, setlangOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  // const [lat, setLat] = useState<any>();
-  // const [long, setLong] = useState<any>();`
   const [events, setEvents] = useState<[]>([]);
 
   const mapRef = useRef<any>(null);
@@ -70,6 +69,12 @@ const FindFoodHomeScreen = ({ route }: any) => {
       mapRef.current.animateToRegion(region, 2000);
     }
   };
+
+  const fetchRecipesCategories = async()=>{
+     await dispatch(VeganRecipesCategories() as any)
+     navigation.navigate("RecipesHomeScreen")
+     
+  }
 
    setTimeout(() => {
     if (latitude && lng) {
@@ -302,7 +307,7 @@ const FindFoodHomeScreen = ({ route }: any) => {
               </TouchableOpacity>
               <TouchableOpacity
                 style={[styles.touchableView]}
-                onPress={() => navigation.navigate("RecipesHomeScreen")}
+                onPress={fetchRecipesCategories}
               >
                 <View
                   style={[styles.containerView, { marginBottom: w2dp(2.8) }]}

@@ -18,15 +18,20 @@ import {
   heightPercentageToDP as h2dp,
   widthPercentageToDP as w2dp,
 } from "react-native-responsive-screen";
-import { localized } from "../locales/localization";
-import { getLocation } from "../Components/getCurrentLocation";
 import { useSelector } from "react-redux";
+import { getLocation } from "../Components/getCurrentLocation";
 
 const RecipesHomeScreen = () => {
   const [langOpen, setlangOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
   const navigation: any = useNavigation();
+
+  const recipesCategory = useSelector(
+    (state: any) => state?.recipesCategory?.data?.categoriesList
+  );
+
+  console.log("recipesCategoryrecipesCategoryrecipesCategory", recipesCategory);
 
   const isAuthenticated = useSelector(
     (state: any) => state?.auth?.data?.isAuthenticated
@@ -67,37 +72,65 @@ const RecipesHomeScreen = () => {
           colors={["#012e17", "#017439", "#009b4d"]}
           style={styles.background}
         >
-          {/* <ScrollView keyboardShouldPersistTaps="always"> */}
-            <SafeAreaView style={styles.container}>
-              <View style={styles.row}>
-                <View style={styles.dropdownContainer}></View>
-                <View style={styles.item}>
-                  {/* <Text style={styles.itemText}>{localized.t("Find Food")}</Text> */}
-                  <Text style={styles.itemText}>Recipes</Text>
-                </View>
-                <View style={styles.item}>
-                  <MaterialCommunityIcons
-                    name="menu"
-                    size={40}
-                    color="white"
-                    onPress={() => toggleMenu()}
-                  />
-                  {menuOpen && (
-                    <View
-                      style={{
-                        position: "absolute",
-                        right: 60,
-                        top: Platform.OS === "ios" ? h2dp(8) : h2dp(9),
-                        backgroundColor: "white",
-                        borderColor: "black",
-                        borderWidth: 0.2,
+          <SafeAreaView style={styles.container}>
+            <View style={styles.row}>
+              <View style={styles.dropdownContainer}></View>
+              <View style={styles.item}>
+                {/* <Text style={styles.itemText}>{localized.t("Find Food")}</Text> */}
+                <Text style={styles.itemText}>Recipes</Text>
+              </View>
+              <View style={styles.item}>
+                <MaterialCommunityIcons
+                  name="menu"
+                  size={40}
+                  color="white"
+                  onPress={() => toggleMenu()}
+                />
+                {menuOpen && (
+                  <View
+                    style={{
+                      position: "absolute",
+                      right: 60,
+                      top: Platform.OS === "ios" ? h2dp(8) : h2dp(9),
+                      backgroundColor: "white",
+                      borderColor: "black",
+                      borderWidth: 0.2,
 
-                        borderRadius: 5,
-                        zIndex: 9999,
-                      }}
+                      borderRadius: 5,
+                      zIndex: 9999,
+                    }}
+                  >
+                    <TouchableOpacity
+                      onPress={() => handleMenuItemPress("Home")}
                     >
+                      <Text
+                        style={{
+                          padding: 10,
+                          fontSize: 20,
+                          fontWeight: "300",
+                          lineHeight: 27.24,
+                        }}
+                      >
+                        Home
+                      </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => findFoodMenuItemPress("Find Food")}
+                    >
+                      <Text
+                        style={{
+                          padding: 10,
+                          fontSize: 20,
+                          fontWeight: "300",
+                          lineHeight: 27.24,
+                        }}
+                      >
+                        Find Food
+                      </Text>
+                    </TouchableOpacity>
+                    {isAuthenticated && (
                       <TouchableOpacity
-                        onPress={() => handleMenuItemPress("Home")}
+                        onPress={() => navigation.navigate("ProfileScreen")}
                       >
                         <Text
                           style={{
@@ -107,114 +140,45 @@ const RecipesHomeScreen = () => {
                             lineHeight: 27.24,
                           }}
                         >
-                          Home
+                          Account
                         </Text>
                       </TouchableOpacity>
-                      <TouchableOpacity
-                        onPress={() => findFoodMenuItemPress("Find Food")}
-                      >
-                        <Text
-                          style={{
-                            padding: 10,
-                            fontSize: 20,
-                            fontWeight: "300",
-                            lineHeight: 27.24,
-                          }}
-                        >
-                          Find Food
-                        </Text>
-                      </TouchableOpacity>
-                      {isAuthenticated && (
-                        <TouchableOpacity
-                          onPress={() => navigation.navigate("ProfileScreen")}
-                        >
-                          <Text
-                            style={{
-                              padding: 10,
-                              fontSize: 20,
-                              fontWeight: "300",
-                              lineHeight: 27.24,
-                            }}
-                          >
-                            Account
-                          </Text>
-                        </TouchableOpacity>
-                      )}
-                    </View>
-                  )}
-                </View>
+                    )}
+                  </View>
+                )}
               </View>
-							<ScrollView keyboardShouldPersistTaps="always">
+            </View>
+            <ScrollView keyboardShouldPersistTaps="always">
               <View style={[styles.centeredView]}>
-                <View style={{ marginBottom: h2dp(3), position:"relative" }}>
-                  <Image
-                    source={require("../../assets/images/dinnerPicture.png")}
-                    style={styles.imageStyle}
-                  />
-                  <View style={styles.title}>
-                    <TouchableOpacity
-                      onPress={() => navigation.navigate("PostEvent")}
-                    >
-                      <Text style={styles.textStyle}>Dinner</Text>
-                    </TouchableOpacity>
+                {recipesCategory.map((recipe: any) => (
+                  <View
+                    key={recipe.id}
+                    style={{
+                      marginBottom: h2dp(3),
+                      position: "relative",
+                    }}
+                  >
+                    <Image
+                      source={require("../../assets/images/lunchPicture.png")}
+                      style={styles.imageStyle}
+                    />
+                    <View style={styles.title}>
+                      <TouchableOpacity
+                        onPress={
+
+                          () => navigation.navigate("CategoryScreen",{
+                          categoryId :recipe?.id,
+                          recipeName :recipe?.name
+                        })}
+                      >
+                        <Text style={styles.textStyle}>{recipe?.name}</Text>
+                      </TouchableOpacity>
+                    </View>
                   </View>
-                </View>
-                <View style={{ marginBottom: h2dp(3) }}>
-                  <Image
-                    source={require("../../assets/images/lunchPicture.png")}
-                    style={styles.imageStyle}
-                  />
-                  <View style={styles.title}>
-                    <TouchableOpacity
-                      onPress={() => navigation.navigate("PostEvent")}
-                    >
-                      <Text style={styles.textStyle}>Lunch</Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-                <View style={{ marginBottom: h2dp(3) }}>
-                  <Image
-                    source={require("../../assets/images/breakfastPicture.png")}
-                    style={styles.imageStyle}
-                  />
-                  <View style={styles.title}>
-                    <TouchableOpacity
-                      onPress={() => navigation.navigate("PostEvent")}
-                    >
-                      <Text style={styles.textStyle}>Breakfast</Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-                <View style={{ marginBottom: h2dp(3) }}>
-                  <Image
-                    source={require("../../assets/images/soupPicture.png")}
-                    style={styles.imageStyle}
-                  />
-                  <View style={styles.title}>
-                    <TouchableOpacity
-                      onPress={() => navigation.navigate("PostEvent")}
-                    >
-                      <Text style={styles.textStyle}>Soup</Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-                <View style={{ marginBottom: h2dp(3) }}>
-                  <Image
-                    source={require("../../assets/images/appetizerPicture.png")}
-                    style={styles.imageStyle}
-                  />
-                  <View style={styles.title}>
-                    <TouchableOpacity
-                      onPress={() => navigation.navigate("PostEvent")}
-                    >
-                      <Text style={styles.textStyle}>Appetizers</Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
+                ))}
               </View>
-							</ScrollView>
-            </SafeAreaView>
-          {/* </ScrollView> */}
+            </ScrollView>
+          </SafeAreaView>
         </LinearGradient>
       </TouchableWithoutFeedback>
     </>
