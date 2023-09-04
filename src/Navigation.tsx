@@ -24,6 +24,7 @@ import WeekScreen from "./Screens/WeekScreen";
 import WelcomeScreen from "./Screens/WelcomeScreen";
 import CalendarScreen from "./Screens/CalendarScreen";
 import CalendarEventScreen from "./Screens/CalendarEventScreen";
+import CalendarEventDetailScreen from "./Screens/CalendarEventDetailScreen";
 
 const Navigation = () => {
   const Stack = createNativeStackNavigator();
@@ -147,6 +148,11 @@ const Navigation = () => {
           <Stack.Screen
             name="CalendarEventScreen"
             component={CalendarEventScreen}
+            options={{ title: "", header: () => null }}
+          />
+          <Stack.Screen
+            name="CalendarEventDetailScreen"
+            component={CalendarEventDetailScreen}
             options={{ title: "", header: () => null }}
           />
         </Stack.Navigator>

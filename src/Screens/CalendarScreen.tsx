@@ -3,26 +3,32 @@ import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useState } from "react";
 import {
-    Keyboard,
-    Platform,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    TouchableWithoutFeedback,
-    View,
+  Keyboard,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
 } from "react-native";
 import { Calendar } from "react-native-calendars";
 import { heightPercentageToDP as h2dp } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getLocation } from "../Components/getCurrentLocation";
+import moment from "moment";
+import { calendarEvent } from "../redux/actions/calendarEventAction";
 
 const CalendarScreen = ({ route }: any) => {
   const navigation: any = useNavigation();
 
   const [menuOpen, setMenuOpen] = useState(false);
-  const [date,setDate]=useState<any>()
+  const [date, setDate] = useState<any>();
+
+  const dispatch = useDispatch();
+
+  const selectedDate = new Date(date);
 
 
   const isAuthenticated = useSelector(
@@ -154,17 +160,46 @@ const CalendarScreen = ({ route }: any) => {
                   borderRadius: 10,
                 }}
                 markedDates={{
-                  [date]: {selected: true,selectedColor:'green',
-                  disableTouchEvent: true,
-                  selectedTextColor: 'white'
-                },
-                  
-                      }}
-                  onDayPress={day => {
-                    console.log('selected day', day);
-                    setDate(day.dateString)
-                    navigation.navigate("CalendarEventScreen");
-                  }}
+                  [date]: {
+                    selected: true,
+                    selectedColor: "green",
+                    disableTouchEvent: true,
+                    selectedTextColor: "white",
+                  },
+                }}
+                onDayPress = {async (day) => {
+                  try {
+                    setDate(day.dateString);
+                
+                    const selectedDate = new Date(day.dateString); // Parse the selected date
+                
+                    const startDate = moment(selectedDate).startOf('day').utc().unix();
+                    const endDate = moment(selectedDate).endOf('day').utc().unix();
+                
+                    const payloadData = {
+                      startDate: startDate,
+                      endDate: endDate,
+                    };
+                
+                    console.log("Checking start and end date", payloadData);
+                    const response = await dispatch(calendarEvent(payloadData as any) as any);
+                
+                    console.log("Response:", response);
+                
+                    if (response.payload.foodEvents) {
+                      navigation.navigate("CalendarEventScreen", {
+                        selectedDate: day.dateString,
+                        singleDayEvent: response.payload.foodEvents,
+                      });
+                    } else {
+                      console.log("No food events found in the response.");
+                      // Handle the case where there are no food events
+                    }
+                  } catch (error) {
+                    console.error("Error:", error);
+                    // Handle any errors that occur during the async operation
+                  }
+                }}
                 theme={{
                   calendarBackground: "#ffffff",
                   todayTextColor: "red",
@@ -175,10 +210,9 @@ const CalendarScreen = ({ route }: any) => {
                   textDayFontFamily: "monospace",
                   textMonthFontFamily: "monospace",
                   textDayHeaderFontFamily: "monospace",
-                  arrowColor:"green",
-                  textMonthFontSize:20,
-                  selectedDotColor:"red"
-                
+                  arrowColor: "green",
+                  textMonthFontSize: 20,
+                  selectedDotColor: "red",
                 }}
               />
             </View>

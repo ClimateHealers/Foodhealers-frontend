@@ -3,28 +3,33 @@ import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useState } from "react";
 import {
-    Keyboard,
-    Platform,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    TouchableWithoutFeedback,
-    View,
+  Keyboard,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
 } from "react-native";
 import {
-    heightPercentageToDP as h2dp,
-    widthPercentageToDP as w2dp,
+  heightPercentageToDP as h2dp,
+  widthPercentageToDP as w2dp,
 } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useSelector } from "react-redux";
 import { getLocation } from "../Components/getCurrentLocation";
+import moment from "moment";
 
 const CalendarEventScreen = ({ route }: any) => {
   const navigation: any = useNavigation();
 
+  const { selectedDate, singleDayEvent } = route.params;
+
+  const formattedDate = moment(selectedDate).format("DD MMM");
+  console.log("djvbsjvbsdjvbjsdhvbjsvbsjbvsjdjvbs", singleDayEvent);
+
   const [menuOpen, setMenuOpen] = useState(false);
-  const [date, setDate] = useState<any>();
 
   const isAuthenticated = useSelector(
     (state: any) => state?.auth?.data?.isAuthenticated
@@ -40,7 +45,6 @@ const CalendarEventScreen = ({ route }: any) => {
   };
 
   const handleMenuItemPress = (item: any) => {
-    // console.log(`Selected menu item: ${item}`);
     setMenuOpen(false);
     if (isAuthenticated) {
       navigation.navigate("HomeScreen");
@@ -59,93 +63,96 @@ const CalendarEventScreen = ({ route }: any) => {
     setMenuOpen(false);
   };
 
+  const navigateToDetailScreen = () => {
+    navigation.navigate("CalendarEventDetailScreen", {
+      eventDetails: singleDayEvent,
+    });
+  };
+
   return (
     <TouchableWithoutFeedback onPress={handlePressOutside}>
       <LinearGradient
         colors={["#012e17", "#017439", "#009b4d"]}
         style={styles.background}
       >
-        
-          <SafeAreaView style={styles.container}>
-            <View style={styles.row}>
-              <View style={styles.dropdownContainer}></View>
-              <View style={styles.item}>
-                {/* <Text style={styles.itemText}>{localized.t("Find Food")}</Text> */}
-                <Text style={styles.itemText}>Food Events</Text>
-              </View>
-              <View style={styles.item}>
-                <MaterialCommunityIcons
-                  name="menu"
-                  size={40}
-                  color="white"
-                  onPress={() => toggleMenu()}
-                />
-                {menuOpen && (
-                  <View
-                    style={{
-                      position: "absolute",
-                      right: 60,
-                      top: Platform.OS === "ios" ? h2dp(8) : h2dp(9),
-                      backgroundColor: "white",
-                      borderColor: "black",
-                      borderWidth: 0.2,
-
-                      borderRadius: 5,
-                      zIndex: 9999,
-                    }}
-                  >
-                    <TouchableOpacity
-                      onPress={() => handleMenuItemPress("Home")}
-                    >
-                      <Text
-                        style={{
-                          padding: 10,
-                          fontSize: 20,
-                          fontWeight: "300",
-                          lineHeight: 27.24,
-                        }}
-                      >
-                        Home
-                      </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={() => findFoodMenuItemPress("Find Food")}
-                    >
-                      <Text
-                        style={{
-                          padding: 10,
-                          fontSize: 20,
-                          fontWeight: "300",
-                          lineHeight: 27.24,
-                        }}
-                      >
-                        Find Food
-                      </Text>
-                    </TouchableOpacity>
-                    {isAuthenticated && (
-                      <TouchableOpacity
-                        onPress={() => navigation.navigate("ProfileScreen")}
-                      >
-                        <Text
-                          style={{
-                            padding: 10,
-                            fontSize: 20,
-                            fontWeight: "300",
-                            lineHeight: 27.24,
-                          }}
-                        >
-                          Account
-                        </Text>
-                      </TouchableOpacity>
-                    )}
-                  </View>
-                )}
-              </View>
+        <SafeAreaView style={styles.container}>
+          <View style={styles.row}>
+            <View style={styles.dropdownContainer}></View>
+            <View style={styles.item}>
+              {/* <Text style={styles.itemText}>{localized.t("Find Food")}</Text> */}
+              <Text style={styles.itemText}>Food Events</Text>
             </View>
-						
-            <View style={styles.subHeader}>
-              <TouchableOpacity onPress={()=>navigation.goBack()}>
-							<View style={{ display: "flex", flexDirection: "row" }}>
+            <View style={styles.item}>
+              <MaterialCommunityIcons
+                name="menu"
+                size={40}
+                color="white"
+                onPress={() => toggleMenu()}
+              />
+              {menuOpen && (
+                <View
+                  style={{
+                    position: "absolute",
+                    right: 60,
+                    top: Platform.OS === "ios" ? h2dp(8) : h2dp(9),
+                    backgroundColor: "white",
+                    borderColor: "black",
+                    borderWidth: 0.2,
+
+                    borderRadius: 5,
+                    zIndex: 9999,
+                  }}
+                >
+                  <TouchableOpacity onPress={() => handleMenuItemPress("Home")}>
+                    <Text
+                      style={{
+                        padding: 10,
+                        fontSize: 20,
+                        fontWeight: "300",
+                        lineHeight: 27.24,
+                      }}
+                    >
+                      Home
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => findFoodMenuItemPress("Find Food")}
+                  >
+                    <Text
+                      style={{
+                        padding: 10,
+                        fontSize: 20,
+                        fontWeight: "300",
+                        lineHeight: 27.24,
+                      }}
+                    >
+                      Find Food
+                    </Text>
+                  </TouchableOpacity>
+                  {isAuthenticated && (
+                    <TouchableOpacity
+                      onPress={() => navigation.navigate("ProfileScreen")}
+                    >
+                      <Text
+                        style={{
+                          padding: 10,
+                          fontSize: 20,
+                          fontWeight: "300",
+                          lineHeight: 27.24,
+                        }}
+                      >
+                        Account
+                      </Text>
+                    </TouchableOpacity>
+                  )}
+                </View>
+              )}
+            </View>
+          </View>
+
+          <View style={styles.subHeader}>
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <View style={{ display: "flex", flexDirection: "row" }}>
                 <MaterialIcons
                   name="keyboard-arrow-left"
                   size={26}
@@ -162,26 +169,25 @@ const CalendarEventScreen = ({ route }: any) => {
                   color="white"
                 />
               </View>
-							</TouchableOpacity>
-              <Text
-                style={{
-                  color: "white",
-                  marginLeft: w2dp(1),
-                  fontSize: h2dp(2),
-                }}
-              >
-                Events
-              </Text>
-            </View>
-						<ScrollView>
+            </TouchableOpacity>
+            <Text
+              style={{
+                color: "white",
+                marginLeft: w2dp(1),
+                fontSize: h2dp(2),
+              }}
+            >
+              Events
+            </Text>
+          </View>
+          <ScrollView>
             <View style={styles.eventsContainer}>
               <View style={styles.dateContainer}>
-                <Text style={styles.date}>19 sun</Text>
-                <Text style={styles.date}>19 sun</Text>
-                <Text style={styles.date}>19 sun</Text>
-                <Text style={styles.date}>19 sun</Text>
-                <Text style={styles.date}>19 sun</Text>
-                <Text style={styles.date}>19 sun</Text>
+                {singleDayEvent.map((event: any, index: any) => (
+                  <Text key={index} style={styles.date}>
+                    {formattedDate}
+                  </Text>
+                ))}
               </View>
               <View
                 style={{
@@ -193,40 +199,24 @@ const CalendarEventScreen = ({ route }: any) => {
                 }}
               ></View>
               <View style={styles.eventName}>
-							<TouchableOpacity>
-							 <View style={styles.eventCon}>
-                  <Text style={styles.eventTitle}>The vegan Cafe</Text>
-                </View>
-							 </TouchableOpacity>
-								<TouchableOpacity>
-							 <View style={styles.eventCon}>
-                  <Text style={styles.eventTitle}>The vegan Cafe</Text>
-                </View>
-							 </TouchableOpacity>
-								<TouchableOpacity>
-							 <View style={styles.eventCon}>
-                  <Text style={styles.eventTitle}>The vegan Cafe</Text>
-                </View>
-							 </TouchableOpacity>
-								<TouchableOpacity>
-							 <View style={styles.eventCon}>
-                  <Text style={styles.eventTitle}>The vegan Cafe</Text>
-                </View>
-							 </TouchableOpacity>
-								<TouchableOpacity>
-							 <View style={styles.eventCon}>
-                  <Text style={styles.eventTitle}>The vegan Cafe</Text>
-                </View>
-							 </TouchableOpacity>
-               <TouchableOpacity>
-							 <View style={styles.eventCon}>
-                  <Text style={styles.eventTitle}>The vegan Cafe</Text>
-                </View>
-							 </TouchableOpacity>
+                {singleDayEvent.map((event: any, index: any) => (
+                  <TouchableOpacity
+                    key={index}
+                    onPress={() =>
+                      navigation.navigate("CalendarEventDetailScreen", {
+                        eventDetails: event,
+                      })
+                    }
+                  >
+                    <View style={styles.eventCon}>
+                      <Text style={styles.eventTitle}>{event?.name}</Text>
+                    </View>
+                  </TouchableOpacity>
+                ))}
               </View>
             </View>
-        </ScrollView>
-          </SafeAreaView>
+          </ScrollView>
+        </SafeAreaView>
       </LinearGradient>
     </TouchableWithoutFeedback>
   );
@@ -343,7 +333,7 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     // justifyContent: "flex-start",
-		marginBottom:h2dp(7)
+    marginBottom: h2dp(7),
   },
   eventCon: {
     backgroundColor: "white",
@@ -357,18 +347,17 @@ const styles = StyleSheet.create({
     display: "flex",
     marginTop: h2dp(4),
     justifyContent: "space-between",
-		alignItems: "flex-start",
-		marginLeft:32
-		
+    alignItems: "flex-start",
+    marginLeft: 32,
   },
   date: {
     color: "white",
-		// alignSelf: "center",
+    // alignSelf: "center",
   },
   eventTitle: {
-		marginTop:h2dp(1.5),
-		fontSize:h2dp(2),
-		marginLeft:w2dp(2)
+    marginTop: h2dp(1.5),
+    fontSize: h2dp(2),
+    marginLeft: w2dp(2),
   },
   eventName: {
     display: "flex",
@@ -376,7 +365,7 @@ const styles = StyleSheet.create({
     // borderWidth:3,
     width: w2dp(80),
     height: "100%",
-		// marginBottom:h2dp(2)
+    // marginBottom:h2dp(2)
   },
 });
 
