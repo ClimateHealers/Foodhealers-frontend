@@ -39,10 +39,13 @@ const AllEventScreen = () => {
     navigation.navigate("HomeScreen");
   };
   const findFoodMenuItemPress = (item: any) => {
-    getLocation().then((location: any) => {
-      navigation.navigate("MapScreen", {
-        location: location,
-      });
+    getLocation().then((res) => {
+      if(res){
+        navigation?.navigate("MapScreen", {
+          latitude: res?.latitude,
+          longitude: res?.longitude,
+        });
+      }
     });
     // console.log(`Selected menu item: ${item}`);
     setMenuOpen(false);
@@ -148,7 +151,7 @@ const AllEventScreen = () => {
         <Text
           style={{
             marginLeft: w2dp(5),
-            width: w2dp(52),
+            width: w2dp(47),
             fontWeight: "200",
             fontSize: 16,
             lineHeight:20,

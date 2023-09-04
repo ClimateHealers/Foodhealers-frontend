@@ -92,10 +92,11 @@ useEffect(()=>{
     navigation.navigate("HomeScreen");
   };
   const findFoodMenuItemPress = (item: any) => {
-    getLocation().then((location: any) => {
-      if(location){
+    getLocation().then((res) => {
+      if(res){
         navigation?.navigate("MapScreen", {
-          location: location,
+          latitude: res?.latitude,
+          longitude: res?.longitude,
         });
       }
     });
