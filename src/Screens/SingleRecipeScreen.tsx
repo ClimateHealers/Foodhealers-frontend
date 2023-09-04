@@ -217,6 +217,17 @@ const SingleRecipeScreen = ({ route }: any) => {
                   </Text>
                   <Text style={styles.ingredient}>{instructions}</Text>
                 </View>
+                <View>
+                  <Text
+                    style={{
+                      color: "white",
+                      fontSize: h2dp(2),
+                      margin: h2dp(2),
+                    }}
+                  >
+                    Credits : PCRM website
+                  </Text>
+                </View>
               </TouchableOpacity>
             </View>
           </ScrollView>
