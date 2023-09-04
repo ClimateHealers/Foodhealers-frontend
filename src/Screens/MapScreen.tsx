@@ -144,7 +144,7 @@ const MapScreen = ({ route }: any) => {
   // };
 
   const clickHandler = () => {
-    navigation.navigate("CalendarScreen", {
+    navigation.navigate("FindFoodHomeScreen", {
       location: location,
       city: city,
       state: state,
