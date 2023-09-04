@@ -286,7 +286,7 @@ const FindFoodHomeScreen = ({ route }: any) => {
                 alignItems: "center",
               }}
             >
-              <TouchableOpacity style={[styles.touchableView]}>
+              <TouchableOpacity style={[styles.touchableView]} onPress = {()=>navigation.navigate("CalendarScreen")}>
                 <View
                   style={[styles.containerView, { marginBottom: w2dp(2.8) }]}
                 >
