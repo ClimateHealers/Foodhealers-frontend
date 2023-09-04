@@ -183,7 +183,7 @@ const SingleRecipeScreen = ({ route }: any) => {
                           color: "white",
                         }}
                       >
-                        10 mins
+                       {recipeData?.cookingTime ==="preparation time not specified" ? "Not specified" :recipeData?.cookingTime}
                       </Text>
                     </View>
                   </View>

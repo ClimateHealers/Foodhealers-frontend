@@ -33,7 +33,6 @@ const CategoryScreen = ({ route }: any) => {
   const [textChange, setTextChange] = useState(false);
 
   const dispatch = useDispatch();
-
   const navigation: any = useNavigation();
 
   const isAuthenticated = useSelector(
@@ -83,7 +82,6 @@ const CategoryScreen = ({ route }: any) => {
     setMenuOpen(false);
   };
 
-  console.log("sdvksbvksdbkvjsbdkvbvjs", data);
 
   const handleSearchTextChange = (text: any) => {
     setSearchText(text);
@@ -231,14 +229,8 @@ const CategoryScreen = ({ route }: any) => {
                                 size={20}
                                 color="#8A8686"
                               />
-                              <Text
-                                style={{
-                                  marginLeft: 4,
-                                  color: "#8A8686",
-                                  marginBottom: 1,
-                                }}
-                              >
-                                10 mins
+                              <Text style={{ marginLeft: 4, color: "#8A8686" }}>
+                              {recipe?.preparationTime === "preparation time not specified" ? "Not specified" :recipe?.preparationTime}
                               </Text>
                             </View>
                           </View>
@@ -256,6 +248,7 @@ const CategoryScreen = ({ route }: any) => {
                                 recipeIngredient: recipe?.ingredients,
                                 recipeName: recipe?.foodName,
                                 recipeInstructions: recipe?.cookingInstructions,
+                                cookingTime : recipe?.preparationTime
                               },
                             })
                           }
@@ -284,7 +277,7 @@ const CategoryScreen = ({ route }: any) => {
                                 color="#8A8686"
                               />
                               <Text style={{ marginLeft: 4, color: "#8A8686" }}>
-                                10 mins
+                              {recipe?.preparationTime === "preparation time not specified" ? "Not specified" :recipe?.preparationTime}
                               </Text>
                             </View>
                           </View>

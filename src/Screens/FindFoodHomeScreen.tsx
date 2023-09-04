@@ -50,6 +50,7 @@ const FindFoodHomeScreen = ({ route }: any) => {
   const [events, setEvents] = useState<[]>([]);
 
   const mapRef = useRef<any>(null);
+  const dispatch= useDispatch()
 
   const isAuthenticated = useSelector(
     (state: any) => state?.auth?.data?.isAuthenticated
