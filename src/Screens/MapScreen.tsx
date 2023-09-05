@@ -145,15 +145,14 @@ const MapScreen = ({ route }: any) => {
   //   navigation.navigate("ProfileScreen")
   // };
 
-  const clickHandler = () => {
-    navigation.navigate("WeekScreen", {
-      latitude: latitude,
-      longitude: longitude,
+  const  clickHandler = () => {
+    navigation.navigate("FindFoodHomeScreen", {
+      // location: location,
       city: city,
       state: state,
       fullAddress: fullAddress,
       postalCode: postalCode,
-      lat: lat,
+      latitude: lat,
       lng: long,
       address: address,
     });

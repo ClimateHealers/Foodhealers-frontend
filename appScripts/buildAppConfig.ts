@@ -52,7 +52,12 @@ const appConfig = {
       },
     },
     android: {
-      versionCode: 5,
+      versionCode: 6,
+      googleServicesFile: "./google-services.json",
+      adaptiveIcon: {
+        foregroundImage: "./assets/FH-androidLogo.png",
+        backgroundColor: "#ffffff",
+      },
       permissions: [
         "android.permission.ACCESS_COARSE_LOCATION",
         "android.permission.ACCESS_FINE_LOCATION",
