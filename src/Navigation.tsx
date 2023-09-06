@@ -25,6 +25,10 @@ import WelcomeScreen from "./Screens/WelcomeScreen";
 import CalendarScreen from "./Screens/CalendarScreen";
 import CalendarEventScreen from "./Screens/CalendarEventScreen";
 import CalendarEventDetailScreen from "./Screens/CalendarEventDetailScreen";
+import FindFoodHomeScreen from "./Screens/FindFoodHomeScreen";
+import RecipesHomeScreen from "./Screens/RecipesHomeScreen";
+import CategoryScreen from "./Screens/CategoryScreen";
+import SingleRecipeScreen from "./Screens/SingleRecipeScreen";
 
 const Navigation = () => {
   const Stack = createNativeStackNavigator();
@@ -67,6 +71,26 @@ const Navigation = () => {
           <Stack.Screen
             name="HomeScreen"
             component={HomeScreen}
+            options={{ title: "", header: () => null }}
+          />
+          <Stack.Screen
+            name="FindFoodHomeScreen"
+            component={FindFoodHomeScreen}
+            options={{ title: "", header: () => null }}
+          />
+          <Stack.Screen
+            name="RecipesHomeScreen"
+            component={RecipesHomeScreen}
+            options={{ title: "", header: () => null }}
+          />
+          <Stack.Screen
+            name="CategoryScreen"
+            component={CategoryScreen}
+            options={{ title: "", header: () => null }}
+          />
+          <Stack.Screen
+            name="SingleRecipeScreen"
+            component={SingleRecipeScreen}
             options={{ title: "", header: () => null }}
           />
           <Stack.Screen

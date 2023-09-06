@@ -1,7 +1,7 @@
 import { MaterialIcons } from "@expo/vector-icons";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import * as Location from "expo-location";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
@@ -26,6 +26,7 @@ import PrimaryButton from "../Components/PrimaryButton";
 import { localized } from "../locales/localization";
 import { myTheme } from "../myTheme";
 import { setLanguage } from "../redux/reducers/langReducer";
+import axios from "axios";
 
 const HomeScreen = ({ route }: any) => {
   const userDetails = useSelector((state: any) => state.auth);
@@ -41,6 +42,8 @@ const HomeScreen = ({ route }: any) => {
   const [loc, setLoc] = useState(false);
   const [langOpen, setlangOpen] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState(localized.locale);
+  const[lat,setLat] = useState(0)
+  const[long,setLong] = useState(0)
   const [lang, setLang] = useState([
     { id: 1, label: "Bengali", value: "be" },
     { id: 2, label: "Chinese", value: "ch" },
@@ -62,55 +65,30 @@ const HomeScreen = ({ route }: any) => {
     setSelectedLanguage(selectedLanguage);
   };
 
-  const getLocation = async () => {
-    try {
-      const checkingPermisssion = await Location.hasServicesEnabledAsync();
-      if (checkingPermisssion) {
-        setLoc(true);
-        let { status } = await Location.requestForegroundPermissionsAsync();
-        if (status !== "granted") {
-          console.log("permission to access location was denied");
-          setLoc(false);
-          Alert.alert(
-            "Please turn on your location",
-            "Food healers app requires location permission to provide you with directions to food events from your present location and to notify you of any events nearby.",
-            [{ text: "Open settings", onPress: () => Linking.openSettings() }],
-            { cancelable: true }
-          );
-          return;
-        }
-        let location =
-          Platform.OS === "ios"
-            ? await Location.getLastKnownPositionAsync({})
-            : await Location.getLastKnownPositionAsync({});
-        if (location) {
-          setLoc(false);
-          navigation.navigate("MapScreen", {
-            location: location,
-          });
-        } else {
-          setLoc(false);
-        }
-      } else {
-        Alert.alert(
-          "Please turn on your location",
-          "Food healers app requires location permission to provide you with directions to food events from your present location and to notify you of any events nearby.",
-          [{ text: "Open settings",   onPress: () => {
-            Platform?.OS === "ios"
-              ? Linking.openURL("App-Prefs:root=LOCATION_SERVICES")
-              : Linking.sendIntent(
-                  "android.settings.LOCATION_SOURCE_SETTINGS",
-                );
-          }}],
-          { cancelable: true }
-        );
+  useEffect(()=>{
+    const getUserLocation = async () => {
+      try {
+        const response = await axios.get('http://ipinfo.io/json');
+        const { loc } = response.data;
+        console.log("cheking location from IP address", loc)
+        const [latitude, longitude] = loc.split(',').map((coord:any) => parseFloat(coord));
+        console.log("objectobjectobjectobject",latitude,longitude)
+        setLat(latitude)
+        setLong(longitude)
+        return { latitude, longitude };
+      } catch (error) {
+        console.error('Error fetching user location', error);
+        return null;
       }
-    } catch (error) {
-      setLoc(true);
-      console.error(error);
-    }
-  };
-
+    };
+    getUserLocation()
+   },[])
+  
+   const navigateToMapScreen =()=>{
+    navigation.navigate("MapScreen",{
+      latitude:lat,
+      longitude : long
+    }) }
   const appLoader = (loader: any) => {
     return (
       <View style={styles.centeredView}>
@@ -194,7 +172,7 @@ const HomeScreen = ({ route }: any) => {
           <View style={styles.headerContainer}>
             <PrimaryButton
               title={localized.t("Find Food")}
-              onPress={getLocation}
+              onPress={navigateToMapScreen}
               buttonStyle={myTheme.Button.buttonStyle}
               titleStyle={styles.titleStyle}
             />

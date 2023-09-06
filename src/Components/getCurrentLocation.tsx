@@ -1,41 +1,17 @@
-import * as Location from "expo-location";
-import { Linking, Platform } from "react-native";
-import { Alert } from "react-native";
+import axios from "axios";
 
 export const getLocation = async () => {
   try {
-    const checkingPermisssion = await Location.hasServicesEnabledAsync();
-    if(checkingPermisssion) {
-    let { status } = await Location?.requestForegroundPermissionsAsync();
-    if (status !== "granted") {
-      console.log("permission to access location was denied");
-      Alert.alert(
-        "Location permission denied",
-        "Please grant permission to access your location to use this feature.",
-        [{ text: "Open settings", onPress: () => Linking.openSettings() }],
-        { cancelable: true }
-      );
-      return;
-    }
-    let location = Platform.OS === "ios" ?  await Location.getLastKnownPositionAsync({}) : await Location.getCurrentPositionAsync({}) 
-    if (location) {
-      return location;
-    }
-  }else{
-    Alert.alert(
-      "Please turn on your location",
-      "Please grant permission to access your location to use this feature.",
-      [{ text: "Open settings",   onPress: () => {
-        Platform?.OS === "ios"
-          ? Linking.openURL("App-Prefs:root=LOCATION_SERVICES")
-          : Linking.sendIntent(
-              "android.settings.LOCATION_SOURCE_SETTINGS",
-            );
-      }}],
-      { cancelable: true }
-    );
-  }
+    const response = await axios.get("http://ipinfo.io/json");
+    const { loc } = response.data;
+    console.log("cheking location from IP address", loc);
+    const [latitude, longitude] = loc
+      .split(",")
+      .map((coord: any) => parseFloat(coord));
+    console.log("objectobjectobjectobject", latitude, longitude);
+    return { latitude, longitude };
   } catch (error) {
-    console.error(error);
+    console.error("Error fetching user location", error);
+    return null;
   }
 };

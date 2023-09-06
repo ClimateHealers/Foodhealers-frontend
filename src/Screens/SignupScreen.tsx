@@ -3,7 +3,7 @@ import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { Formik } from "formik";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
@@ -31,8 +31,9 @@ import { signupSchema } from "../Components/validation";
 import { auth } from "../firebase/firebaseConfig";
 import { localized } from "../locales/localization";
 import { login, registerUser } from "../redux/actions/authAction";
-import { getExpoPushToken } from "../Components/notiification";
 import { setLanguage } from "../redux/reducers/langReducer";
+import * as Notifications from 'expo-notifications';
+import Constants from "expo-constants";
 
 const SignupScreen = () => {
   const [loading, setLoading] = useState(false);
@@ -41,7 +42,7 @@ const SignupScreen = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState(localized.locale);
-  const [expoPushToken, setExpoPushToken] = useState("")
+  const [expoPushToken, setExpoPushToken] = useState<any>("")
   const [lang, setLang] = useState([
     { id: 1, label: "Bengali", value: "be" },
     { id: 2, label: "Chinese", value: "ch" },
@@ -52,12 +53,20 @@ const SignupScreen = () => {
     { id: 7, label: "Punjabi", value: "pu" },
     { id: 8, label: "Spanish", value: "es" },
   ]);
+useEffect(()=>{
+  const getExpoPushToken = async () => {
+    const token = await Notifications.getExpoPushTokenAsync({
+      projectId : Constants?.manifest?.extra?.eas?.projectID
+    });
+    const tokenKey = token?.data.substring(token?.data.indexOf('[') + 1, token?.data.indexOf(']'));
+    setExpoPushToken(token?.data);
+    // sendPushNotification(token);
+  };
+  getExpoPushToken()
+},[])
   
 
-  getExpoPushToken().then((res)=>{
-    console.log("vvvvvvvvvvvvv", res?.data);
-    setExpoPushToken(res?.data);
-  })
+
 
 
   const dispatch = useDispatch();
@@ -83,10 +92,11 @@ const SignupScreen = () => {
     navigation.navigate("HomeScreen");
   };
   const findFoodMenuItemPress = (item: any) => {
-    getLocation().then((location: any) => {
-      if(location){
+    getLocation().then((res) => {
+      if(res){
         navigation?.navigate("MapScreen", {
-          location: location,
+          latitude: res?.latitude,
+          longitude: res?.longitude,
         });
       }
     });
@@ -211,7 +221,7 @@ const SignupScreen = () => {
                     name: name,
                     email: email,
                     isVolunteer: true,
-                    // expoToken: expoPushToken
+                    expoPushToken: expoPushToken
                   };
 
                   const response = await dispatch(registerUser(data) as any);

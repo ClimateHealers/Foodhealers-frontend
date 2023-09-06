@@ -5,6 +5,8 @@ import findFoodReducer from "./findFoodReducer";
 import myEventReducer from "./myEventReducer";
 import languageReducer from './langReducer'
 import notificationReducer from "./notificationReducer";
+import veganRecipesReducer from "./veganRecipesReducer";
+import veganRecipesCategoryReducer from "./veganRecipesCategoryReducer";
 
 const rootReducer = combineReducers({
   auth: authreducers,
@@ -12,7 +14,9 @@ const rootReducer = combineReducers({
   myEvent:myEventReducer,
   allEvents:allEventsReducer,
   language: languageReducer,
-  notification:notificationReducer
+  notification:notificationReducer,
+  recipesCategory:veganRecipesReducer,
+  veganRecipesCategoryList: veganRecipesCategoryReducer
 });
 
 export default rootReducer;
