@@ -87,7 +87,7 @@ const CategoryScreen = ({ route }: any) => {
     setSearchText(text);
     setTextChange(true);
     const filtered = data?.filter((item: any) =>
-      item.foodName.toLowerCase().includes(text.toLowerCase())
+      item?.foodName?.toLowerCase()?.includes(text?.toLowerCase())
     );
     setFilteredData(filtered);
   };
