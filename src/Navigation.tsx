@@ -22,6 +22,9 @@ import SingleEventDetails from "./Screens/SingleEventDetails";
 import UploadPhotosScreen from "./Screens/UploadPhotosScreen";
 import WeekScreen from "./Screens/WeekScreen";
 import WelcomeScreen from "./Screens/WelcomeScreen";
+import CalendarScreen from "./Screens/CalendarScreen";
+import CalendarEventScreen from "./Screens/CalendarEventScreen";
+import CalendarEventDetailScreen from "./Screens/CalendarEventDetailScreen";
 import FindFoodHomeScreen from "./Screens/FindFoodHomeScreen";
 import RecipesHomeScreen from "./Screens/RecipesHomeScreen";
 import CategoryScreen from "./Screens/CategoryScreen";
@@ -159,6 +162,21 @@ const Navigation = () => {
           <Stack.Screen
             name="DeleteAccount"
             component={DeleteAccount}
+            options={{ title: "", header: () => null }}
+          />
+          <Stack.Screen
+            name="CalendarScreen"
+            component={CalendarScreen}
+            options={{ title: "", header: () => null }}
+          />
+          <Stack.Screen
+            name="CalendarEventScreen"
+            component={CalendarEventScreen}
+            options={{ title: "", header: () => null }}
+          />
+          <Stack.Screen
+            name="CalendarEventDetailScreen"
+            component={CalendarEventDetailScreen}
             options={{ title: "", header: () => null }}
           />
         </Stack.Navigator>

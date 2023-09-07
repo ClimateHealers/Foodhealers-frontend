@@ -225,7 +225,19 @@ const SingleRecipeScreen = ({ route }: any) => {
                       margin: h2dp(2),
                     }}
                   >
-                    Credits : PCRM website
+                    Source : {recipeData?.recipeSource}
+                  </Text>
+                </View>
+                <View>
+                  <Text
+                    style={{
+                      color: "white",
+                      fontSize: h2dp(2),
+                      marginBottom: h2dp(2),
+                      marginLeft: h2dp(2),
+                    }}
+                  >
+                    Credits : {recipeData?.recipeCredits}
                   </Text>
                 </View>
               </TouchableOpacity>
