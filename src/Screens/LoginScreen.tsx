@@ -3,7 +3,7 @@ import { CommonActions, useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { Formik } from "formik";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
@@ -32,6 +32,9 @@ import { auth } from "../firebase/firebaseConfig";
 import { localized } from "../locales/localization";
 import { login } from "../redux/actions/authAction";
 import { setLanguage } from "../redux/reducers/langReducer";
+import * as Notifications from 'expo-notifications';
+import Constants from "expo-constants";
+
 
 const LoginScreen = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -51,11 +54,26 @@ const LoginScreen = () => {
   ]);
   const [error, setError] = useState("");
   const navigation: any = useNavigation<string>();
+  const [expoPushToken, setExpoPushToken] = useState<any>("")
+
 
   const dispatch = useDispatch();
 
   const data = useSelector((state: any) => state.auth.data);
   const languageName = useSelector((state:any) => state.language)
+
+
+  useEffect(()=>{
+    const getExpoPushToken = async () => {
+      const token = await Notifications.getExpoPushTokenAsync({
+        projectId : Constants?.manifest?.extra?.eas?.projectID
+      });
+      const tokenKey = token?.data.substring(token?.data.indexOf('[') + 1, token?.data.indexOf(']'));
+      setExpoPushToken(token?.data);
+      // sendPushNotification(token);
+    };
+    getExpoPushToken()
+  },[])
 
   const handlePressOutside = () => {
     setlangOpen(false);
@@ -202,6 +220,7 @@ const LoginScreen = () => {
                     .then((token) => {
                       const data = {
                         tokenId: token,
+                        expoPushToken: expoPushToken
                       };
                       dispatch(login(data) as any).then((res:any)=>{
                         if(!res?.payload?.success){

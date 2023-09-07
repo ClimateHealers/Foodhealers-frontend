@@ -94,8 +94,8 @@ const SingleRecipeScreen = ({ route }: any) => {
                 <View
                   style={{
                     position: "absolute",
-                    right: 60,
-                    top: Platform.OS === "ios" ? h2dp(8) : h2dp(9),
+                    right: 70,
+                    top: Platform.OS === "ios" ? h2dp(4) : h2dp(5),
                     backgroundColor: "white",
                     borderColor: "black",
                     borderWidth: 0.2,

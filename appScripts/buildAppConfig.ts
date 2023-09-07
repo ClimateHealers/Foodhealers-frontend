@@ -12,7 +12,7 @@ const appConfig = {
   expo: {
     name: "food-healers",
     slug: "food-healers",
-    version: "1.2.4",
+    version: "1.2.6",
     orientation: "portrait",
 
     icon: "./assets/FH-androidLogo.png",
@@ -52,8 +52,7 @@ const appConfig = {
       },
     },
     android: {
-      versionCode: 6,
-      googleServicesFile: "./google-services.json",
+      versionCode: 8,
       adaptiveIcon: {
         foregroundImage: "./assets/FH-androidLogo.png",
         backgroundColor: "#ffffff",
