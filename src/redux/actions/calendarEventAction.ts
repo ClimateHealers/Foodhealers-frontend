@@ -11,9 +11,9 @@ export const calendarEvent = createAsyncThunk<calendarEvent, calendarEvent>(
   async (date: calendarEvent, { rejectWithValue }: any) => {
     try {
       const result = await API.get(
-        `v2/api/calender-events/?startDate=${date.startDate}&&endDate=${date.endDate}`
+        `v2/api/calender-events/?startDate=${date?.startDate}&&endDate=${date?.endDate}`
       );
-      return result.data;
+      return result?.data;
     } catch (error: any) {
       return rejectWithValue(error?.response?.data?.message);
     }

@@ -181,23 +181,17 @@ const CalendarScreen = ({ route }: any) => {
                       endDate: endDate,
                     };
                 
-                    console.log("Checking start and end date", payloadData);
                     const response = await dispatch(calendarEvent(payloadData as any) as any);
-                
-                    console.log("Response:", response);
-                
-                    if (response.payload.foodEvents) {
+                                
+                    if (response?.payload?.foodEvents) {
                       navigation.navigate("CalendarEventScreen", {
                         selectedDate: day.dateString,
                         singleDayEvent: response.payload.foodEvents,
                       });
                     } else {
-                      console.log("No food events found in the response.");
-                      // Handle the case where there are no food events
                     }
                   } catch (error) {
                     console.error("Error:", error);
-                    // Handle any errors that occur during the async operation
                   }
                 }}
                 theme={{

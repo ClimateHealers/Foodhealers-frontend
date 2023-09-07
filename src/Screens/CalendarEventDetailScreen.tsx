@@ -36,10 +36,9 @@ const CalendarEventDetailScreen = ({ route }: any) => {
   const { eventDetails } = route.params;
   const navigation: any = useNavigation();
 
-  console.log("objectobjectobjectobjectobject", eventDetails)
 
   const isAuthenticated = useSelector(
-    (state: any) => state.auth.data.isAuthenticated
+    (state: any) => state?.auth?.data?.isAuthenticated
   );
 
   const [langOpen, setlangOpen] = useState(false);
@@ -93,7 +92,7 @@ const CalendarEventDetailScreen = ({ route }: any) => {
   };
 
   const changeLanguage = (itemValue: any, index: any) => {
-    const selectedLanguage = lang[index].value;
+    const selectedLanguage = lang[index]?.value;
     localized.locale = selectedLanguage;
     setSelectedLanguage(selectedLanguage);
   };
@@ -278,7 +277,7 @@ const CalendarEventDetailScreen = ({ route }: any) => {
                       <Text style={styles.boldText}>
                         Location:{" "}
                         <Text style={styles.cardText}>
-                          {eventDetails.address?.fullAddress}
+                          {eventDetails?.address?.fullAddress}
                         </Text>
                       </Text>
 

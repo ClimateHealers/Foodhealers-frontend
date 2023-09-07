@@ -27,7 +27,6 @@ const CalendarEventScreen = ({ route }: any) => {
   const { selectedDate, singleDayEvent } = route.params;
 
   const formattedDate = moment(selectedDate).format("DD MMM");
-  console.log("djvbsjvbsdjvbjsdhvbjsvbsjbvsjdjvbs", singleDayEvent);
 
   const [menuOpen, setMenuOpen] = useState(false);
 
