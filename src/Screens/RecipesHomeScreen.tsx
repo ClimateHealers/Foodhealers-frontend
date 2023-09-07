@@ -31,7 +31,7 @@ const RecipesHomeScreen = () => {
     (state: any) => state?.recipesCategory?.data?.categoriesList
   );
 
-  console.log("recipesCategoryrecipesCategoryrecipesCategory", recipesCategory);
+
 
   const isAuthenticated = useSelector(
     (state: any) => state?.auth?.data?.isAuthenticated
@@ -159,7 +159,8 @@ const RecipesHomeScreen = () => {
                     }}
                   >
                     <Image
-                      source={require("../../assets/images/lunchPicture.png")}
+                      // source={require("../../assets/images/lunchPicture.png")}
+                      source={{ uri: recipe?.categoryImage }}
                       style={styles.imageStyle}
                     />
                     <View style={styles.title}>
@@ -227,6 +228,7 @@ const styles = StyleSheet.create({
   imageStyle: {
     borderRadius: 10,
     width: w2dp(85),
+    height:h2dp(20)
   },
   title: {
     backgroundColor: "white",

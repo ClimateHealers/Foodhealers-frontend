@@ -86,7 +86,7 @@ const CategoryScreen = ({ route }: any) => {
   const handleSearchTextChange = (text: any) => {
     setSearchText(text);
     setTextChange(true);
-    const filtered = data.filter((item: any) =>
+    const filtered = data?.filter((item: any) =>
       item.foodName.toLowerCase().includes(text.toLowerCase())
     );
     setFilteredData(filtered);
@@ -191,7 +191,7 @@ const CategoryScreen = ({ route }: any) => {
             <ScrollView keyboardShouldPersistTaps="always">
               <View style={[styles.centeredView]}>
                 {textChange
-                  ? filteredData.map((recipe: any) => (
+                  ? filteredData?.map((recipe: any) => (
                       <TouchableOpacity
                         style={[styles.touchableView]}
                         key={recipe?.id}
@@ -237,7 +237,7 @@ const CategoryScreen = ({ route }: any) => {
                         </View>
                       </TouchableOpacity>
                     ))
-                  : data.map((recipe: any) => (
+                  : data?.map((recipe: any) => (
                       <TouchableOpacity
                         style={[styles.touchableView]}
                         key={recipe?.id}
@@ -248,7 +248,9 @@ const CategoryScreen = ({ route }: any) => {
                                 recipeIngredient: recipe?.ingredients,
                                 recipeName: recipe?.foodName,
                                 recipeInstructions: recipe?.cookingInstructions,
-                                cookingTime : recipe?.preparationTime
+                                cookingTime : recipe?.preparationTime,
+                                recipeSource : recipe?.recipeSource,
+                                recipeCredits: recipe?.recipeCredits
                               },
                             })
                           }
@@ -261,7 +263,7 @@ const CategoryScreen = ({ route }: any) => {
                           <View style={styles.heading}>
                             <Text
                               style={{
-                                fontSize: h2dp(2.5),
+                                fontSize: h2dp(1.7),
                                 fontWeight: "600",
                                 marginBottom: h2dp(3),
                                 marginTop: h2dp(1),
