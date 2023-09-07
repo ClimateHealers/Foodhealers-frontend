@@ -214,7 +214,7 @@ const CategoryScreen = ({ route }: any) => {
                           <View style={styles.heading}>
                             <Text
                               style={{
-                                fontSize: h2dp(2.5),
+                                fontSize: h2dp(1.7),
                                 fontWeight: "600",
                                 marginBottom: h2dp(3),
                                 marginTop: h2dp(1),
