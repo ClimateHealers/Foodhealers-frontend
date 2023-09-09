@@ -44,10 +44,20 @@ export default function App() {
       if (!granted) {
         Alert.alert(
           "Notification Permissions",
-          "FoodHealers app needs push notifications permission to send real-time updated on events and announcements from community.You can enable it anytime from settings.",
+          "FoodHealers app needs push notifications permission to send real-time updated events and announcements from community.You can enable it anytime from settings.",
           [
             {
-              text: "Ok",
+              text: "open settings",
+              onPress: () => {
+                Platform?.OS === "ios"
+                  ? Linking.openURL("App-Prefs:root=LOCATION_SERVICES")
+                  : Linking.sendIntent(
+                      "android.settings.LOCATION_SOURCE_SETTINGS"
+                    );
+              },
+            },
+            {
+              text: "Close",
               // onPress: () => {
               //   Platform?.OS === "ios"
               //     ? Linking.openURL("App-Prefs:root=LOCATION_SERVICES")
@@ -55,7 +65,7 @@ export default function App() {
               //         "android.settings.LOCATION_SOURCE_SETTINGS"
               //       );
               // },
-            },
+            },  
           ],
           { cancelable: true }
         );

@@ -188,15 +188,17 @@ const CalendarEventScreen = ({ route }: any) => {
                   </Text>
                 ))}
               </View>
+              <TouchableOpacity>
               <View
                 style={{
                   backgroundColor: "white",
-                  height: "1000%",
+                  height: h2dp(80),
                   width: w2dp(0.5),
                   marginTop: 10,
                   marginLeft: w2dp(2),
                 }}
               ></View>
+              </TouchableOpacity>
               <View style={styles.eventName}>
                 {singleDayEvent.map((event: any, index: any) => (
                   <TouchableOpacity
