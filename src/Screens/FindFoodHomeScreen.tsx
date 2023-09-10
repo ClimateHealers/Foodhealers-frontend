@@ -29,7 +29,9 @@ import { VeganRecipesCategories } from "../redux/actions/veganRecipes";
 
 const FindFoodHomeScreen = ({ route }: any) => {
   const {
-    location,
+    // location,
+    currentlat,
+    currentlong,
     city,
     postalCode,
     state,
@@ -114,7 +116,9 @@ const FindFoodHomeScreen = ({ route }: any) => {
   };
   const clickHandler = () => {
     navigation.navigate("WeekScreen", {
-      location: location,
+      // location: location,
+      currentlatitude:currentlat,
+      currentlongitude:currentlong,
       city: city,
       state: state,
       fullAddress: fullAddress,
@@ -213,28 +217,29 @@ const FindFoodHomeScreen = ({ route }: any) => {
               ref={mapRef}
               provider={"google"}
               style={{
+                position:"relative",
                 alignSelf: "center",
                 height: Platform.OS === "ios" ? "18%" : "18%",
                 width: Platform.OS === "ios" ? "85%" : "85%",
                 borderRadius: 15,
+
               }}
               initialRegion={{
-                latitude: location?.coords?.latitude,
-                longitude: location?.coords?.longitude,
+                latitude: currentlat,
+                longitude: currentlong,
                 latitudeDelta: LATITUDE_DELTA,
                 longitudeDelta: LONGITUDE_DELTA,
               }}
               showsUserLocation={true}
-              // followsUserLocation={true}
             >
-              <Text style = {{textAlign:"center",fontSize:w2dp(7),fontWeight:"300",marginTop:h2dp(0.5)}}>Today</Text>
-              {address ? (
+                {/* <Text style = {{textAlign:"center",fontSize:h2dp(3),fontWeight:"300",marginTop:h2dp(0.5)}}>Today</Text> */}
+              
                 <Marker
                   pinColor="#FC5A56"
                   coordinate={{
                     latitude: latitude ? latitude : 0,
                     longitude: lng ? lng : 0,
-                    latitudeDelta: LATITUDE_DELTA,
+                    latitudeDelta : LATITUDE_DELTA,
                     longitudeDelta: LONGITUDE_DELTA,
                   }}
                   title={"selected location"}
@@ -244,7 +249,7 @@ const FindFoodHomeScreen = ({ route }: any) => {
                     style={styles.markerIcon}
                   />
                 </Marker>
-              ) : null}
+              
 
               {events?.map((marker: any) => {
                 const coordinates = {

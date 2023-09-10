@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import {
     Image,
     Keyboard,
+    Linking,
     Platform,
     SafeAreaView,
     ScrollView,
@@ -224,8 +225,9 @@ const SingleRecipeScreen = ({ route }: any) => {
                       fontSize: h2dp(2),
                       margin: h2dp(2),
                     }}
+                    
                   >
-                    Source : {recipeData?.recipeSource}
+                    Source : <Text style = {styles.underlineTextStyle} onPress={() => Linking.openURL(recipeData?.recipeSource)}>{recipeData?.recipeSource}</Text>
                   </Text>
                 </View>
                 <View>
@@ -311,6 +313,9 @@ const styles = StyleSheet.create({
     marginLeft: h2dp(2),
     marginBottom: h2dp(2),
     marginTop: h2dp(1),
+  },
+  underlineTextStyle: {
+    textDecorationLine: 'underline',
   },
 });
 

@@ -148,6 +148,8 @@ const MapScreen = ({ route }: any) => {
   const  clickHandler = () => {
     navigation.navigate("FindFoodHomeScreen", {
       // location: location,
+      currentlat:latitude,
+      currentlong:longitude,
       city: city,
       state: state,
       fullAddress: fullAddress,
