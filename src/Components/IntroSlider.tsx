@@ -82,7 +82,7 @@ const IntroSlider = () => {
         title="Done"
         color="#5FBB3F"
         onPress={() => {
-          navigation.navigate("LoginScreen");
+          navigation.navigate("VolunteerHomeScreen");
         }}
       />
     </View>
@@ -120,7 +120,7 @@ const IntroSlider = () => {
         ref={sliderRef}
         data={slides}
         renderItem={renderItem}
-        onDone={() => navigation.navigate("LoginScreen")}
+        onDone={() => navigation.navigate("VolunteerHomeScreen")}
         dotStyle={{ backgroundColor: "#CDDE85" }}
         activeDotStyle={{ backgroundColor: "#00693D" }}
         showSkipButton
