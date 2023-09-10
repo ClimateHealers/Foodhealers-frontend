@@ -31,6 +31,7 @@ import CategoryScreen from "./Screens/CategoryScreen";
 import SingleRecipeScreen from "./Screens/SingleRecipeScreen";
 import IntroSlider from "./Components/IntroSlider";
 import VolunteerHomeScreen from "./Screens/VolunteerHomeScreeen";
+import VolunteerDonateScreen from "./Screens/VolunteerDonateScreen";
 
 const Navigation = () => {
   const Stack = createNativeStackNavigator();
@@ -189,6 +190,11 @@ const Navigation = () => {
           <Stack.Screen
             name="VolunteerHomeScreen"
             component={VolunteerHomeScreen}
+            options={{ title: "", header: () => null }}
+          />
+          <Stack.Screen
+            name="VolunteerDonateScreen"
+            component={VolunteerDonateScreen}
             options={{ title: "", header: () => null }}
           />
         </Stack.Navigator>
