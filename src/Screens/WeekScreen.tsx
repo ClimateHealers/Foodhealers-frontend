@@ -31,7 +31,7 @@ import { findFood } from "../redux/actions/findFoodaction";
 import { setLanguage } from "../redux/reducers/langReducer";
 
 const WeekScreen = ({ route }: any) => {
-  const { latitude, longitude, city, postalCode, state, fullAddress, lat, lng, address } =
+  const { city, postalCode, state, fullAddress, lat, lng, address, currentLatitude, currentLongitude  } =
     route.params;
   const { width, height } = Dimensions.get("window");
   const navigation: any = useNavigation();
@@ -117,12 +117,12 @@ const WeekScreen = ({ route }: any) => {
     let latitudeToUse, longitudeToUse;
   
     if (locationResult) {
-      setResult(true)
+      // setResult(true)
       latitudeToUse = locationResult.coords.latitude;
       longitudeToUse = locationResult.coords.longitude;
     } else {
-      latitudeToUse = latitude;
-      longitudeToUse = longitude;
+      latitudeToUse = currentLatitude;
+      longitudeToUse = currentLongitude;
     }
   
     setCurrentlat(latitudeToUse);
@@ -354,12 +354,12 @@ const WeekScreen = ({ route }: any) => {
                 ref={mapRef}
                 provider={"google"}
                 style={{ alignSelf: "stretch", height: "65%" }}
-                initialRegion={{
-                  latitude: result ? currentLat : latitude,
-                  longitude: result ? currentLong : longitude,
-                  latitudeDelta: LATITUDE_DELTA,
-                  longitudeDelta: LONGITUDE_DELTA,
-                }}
+                // initialRegion={{
+                //   latitude:  currentLatitude,
+                //   longitude:  currentLongitude,
+                //   latitudeDelta: LATITUDE_DELTA,
+                //   longitudeDelta: LONGITUDE_DELTA,
+                // }}
                 showsUserLocation={true}
               >
                 {address ? (
