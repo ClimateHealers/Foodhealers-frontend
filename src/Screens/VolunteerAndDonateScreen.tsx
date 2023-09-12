@@ -2,27 +2,23 @@ import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useState } from "react";
 import {
-  Image,
+  FlatList,
   Keyboard,
-  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import {
-  heightPercentageToDP as h2dp,
-  widthPercentageToDP as w2dp,
-} from "react-native-responsive-screen";
+import { heightPercentageToDP as h2dp } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
-import Carousel from "react-native-snap-carousel";
+import { SceneMap, TabBar, TabView } from "react-native-tab-view";
 import BurgerIcon from "../Components/BurgerIcon";
-import PrimaryButton from "../Components/PrimaryButton";
 import { getLocation } from "../Components/getCurrentLocation";
 import { localized } from "../locales/localization";
+import DonationTabScreen from "./DonationTabScreen";
 
-const VolunteerDonateScreen = ({ route }: any) => {
+const VolunteerAndDonateScreen = ({ route }: any) => {
   const navigation: any = useNavigation();
 
   const [langOpen, setlangOpen] = useState(false);
@@ -62,75 +58,43 @@ const VolunteerDonateScreen = ({ route }: any) => {
     });
     setMenuOpen(false);
   };
-  const cardData = [
-    {
-      id:1,
-      title: "Donate Food",
-      image: require("../../assets/images/donateFood.png"),
-    },
-    {
-      id: 3,
-      title: "Volunteer at an event",
-      image: require("../../assets/images/volunteerAtEvent.png"),
-    },
-    {
-      id: 4,
-      title: "Donate supplies",
-      image: require("../../assets/images/donateSupplies.png"),
-    },
-    {
-      id: 5,
-      title: "See all donations & Volunteers",
-      image: require("../../assets/images/seeAllDonations.png"),
-      navigation:"VolunteerAndDonateScreen"
-    },
+
+  const FirstRoute = () => <DonationTabScreen />;
+
+  const dummyData = [
+    { id: "1", title: "Item ", description: "Description " },
+    { id: "2", title: "Item ", description: "Description " },
+    { id: "3", title: "Item ", description: "Description " },
   ];
 
-  const renderItem = ({ item }: any) => {
-    return (
-      <View>
-        <View style={[styles.card, { backgroundColor: "white" }]}>
-          <TouchableOpacity>
-            <View>
-              <Image
-                source={item.image}
-                style={{
-                  width: "100%",
-                  height: h2dp(45),
-                  borderTopLeftRadius: h2dp(3),
-                  borderTopRightRadius: h2dp(3),
-                  opacity: 1,
-                  position: "relative",
-                }}
-              />
-            </View>
-            <View style={styles.headerContainer}>
-              <Text
-                style={{
-                  color: "white",
-                  fontSize: h2dp(3),
-                  marginLeft: w2dp(5),
-                }}
-              >
-                {item.title}
-              </Text>
-            </View>
-          </TouchableOpacity>
-          <View style={styles.description}>
-            <Text style={{ alignSelf: "center", fontSize: h2dp(2.2) }}>
-              You can make a Difference
-            </Text>
-            <PrimaryButton
-              title={"Select"}
-              onPress={()=>navigation.navigate(item?.navigation)}
-              buttonStyle={styles.buttonStyles}
-              titleStyle={styles.titleStyle}
-            />
-          </View>
+  const SecondRoute = () => {
+    const renderItem = ({ item }: any) => (
+      <TouchableOpacity>
+        <View style={styles.itemStyle}>
+          <Text style={styles.itemTitle}>{item.title}</Text>
+          <Text style={styles.itemDescription}>{item.description}</Text>
         </View>
-      </View>
+      </TouchableOpacity>
+    );
+
+    return (
+      <FlatList
+        data={dummyData}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.id}
+        contentContainerStyle={styles.flatListContainer}
+      />
     );
   };
+  const renderScene = SceneMap({
+    first: FirstRoute,
+    second: SecondRoute,
+  });
+  const [index, setIndex] = React.useState(0);
+  const [routes] = React.useState([
+    { key: "first", title: "Donations" },
+    { key: "second", title: "Volunteers" },
+  ]);
 
   return (
     <TouchableWithoutFeedback onPress={handlePressOutside}>
@@ -189,20 +153,20 @@ const VolunteerDonateScreen = ({ route }: any) => {
                 )}
               </View>
             </View>
-            <ScrollView>
-              <Carousel
-                data={cardData}
-                renderItem={renderItem}
-                sliderWidth={400}
-                itemWidth={400}
-                layout={"default"}
-                loop={true}
-                inactiveSlideScale={0.9}
-                inactiveSlideOpacity={0.7}
-                firstItem={0}
-                loopClonesPerSide={2}
-              />
-            </ScrollView>
+            <TabView
+              navigationState={{ index, routes }}
+              renderScene={renderScene}
+              onIndexChange={setIndex}
+              style={{ flex: 1 }}
+              renderTabBar={(props) => (
+                <TabBar
+                  {...props}
+                  style={{ backgroundColor: "transparent" }}
+                  labelStyle={styles.tabLabel}
+                  indicatorStyle={styles.tabIndicator}
+                />
+              )}
+            />
           </SafeAreaView>
         </LinearGradient>
       </View>
@@ -247,14 +211,6 @@ const styles = StyleSheet.create({
     height: h2dp(70),
     alignSelf: "center",
   },
-  buttonStyles: {
-    backgroundColor: "#FC5A56",
-    color: "white",
-    borderRadius: 5,
-    width: 150,
-    marginTop: h2dp(6.5),
-    alignSelf: "center",
-  },
   titleStyle: {
     color: "white",
     fontSize: 26,
@@ -291,6 +247,32 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "space-around",
   },
+  tabLabel: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  tabIndicator: {
+    backgroundColor: "white",
+    height: 2,
+  },
+  flatListContainer: {
+    paddingHorizontal: 16, 
+    paddingTop: 16, 
+  },
+  itemStyle: {
+    backgroundColor: "white",
+    padding: 16,
+    marginBottom: 8,
+    borderRadius: 5,
+  },
+  itemTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  itemDescription: {
+    fontSize: 16,
+  },
 });
 
-export default VolunteerDonateScreen;
+export default VolunteerAndDonateScreen;
