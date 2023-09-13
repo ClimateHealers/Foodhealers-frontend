@@ -156,7 +156,7 @@ const VolunteerHomeScreen = () => {
                   />
                   <View style={styles.title}>
                     <TouchableOpacity
-                      onPress={() => navigation.navigate("CategoryScreen")}
+                      onPress={() => navigation.navigate("VolunteerDonateScreen")}
                     >
                       <Text style={styles.textStyle}>Volunteer/Donate</Text>
                     </TouchableOpacity>
