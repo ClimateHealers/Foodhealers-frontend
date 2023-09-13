@@ -29,6 +29,8 @@ import FindFoodHomeScreen from "./Screens/FindFoodHomeScreen";
 import RecipesHomeScreen from "./Screens/RecipesHomeScreen";
 import CategoryScreen from "./Screens/CategoryScreen";
 import SingleRecipeScreen from "./Screens/SingleRecipeScreen";
+import IntroSlider from "./Components/IntroSlider";
+import VolunteerHomeScreen from "./Screens/VolunteerHomeScreeen";
 
 const Navigation = () => {
   const Stack = createNativeStackNavigator();
@@ -177,6 +179,16 @@ const Navigation = () => {
           <Stack.Screen
             name="CalendarEventDetailScreen"
             component={CalendarEventDetailScreen}
+            options={{ title: "", header: () => null }}
+          />
+          <Stack.Screen
+            name="IntroSlider"
+            component={IntroSlider}
+            options={{ title: "", header: () => null }}
+          />
+          <Stack.Screen
+            name="VolunteerHomeScreen"
+            component={VolunteerHomeScreen}
             options={{ title: "", header: () => null }}
           />
         </Stack.Navigator>

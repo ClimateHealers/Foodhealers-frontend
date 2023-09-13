@@ -182,6 +182,13 @@ const HomeScreen = ({ route }: any) => {
               onPress={postEvent}
               titleStyle={styles.titleStyle}
             />
+            <PrimaryButton
+              // title={localized.t("Post Event")}
+              title={"Volunteer"}
+              buttonStyle={[styles.postEventButton,{backgroundColor: "#5FBB3F"}]}
+              onPress={()=>navigation.navigate('IntroSlider')}
+              titleStyle={styles.titleStyle}
+            />
             {data?.user?.name ? (
               ""
             ) : (
@@ -203,6 +210,7 @@ const HomeScreen = ({ route }: any) => {
                   color: "white",
                   fontSize: 18,
                   fontFamily: "OpenSans-bold",
+                  marginBottom:h2dp(6)
                 }}
               >
                 {localized.t("Welcome")}{" "}
@@ -218,6 +226,7 @@ const HomeScreen = ({ route }: any) => {
                     fontSize: 18,
                     textDecorationLine: "underline",
                     fontFamily: "OpenSans-Bold",
+                    marginBottom:h2dp(6)
                   }}
                 >
                   {localized.t("Sign in")}
@@ -249,7 +258,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.5)",
     alignItems: "center",
     width: "100%",
-    height: Platform.OS === "ios" ? h2dp(37) : h2dp(36),
+    // height: Platform.OS === "ios" ? h2dp(37) : h2dp(36),
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
   },
