@@ -10,18 +10,18 @@ import {
 
 const slides = [
   {
-    key: "slide1",
+    key: 1,
     title: "Welcome to My App",
     text: "Volunteer at an event, donate food, or become a driver.",
     image: require("../../assets/images/volunteerscollecting.png"),
   },
   {
-    key: "slide2",
+    key: 2,
     text: "Keep track of your donation history.",
     image: require("../../assets/images/onlineTaxes.png"),
   },
   {
-    key: "slide3",
+    key: 3,
     text: "Easily share your volunteer successes with your social network.",
     image: require("../../assets/images/shareAdvertising.png"),
   },
@@ -44,7 +44,7 @@ const IntroSlider = () => {
             height: "100%",
           }}
         >
-          <Image source={item.image} />
+          <Image source={item?.image} />
           <Text
             style={{
               fontSize: h2dp(3),
@@ -53,7 +53,7 @@ const IntroSlider = () => {
               marginBottom: h2dp(15),
             }}
           >
-            {item.text}
+            {item?.text}
           </Text>
         </View>
       </SafeAreaView>
@@ -65,9 +65,9 @@ const IntroSlider = () => {
       <Button
         title="Next"
         onPress={() => {
-          if (sliderRef.current) {
+          if (sliderRef?.current) {
             const nextIndex = currentSlideIndex + 1;
-            sliderRef.current.goToSlide(nextIndex, true);
+            sliderRef?.current?.goToSlide(nextIndex, true);
             setCurrentSlideIndex(nextIndex);
           }
         }}
