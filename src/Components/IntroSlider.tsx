@@ -103,9 +103,9 @@ const IntroSlider = () => {
       <Button
         title="Previous"
         onPress={() => {
-          if (sliderRef.current) {
+          if (sliderRef?.current) {
             const prevIndex = currentSlideIndex - 1;
-            sliderRef.current.goToSlide(prevIndex, true);
+            sliderRef?.current?.goToSlide(prevIndex, true);
             setCurrentSlideIndex(prevIndex);
           }
         }}
