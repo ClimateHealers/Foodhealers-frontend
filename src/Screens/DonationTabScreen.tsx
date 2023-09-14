@@ -23,7 +23,6 @@ const DonationTabScreen = () => {
 
   const fetchingDonationData = async () => {
     const response = await dispatch(myDonations({} as any) as any);
-    console.log("checking repsonse from my events api", response);
     setDonationData(response?.payload);
   };
 
@@ -39,12 +38,7 @@ const DonationTabScreen = () => {
       const res = await dispatch(allDonations({} as any) as any);
       const donationsAll = res?.payload?.donationList;
       const verifiedDonations = donationsAll?.filter(
-        (event: any) => event.status === "approved"
-      );
-
-      console.log(
-        "checking response from all donations API",
-        verifiedDonations
+        (event: any) => event?.status === "approved"
       );
       setDonationData(verifiedDonations);
     }
@@ -217,8 +211,8 @@ const DonationTabScreen = () => {
                 additionalInfo={item?.additionalInfo}
                 name={item?.name}
                 address={item?.address?.fullAddress}
-                lat={item.address?.lat}
-                long={item.address?.lng}
+                lat={item?.address?.lat}
+                long={item?.address?.lng}
                 eventStartDate={item?.eventStartDate}
                 eventEndDate={item?.eventEndDate}
                 verified={item?.verified}
