@@ -27,6 +27,7 @@ const CalendarEventScreen = ({ route }: any) => {
   const { selectedDate, singleDayEvent } = route.params;
 
   const formattedDate = moment(selectedDate).format("DD MMM");
+  const monthHeader = moment(selectedDate).format("MMM");
 
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -160,7 +161,7 @@ const CalendarEventScreen = ({ route }: any) => {
                 <Text
                   style={{ color: "white", fontSize: h2dp(2), marginTop: 2 }}
                 >
-                  Nov
+                  {monthHeader}
                 </Text>
                 <MaterialIcons
                   name="keyboard-arrow-right"
@@ -189,15 +190,15 @@ const CalendarEventScreen = ({ route }: any) => {
                 ))}
               </View>
               <TouchableOpacity>
-              <View
-                style={{
-                  backgroundColor: "white",
-                  height: h2dp(80),
-                  width: w2dp(0.5),
-                  marginTop: 10,
-                  marginLeft: w2dp(2),
-                }}
-              ></View>
+                <View
+                  style={{
+                    backgroundColor: "white",
+                    height: "1000%",
+                    width: w2dp(0.5),
+                    marginTop: 10,
+                    marginLeft: w2dp(2),
+                  }}
+                ></View>
               </TouchableOpacity>
               <View style={styles.eventName}>
                 {singleDayEvent.map((event: any, index: any) => (
@@ -347,13 +348,20 @@ const styles = StyleSheet.create({
   dateContainer: {
     display: "flex",
     marginTop: h2dp(4),
-    justifyContent: "space-between",
+    justifyContent: "flex-start",
     alignItems: "flex-start",
     marginLeft: 32,
   },
   date: {
     color: "white",
-    // alignSelf: "center",
+    // // alignSelf: "center",
+    // marginTop:h2dp(2)
+    // backgroundColor: "white",
+    height: h2dp(7),
+    // width: w2dp(60),
+    // marginTop: h2dp(2),
+    marginLeft: w2dp(5),
+    borderRadius: 5,
   },
   eventTitle: {
     marginTop: h2dp(1.5),
@@ -362,11 +370,10 @@ const styles = StyleSheet.create({
   },
   eventName: {
     display: "flex",
-    justifyContent: "space-between",
+    justifyContent: "flex-start",
     // borderWidth:3,
     width: w2dp(80),
     height: "100%",
-    // marginBottom:h2dp(2)
   },
 });
 

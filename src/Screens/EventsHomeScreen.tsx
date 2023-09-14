@@ -138,7 +138,7 @@ const EventsHomeScreen = () => {
           )}
           <View style={styles.dropdownContainer}>
             <View style={styles.item}>
-              <Text style={styles.itemText}>Home</Text>
+              <Text style={styles.itemText}>Events</Text>
             </View>
             <MaterialCommunityIcons
               name="menu"
@@ -218,7 +218,7 @@ const styles = StyleSheet.create({
   },
   item: {
     width: "30%",
-    marginRight: 55,
+    marginRight: h2dp(9),
     height: 100,
     justifyContent: "center",
     alignItems: "center",
