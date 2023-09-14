@@ -94,7 +94,8 @@ const AllEventScreen = () => {
     verified,
     status,
     eventPhoto,
-    name
+    name,
+    requiredVolunteers
   }: any) => (
     <View style={styles.cardContainer}>
       {status === "approved" ? (
@@ -173,6 +174,7 @@ const AllEventScreen = () => {
               lat: lat,
               long: long,
               eventPhoto: eventPhoto,
+              volunteers:requiredVolunteers
             },
           })
         }
@@ -285,6 +287,7 @@ const AllEventScreen = () => {
                     verified={item?.verified}
                     status={item?.status}
                     eventPhoto = {item?.eventPhoto}
+                    requiredVolunteers={item?.requiredVolunteers}
                   />
                 )}
                 keyExtractor={(item:any) => item?.id}

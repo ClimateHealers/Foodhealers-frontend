@@ -264,6 +264,24 @@ const SingleEventDetails = ({ route }: any) => {
                       }}
                     />
                   </View>
+                  <View
+                    style={{ marginBottom: h2dp("2%"), paddingHorizontal: 10 }}
+                  >
+                    <Text style={styles.boldText}>
+                      Volinteer's Required:{" "}
+                      <Text style={styles.cardText}>
+                        {eventDetails?.volunteers}
+                      </Text>
+                    </Text>
+
+                    <Divider
+                      style={{
+                        backgroundColor: "black",
+                        height: 1,
+                        width: "95%",
+                      }}
+                    />
+                  </View>
                 </View>
               </View>
               <View
@@ -271,6 +289,7 @@ const SingleEventDetails = ({ route }: any) => {
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
+                  marginTop:h2dp(2)
                 }}
               >
                 <PrimaryButton
