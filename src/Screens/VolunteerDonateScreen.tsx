@@ -196,7 +196,6 @@ const VolunteerDonateScreen = ({ route }: any) => {
                 sliderWidth={400}
                 itemWidth={400}
                 layout={"default"}
-                loop={true}
                 inactiveSlideScale={0.9}
                 inactiveSlideOpacity={0.7}
                 firstItem={0}
