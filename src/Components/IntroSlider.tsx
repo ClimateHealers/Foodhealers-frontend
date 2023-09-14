@@ -92,7 +92,7 @@ const IntroSlider = () => {
     <View>
       <Button
         title="Skip"
-        onPress={() => navigation.navigate("LoginScreen")}
+        onPress={() => navigation.navigate("VolunteerHomeScreen")}
         color="#080d07"
       />
     </View>
