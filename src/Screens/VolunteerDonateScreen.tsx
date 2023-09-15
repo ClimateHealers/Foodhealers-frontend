@@ -94,7 +94,7 @@ const VolunteerDonateScreen = ({ route }: any) => {
           <TouchableOpacity>
             <View>
               <Image
-                source={item.image}
+                source={item?.image}
                 style={{
                   width: "100%",
                   height: h2dp(45),
@@ -113,7 +113,7 @@ const VolunteerDonateScreen = ({ route }: any) => {
                   marginLeft: w2dp(5),
                 }}
               >
-                {item.title}
+                {item?.title}
               </Text>
             </View>
           </TouchableOpacity>
@@ -197,7 +197,6 @@ const VolunteerDonateScreen = ({ route }: any) => {
                 sliderWidth={400}
                 itemWidth={400}
                 layout={"default"}
-                loop={true}
                 inactiveSlideScale={0.9}
                 inactiveSlideOpacity={0.7}
                 firstItem={0}

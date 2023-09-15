@@ -12,7 +12,7 @@ export const myDonations = createAsyncThunk<MyDonations, MyDonations>(
   "myDonations",
   async (_, thunkAPI: any) => {
     try {
-        const token = thunkAPI.getState().auth.data.token;
+        const token = thunkAPI?.getState()?.auth?.data?.token;
       const config = {
         headers: {
           "Content-Type": "application/json",

@@ -71,8 +71,8 @@ const VolunteerAndDonateScreen = ({ route }: any) => {
     const renderItem = ({ item }: any) => (
       <TouchableOpacity>
         <View style={styles.itemStyle}>
-          <Text style={styles.itemTitle}>{item.title}</Text>
-          <Text style={styles.itemDescription}>{item.description}</Text>
+          <Text style={styles.itemTitle}>{item?.title}</Text>
+          <Text style={styles.itemDescription}>{item?.description}</Text>
         </View>
       </TouchableOpacity>
     );
@@ -81,7 +81,7 @@ const VolunteerAndDonateScreen = ({ route }: any) => {
       <FlatList
         data={dummyData}
         renderItem={renderItem}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item?.id}
         contentContainerStyle={styles.flatListContainer}
       />
     );
