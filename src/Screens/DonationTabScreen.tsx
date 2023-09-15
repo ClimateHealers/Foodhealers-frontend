@@ -11,6 +11,7 @@ import SegmentedControlTab from "react-native-segmented-control-tab";
 import { useDispatch } from "react-redux";
 import { allDonations } from "../redux/actions/allDonations";
 import { myDonations } from "../redux/actions/myDonations";
+import moment from "moment";
 
 const DonationTabScreen = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -23,7 +24,7 @@ const DonationTabScreen = () => {
 
   const fetchingDonationData = async () => {
     const response = await dispatch(myDonations({} as any) as any);
-    setDonationData(response?.payload);
+    setDonationData(response?.payload?.donationList);
   };
 
   useEffect(() => {
@@ -45,16 +46,10 @@ const DonationTabScreen = () => {
   };
 
   const Item = ({
-    additionalInfo,
-    address,
-    eventStartDate,
-    eventEndDate,
-    lat,
-    long,
-    verified,
+    foodItem,
     status,
-    eventPhoto,
-    name,
+    delivery,
+    createdAt,
   }: any) => (
     <View style={styles.cardContainer}>
       {status === "approved" ? (
@@ -124,43 +119,44 @@ const DonationTabScreen = () => {
       <ScrollView showsVerticalScrollIndicator={false}>
         <Text
           style={{
-            marginLeft: w2dp(5),
-            width: w2dp(52),
-            fontWeight: "500",
+            marginLeft: w2dp(3),
+            // width: w2dp(46),
             fontSize: 16,
             lineHeight: 30,
-            paddingTop: h2dp(1),
+            paddingTop: h2dp(0.5),
           }}
         >
-          {name}
+          {moment(createdAt).format('MMM DD, YYYY  ddd, hh:mm A')}
         </Text>
         <Text
           style={{
-            marginLeft: w2dp(5),
-            width: w2dp(47),
+            marginLeft: w2dp(3),
+            // width: w2dp(52),
+            fontWeight: "500",
+            fontSize: 16,
+            lineHeight: 30,
+            paddingTop: h2dp(0.7),
+          }}
+        >
+          {foodItem}
+        </Text>
+        <Text
+          style={{
+            marginLeft: w2dp(3),
+            // width: w2dp(47),
             fontWeight: "200",
             fontSize: 16,
             lineHeight: 20,
             paddingBottom: h2dp(1),
           }}
         >
-          {address}
+          {delivery}
         </Text>
       </ScrollView>
       <Button
         title={"Details"}
         onPress={() =>
-          navigation.navigate("SingleEventDetails", {
-            eventDetails: {
-              additionalInfo: additionalInfo,
-              address: address,
-              eventStartDate: eventStartDate,
-              eventEndDate: eventEndDate,
-              lat: lat,
-              long: long,
-              eventPhoto: eventPhoto,
-            },
-          })
+          navigation.navigate("SingleEventDetails")
         }
         buttonStyle={{
           marginRight: w2dp(5),
@@ -208,16 +204,10 @@ const DonationTabScreen = () => {
             data={donationData}
             renderItem={({ item }: any) => (
               <Item
-                additionalInfo={item?.additionalInfo}
-                name={item?.name}
-                address={item?.address?.fullAddress}
-                lat={item?.address?.lat}
-                long={item?.address?.lng}
-                eventStartDate={item?.eventStartDate}
-                eventEndDate={item?.eventEndDate}
-                verified={item?.verified}
-                status={item?.status}
-                eventPhoto={item?.eventPhoto}
+              foodItem={item?.foodItem}
+              delivery={item?.delivery?.pickupAddress?.fullAddress}
+              createdAt = {item?.createdAt}
+           
               />
             )}
             keyExtractor={(item: any) => item?.id}
@@ -237,7 +227,7 @@ const styles = StyleSheet.create({
     marginVertical: h2dp(1),
     backgroundColor: "white",
     marginHorizontal: w2dp(3),
-    height: h2dp(13),
+    // height: h2dp(13),
     borderRadius: 5,
   },
   toggle: {
