@@ -4,7 +4,7 @@ import Constants from "expo-constants";
 import { LinearGradient } from "expo-linear-gradient";
 import { Formik } from "formik";
 import moment from "moment";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
@@ -27,7 +27,7 @@ import DateTimePicker, {
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { Text, TextInput } from "react-native-paper";
 import PrimaryButton from "../Components/PrimaryButton";
-import { postEventSchema } from "../Components/validation";
+import { AddDonations, postEventSchema } from "../Components/validation";
 import { localized } from "../locales/localization";
 
 import DateTimePickerModal from "react-native-modal-datetime-picker";
@@ -39,6 +39,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getLocation } from "../Components/getCurrentLocation";
 import { logOut } from "../redux/reducers/authreducers";
 import { removeAuthData } from "../redux/actions/authAction";
+import PhoneInput from "react-native-phone-number-input";
 
 const AddDonationsScreen = () => {
   const [loading, setLoading] = useState(false);
@@ -71,18 +72,21 @@ const AddDonationsScreen = () => {
     moment(new Date(selectedTime)).add(1, "hour")
   );
 
+  const [searchedCity, setSearchedCity] = useState("");
+  const [searchedState, setSearchedState] = useState("");
+
+  const phoneInput = useRef<PhoneInput>(null);
+
+  
+
+ 
   const dispatch = useDispatch();
 
   const API_KEY = Constants?.manifest?.extra?.googleMapsApiKey;
 
-
   const eventDateTime = moment(selectedDate).utc().unix();
 
-  const eventEndDateTime = moment(selectedEndDate).utc().unix();
-
   console.log("checking evenntDate Time", eventDateTime);
-  console.log("checking eventEndDateTime Time", eventEndDateTime);
-  //
   const handlePressOutside = () => {
     setlangOpen(false);
     Keyboard.dismiss();
@@ -104,49 +108,6 @@ const AddDonationsScreen = () => {
     setShowDatePicker(false);
   };
 
-  const handleTimeChange = (time: any) => {
-    setSelectedTime(time);
-    if (moment(selectedDate).isSame(selectedEndDate, "day")) {
-      setSelectedEndTime(moment(selectedTime).add(1, "hour"));
-    }
-    setShowTimePicker(false);
-  };
-
-  const handleEndDateChange = (endDate: any) => {
-    console.log("checking selected end date", endDate);
-    if (moment(endDate).isBefore(moment(selectedDate).add(1, "hour"))) {
-      Alert.alert(
-        "Alert",
-        `You can't select a time before ${moment(selectedDate)
-          .add(1, "hour")
-          .format("MMM DD, YYYY hh:mm A")}`
-      );
-    } else {
-      setSelectedEndDate(endDate);
-    }
-    setShowEndDatePicker(false);
-  };
-
-  const handleEndTimeChange = (newTime: any) => {
-    if (moment(selectedDate).isSame(selectedEndDate, "day")) {
-      const minEndTime = moment(selectedTime).add(1, "hour");
-      if (moment(newTime).isBefore(minEndTime)) {
-        setSelectedEndTime(minEndTime);
-      } else {
-        setSelectedEndTime(newTime);
-      }
-    } else {
-      setSelectedEndTime(newTime);
-    }
-
-    setShowEndTimePicker(false);
-  };
-
-  const changeLanguage = (itemValue: any, index: any) => {
-    const selectedLanguage = lang[index].value;
-    localized.locale = selectedLanguage;
-    setSelectedLanguage(selectedLanguage);
-  };
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
@@ -165,17 +126,6 @@ const AddDonationsScreen = () => {
     });
 
     setMenuOpen(false);
-  };
-  const logout = async (item: any) => {
-    // persistor.purge()
-    await dispatch(logOut({}) as any);
-    await removeAuthData();
-    navigation.dispatch(
-      CommonActions.reset({
-        index: 0,
-        routes: [{ name: "LoginScreen" }],
-      })
-    );
   };
 
   useEffect(() => {
@@ -270,14 +220,14 @@ const AddDonationsScreen = () => {
           </Modal>
 
           <Formik
-            validationSchema={postEventSchema}
+            validationSchema={AddDonations}
             initialValues={{
               foodItem: "",
-              quantity:0,
-              phoneNumber :"",
+              quantity: "",
+              phoneNumber: "",
               address: "",
-              city: "",
-              state: "",
+              city: searchedCity,
+              state: searchedState,
               postalCode: "",
             }}
             onSubmit={async ({
@@ -294,19 +244,18 @@ const AddDonationsScreen = () => {
                 return;
               }
 
-              await navigation.navigate("UploadPhotosScreen", {
-                eventFormData: {
-                  foodItem: foodItem,
-                  quanity: quantity,
-                  phoneNumber:phoneNumber,
-                  eventDate: eventDateTime,
-                  eventEndDateTime: eventEndDateTime,
-                  address: address,
-                  city: city,
-                  state: state,
-                  postalCode: Number(postalCode) ? Number(postalCode) : 0,
-                },
-              })
+              // await navigation.navigate("UploadPhotosScreen", {
+              //   eventFormData: {
+              //     foodItem: foodItem,
+              //     quanity: quantity,
+              //     phoneNumber: phoneNumber,
+              //     eventDate: eventDateTime,
+              //     address: address,
+              //     city: city,
+              //     state: state,
+              //     postalCode: Number(postalCode) ? Number(postalCode) : 0,
+              //   },
+              // });
             }}
           >
             {({
@@ -333,7 +282,7 @@ const AddDonationsScreen = () => {
                 <TextInput
                   onChangeText={handleChange("quantity")}
                   onBlur={handleBlur("quantity")}
-                  value={values.quantity}
+                  value={values?.quantity}
                   placeholder={"Quantity"}
                   placeholderTextColor={"black"}
                   style={styles.textInput}
@@ -362,10 +311,12 @@ const AddDonationsScreen = () => {
                       ) {
                         const state = component.long_name;
                         setFieldValue("state", state);
+                        setSearchedState(state);
                       }
                       if (component.types.includes("locality")) {
                         const city = component.long_name;
                         setFieldValue("city", city);
+                        setSearchedCity(city);
                       }
 
                       if (component.types.includes("postal_code")) {
@@ -400,6 +351,47 @@ const AddDonationsScreen = () => {
                   }}
                 />
                 <Text style={styles.inputError}>{errors.address}</Text>
+                <View
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <View
+                    style={[
+                      styles.dateTimePickerContainer,
+                      { backgroundColor: "#deddd9" },
+                    ]}
+                  >
+                    <TextInput
+                      onChangeText={handleChange("city")}
+                      onBlur={handleBlur("city")}
+                      value={values.city}
+                      placeholder={"City"}
+                      placeholderTextColor={"black"}
+                      style={[styles.textInput, { backgroundColor: "#deddd9" }]}
+                      editable={false}
+                    />
+                  </View>
+                  <View
+                    style={[
+                      styles.dateTimePickerContainer,
+                      { backgroundColor: "#deddd9" },
+                    ]}
+                  >
+                    <TextInput
+                      onChangeText={handleChange("state")}
+                      onBlur={handleBlur("state")}
+                      value={values.state}
+                      placeholder={"State"}
+                      placeholderTextColor={"black"}
+                      style={[styles.textInput, { backgroundColor: "#deddd9" }]}
+                      editable={false}
+                    />
+                  </View>
+                </View>
                 <View
                   style={{
                     display: "flex",
@@ -485,14 +477,19 @@ const AddDonationsScreen = () => {
                   </TouchableOpacity>
                 </View>
 
-                <TextInput
-                  onChangeText={handleChange("phoneNumber")}
-                  onBlur={handleBlur("phoneNumber")}
-                  value={values.phoneNumber}
+                <PhoneInput
+                ref={phoneInput}
+                  defaultCode={"US"}
                   placeholder={"Phone Number"}
-                  placeholderTextColor={"black"}
-                  style={styles.textArea}
-                  id = {"phoneNumber"}
+                  layout="first"
+                  onChangeText={(text) => {
+                    const callingCode = phoneInput.current?.getCallingCode();
+                    console.log("text", callingCode,text)
+                    setFieldValue('phoneNumber', `${callingCode}${text}`);
+                  }}
+                  containerStyle={[styles.textArea, { width: "100%" }]}
+                  value={values.phoneNumber}
+                  
                 />
                 <Text style={styles.inputError}>{errors.phoneNumber}</Text>
                 <View

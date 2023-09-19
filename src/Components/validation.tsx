@@ -67,4 +67,24 @@ export const signupSchema = Yup.object().shape({
       .min(6, ({ min }) => `This field must be at least ${min} characters`)
       .matches(/\w*[a-z]\w*/,"Only alphabets are allowed")
   });
+
+
+  //post event form
+
+  export const AddDonations = Yup.object().shape({
+    foodItem: Yup.string()
+      .required("Event Name is required")
+      .matches(/\w*[a-z]\w*/,"Only alphabets are allowed"),
+      quantity: Yup.string()
+      .required('This field is required'),
+      // .matches(/^[a-zA-Z0-9]+$/, 'Only alphanumeric characters are allowed'),
+      address: Yup
+      .string()
+      .required("Address is required")
+      .matches(/\w*[a-z]\w*/,"Only alphabets are allowed"),
+      phoneNumber: Yup.string()
+      .required('This field is required')
+      .matches(/^[0-9]+$/, { message: 'Only numbers are allowed', excludeEmptyString: true })
+      .min(6, ({ min }) => `This field must be at least ${min} characters`)
+  });
   

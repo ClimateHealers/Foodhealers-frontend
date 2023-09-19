@@ -1,7 +1,7 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Image,
   Keyboard,
@@ -18,18 +18,35 @@ import {
   heightPercentageToDP as h2dp,
   widthPercentageToDP as w2dp,
 } from "react-native-responsive-screen";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getLocation } from "../Components/getCurrentLocation";
+import { VeganRecipesCategories } from "../redux/actions/veganRecipes";
 
 const VolunteerHomeScreen = () => {
   const [langOpen, setlangOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [recipeData,setRecipeData] = useState<[]>([]);
 
   const navigation: any = useNavigation();
+  const dispatch = useDispatch()
 
   const isAuthenticated = useSelector(
     (state: any) => state?.auth?.data?.isAuthenticated
   );
+
+  const allEvents = useSelector((state:any)=>state?.allEvents?.data?.foodEvents)
+
+  const fetchRecipesCategories = async()=>{
+   const response =  await dispatch(VeganRecipesCategories() as any)
+   setRecipeData(response?.payload?.categoriesList)
+   console.log("checking response from vegan recipes categories", response?.payload?.categoriesList);
+    
+ }
+
+ useEffect(()=>{
+fetchRecipesCategories()
+ },[recipeData])
+
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
@@ -188,87 +205,29 @@ const VolunteerHomeScreen = () => {
                 style={{ marginBottom: h2dp(3) }}
               >
                 <View style={styles.horizonatalView}>
-                  <View
-                    style={{
-                      marginLeft: w2dp(7),
-                      position: "relative",
-                    }}
-                  >
-                    <Image
-                      source={require("../../assets/images/santMonica.png")}
-                      style={styles.imageStyle}
-                    />
-                    <View style={styles.title}>
-                      <TouchableOpacity
-                        onPress={() => navigation.navigate("CategoryScreen")}
-                      >
-                        <Text style={styles.textStyle}>Santa Monica</Text>
-                      </TouchableOpacity>
+                  {
+                    allEvents?.slice(0,2)?.map((event:any)=>(
+                      <View
+                      key = {event?.id}
+                      style={{
+                        marginLeft: w2dp(7),
+                        position: "relative",
+                      }}
+                    >
+                      <Image
+                        source={{uri:event?.eventPhoto}}
+                        style={styles.imageStyle}
+                      />
+                      <View style={styles.title}>
+                        <TouchableOpacity
+                          onPress={() => navigation.navigate("CategoryScreen")}
+                        >
+                          <Text style={styles.textStyle}>{event?.address?.city}</Text>
+                        </TouchableOpacity>
+                      </View>
                     </View>
-                  </View>
-                  <View
-                    style={{
-                      marginLeft: w2dp(5),
-                      position: "relative",
-                    }}
-                  >
-                    <Image
-                      source={require("../../assets/images/shutterShock.png")}
-                      style={styles.imageStyle}
-                    />
-                    <View style={styles.title}>
-                      <TouchableOpacity
-                        onPress={() => navigation.navigate("CategoryScreen")}
-                      >
-                        <Text style={styles.textStyle}>San franscisco</Text>
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-                </View>
-              </ScrollView>
-              <Text style={styles.subHeading}>Highlights</Text>
-              <ScrollView
-                horizontal={true}
-                showsHorizontalScrollIndicator={false}
-                style={{ marginBottom: h2dp(3) }}
-              >
-                <View style={styles.horizonatalView}>
-                  <View
-                    style={{
-                      marginLeft: w2dp(7),
-                      position: "relative",
-                    }}
-                  >
-                    <Image
-                      source={require("../../assets/images/santMonica.png")}
-                      style={styles.imageStyle}
-                    />
-                    <View style={styles.title}>
-                      <TouchableOpacity
-                        onPress={() => navigation.navigate("CategoryScreen")}
-                      >
-                        <Text style={styles.textStyle}>New partners</Text>
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-                  <View
-                    style={{
-                      marginLeft: w2dp(5),
-                      position: "relative",
-                    }}
-                  >
-                    <Image
-                      source={require("../../assets/images/shutterShock.png")}
-                      style={styles.imageStyle}
-                    />
-                    <View style={styles.title}>
-                      <TouchableOpacity
-                        onPress={() => navigation.navigate("CategoryScreen")}
-                      >
-                        <Text style={styles.textStyle}>climate</Text>
-                      </TouchableOpacity>
-                    </View>
-                  </View>
+                    ))
+                  }
                 </View>
               </ScrollView>
               <Text style={styles.subHeading}>Vegan Recipes</Text>
@@ -278,42 +237,29 @@ const VolunteerHomeScreen = () => {
                 style={{ marginBottom: h2dp(3) }}
               >
                 <View style={styles.horizonatalView}>
-                  <View
+                  {
+                    recipeData && recipeData?.slice(0,2)?.map((recipe:any)=>(
+                      <View
+                      key = {recipe?.id}
                     style={{
                       marginLeft: w2dp(7),
                       position: "relative",
                     }}
                   >
                     <Image
-                      source={require("../../assets/images/santMonica.png")}
+                      source={{uri:recipe?.categoryImage}}
                       style={styles.imageStyle}
                     />
                     <View style={styles.title}>
                       <TouchableOpacity
                         onPress={() => navigation.navigate("CategoryScreen")}
                       >
-                        <Text style={styles.textStyle}>Vegan wraps</Text>
+                        <Text style={styles.textStyle}>{recipe?.name}</Text>
                       </TouchableOpacity>
                     </View>
                   </View>
-                  <View
-                    style={{
-                      marginLeft: w2dp(5),
-                      position: "relative",
-                    }}
-                  >
-                    <Image
-                      source={require("../../assets/images/shutterShock.png")}
-                      style={styles.imageStyle}
-                    />
-                    <View style={styles.title}>
-                      <TouchableOpacity
-                        onPress={() => navigation.navigate("CategoryScreen")}
-                      >
-                        <Text style={styles.textStyle}>Vegan</Text>
-                      </TouchableOpacity>
-                    </View>
-                  </View>
+                    ))
+                  }
                 </View>
               </ScrollView>
               <TouchableOpacity>
