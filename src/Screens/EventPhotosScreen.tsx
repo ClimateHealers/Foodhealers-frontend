@@ -92,6 +92,7 @@ const EventPhotosScreen = ({ route }: any) => {
   formData.append("eventStartDate", eventFormData?.eventDate);
   formData.append("eventEndDate", eventFormData?.eventEndDateTime);
   formData.append("additionalInfo", eventFormData?.served);
+  formData.append("requiredVolunteers", eventFormData?.volunteers);
   // formData.append("files",photo)
   formData.append("files", {
     uri: singlePhoto,

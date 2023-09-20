@@ -280,12 +280,12 @@ const PostEvent = () => {
               city: "",
               state: "",
               postalCode: "",
+              volunteers:0,
             }}
             onSubmit={async ({
               eventName,
               served,
-              // eventDate,
-              // eventTime,
+              volunteers,
               lat,
               long,
               address,
@@ -310,6 +310,7 @@ const PostEvent = () => {
                   city: city,
                   state: state,
                   postalCode: Number(postalCode) ? Number(postalCode) : 0,
+                  volunteers: Number(volunteers)
                 },
               })
             }}
@@ -588,6 +589,17 @@ const PostEvent = () => {
                   id = {"served"}
                 />
                 <Text style={styles.inputError}>{errors.served}</Text>
+                <TextInput
+                  onChangeText={handleChange("volunteers")}
+                  onBlur={handleBlur("volunteers")}
+                  value={values.volunteers}
+                  keyboardType="numeric"
+                  placeholder={"Numbers of volunteers required"}
+                  placeholderTextColor={"black"}
+                  style={styles.textArea}
+                  id = {"volunteers"}
+                />
+                <Text style={styles.inputError}>{errors.volunteers}</Text>
                 <View
                   style={{
                     display: "flex",

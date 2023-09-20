@@ -307,6 +307,22 @@ const EventDetailsScreen = ({ route }: any) => {
                         }}
                       />
                     </View>
+                    <View style={{ marginBottom: 10, paddingHorizontal: 10 }}>
+                      <Text style={styles.boldText}>
+                        Volunteers Required:{" "}
+                        <Text style={styles.cardText}>
+                         {eventDetails?.requiredVolunteers}
+                        </Text>
+                      </Text>
+
+                      <Divider
+                        style={{
+                          backgroundColor: "black",
+                          height: 1,
+                          width: "95%",
+                        }}
+                      />
+                    </View>
                   </View>
                 </View>
                 <View

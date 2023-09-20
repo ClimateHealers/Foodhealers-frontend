@@ -65,6 +65,8 @@ export const signupSchema = Yup.object().shape({
       .string()
       .required("This field is required")
       .min(6, ({ min }) => `This field must be at least ${min} characters`)
-      .matches(/\w*[a-z]\w*/,"Only alphabets are allowed")
+      .matches(/\w*[a-z]\w*/,"Only alphabets are allowed"),
+      volunteers: Yup.string()
+      .matches(/^\d+$/, "Only numbers are allowed"),
   });
   
