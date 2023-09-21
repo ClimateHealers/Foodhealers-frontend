@@ -193,7 +193,8 @@ const CalendarEventScreen = ({ route }: any) => {
                 <View
                   style={{
                     backgroundColor: "white",
-                    height: "1000%",
+                    // height: "1000%",
+                    height :Platform.OS=== "ios"?"1000%":h2dp(100),
                     width: w2dp(0.5),
                     marginTop: 10,
                     marginLeft: w2dp(2),

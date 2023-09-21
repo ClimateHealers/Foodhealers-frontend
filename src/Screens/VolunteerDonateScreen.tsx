@@ -67,6 +67,7 @@ const VolunteerDonateScreen = ({ route }: any) => {
       id:1,
       title: "Donate Food",
       image: require("../../assets/images/donateFood.png"),
+      navigation:"AddDonationsScreen"
     },
     {
       id: 3,
