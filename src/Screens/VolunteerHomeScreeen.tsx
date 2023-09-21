@@ -21,6 +21,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { getLocation } from "../Components/getCurrentLocation";
 import { VeganRecipesCategories } from "../redux/actions/veganRecipes";
+import { VeganRecipesCategory } from "../redux/actions/veganRecipesCategory";
 
 const VolunteerHomeScreen = () => {
   const [langOpen, setlangOpen] = useState(false);
@@ -37,9 +38,9 @@ const VolunteerHomeScreen = () => {
   const allEvents = useSelector((state:any)=>state?.allEvents?.data?.foodEvents)
 
   const fetchRecipesCategories = async()=>{
-   const response =  await dispatch(VeganRecipesCategories() as any)
-   setRecipeData(response?.payload?.categoriesList)
-   console.log("checking response from vegan recipes categories", response?.payload?.categoriesList);
+   const response =  await dispatch(VeganRecipesCategory(1 as any) as any)
+   setRecipeData(response?.payload?.results?.recipeList)
+   console.log("checking response from vegan recipes categories", response?.payload?.results?.recipeList);
     
  }
 
@@ -206,7 +207,7 @@ fetchRecipesCategories()
               >
                 <View style={styles.horizonatalView}>
                   {
-                    allEvents?.slice(0,2)?.map((event:any)=>(
+                    allEvents?.slice(1,2)?.map((event:any)=>(
                       <View
                       key = {event?.id}
                       style={{
@@ -220,7 +221,13 @@ fetchRecipesCategories()
                       />
                       <View style={styles.title}>
                         <TouchableOpacity
-                          onPress={() => navigation.navigate("CategoryScreen")}
+                          onPress={() =>  getLocation().then((location: any) => {
+                            if (location) {
+                              navigation?.navigate("MapScreen", {
+                                location: location,
+                              });
+                            }
+                          })}
                         >
                           <Text style={styles.textStyle}>{event?.address?.city}</Text>
                         </TouchableOpacity>
@@ -238,7 +245,7 @@ fetchRecipesCategories()
               >
                 <View style={styles.horizonatalView}>
                   {
-                    recipeData && recipeData?.slice(0,2)?.map((recipe:any)=>(
+                    recipeData && recipeData?.slice(0,1)?.map((recipe:any)=>(
                       <View
                       key = {recipe?.id}
                     style={{
@@ -247,14 +254,24 @@ fetchRecipesCategories()
                     }}
                   >
                     <Image
-                      source={{uri:recipe?.categoryImage}}
+                      source={{uri:recipe?.foodImage}}
                       style={styles.imageStyle}
                     />
                     <View style={styles.title}>
                       <TouchableOpacity
-                        onPress={() => navigation.navigate("CategoryScreen")}
+                        onPress={() => navigation.navigate("SingleRecipeScreen", {
+                          recipeData: {
+                            recipeImage: recipe?.foodImage,
+                            recipeIngredient: recipe?.ingredients,
+                            recipeName: recipe?.foodName,
+                            recipeInstructions: recipe?.cookingInstructions,
+                            cookingTime : recipe?.preparationTime,
+                            recipeSource : recipe?.recipeSource,
+                            recipeCredits: recipe?.recipeCredits
+                          }}
+                    )}
                       >
-                        <Text style={styles.textStyle}>{recipe?.name}</Text>
+                        <Text style={styles.textStyle}>{recipe?.foodName}</Text>
                       </TouchableOpacity>
                     </View>
                   </View>

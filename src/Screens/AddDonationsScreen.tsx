@@ -225,10 +225,12 @@ const AddDonationsScreen = () => {
               foodItem: "",
               quantity: "",
               phoneNumber: "",
+              flatNo:"",
               address: "",
               city: searchedCity,
               state: searchedState,
               postalCode: "",
+              zipCode: "",
             }}
             onSubmit={async ({
               foodItem,
@@ -288,6 +290,16 @@ const AddDonationsScreen = () => {
                   style={styles.textInput}
                 />
                 <Text style={styles.inputError}>{errors.quantity}</Text>
+                <TextInput
+                  onChangeText={handleChange("flatNo")}
+                  onBlur={handleBlur("flatNo")}
+                  keyboardType="numeric"
+                  value={values?.flatNo}
+                  placeholder={"Flat No."}
+                  placeholderTextColor={"black"}
+                  style={styles.textInput}
+                />
+                <Text style={styles.inputError}>{errors.flatNo}</Text>
                 <GooglePlacesAutocomplete
                   placeholder="Address"
                   fetchDetails={true}
@@ -392,6 +404,16 @@ const AddDonationsScreen = () => {
                     />
                   </View>
                 </View>
+                <TextInput
+                  onChangeText={handleChange("zipCode")}
+                  onBlur={handleBlur("zipCode")}
+                  value={values?.zipCode}
+                  keyboardType="numeric"
+                  placeholder={"Zip Code"}
+                  placeholderTextColor={"black"}
+                  style={styles.textInput}
+                />
+                <Text style={styles.inputError}>{errors.zipCode}</Text>
                 <View
                   style={{
                     display: "flex",
@@ -489,6 +511,7 @@ const AddDonationsScreen = () => {
                   }}
                   containerStyle={[styles.textArea, { width: "100%" }]}
                   value={values.phoneNumber}
+                  textInputProps={{placeholderTextColor:"black"}}
                   
                 />
                 <Text style={styles.inputError}>{errors.phoneNumber}</Text>
@@ -497,7 +520,7 @@ const AddDonationsScreen = () => {
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
-                    marginTop: h2dp("5"),
+                    marginTop: h2dp(1),
                   }}
                 >
                   <PrimaryButton
@@ -524,10 +547,10 @@ const styles = StyleSheet.create({
   },
   root: {
     display: "flex",
-    marginBottom: 50,
+    marginBottom: h2dp(7),
     flexDirection: "column",
     flex: 1,
-    marginVertical: 16,
+    // marginVertical: 16,
     marginHorizontal: w2dp("4%"),
   },
   centeredView: {
@@ -559,7 +582,7 @@ const styles = StyleSheet.create({
     color: "black",
     borderRadius: 5,
     width: 190,
-    marginTop: Platform.OS === "ios" ? h2dp(5) : h2dp(5),
+    marginTop: h2dp(1),
   },
   titleStyle: {
     color: "white",

@@ -84,6 +84,12 @@ export const signupSchema = Yup.object().shape({
       .matches(/\w*[a-z]\w*/,"Only alphabets are allowed"),
       phoneNumber: Yup.string()
       .required('This field is required')
+      .matches(/^[0-9]+$/, { message: 'Only numbers are allowed', excludeEmptyString: true }),
+      flatNo: Yup.string()
+      .required('This field is required')
+      .matches(/^[0-9]+$/, { message: 'Only numbers are allowed', excludeEmptyString: true }),
+      zipCode: Yup.string()
+      .required('This field is required')
       .matches(/^[0-9]+$/, { message: 'Only numbers are allowed', excludeEmptyString: true })
       .min(6, ({ min }) => `This field must be at least ${min} characters`)
   });
