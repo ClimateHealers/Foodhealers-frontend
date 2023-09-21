@@ -40,7 +40,6 @@ const VolunteerHomeScreen = () => {
   const fetchRecipesCategories = async()=>{
    const response =  await dispatch(VeganRecipesCategory(1 as any) as any)
    setRecipeData(response?.payload?.results?.recipeList)
-   console.log("checking response from vegan recipes categories", response?.payload?.results?.recipeList);
     
  }
 

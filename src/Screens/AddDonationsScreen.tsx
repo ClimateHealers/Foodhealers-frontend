@@ -86,7 +86,6 @@ const AddDonationsScreen = () => {
 
   const eventDateTime = moment(selectedDate).utc().unix();
 
-  console.log("checking evenntDate Time", eventDateTime);
   const handlePressOutside = () => {
     setlangOpen(false);
     Keyboard.dismiss();
@@ -94,11 +93,10 @@ const AddDonationsScreen = () => {
   const navigation: any = useNavigation();
 
   const isAuthenticated = useSelector(
-    (state: any) => state.auth.data.isAuthenticated
+    (state: any) => state?.auth?.data?.isAuthenticated
   );
 
   const handleDateChange = (date: any) => {
-    console.log("checkgin selected date", date);
     setSelectedDate(date);
     if (selectedDate > selectedEndDate) {
       setSelectedEndDate(selectedDate);
@@ -246,18 +244,6 @@ const AddDonationsScreen = () => {
                 return;
               }
 
-              // await navigation.navigate("UploadPhotosScreen", {
-              //   eventFormData: {
-              //     foodItem: foodItem,
-              //     quanity: quantity,
-              //     phoneNumber: phoneNumber,
-              //     eventDate: eventDateTime,
-              //     address: address,
-              //     city: city,
-              //     state: state,
-              //     postalCode: Number(postalCode) ? Number(postalCode) : 0,
-              //   },
-              // });
             }}
           >
             {({
@@ -274,13 +260,13 @@ const AddDonationsScreen = () => {
                 <TextInput
                   onChangeText={handleChange("foodItem")}
                   onBlur={handleBlur("foodItem")}
-                  value={values.foodItem}
+                  value={values?.foodItem}
                   // placeholder={localized.t("Email")}
                   placeholder={"Food Item"}
                   placeholderTextColor={"black"}
                   style={styles.textInput}
                 />
-                <Text style={styles.inputError}>{errors.foodItem}</Text>
+                <Text style={styles.inputError}>{errors?.foodItem}</Text>
                 <TextInput
                   onChangeText={handleChange("quantity")}
                   onBlur={handleBlur("quantity")}
@@ -289,7 +275,7 @@ const AddDonationsScreen = () => {
                   placeholderTextColor={"black"}
                   style={styles.textInput}
                 />
-                <Text style={styles.inputError}>{errors.quantity}</Text>
+                <Text style={styles.inputError}>{errors?.quantity}</Text>
                 <TextInput
                   onChangeText={handleChange("flatNo")}
                   onBlur={handleBlur("flatNo")}
@@ -299,7 +285,7 @@ const AddDonationsScreen = () => {
                   placeholderTextColor={"black"}
                   style={styles.textInput}
                 />
-                <Text style={styles.inputError}>{errors.flatNo}</Text>
+                <Text style={styles.inputError}>{errors?.flatNo}</Text>
                 <GooglePlacesAutocomplete
                   placeholder="Address"
                   fetchDetails={true}
@@ -319,20 +305,20 @@ const AddDonationsScreen = () => {
                     const addressComponents = details?.address_components || [];
                     addressComponents.forEach((component) => {
                       if (
-                        component.types.includes("administrative_area_level_1")
+                        component?.types?.includes("administrative_area_level_1")
                       ) {
-                        const state = component.long_name;
+                        const state = component?.long_name;
                         setFieldValue("state", state);
                         setSearchedState(state);
                       }
-                      if (component.types.includes("locality")) {
-                        const city = component.long_name;
+                      if (component?.types?.includes("locality")) {
+                        const city = component?.long_name;
                         setFieldValue("city", city);
                         setSearchedCity(city);
                       }
 
-                      if (component.types.includes("postal_code")) {
-                        const postalCode = component.long_name;
+                      if (component?.types?.includes("postal_code")) {
+                        const postalCode = component?.long_name;
                         setFieldValue("postalCode", postalCode);
                       }
                     });
@@ -380,7 +366,7 @@ const AddDonationsScreen = () => {
                     <TextInput
                       onChangeText={handleChange("city")}
                       onBlur={handleBlur("city")}
-                      value={values.city}
+                      value={values?.city}
                       placeholder={"City"}
                       placeholderTextColor={"black"}
                       style={[styles.textInput, { backgroundColor: "#deddd9" }]}
@@ -396,7 +382,7 @@ const AddDonationsScreen = () => {
                     <TextInput
                       onChangeText={handleChange("state")}
                       onBlur={handleBlur("state")}
-                      value={values.state}
+                      value={values?.state}
                       placeholder={"State"}
                       placeholderTextColor={"black"}
                       style={[styles.textInput, { backgroundColor: "#deddd9" }]}
@@ -413,7 +399,7 @@ const AddDonationsScreen = () => {
                   placeholderTextColor={"black"}
                   style={styles.textInput}
                 />
-                <Text style={styles.inputError}>{errors.zipCode}</Text>
+                <Text style={styles.inputError}>{errors?.zipCode}</Text>
                 <View
                   style={{
                     display: "flex",
@@ -514,7 +500,7 @@ const AddDonationsScreen = () => {
                   textInputProps={{placeholderTextColor:"black"}}
                   
                 />
-                <Text style={styles.inputError}>{errors.phoneNumber}</Text>
+                <Text style={styles.inputError}>{errors?.phoneNumber}</Text>
                 <View
                   style={{
                     display: "flex",
