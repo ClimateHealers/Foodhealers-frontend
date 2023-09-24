@@ -40,8 +40,12 @@ import { getLocation } from "../Components/getCurrentLocation";
 import { logOut } from "../redux/reducers/authreducers";
 import { removeAuthData } from "../redux/actions/authAction";
 import PhoneInput from "react-native-phone-number-input";
+import { PostDonation, postDonation } from "../redux/actions/myDonations";
+import BurgerIcon from "../Components/BurgerIcon";
 
-const AddDonationsScreen = () => {
+const AddDonationsScreen = ({ route }: any) => {
+  const { itemTypeId, title } = route?.params;
+  console.log("itemTypeId: " + itemTypeId);
   const [loading, setLoading] = useState(false);
   const [langOpen, setlangOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -60,6 +64,11 @@ const AddDonationsScreen = () => {
     { id: 7, label: "Punjabi", value: "pu" },
     { id: 8, label: "Spanish", value: "es" },
   ]);
+  const [response, setResponse] = useState({
+    loading: false,
+    error: false,
+    message: "",
+  });
   const [selectedDate, setSelectedDate] = useState<Date | any>(new Date());
   const [selectedTime, setSelectedTime] = useState<Date | any>(new Date());
   const [selectedEndDate, setSelectedEndDate] = useState<Date | any>(
@@ -74,17 +83,16 @@ const AddDonationsScreen = () => {
 
   const [searchedCity, setSearchedCity] = useState("");
   const [searchedState, setSearchedState] = useState("");
+  const [searchedZipCode, setSearchedZipCode] = useState("");
 
   const phoneInput = useRef<PhoneInput>(null);
 
-  
-
- 
   const dispatch = useDispatch();
 
   const API_KEY = Constants?.manifest?.extra?.googleMapsApiKey;
 
-  const eventDateTime = moment(selectedDate).utc().unix();
+  const eventDateTime = moment(selectedDate).utc();
+  console.log("kkcnsdvsdvdsv", eventDateTime);
 
   const handlePressOutside = () => {
     setlangOpen(false);
@@ -115,7 +123,7 @@ const AddDonationsScreen = () => {
   };
   const findFoodMenuItemPress = (item: any) => {
     getLocation().then((res) => {
-      if(res){
+      if (res) {
         navigation?.navigate("MapScreen", {
           latitude: res?.latitude,
           longitude: res?.longitude,
@@ -136,8 +144,9 @@ const AddDonationsScreen = () => {
       style={styles.background}
     >
       <TouchableWithoutFeedback onPress={handlePressOutside}>
-        <ScrollView style={styles.root}>
+        <ScrollView style={styles.root} keyboardShouldPersistTaps="handled">
           <StatusBar animated={true} backgroundColor="auto" />
+          {/* <BurgerIcon /> */}
           {menuOpen && (
             <View
               style={{
@@ -146,7 +155,7 @@ const AddDonationsScreen = () => {
                 top: 95,
                 backgroundColor: "white",
                 borderColor: "black",
-                borderWidth:0.2,
+                borderWidth: 0.2,
                 borderRadius: 5,
                 zIndex: 9999,
               }}
@@ -197,16 +206,18 @@ const AddDonationsScreen = () => {
           )}
           <View style={styles.dropdownContainer}>
             <View style={styles.item}>
-              <Text style={styles.itemText}>Donate food</Text>
+              <Text style={styles.itemText}>{title}</Text>
             </View>
             <MaterialCommunityIcons
               name="menu"
               size={40}
               color="white"
               onPress={toggleMenu}
-              style={{
-                marginRight: 20,
-              }}
+              style={
+                {
+                  // marginRight: 20,
+                }
+              }
             />
           </View>
           <Modal visible={loading} animationType="slide" transparent={true}>
@@ -223,27 +234,93 @@ const AddDonationsScreen = () => {
               foodItem: "",
               quantity: "",
               phoneNumber: "",
-              flatNo:"",
+              flatNo: "",
+              lat: 0,
+              long: 0,
               address: "",
               city: searchedCity,
               state: searchedState,
-              postalCode: "",
-              zipCode: "",
+              postalCode: searchedZipCode,
+              zipCode: searchedZipCode,
             }}
             onSubmit={async ({
               foodItem,
               quantity,
+              lat,
+              long,
               address,
               phoneNumber,
+              flatNo,
               city,
               state,
               postalCode,
+              zipCode,
             }) => {
-              if (!city) {
-                alert("Please enter the full address.");
-                return;
+              setLoading(true);
+              try {
+                setResponse({
+                  loading: true,
+                  message: "",
+                  error: false,
+                });
+                const data = {
+                  itemTypeId: itemTypeId,
+                  foodName: foodItem,
+                  quantity: quantity,
+                  phoneNumber: phoneNumber,
+                  pickupDate: eventDateTime,
+                  lat: lat,
+                  lng: long,
+                  flatNo: flatNo,
+                  fullAddress: address,
+                  city: city,
+                  state: state,
+                  // postalCode: searchedZipCode,
+                  postalCode: Number(zipCode) ? Number(zipCode) : 0,
+                };
+                const res = await dispatch(postDonation(data as any) as any);
+                console.log("ksdnksdnvknkvj", res);
+                if (res?.payload?.success == true) {
+                  setLoading(false);
+                  setResponse({
+                    loading: false,
+                    message: "Donation added successfully",
+                    error: false,
+                  });
+                  setLoading(false);
+                  Alert.alert(
+                    "Thank you for your donation!",
+                    "We have successfully added your donation.",
+                    [
+                      {
+                        text: "OK",
+                        onPress: () =>
+                          navigation.navigate("VolunteerThankYouScreen", {
+                            itemTypeId: itemTypeId,
+                            title: title,
+                          }),
+                      },
+                    ],
+                    { cancelable: false }
+                  );
+                } else {
+                  setLoading(false);
+                  console.log("Error");
+                }
+              } catch (err: any) {
+                setLoading(false);
+                setResponse({
+                  loading: false,
+                  message: err.message,
+                  error: true,
+                });
+                Alert.alert(
+                  "Donation not added",
+                  `${err.message}`,
+                  [{ text: "OK" }],
+                  { cancelable: false }
+                );
               }
-
             }}
           >
             {({
@@ -262,7 +339,7 @@ const AddDonationsScreen = () => {
                   onBlur={handleBlur("foodItem")}
                   value={values?.foodItem}
                   // placeholder={localized.t("Email")}
-                  placeholder={"Food Item"}
+                  placeholder={itemTypeId == 1 ? "Food Item" : "Supplies List"}
                   placeholderTextColor={"black"}
                   style={styles.textInput}
                 />
@@ -305,7 +382,9 @@ const AddDonationsScreen = () => {
                     const addressComponents = details?.address_components || [];
                     addressComponents.forEach((component) => {
                       if (
-                        component?.types?.includes("administrative_area_level_1")
+                        component?.types?.includes(
+                          "administrative_area_level_1"
+                        )
                       ) {
                         const state = component?.long_name;
                         setFieldValue("state", state);
@@ -318,8 +397,9 @@ const AddDonationsScreen = () => {
                       }
 
                       if (component?.types?.includes("postal_code")) {
-                        const postalCode = component?.long_name;
-                        setFieldValue("postalCode", postalCode);
+                        const zipCode = component?.long_name;
+                        setFieldValue("zipCode", zipCode);
+                        setSearchedZipCode(zipCode);
                       }
                     });
                   }}
@@ -390,15 +470,19 @@ const AddDonationsScreen = () => {
                     />
                   </View>
                 </View>
-                <TextInput
-                  onChangeText={handleChange("zipCode")}
-                  onBlur={handleBlur("zipCode")}
-                  value={values?.zipCode}
-                  keyboardType="numeric"
-                  placeholder={"Zip Code"}
-                  placeholderTextColor={"black"}
-                  style={styles.textInput}
-                />
+                <View>
+                  <TextInput
+                    onChangeText={handleChange("zipCode")}
+                    onBlur={handleBlur("zipCode")}
+                    value={values?.zipCode}
+                    // keyboardType="numeric"
+                    placeholder={"Zip Code"}
+                    placeholderTextColor={"black"}
+                    editable={false}
+                    style={[styles.textInput, { backgroundColor: "#deddd9" }]}
+                  />
+                </View>
+
                 <Text style={styles.inputError}>{errors?.zipCode}</Text>
                 <View
                   style={{
@@ -429,8 +513,9 @@ const AddDonationsScreen = () => {
                             // width: 200,
                             marginBottom: 5,
                             marginLeft: 15,
-                        }}>
-                          {moment(selectedDate).format("MMM DD, YYYY")}
+                          }}
+                        >
+                          {moment(selectedDate).format("MMM, DD, YYYY")}
                         </Text>
                       </View>
                       {showDatePicker && (
@@ -484,23 +569,38 @@ const AddDonationsScreen = () => {
                     </View>
                   </TouchableOpacity>
                 </View>
-
-                <PhoneInput
-                ref={phoneInput}
-                  defaultCode={"US"}
-                  placeholder={"Phone Number"}
-                  layout="first"
-                  onChangeText={(text) => {
-                    const callingCode = phoneInput.current?.getCallingCode();
-                    console.log("text", callingCode,text)
-                    setFieldValue('phoneNumber', `${callingCode}${text}`);
+                <View
+                  style={{
+                    display: "flex",
+                    // justifyContent: "center",
+                    alignItems: "center",
+                    // marginTop: h2dp(1),
                   }}
-                  containerStyle={[styles.textArea, { width: "100%" }]}
-                  value={values.phoneNumber}
-                  textInputProps={{placeholderTextColor:"black"}}
-                  
-                />
-                <Text style={styles.inputError}>{errors?.phoneNumber}</Text>
+                >
+                  <PhoneInput
+                    ref={phoneInput}
+                    defaultCode={"US"}
+                    placeholder={"Phone Number"}
+                    // layout="first"
+                    onChangeText={(text) => {
+                      const callingCode = phoneInput.current?.getCallingCode();
+                      console.log("text", callingCode, text);
+                      setFieldValue("phoneNumber", `${callingCode}${text}`);
+                    }}
+                    containerStyle={[
+                      styles.textArea,
+                      {
+                        width: "100%",
+                        alignContent: "center",
+                        justifyContent: "center",
+                      },
+                    ]}
+                    value={values.phoneNumber}
+                    textInputProps={{ placeholderTextColor: "black" }}
+                    textInputStyle={{}}
+                  />
+                  <Text style={styles.inputError}>{errors?.phoneNumber}</Text>
+                </View>
                 <View
                   style={{
                     display: "flex",
@@ -596,7 +696,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
   },
   textArea: {
-    height: 50,
+    height: 65,
     borderRadius: 3,
     backgroundColor: "#FFFFFF",
   },
@@ -605,7 +705,9 @@ const styles = StyleSheet.create({
     height: 45,
     backgroundColor: "#FFFFFF",
   },
-
+  callingCode: {
+    fontWeight: "400",
+  },
   item: {
     marginRight: 55,
     height: 100,

@@ -17,6 +17,7 @@ const DonationTabScreen = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [donationData, setDonationData] = useState<[]>([]);
+  const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -27,8 +28,24 @@ const DonationTabScreen = () => {
     setDonationData(response?.payload?.donationList);
   };
 
+  const fetchingallDonationData = async () => {
+    const response = await dispatch(allDonations({} as any) as any);
+    setDonationData(response?.payload);
+  };
+
   useEffect(() => {
-    fetchingDonationData();
+    setLoading(true);
+    dispatch(allDonations({} as any) as any)
+      .then(() =>
+        dispatch(myDonations({} as any) as any)
+          .then(() => setLoading(false))
+          .catch(() => {
+            setLoading(false);
+          })
+      )
+      .catch(() => {
+        setLoading(false);
+      });
   }, []);
 
   const handleSingleIndexSelect = async (index: any) => {
@@ -37,20 +54,16 @@ const DonationTabScreen = () => {
       fetchingDonationData();
     } else if (index === 1) {
       const res = await dispatch(allDonations({} as any) as any);
-      const donationsAll = res?.payload?.donationList;
+      const donationsAll = res?.payload?.AllDonations;
+      console.log("nckjsdnvjksndkvndk", res?.payload?.AllDonations);
       const verifiedDonations = donationsAll?.filter(
         (event: any) => event?.status === "approved"
       );
-      setDonationData(verifiedDonations);
+      setDonationData(donationsAll);
     }
   };
 
-  const Item = ({
-    foodItem,
-    status,
-    delivery,
-    createdAt,
-  }: any) => (
+  const Item = ({ foodItem, status, delivery, createdAt, donatedBy }: any) => (
     <View style={styles.cardContainer}>
       {status === "approved" ? (
         <View>
@@ -126,7 +139,7 @@ const DonationTabScreen = () => {
             paddingTop: h2dp(0.5),
           }}
         >
-          {moment(createdAt).format('MMM DD, YYYY  ddd, hh:mm A')}
+          {moment(createdAt).format("MMM DD, YYYY  ddd, hh:mm A")}
         </Text>
         <Text
           style={{
@@ -152,12 +165,22 @@ const DonationTabScreen = () => {
         >
           {delivery}
         </Text>
+        <Text
+          style={{
+            marginLeft: w2dp(3),
+            // width: w2dp(47),
+            fontWeight: "200",
+            fontSize: 16,
+            lineHeight: 20,
+            paddingBottom: h2dp(1),
+          }}
+        >
+          {donatedBy}
+        </Text>
       </ScrollView>
       <Button
         title={"Details"}
-        onPress={() =>
-          navigation.navigate("SingleEventDetails")
-        }
+        onPress={() => navigation.navigate("SingleEventDetails")}
         buttonStyle={{
           marginRight: w2dp(5),
           backgroundColor: "white",
@@ -204,10 +227,10 @@ const DonationTabScreen = () => {
             data={donationData}
             renderItem={({ item }: any) => (
               <Item
-              foodItem={item?.foodItem}
-              delivery={item?.delivery?.pickupAddress?.fullAddress}
-              createdAt = {item?.createdAt}
-           
+                foodItem={item?.foodItem}
+                delivery={item?.delivery?.pickupAddress?.fullAddress}
+                createdAt={item?.createdAt}
+                donatedBy={item?.donatedBy?.name}
               />
             )}
             keyExtractor={(item: any) => item?.id}

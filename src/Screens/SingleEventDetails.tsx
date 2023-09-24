@@ -268,7 +268,7 @@ const SingleEventDetails = ({ route }: any) => {
                     style={{ marginBottom: h2dp("2%"), paddingHorizontal: 10 }}
                   >
                     <Text style={styles.boldText}>
-                      Volinteer's Required:{" "}
+                      Volunteer's Required:{" "}
                       <Text style={styles.cardText}>
                         {eventDetails?.volunteers}
                       </Text>

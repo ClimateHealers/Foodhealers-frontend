@@ -2,13 +2,11 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { TouchableOpacity, Text, View, StyleSheet } from "react-native";
 import { CommonActions, useNavigation } from "@react-navigation/native";
 
-
 import { useDispatch, useSelector } from "react-redux";
 import { removeAuthData } from "../redux/actions/authAction";
 import { logOut } from "../redux/reducers/authreducers";
 import { getLocation } from "../Components/getCurrentLocation";
 import React, { useState } from "react";
-
 
 const BurgerIcon = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -28,11 +26,10 @@ const BurgerIcon = () => {
   };
   const findFoodMenuItemPress = (item: any) => {
     getLocation().then((res) => {
-      if(res){
+      if (res) {
         navigation?.navigate("MapScreen", {
           latitude: res?.latitude,
           longitude: res?.longitude,
-
         });
       }
     });
@@ -60,12 +57,18 @@ const BurgerIcon = () => {
         size={40}
         color="white"
         onPress={() => toggleMenu()}
+        style={{
+          // alignSelf: "flex-end",
+          paddingRight: 10,
+          // zIndex: 10,
+        }}
       />
       {menuOpen && (
         <View
           style={{
             position: "absolute",
-            right: 60,
+            right: 50,
+            width: "250%",
             top: 65,
             backgroundColor: "white",
             borderColor: "black",

@@ -30,8 +30,8 @@ import axios from "axios";
 
 const HomeScreen = ({ route }: any) => {
   const userDetails = useSelector((state: any) => state.auth);
-  
-  const languageName = useSelector((state:any) => state.language)
+
+  const languageName = useSelector((state: any) => state.language);
 
   const { data } = userDetails;
 
@@ -42,8 +42,8 @@ const HomeScreen = ({ route }: any) => {
   const [loc, setLoc] = useState(false);
   const [langOpen, setlangOpen] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState(localized.locale);
-  const[lat,setLat] = useState(0)
-  const[long,setLong] = useState(0)
+  const [lat, setLat] = useState(0);
+  const [long, setLong] = useState(0);
   const [lang, setLang] = useState([
     { id: 1, label: "Bengali", value: "be" },
     { id: 2, label: "Chinese", value: "ch" },
@@ -60,35 +60,38 @@ const HomeScreen = ({ route }: any) => {
   };
   const changeLanguage = (itemValue: any, index: any) => {
     const selectedLanguage = lang[index].value;
-    dispatch(setLanguage(selectedLanguage))
+    dispatch(setLanguage(selectedLanguage));
     localized.locale = selectedLanguage;
     setSelectedLanguage(selectedLanguage);
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     const getUserLocation = async () => {
       try {
-        const response = await axios.get('http://ipinfo.io/json');
+        const response = await axios.get("http://ipinfo.io/json");
         const { loc } = response.data;
-        console.log("cheking location from IP address", loc)
-        const [latitude, longitude] = loc.split(',').map((coord:any) => parseFloat(coord));
-        console.log("objectobjectobjectobject",latitude,longitude)
-        setLat(latitude)
-        setLong(longitude)
+        console.log("cheking location from IP address", loc);
+        const [latitude, longitude] = loc
+          .split(",")
+          .map((coord: any) => parseFloat(coord));
+        console.log("objectobjectobjectobject", latitude, longitude);
+        setLat(latitude);
+        setLong(longitude);
         return { latitude, longitude };
       } catch (error) {
-        console.error('Error fetching user location', error);
+        console.error("Error fetching user location", error);
         return null;
       }
     };
-    getUserLocation()
-   },[])
-  
-   const navigateToMapScreen =()=>{
-    navigation.navigate("MapScreen",{
-      latitude:lat,
-      longitude : long
-    }) }
+    getUserLocation();
+  }, []);
+
+  const navigateToMapScreen = () => {
+    navigation.navigate("MapScreen", {
+      latitude: lat,
+      longitude: long,
+    });
+  };
   const appLoader = (loader: any) => {
     return (
       <View style={styles.centeredView}>
@@ -134,7 +137,10 @@ const HomeScreen = ({ route }: any) => {
   return (
     <TouchableWithoutFeedback onPress={handlePressOutside}>
       <View style={styles.container}>
-        <StatusBar backgroundColor="auto" barStyle= {Platform.OS ==="ios"?"light-content":"dark-content"} />
+        <StatusBar
+          backgroundColor="auto"
+          barStyle={Platform.OS === "ios" ? "light-content" : "dark-content"}
+        />
         <ImageBackground
           source={require("../../assets/homeImage2.jpg")}
           style={styles.backgroundImage}
@@ -159,7 +165,7 @@ const HomeScreen = ({ route }: any) => {
               data={lang && lang.map((dd) => dd.label)}
               onSelect={changeLanguage}
               // defaultButtonText={"EN"}
-              defaultButtonText={ selectedLanguage.toUpperCase()}
+              defaultButtonText={selectedLanguage.toUpperCase()}
               buttonTextAfterSelection={(itemValue, index) => {
                 return languageName.toUpperCase();
               }}
@@ -185,8 +191,14 @@ const HomeScreen = ({ route }: any) => {
             <PrimaryButton
               // title={localized.t("Post Event")}
               title={"Volunteer"}
-              buttonStyle={[styles.postEventButton,{backgroundColor: "#5FBB3F"}]}
-              onPress={()=>navigation.navigate('IntroSlider')}
+              buttonStyle={[
+                styles.postEventButton,
+                { backgroundColor: "#5FBB3F" },
+              ]}
+              onPress={() => navigation.navigate("IntroSlider")}
+              // onPress={() =>
+              //   navigation.navigate("VolunteerDonationHistoryScreen")
+              // }
               titleStyle={styles.titleStyle}
             />
             {data?.user?.name ? (
@@ -210,7 +222,7 @@ const HomeScreen = ({ route }: any) => {
                   color: "white",
                   fontSize: 18,
                   fontFamily: "OpenSans-bold",
-                  marginBottom:h2dp(6)
+                  marginBottom: h2dp(6),
                 }}
               >
                 {localized.t("Welcome")}{" "}
@@ -226,7 +238,7 @@ const HomeScreen = ({ route }: any) => {
                     fontSize: 18,
                     textDecorationLine: "underline",
                     fontFamily: "OpenSans-Bold",
-                    marginBottom:h2dp(6)
+                    marginBottom: h2dp(6),
                   }}
                 >
                   {localized.t("Sign in")}

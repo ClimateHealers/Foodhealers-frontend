@@ -67,17 +67,22 @@ const VolunteerDonateScreen = ({ route }: any) => {
       id:1,
       title: "Donate Food",
       image: require("../../assets/images/donateFood.png"),
-      navigation:"AddDonationsScreen"
+      navigation:"AddDonationsScreen",
+      itemTypeId: 1,
     },
     {
       id: 3,
       title: "Volunteer at an event",
       image: require("../../assets/images/volunteerAtEvent.png"),
+      itemTypeId: 3,
+      navigation: "VolunteerEventScreen",
     },
     {
       id: 4,
       title: "Donate supplies",
       image: require("../../assets/images/donateSupplies.png"),
+      navigation:"AddDonationsScreen",
+      itemTypeId: 2,
     },
     {
       id: 5,
@@ -123,7 +128,10 @@ const VolunteerDonateScreen = ({ route }: any) => {
             </Text>
             <PrimaryButton
               title={"Select"}
-              onPress={()=>navigation.navigate(item?.navigation)}
+              onPress={()=>navigation.navigate(item?.navigation,{
+                itemTypeId : item?.itemTypeId,
+                title: item?.title,
+              })}
               buttonStyle={styles.buttonStyles}
               titleStyle={styles.titleStyle}
             />

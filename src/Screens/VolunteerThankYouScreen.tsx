@@ -2,45 +2,40 @@ import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useState } from "react";
 import {
-  FlatList,
+  Image,
   Keyboard,
+  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import { heightPercentageToDP as h2dp } from "react-native-responsive-screen";
+import {
+  heightPercentageToDP as h2dp,
+  widthPercentageToDP as w2dp,
+} from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { SceneMap, TabBar, TabView } from "react-native-tab-view";
+import Carousel from "react-native-snap-carousel";
 import BurgerIcon from "../Components/BurgerIcon";
+import PrimaryButton from "../Components/PrimaryButton";
 import { getLocation } from "../Components/getCurrentLocation";
 import { localized } from "../locales/localization";
-import DonationTabScreen from "./DonationTabScreen";
+import { useSelector } from "react-redux";
 
-const VolunteerAndDonateScreen = ({ route }: any) => {
+const VolunteerThankYouScreen = ({ route }: any) => {
+  const { itemTypeId, title } = route?.params;
+  const userDetails = useSelector((state: any) => state.auth);
   const navigation: any = useNavigation();
+  const { data } = userDetails;
 
-  const [langOpen, setlangOpen] = useState(false);
-  const [lang, setLang] = useState([
-    { id: 1, label: "French", value: "fr" },
-    { id: 2, label: "Hindi", value: "hi" },
-    { id: 3, label: "Bengali", value: "be" },
-    { id: 4, label: "Chinese", value: "ch" },
-    { id: 5, label: "Mandarin", value: "ma" },
-    { id: 6, label: "Punjabi", value: "pu" },
-    { id: 7, label: "English", value: "en" },
-    { id: 8, label: "Spanish", value: "es" },
-  ]);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [selectedLanguage, setSelectedLanguage] = useState(localized.locale);
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
 
   const handlePressOutside = () => {
-    setlangOpen(false);
     Keyboard.dismiss();
   };
   const handleMenuItemPress = (item: any) => {
@@ -59,42 +54,68 @@ const VolunteerAndDonateScreen = ({ route }: any) => {
     setMenuOpen(false);
   };
 
-  const FirstRoute = () => <DonationTabScreen />;
-
-  const dummyData = [
-    { id: "1", title: "Item ", description: "Description " },
-    { id: "2", title: "Item ", description: "Description " },
-    { id: "3", title: "Item ", description: "Description " },
-  ];
-
-  const SecondRoute = () => {
-    const renderItem = ({ item }: any) => (
-      <TouchableOpacity>
-        <View style={styles.itemStyle}>
-          <Text style={styles.itemTitle}>{item?.title}</Text>
-          <Text style={styles.itemDescription}>{item?.description}</Text>
-        </View>
-      </TouchableOpacity>
-    );
-
+  const renderItem = ({ item }: any) => {
     return (
-      <FlatList
-        data={dummyData}
-        renderItem={renderItem}
-        keyExtractor={(item) => item?.id}
-        contentContainerStyle={styles.flatListContainer}
-      />
+      <View>
+        <View style={[styles.card, { backgroundColor: "white" }]}>
+          <View style={styles.description}>
+            <Text
+              style={{
+                alignSelf: "center",
+                fontSize: h2dp(3.2),
+                fontWeight: "500",
+                marginTop: h2dp(3),
+              }}
+            >
+              Confirmed
+            </Text>
+            <Text
+              style={{
+                alignSelf: "center",
+                fontSize: h2dp(3.2),
+                fontWeight: "500",
+              }}
+            >
+              Thank you ! {data?.user?.name}
+            </Text>
+          </View>
+          <View style={styles.description}>
+            <Text
+              style={{
+                alignSelf: "center",
+                fontSize: h2dp(2.8),
+                textAlign: "center",
+              }}
+            >
+              A Food Healer team member will be in touch.
+            </Text>
+            <PrimaryButton
+              title={"Home"}
+              onPress={() => navigation.navigate("VolunteerHomeScreen")}
+              buttonStyle={styles.buttonMainStyles}
+              titleStyle={styles.titleMainStyle}
+            />
+          </View>
+        </View>
+        <View>
+          <PrimaryButton
+            title={"Add another donation"}
+            onPress={() => navigation.navigate("AddDonationsScreen")}
+            buttonStyle={styles.buttonStyles}
+            titleStyle={styles.titleStyle}
+          />
+          <PrimaryButton
+            title={"History"}
+            onPress={() =>
+              navigation.navigate("VolunteerDonationHistoryScreen")
+            }
+            buttonStyle={styles.buttonHistoryStyles}
+            titleStyle={styles.titleStyle}
+          />
+        </View>
+      </View>
     );
   };
-  const renderScene = SceneMap({
-    first: FirstRoute,
-    second: SecondRoute,
-  });
-  const [index, setIndex] = React.useState(0);
-  const [routes] = React.useState([
-    { key: "first", title: "Donations" },
-    { key: "second", title: "Volunteers" },
-  ]);
 
   return (
     <TouchableWithoutFeedback onPress={handlePressOutside}>
@@ -105,7 +126,7 @@ const VolunteerAndDonateScreen = ({ route }: any) => {
         >
           <SafeAreaView>
             <View style={styles.row}>
-              <Text style={styles.itemText}>Volunteer</Text>
+              <Text style={styles.itemText}>{title}</Text>
               <View style={styles.item}>
                 <BurgerIcon />
                 {menuOpen && (
@@ -153,20 +174,6 @@ const VolunteerAndDonateScreen = ({ route }: any) => {
                 )}
               </View>
             </View>
-            <TabView
-              navigationState={{ index, routes }}
-              renderScene={renderScene}
-              onIndexChange={setIndex}
-              style={{ flex: 1 }}
-              renderTabBar={(props) => (
-                <TabBar
-                  {...props}
-                  style={{ backgroundColor: "transparent" }}
-                  labelStyle={styles.tabLabel}
-                  indicatorStyle={styles.tabIndicator}
-                />
-              )}
-            />
           </SafeAreaView>
         </LinearGradient>
       </View>
@@ -207,12 +214,44 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     width: "85%",
     borderRadius: h2dp(3),
+    marginTop: h2dp(8),
     marginBottom: 10,
-    height: h2dp(70),
+    height: h2dp(40),
+    alignSelf: "center",
+  },
+  buttonStyles: {
+    backgroundColor: "#FC5A56",
+    color: "white",
+    borderRadius: 5,
+    width: 300,
+    marginTop: h2dp(6.5),
+    alignSelf: "center",
+  },
+  buttonHistoryStyles: {
+    backgroundColor: "#FFFFFF",
+    color: "black",
+    borderRadius: 5,
+    width: 300,
+    marginTop: h2dp(3),
+    alignSelf: "center",
+  },
+  buttonMainStyles: {
+    backgroundColor: "#FC5A56",
+    color: "black",
+    borderRadius: 5,
+    width: 300,
+    marginTop: h2dp(5),
     alignSelf: "center",
   },
   titleStyle: {
-    color: "white",
+    color: "black",
+    fontSize: 26,
+
+    lineHeight: 35,
+    fontFamily: "OpenSans-Regular",
+  },
+  titleMainStyle: {
+    color: "black",
     fontSize: 26,
 
     lineHeight: 35,
@@ -244,35 +283,11 @@ const styles = StyleSheet.create({
   },
   description: {
     marginTop: h2dp(3),
+    marginLeft: h2dp(2),
+    marginRight: h2dp(2),
     display: "flex",
     justifyContent: "space-around",
   },
-  tabLabel: {
-    color: "white",
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-  tabIndicator: {
-    backgroundColor: "white",
-    height: 2,
-  },
-  flatListContainer: {
-    paddingHorizontal: 16,
-    paddingTop: 16,
-  },
-  itemStyle: {
-    backgroundColor: "white",
-    padding: 16,
-    marginBottom: 8,
-    borderRadius: 5,
-  },
-  itemTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-  },
-  itemDescription: {
-    fontSize: 16,
-  },
 });
 
-export default VolunteerAndDonateScreen;
+export default VolunteerThankYouScreen;
