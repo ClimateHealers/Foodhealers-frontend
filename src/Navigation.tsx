@@ -38,6 +38,8 @@ import AddDonationsScreen from "./Screens/AddDonationsScreen";
 import VolunteerThankYouScreen from "./Screens/VolunteerThankYouScreen";
 import VolunteerDonationHistoryScreen from "./Screens/VolunteerDonationHistoryScreen";
 import VolunteerEventScreen from "./Screens/VolunteerEventScreen";
+import AddVolunteerToEvent from "./Screens/AddVolunteerToEventScreen";
+import VolunteerEventHistoryScreen from "./Screens/VolunteerEventHistoryScreen";
 
 const Navigation = () => {
   const Stack = createNativeStackNavigator();
@@ -231,6 +233,16 @@ const Navigation = () => {
           <Stack.Screen
             name="VolunteerEventScreen"
             component={VolunteerEventScreen}
+            options={{ title: "", header: () => null }}
+          />
+          <Stack.Screen
+            name="AddVolunteerToEvent"
+            component={AddVolunteerToEvent}
+            options={{ title: "", header: () => null }}
+          />
+          <Stack.Screen
+            name="VolunteerEventHistoryScreen"
+            component={VolunteerEventHistoryScreen}
             options={{ title: "", header: () => null }}
           />
         </Stack.Navigator>
