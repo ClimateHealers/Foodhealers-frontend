@@ -24,33 +24,22 @@ import { localized } from "../locales/localization";
 import { myDonations } from "../redux/actions/myDonations";
 import { Button } from "react-native-elements";
 import moment from "moment";
+import { fetchVolunteerAtEvent } from "../redux/actions/volunteerAction";
 
-const VolunteerDonationHistoryScreen = ({ route }: any) => {
-  const { itemTypeId, title } = route?.params;
-  console.log("params", route?.params);
-  const [donationData, setDonationData] = useState<[]>([]);
+const VolunteerEventHistoryScreen = ({ route }: any) => {
+  // const { itemTypeId, title } = route?.params;
+  const [volunteerData, setVolunteerData] = useState<[]>([]);
 
   //   console.log("Event Details", eventDetails);
   useEffect(() => {
-    fetchingDonationData();
+    fetchingVolunteerEventData();
   }, []);
+
   const dispatch = useDispatch();
-  const fetchingDonationData = async () => {
-    const response = await dispatch(myDonations({} as any) as any);
-    console.log("jjhsfjjsj", response);
-    if (itemTypeId === 1) {
-      const filteredDonationData = response?.payload?.donationList.filter(
-        (event: any) => event?.donationType === "Food"
-      );
-      setDonationData(filteredDonationData);
-    } else if (itemTypeId === 2) {
-      const filteredDonationData = response?.payload?.donationList.filter(
-        (event: any) => event?.donationType === "Supplies"
-      );
-      setDonationData(filteredDonationData);
-    } else {
-      setDonationData(response?.payload?.donationList);
-    }
+
+  const fetchingVolunteerEventData = async () => {
+    const response = await dispatch(fetchVolunteerAtEvent({} as any) as any);
+    setVolunteerData(response?.payload?.volunteerHistory);
   };
 
   const navigation: any = useNavigation();
@@ -92,7 +81,7 @@ const VolunteerDonationHistoryScreen = ({ route }: any) => {
     });
     setMenuOpen(false);
   };
-  const Item = ({ foodItem, status, delivery, createdAt }: any) => (
+  const Item = ({ status, fromDate, name, address, id }: any) => (
     <View style={styles.cardContainer}>
       {status === "approved" ? (
         <View>
@@ -169,7 +158,8 @@ const VolunteerDonationHistoryScreen = ({ route }: any) => {
             paddingTop: h2dp(0.5),
           }}
         >
-          {moment(createdAt).format("MMM DD, YYYY  ddd, hh:mm A")}
+          {/* {moment(eventTimings).format("MMM DD, YYYY  ddd, hh:mm A")} */}
+          {moment(fromDate).format("MMM DD, YYYY  ddd, hh:mm A")}
         </Text>
         <Text
           style={{
@@ -178,10 +168,10 @@ const VolunteerDonationHistoryScreen = ({ route }: any) => {
             fontWeight: "500",
             fontSize: 16,
             lineHeight: 30,
-            paddingTop: h2dp(0.7),
+            // paddingTop: h2dp(0.5),
           }}
         >
-          {foodItem}
+          {name}
         </Text>
         <Text
           style={{
@@ -193,7 +183,7 @@ const VolunteerDonationHistoryScreen = ({ route }: any) => {
             paddingBottom: h2dp(1),
           }}
         >
-          {delivery}
+          {address}
         </Text>
       </ScrollView>
     </View>
@@ -213,7 +203,7 @@ const VolunteerDonationHistoryScreen = ({ route }: any) => {
           style={styles.background}
         >
           <SafeAreaView>
-            <ScrollView>
+            <ScrollView keyboardShouldPersistTaps="handled">
               <View style={styles.row}>
                 <Ionicons
                   name="chevron-back"
@@ -222,7 +212,7 @@ const VolunteerDonationHistoryScreen = ({ route }: any) => {
                   style={{ marginTop: h2dp(3) }}
                   onPress={() => navigation.goBack()}
                 />
-                <Text style={styles.itemText}>{title} History</Text>
+                <Text style={styles.itemText}>Event History</Text>
                 <View style={styles.item}>
                   <BurgerIcon />
                   {/* {menuOpen && (
@@ -277,13 +267,14 @@ const VolunteerDonationHistoryScreen = ({ route }: any) => {
                 </View>
                 <ScrollView style={{ flex: 1 }}>
                   <FlatList
-                    data={donationData}
+                    data={volunteerData}
                     renderItem={({ item }: any) => (
                       <Item
-                        status={item?.status}
-                        foodItem={`${item?.foodItem}  (${item?.quantity})`}
-                        delivery={item?.delivery?.pickupAddress?.fullAddress}
-                        createdAt={item?.createdAt}
+                        status={item?.event?.status}
+                        id={item.id}
+                        name={item?.event?.name}
+                        address={item?.event?.address?.fullAddress}
+                        fromDate={item?.fromDate}
                       />
                     )}
                   />
@@ -391,4 +382,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default VolunteerDonationHistoryScreen;
+export default VolunteerEventHistoryScreen;

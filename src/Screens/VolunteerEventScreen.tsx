@@ -21,37 +21,32 @@ import { useDispatch } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
 import { getLocation } from "../Components/getCurrentLocation";
 import { localized } from "../locales/localization";
-import { myDonations } from "../redux/actions/myDonations";
 import { Button } from "react-native-elements";
 import moment from "moment";
+import { allEvents } from "../redux/actions/allEvents";
 
-const VolunteerDonationHistoryScreen = ({ route }: any) => {
+const VolunteerEventScreen = ({ route }: any) => {
+  //   const { eventDetails } = route.params;
   const { itemTypeId, title } = route?.params;
-  console.log("params", route?.params);
-  const [donationData, setDonationData] = useState<[]>([]);
-
-  //   console.log("Event Details", eventDetails);
+  const [eventData, setEventData] = useState("");
   useEffect(() => {
-    fetchingDonationData();
+    fetchingEventsData();
   }, []);
   const dispatch = useDispatch();
-  const fetchingDonationData = async () => {
-    const response = await dispatch(myDonations({} as any) as any);
-    console.log("jjhsfjjsj", response);
-    if (itemTypeId === 1) {
-      const filteredDonationData = response?.payload?.donationList.filter(
-        (event: any) => event?.donationType === "Food"
-      );
-      setDonationData(filteredDonationData);
-    } else if (itemTypeId === 2) {
-      const filteredDonationData = response?.payload?.donationList.filter(
-        (event: any) => event?.donationType === "Supplies"
-      );
-      setDonationData(filteredDonationData);
-    } else {
-      setDonationData(response?.payload?.donationList);
-    }
+  const fetchingEventsData = async () => {
+    const response = await dispatch(allEvents({} as any) as any);
+    const data = response?.payload?.foodEvents;
+
+    const requiredVolunteers = data?.filter(
+      (event: any) => event.requiredVolunteers > 0
+    );
+    const verifiedFoodEvents = requiredVolunteers?.filter(
+      (event: any) => event.active === true
+    );
+    setEventData(verifiedFoodEvents);
   };
+
+  console.log("EventData", eventData);
 
   const navigation: any = useNavigation();
 
@@ -92,9 +87,22 @@ const VolunteerDonationHistoryScreen = ({ route }: any) => {
     });
     setMenuOpen(false);
   };
-  const Item = ({ foodItem, status, delivery, createdAt }: any) => (
+  const Item = ({
+    status,
+    address,
+    id,
+    eventTimings,
+    name,
+    requiredVolunteers,
+    additionalInfo,
+    eventStartDate,
+    eventEndDate,
+    lat,
+    long,
+    eventPhoto,
+  }: any) => (
     <View style={styles.cardContainer}>
-      {status === "approved" ? (
+      {/* {status === "approved" ? (
         <View>
           <AntDesign
             name="checkcircleo"
@@ -157,7 +165,7 @@ const VolunteerDonationHistoryScreen = ({ route }: any) => {
             Rejected
           </Text>
         </View>
-      )}
+      )} */}
 
       <ScrollView showsVerticalScrollIndicator={false}>
         <Text
@@ -169,7 +177,8 @@ const VolunteerDonationHistoryScreen = ({ route }: any) => {
             paddingTop: h2dp(0.5),
           }}
         >
-          {moment(createdAt).format("MMM DD, YYYY  ddd, hh:mm A")}
+          {/* {moment(eventTimings).format("MMM DD, YYYY  ddd, hh:mm A")} */}
+          {eventTimings}
         </Text>
         <Text
           style={{
@@ -178,10 +187,10 @@ const VolunteerDonationHistoryScreen = ({ route }: any) => {
             fontWeight: "500",
             fontSize: 16,
             lineHeight: 30,
-            paddingTop: h2dp(0.7),
+            // paddingTop: h2dp(0.5),
           }}
         >
-          {foodItem}
+          {name}
         </Text>
         <Text
           style={{
@@ -193,9 +202,42 @@ const VolunteerDonationHistoryScreen = ({ route }: any) => {
             paddingBottom: h2dp(1),
           }}
         >
-          {delivery}
+          {address}
         </Text>
       </ScrollView>
+      <Button
+        title={"Details"}
+        onPress={() =>
+          navigation.navigate("SingleEventDetails", {
+            eventDetails: {
+              additionalInfo: additionalInfo,
+              itemTypeId: itemTypeId,
+              title: title,
+              id: id,
+              address: address,
+              eventStartDate: eventStartDate,
+              eventEndDate: eventEndDate,
+              lat: lat,
+              long: long,
+              eventPhoto: eventPhoto,
+              requiredVolunteers: requiredVolunteers,
+            },
+          })
+        }
+        buttonStyle={{
+          marginRight: w2dp(5),
+          backgroundColor: "white",
+          borderWidth: 1,
+          borderColor: "red",
+          borderRadius: 5,
+          paddingHorizontal: 8,
+          paddingVertical: 5,
+        }}
+        titleStyle={{
+          color: "black",
+          fontWeight: "300",
+        }}
+      />
     </View>
   );
 
@@ -222,7 +264,7 @@ const VolunteerDonationHistoryScreen = ({ route }: any) => {
                   style={{ marginTop: h2dp(3) }}
                   onPress={() => navigation.goBack()}
                 />
-                <Text style={styles.itemText}>{title} History</Text>
+                <Text style={styles.itemText}>Events</Text>
                 <View style={styles.item}>
                   <BurgerIcon />
                   {/* {menuOpen && (
@@ -272,18 +314,28 @@ const VolunteerDonationHistoryScreen = ({ route }: any) => {
               </View>
               <View>
                 <View style={styles.itemFilter}>
-                  <Text style={styles.itemFilterText}>All History</Text>
+                  <Text style={styles.itemFilterText}>All Events</Text>
                   <Text style={styles.itemFilterText}> Filter</Text>
                 </View>
                 <ScrollView style={{ flex: 1 }}>
                   <FlatList
-                    data={donationData}
+                    data={eventData}
                     renderItem={({ item }: any) => (
                       <Item
+                        name={item?.name}
+                        eventTimings={`${moment(item?.eventStartDate).format(
+                          "DD,  ddd, hh:mm A"
+                        )}`}
+                        address={item?.address?.streetAddress}
+                        additionalInfo={item?.additionalInfo}
+                        lat={item.address?.lat}
+                        long={item.address?.lng}
+                        eventStartDate={item?.eventStartDate}
+                        eventEndDate={item?.eventEndDate}
+                        id={item?.id}
                         status={item?.status}
-                        foodItem={`${item?.foodItem}  (${item?.quantity})`}
-                        delivery={item?.delivery?.pickupAddress?.fullAddress}
-                        createdAt={item?.createdAt}
+                        eventPhoto={item?.eventPhoto}
+                        requiredVolunteers={item?.requiredVolunteers}
                       />
                     )}
                   />
@@ -391,4 +443,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default VolunteerDonationHistoryScreen;
+export default VolunteerEventScreen;

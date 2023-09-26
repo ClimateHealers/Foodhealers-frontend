@@ -74,7 +74,6 @@ const HomeScreen = ({ route }: any) => {
         const [latitude, longitude] = loc
           .split(",")
           .map((coord: any) => parseFloat(coord));
-        console.log("objectobjectobjectobject", latitude, longitude);
         setLat(latitude);
         setLong(longitude);
         return { latitude, longitude };
@@ -189,13 +188,23 @@ const HomeScreen = ({ route }: any) => {
               titleStyle={styles.titleStyle}
             />
             <PrimaryButton
-              // title={localized.t("Post Event")}
               title={"Volunteer"}
               buttonStyle={[
                 styles.postEventButton,
                 { backgroundColor: "#5FBB3F" },
               ]}
-              onPress={() => navigation.navigate("IntroSlider")}
+              onPress={() => {
+                if (data.isAuthenticated) {
+                  navigation.navigate("IntroSlider");
+                } else {
+                  Alert.alert("Alert!", "Please login", [
+                    {
+                      text: "Login",
+                      onPress: () => navigation.navigate("LoginScreen"),
+                    },
+                  ]);
+                }
+              }}
               // onPress={() =>
               //   navigation.navigate("VolunteerDonationHistoryScreen")
               // }

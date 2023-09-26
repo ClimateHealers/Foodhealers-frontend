@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   FlatList,
   Keyboard,
@@ -17,9 +17,13 @@ import BurgerIcon from "../Components/BurgerIcon";
 import { getLocation } from "../Components/getCurrentLocation";
 import { localized } from "../locales/localization";
 import DonationTabScreen from "./DonationTabScreen";
+import { useDispatch } from "react-redux";
+import { allDonations } from "../redux/actions/allDonations";
+import { myDonations } from "../redux/actions/myDonations";
 
 const VolunteerAndDonateScreen = ({ route }: any) => {
   const navigation: any = useNavigation();
+  const [loading, setLoading] = useState(false);
 
   const [langOpen, setlangOpen] = useState(false);
   const [lang, setLang] = useState([
@@ -34,10 +38,25 @@ const VolunteerAndDonateScreen = ({ route }: any) => {
   ]);
   const [menuOpen, setMenuOpen] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState(localized.locale);
-
+  const dispatch = useDispatch();
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
+
+  useEffect(() => {
+    setLoading(true);
+    dispatch(allDonations({} as any) as any)
+      .then(() =>
+        dispatch(myDonations({} as any) as any)
+          .then(() => setLoading(false))
+          .catch(() => {
+            setLoading(false);
+          })
+      )
+      .catch(() => {
+        setLoading(false);
+      });
+  }, []);
 
   const handlePressOutside = () => {
     setlangOpen(false);

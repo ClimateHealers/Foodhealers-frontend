@@ -8,10 +8,6 @@ export interface MyDonations {
   token: string;
 }
 
-export interface AllDonations {
-  token: string;
-}
-
 export interface PostDonation{
   itemTypeId: number,
   pickupDate: Date,
@@ -49,7 +45,7 @@ export const postDonation = createAsyncThunk<PostDonation, PostDonation>(
   "postDonation",
   async (PostDonation: PostDonation, { rejectWithValue, getState }: any) => {
     try {
-      const token = getState().auth.data.token;
+      const token = getState()?.auth?.data?.token;
       const config = {
         headers: {
           "Content-Type": "application/json",
@@ -57,11 +53,9 @@ export const postDonation = createAsyncThunk<PostDonation, PostDonation>(
         },
       };
       const result = await API.post("v1/api/donate-food/", PostDonation, config);
-      console.log("resultresult: " + JSON.stringify(result));
       return result.data;
     } catch (error: any) {
-      return rejectWithValue(JSON.stringify(error?.response));
-      // return rejectWithValue(error?.response?.data?.message);
+      return rejectWithValue(error?.response?.data?.message);
     }
   }
 );

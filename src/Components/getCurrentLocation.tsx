@@ -8,7 +8,6 @@ export const getLocation = async () => {
     const [latitude, longitude] = loc
       .split(",")
       .map((coord: any) => parseFloat(coord));
-    console.log("objectobjectobjectobject", latitude, longitude);
     return { latitude, longitude };
   } catch (error) {
     console.error("Error fetching user location", error);

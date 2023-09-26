@@ -91,7 +91,7 @@ const AddDonationsScreen = ({ route }: any) => {
 
   const API_KEY = Constants?.manifest?.extra?.googleMapsApiKey;
 
-  const eventDateTime = moment(selectedDate).utc();
+  const eventDateTime = moment(selectedDate).utc().unix();
   console.log("kkcnsdvsdvdsv", eventDateTime);
 
   const handlePressOutside = () => {
@@ -238,10 +238,10 @@ const AddDonationsScreen = ({ route }: any) => {
               lat: 0,
               long: 0,
               address: "",
-              city: searchedCity,
-              state: searchedState,
-              postalCode: searchedZipCode,
-              zipCode: searchedZipCode,
+              city: "",
+              state: "",
+              postalCode: "",
+              zipCode: "",
             }}
             onSubmit={async ({
               foodItem,
@@ -288,6 +288,7 @@ const AddDonationsScreen = ({ route }: any) => {
                     error: false,
                   });
                   setLoading(false);
+                  // resetForm({values: initialValues})
                   Alert.alert(
                     "Thank you for your donation!",
                     "We have successfully added your donation.",

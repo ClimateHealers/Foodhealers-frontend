@@ -24,7 +24,7 @@ import { localized } from "../locales/localization";
 import { useSelector } from "react-redux";
 
 const VolunteerThankYouScreen = ({ route }: any) => {
-  const { itemTypeId, title } = route?.params;
+  const { id, itemTypeId, title } = route?.params;
   const userDetails = useSelector((state: any) => state.auth);
   const navigation: any = useNavigation();
   const { data } = userDetails;
@@ -52,69 +52,6 @@ const VolunteerThankYouScreen = ({ route }: any) => {
       }
     });
     setMenuOpen(false);
-  };
-
-  const renderItem = ({ item }: any) => {
-    return (
-      <View>
-        <View style={[styles.card, { backgroundColor: "white" }]}>
-          <View style={styles.description}>
-            <Text
-              style={{
-                alignSelf: "center",
-                fontSize: h2dp(3.2),
-                fontWeight: "500",
-                marginTop: h2dp(3),
-              }}
-            >
-              Confirmed
-            </Text>
-            <Text
-              style={{
-                alignSelf: "center",
-                fontSize: h2dp(3.2),
-                fontWeight: "500",
-              }}
-            >
-              Thank you ! {data?.user?.name}
-            </Text>
-          </View>
-          <View style={styles.description}>
-            <Text
-              style={{
-                alignSelf: "center",
-                fontSize: h2dp(2.8),
-                textAlign: "center",
-              }}
-            >
-              A Food Healer team member will be in touch.
-            </Text>
-            <PrimaryButton
-              title={"Home"}
-              onPress={() => navigation.navigate("VolunteerHomeScreen")}
-              buttonStyle={styles.buttonMainStyles}
-              titleStyle={styles.titleMainStyle}
-            />
-          </View>
-        </View>
-        <View>
-          <PrimaryButton
-            title={"Add another donation"}
-            onPress={() => navigation.navigate("AddDonationsScreen")}
-            buttonStyle={styles.buttonStyles}
-            titleStyle={styles.titleStyle}
-          />
-          <PrimaryButton
-            title={"History"}
-            onPress={() =>
-              navigation.navigate("VolunteerDonationHistoryScreen")
-            }
-            buttonStyle={styles.buttonHistoryStyles}
-            titleStyle={styles.titleStyle}
-          />
-        </View>
-      </View>
-    );
   };
 
   return (
@@ -172,6 +109,137 @@ const VolunteerThankYouScreen = ({ route }: any) => {
                     </TouchableOpacity>
                   </View>
                 )}
+              </View>
+            </View>
+            <View>
+              <View style={[styles.card, { backgroundColor: "white" }]}>
+                <View style={styles.description}>
+                  <Text
+                    style={{
+                      alignSelf: "center",
+                      fontSize: h2dp(3.2),
+                      fontWeight: "500",
+                      marginTop: h2dp(3),
+                    }}
+                  >
+                    Confirmed
+                  </Text>
+                  <Text
+                    style={{
+                      alignSelf: "center",
+                      fontSize: h2dp(3.2),
+                      fontWeight: "500",
+                    }}
+                  >
+                    Thank you ! {data?.user?.name}
+                  </Text>
+                </View>
+                <View style={styles.description}>
+                  <Text
+                    style={{
+                      alignSelf: "center",
+                      fontSize: h2dp(2.8),
+                      textAlign: "center",
+                    }}
+                  >
+                    {itemTypeId === 3 ? (
+                      <Text
+                        style={{
+                          alignSelf: "center",
+                          fontSize: h2dp(2.8),
+                          textAlign: "center",
+                        }}
+                      >
+                        Thank You for being event volunteer.
+                      </Text>
+                    ) : (
+                      <Text
+                        style={{
+                          alignSelf: "center",
+                          fontSize: h2dp(2.8),
+                          textAlign: "center",
+                        }}
+                      >
+                        A Food Healer team member will be in touch.
+                      </Text>
+                    )}
+                  </Text>
+                  <PrimaryButton
+                    title={"Home"}
+                    onPress={() => navigation.navigate("VolunteerHomeScreen")}
+                    buttonStyle={styles.buttonMainStyles}
+                    titleStyle={styles.titleMainStyle}
+                  />
+                </View>
+              </View>
+              <View>
+                {itemTypeId === 1 ? (
+                  <PrimaryButton
+                    title={"Add another donation"}
+                    onPress={() =>
+                      navigation.navigate("AddDonationsScreen", {
+                        itemTypeId: itemTypeId,
+                        id: id,
+                        title: title,
+                      })
+                    }
+                    buttonStyle={styles.buttonStyles}
+                    titleStyle={styles.titleStyle}
+                  />
+                ) : itemTypeId === 2 ? (
+                  <PrimaryButton
+                    title={"Add another supplies"}
+                    onPress={() =>
+                      navigation.navigate("AddDonationsScreen", {
+                        itemTypeId: itemTypeId,
+                        id: id,
+                        title: title,
+                      })
+                    }
+                    buttonStyle={styles.buttonStyles}
+                    titleStyle={styles.titleStyle}
+                  />
+                ) : (
+                  <PrimaryButton
+                    title={"Volunteer another event"}
+                    onPress={() =>
+                      navigation.navigate("VolunteerEventScreen", {
+                        itemTypeId: itemTypeId,
+                        id: id,
+                        title: title,
+                      })
+                    }
+                    buttonStyle={styles.buttonStyles}
+                    titleStyle={styles.titleStyle}
+                  />
+                )}
+                </View>
+                <View>
+                  {itemTypeId === 3 ?(
+                    <PrimaryButton
+                    title={"History"}
+                    onPress={() =>
+                      navigation.navigate("VolunteerEventHistoryScreen", {
+                        itemTypeId: itemTypeId,
+                        title: title,
+                        id: id,
+                      })
+                    }
+                    buttonStyle={styles.buttonHistoryStyles}
+                    titleStyle={styles.titleStyle}
+                  />
+                  ):(<PrimaryButton
+                    title={"History"}
+                    onPress={() =>
+                      navigation.navigate("VolunteerDonationHistoryScreen", {
+                        itemTypeId: itemTypeId,
+                        title: title,
+                        id: id,
+                      })
+                    }
+                    buttonStyle={styles.buttonHistoryStyles}
+                    titleStyle={styles.titleStyle}
+                  />)}
               </View>
             </View>
           </SafeAreaView>

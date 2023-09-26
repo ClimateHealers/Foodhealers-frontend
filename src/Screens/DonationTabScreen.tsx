@@ -227,6 +227,7 @@ const DonationTabScreen = () => {
             data={donationData}
             renderItem={({ item }: any) => (
               <Item
+                status={item?.status}
                 foodItem={item?.foodItem}
                 delivery={item?.delivery?.pickupAddress?.fullAddress}
                 createdAt={item?.createdAt}
