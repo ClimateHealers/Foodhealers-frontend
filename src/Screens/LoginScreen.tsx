@@ -210,7 +210,6 @@ const LoginScreen = () => {
                   setLoading(true);
                   signInWithEmailAndPassword(auth, email, password)
                     .then((userCredential) => {
-                      console.log("usercredentials", userCredential.user);
                       // Signed in
                       const user = userCredential.user;
                       setLoading(false);
@@ -221,7 +220,7 @@ const LoginScreen = () => {
                     .then((token) => {
                       const data = {
                         tokenId: token,
-                        expoPushToken: expoPushToken
+                        expoPushToken: expoPushToken,
                       };
                       dispatch(login(data) as any).then((res: any) => {
                         if (!res?.payload?.success) {

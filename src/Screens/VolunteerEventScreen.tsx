@@ -1,17 +1,18 @@
-import { AntDesign, Feather, FontAwesome, Ionicons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
+import moment from "moment";
 import React, { useEffect, useState } from "react";
 import {
   FlatList,
   Keyboard,
   ScrollView,
-  StyleSheet,
+  StatusBar,
   Text,
-  TouchableOpacity,
   TouchableWithoutFeedback,
-  View,
+  View
 } from "react-native";
+import { Button } from "react-native-elements";
 import {
   heightPercentageToDP as h2dp,
   widthPercentageToDP as w2dp,
@@ -19,10 +20,10 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
+import FoodhealersHeader from "../Components/FoodhealersHeader";
+import { styles } from "../Components/Styles";
 import { getLocation } from "../Components/getCurrentLocation";
 import { localized } from "../locales/localization";
-import { Button } from "react-native-elements";
-import moment from "moment";
 import { allEvents } from "../redux/actions/allEvents";
 
 const VolunteerEventScreen = ({ route }: any) => {
@@ -214,6 +215,7 @@ const VolunteerEventScreen = ({ route }: any) => {
               itemTypeId: itemTypeId,
               title: title,
               id: id,
+              name: name,
               address: address,
               eventStartDate: eventStartDate,
               eventEndDate: eventEndDate,
@@ -249,198 +251,58 @@ const VolunteerEventScreen = ({ route }: any) => {
 
   return (
     <TouchableWithoutFeedback onPress={handlePressOutside}>
-      <View style={styles.container}>
-        <LinearGradient
-          colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
-          style={styles.background}
-        >
-          <SafeAreaView>
-            <ScrollView>
-              <View style={styles.row}>
+      <LinearGradient
+        colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
+        style={styles.background}
+      >
+        <SafeAreaView>
+          <ScrollView keyboardShouldPersistTaps="handled">
+            <StatusBar animated={true} backgroundColor="auto" />
+            <View style={styles.container}>
+              <FoodhealersHeader/>
+              <View style={styles.root}>
                 <Ionicons
                   name="chevron-back"
                   size={32}
                   color="white"
-                  style={{ marginTop: h2dp(3) }}
                   onPress={() => navigation.goBack()}
                 />
-                <Text style={styles.itemText}>Events</Text>
                 <View style={styles.item}>
-                  <BurgerIcon />
-                  {/* {menuOpen && (
-                    <View
-                      style={{
-                        position: "absolute",
-                        right: 60,
-                        top: 70,
-                        backgroundColor: "white",
-                        borderColor: "white",
-                        height: 100,
-                        borderRadius: 5,
-                        zIndex: 9999,
-                      }}
-                    >
-                      <TouchableOpacity
-                        onPress={() => handleMenuItemPress("Home")}
-                      >
-                        <Text
-                          style={{
-                            padding: 10,
-                            fontSize: 20,
-                            fontWeight: "300",
-                            lineHeight: 27.24,
-                          }}
-                        >
-                          Home
-                        </Text>
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        onPress={() => findFoodMenuItemPress("Find Food")}
-                      >
-                        <Text
-                          style={{
-                            padding: 10,
-                            fontSize: 20,
-                            fontWeight: "300",
-                            lineHeight: 27.24,
-                          }}
-                        >
-                          Find Food
-                        </Text>
-                      </TouchableOpacity>
-                    </View>
-                  )} */}
+                  <Text style={styles.itemText}>Events</Text>
                 </View>
+                <BurgerIcon />
               </View>
-              <View>
-                <View style={styles.itemFilter}>
-                  <Text style={styles.itemFilterText}>All Events</Text>
-                  <Text style={styles.itemFilterText}> Filter</Text>
-                </View>
-                <ScrollView style={{ flex: 1 }}>
-                  <FlatList
-                    data={eventData}
-                    renderItem={({ item }: any) => (
-                      <Item
-                        name={item?.name}
-                        eventTimings={`${moment(item?.eventStartDate).format(
-                          "DD,  ddd, hh:mm A"
-                        )}`}
-                        address={item?.address?.streetAddress}
-                        additionalInfo={item?.additionalInfo}
-                        lat={item.address?.lat}
-                        long={item.address?.lng}
-                        eventStartDate={item?.eventStartDate}
-                        eventEndDate={item?.eventEndDate}
-                        id={item?.id}
-                        status={item?.status}
-                        eventPhoto={item?.eventPhoto}
-                        requiredVolunteers={item?.requiredVolunteers}
-                      />
-                    )}
+              <View style={styles.itemFilter}>
+                <Text style={styles.itemFilterText}>All Events</Text>
+                <Text style={styles.itemFilterText}> Filter</Text>
+              </View>
+              <FlatList
+                data={eventData}
+                renderItem={({ item }: any) => (
+                  <Item
+                    name={item?.name}
+                    eventTimings={`${moment(item?.eventStartDate).format(
+                      "DD,  ddd, hh:mm A"
+                    )}`}
+                    address={item?.address?.streetAddress}
+                    additionalInfo={item?.additionalInfo}
+                    lat={item?.address?.lat}
+                    long={item?.address?.lng}
+                    eventStartDate={item?.eventStartDate}
+                    eventEndDate={item?.eventEndDate}
+                    id={item?.id}
+                    status={item?.status}
+                    eventPhoto={item?.eventPhoto}
+                    requiredVolunteers={item?.requiredVolunteers}
                   />
-                </ScrollView>
-              </View>
-            </ScrollView>
-          </SafeAreaView>
-        </LinearGradient>
-      </View>
+                )}
+              />
+            </View>
+          </ScrollView>
+        </SafeAreaView>
+      </LinearGradient>
     </TouchableWithoutFeedback>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-  },
-  background: {
-    flex: 1,
-    resizeMode: "cover",
-  },
-  row: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    width: "100%",
-    zIndex: 9999,
-  },
-  item: {
-    // width: "30%",
-    marginTop: h2dp(2.5),
-    // marginLeft: h2dp(3),
-    height: 100,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  itemText: {
-    fontSize: 28,
-    color: "white",
-    marginTop: h2dp(3),
-    justifyContent: "center",
-    textAlign: "center",
-    alignSelf: "center",
-  },
-  itemFilterText: {
-    fontSize: 16,
-    color: "white",
-    marginTop: h2dp(1),
-    justifyContent: "center",
-    textAlign: "center",
-  },
-  cardContainer: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginVertical: h2dp(1),
-    backgroundColor: "white",
-    marginHorizontal: w2dp(3),
-    // height: h2dp(13),
-    borderRadius: 5,
-  },
-  itemFilter: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginVertical: h2dp(1),
-    marginHorizontal: w2dp(3),
-    // height: h2dp(13),
-  },
-  card: {
-    backgroundColor: "white",
-    width: "90%",
-    marginLeft: w2dp("5%"),
-    borderRadius: 10,
-    marginBottom: 10,
-  },
-  buttonStyles: {
-    backgroundColor: "#FC5A56",
-    color: "white",
-    borderRadius: 5,
-    width: 190,
-    marginTop: h2dp("1.5"),
-  },
-  titleStyle: {
-    color: "white",
-    fontSize: 26,
-
-    lineHeight: 35,
-    fontFamily: "OpenSans-Regular",
-  },
-  cardTextConainer: {
-    marginTop: 30,
-  },
-  cardText: {
-    fontSize: 20,
-    marginLeft: 10,
-    fontFamily: "OpenSans-Light",
-  },
-  boldText: {
-    fontWeight: "300",
-    fontSize: 20,
-  },
-});
 
 export default VolunteerEventScreen;

@@ -10,11 +10,11 @@ import {
   Linking,
   ScrollView,
   Share,
-  StyleSheet,
+  StatusBar,
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  View,
+  View
 } from "react-native";
 import { Divider } from "react-native-paper";
 import {
@@ -23,8 +23,10 @@ import {
 } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
 import BurgerIcon from "../Components/BurgerIcon";
-import { getLocation } from "../Components/getCurrentLocation";
+import FoodhealersHeader from "../Components/FoodhealersHeader";
 import PrimaryButton from "../Components/PrimaryButton";
+import { styles } from "../Components/Styles";
+import { getLocation } from "../Components/getCurrentLocation";
 import { localized } from "../locales/localization";
 
 const SingleEventDetails = ({ route }: any) => {
@@ -115,75 +117,31 @@ const SingleEventDetails = ({ route }: any) => {
   const expired = moment(eventDetails?.eventEndDate).isBefore(moment());
   return (
     <TouchableWithoutFeedback onPress={handlePressOutside}>
-      <View style={styles.container}>
         <LinearGradient
           colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
           style={styles.background}
         >
           <SafeAreaView>
-            <ScrollView>
-              <View style={styles.row}>
+            <ScrollView keyboardShouldPersistTaps="handled">
+            <StatusBar animated={true} backgroundColor="auto" />
+            <View style={styles.containerVolunteer}>
+            <FoodhealersHeader/>
+              <View style={styles.rootVolunteerHome}>
                 <Ionicons
                   name="chevron-back"
                   size={32}
                   color="white"
-                  style={{ marginRight: w2dp(7), marginTop: h2dp(3) }}
                   onPress={() => navigation.goBack()}
                 />
-                <Text style={styles.itemText}>{"See all events"}</Text>
                 <View style={styles.item}>
-                  <BurgerIcon />
-                  {menuOpen && (
-                    <View
-                      style={{
-                        position: "absolute",
-                        right: 60,
-                        top: 70,
-                        backgroundColor: "white",
-                        borderColor: "white",
-                        height: 100,
-                        borderRadius: 5,
-                        zIndex: 9999,
-                      }}
-                    >
-                      <TouchableOpacity
-                        onPress={() => handleMenuItemPress("Home")}
-                      >
-                        <Text
-                          style={{
-                            padding: 10,
-                            fontSize: 20,
-                            fontWeight: "300",
-                            lineHeight: 27.24,
-                          }}
-                        >
-                          Home
-                        </Text>
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        onPress={() => findFoodMenuItemPress("Find Food")}
-                      >
-                        <Text
-                          style={{
-                            padding: 10,
-                            fontSize: 20,
-                            fontWeight: "300",
-                            lineHeight: 27.24,
-                          }}
-                        >
-                          Find Food
-                        </Text>
-                      </TouchableOpacity>
-                    </View>
-                  )}
+                <Text style={styles.itemText}>{eventDetails.name}</Text>
                 </View>
+                  <BurgerIcon />
               </View>
-
-              <View style={styles.cardContainer}>
                 <View
                   style={[
                     styles.card,
-                    { backgroundColor: expired ? "#bab7b6" : "white" },
+                    { backgroundColor: expired ? "#bab7b6" : "white", borderRadius:h2dp(1) },
                   ]}
                 >
                   <View>
@@ -198,8 +156,8 @@ const SingleEventDetails = ({ route }: any) => {
                       }}
                     />
                   </View>
-                  <View style={styles.cardTextConainer}>
-                    <View style={{ marginBottom: 20, paddingHorizontal: 10 }}>
+                  <View style={{ marginTop: h2dp(3) }}>
+                    <View style={{ marginBottom: h2dp(2), paddingHorizontal: 10 }}>
                       <Text style={styles.boldText}>
                         From:
                         <Text style={styles.cardText}>
@@ -305,15 +263,13 @@ const SingleEventDetails = ({ route }: any) => {
                         display: "flex",
                         justifyContent: "center",
                         alignItems: "center",
-                        marginTop: h2dp(2),
                       }}
                     >
                       <PrimaryButton
-                        disabled={expired}
                         title="Volunteer"
                         // title={"Get directions"}
                         onPress={() =>
-                          navigation.navigate("AddVolunteerToEvent", {
+                          navigation.navigate("AddVolunteerToEventScreen", {
                             id: eventDetails.id,
                             title: eventDetails.title,
                             itemTypeId: eventDetails.itemTypeId,
@@ -329,14 +285,19 @@ const SingleEventDetails = ({ route }: any) => {
                         display: "flex",
                         justifyContent: "center",
                         alignItems: "center",
-                        marginTop: h2dp(2),
                       }}
                     >
                       <PrimaryButton
                         disabled={expired}
-                        title={expired ? "Event Expired" : "Get directions"}
+                        title={expired ? "Event Expired" : "Volunteer"}
                         // title={"Get directions"}
-                        onPress={navigationHandler}
+                        onPress={() =>
+                          navigation.navigate("AddVolunteerToEventScreen", {
+                            id: eventDetails.id,
+                            title: "Volunteer at an event",
+                            itemTypeId: 3,
+                          })
+                        }
                         buttonStyle={styles.buttonStyles}
                         titleStyle={styles.titleStyle}
                       />
@@ -361,76 +322,8 @@ const SingleEventDetails = ({ route }: any) => {
             </ScrollView>
           </SafeAreaView>
         </LinearGradient>
-      </View>
     </TouchableWithoutFeedback>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-  },
-  background: {
-    flex: 1,
-    resizeMode: "cover",
-  },
-  row: {
-    flexDirection: "row",
-    justifyContent: "flex-end",
-    alignItems: "center",
-    width: "100%",
-    zIndex: 9999,
-  },
-  item: {
-    width: "30%",
-    marginTop: 25,
-    marginLeft: 30,
-    height: 100,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  itemText: {
-    fontSize: 25,
-    color: "white",
-    marginTop: h2dp(3),
-  },
-  cardContainer: {
-    // marginTop: 5,
-  },
-  card: {
-    backgroundColor: "white",
-    width: "90%",
-    marginLeft: w2dp("5%"),
-    borderRadius: 10,
-    marginBottom: 10,
-  },
-  buttonStyles: {
-    backgroundColor: "#FC5A56",
-    color: "white",
-    borderRadius: 5,
-    width: 190,
-    marginTop: h2dp("1.5"),
-  },
-  titleStyle: {
-    color: "white",
-    fontSize: 26,
-
-    lineHeight: 35,
-    fontFamily: "OpenSans-Regular",
-  },
-  cardTextConainer: {
-    marginTop: 30,
-  },
-  cardText: {
-    fontSize: 20,
-    marginLeft: 10,
-    fontFamily: "OpenSans-Light",
-  },
-  boldText: {
-    fontWeight: "300",
-    fontSize: 20,
-  },
-});
 
 export default SingleEventDetails;

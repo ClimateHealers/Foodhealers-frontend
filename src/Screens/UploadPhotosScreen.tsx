@@ -1,4 +1,8 @@
-import { AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
+import {
+  AntDesign,
+  Ionicons,
+  MaterialCommunityIcons,
+} from "@expo/vector-icons";
 import { CommonActions, useNavigation } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
 import { LinearGradient } from "expo-linear-gradient";
@@ -7,7 +11,16 @@ import React, { useState } from "react";
 import {
   ActivityIndicator,
   Alert,
-  Keyboard, Linking, Modal, Platform, StyleSheet, Text, TouchableOpacity, View
+  Keyboard,
+  Linking,
+  Modal,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
 } from "react-native";
 
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -16,11 +29,15 @@ import * as Permissions from "expo-permissions";
 
 import { removeAuthData } from "../redux/actions/authAction";
 import {
-  heightPercentageToDP as h2dp, widthPercentageToDP as w2dp
+  heightPercentageToDP as h2dp,
+  widthPercentageToDP as w2dp,
 } from "react-native-responsive-screen";
 import { useDispatch, useSelector } from "react-redux";
 import { getLocation } from "../Components/getCurrentLocation";
 import { logOut } from "../redux/reducers/authreducers";
+import { styles } from "../Components/Styles";
+import FoodhealersHeader from "../Components/FoodhealersHeader";
+import BurgerIcon from "../Components/BurgerIcon";
 
 const UploadPhotosScreen = ({ route }: any) => {
   const { eventFormData } = route.params;
@@ -49,7 +66,7 @@ const UploadPhotosScreen = ({ route }: any) => {
   };
   const findFoodMenuItemPress = (item: any) => {
     getLocation().then((res) => {
-      if(res){
+      if (res) {
         navigation?.navigate("MapScreen", {
           latitude: res?.latitude,
           longitude: res?.longitude,
@@ -61,7 +78,7 @@ const UploadPhotosScreen = ({ route }: any) => {
   const logout = async (item: any) => {
     // persistor.purge()
     await dispatch(logOut({}) as any);
-    await removeAuthData()
+    await removeAuthData();
     navigation.dispatch(
       CommonActions.reset({
         index: 0,
@@ -72,28 +89,31 @@ const UploadPhotosScreen = ({ route }: any) => {
 
   const openImagePickerAsync = async () => {
     const res = await MediaLibrary.requestPermissionsAsync();
-    console.log("jfbvdjkbdbfkjd", res.granted)
+    console.log("jfbvdjkbdbfkjd", res.granted);
     if (res.granted) {
-      console.log("sdvskdvjnsdkvjnkdbn",res.granted);
+      console.log("sdvskdvjnsdkvjnkdbn", res.granted);
       const result = await ImagePicker.launchImageLibraryAsync({
         allowsMultipleSelection: true,
         selectionLimit: 1,
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: false,
+        aspect: [4, 3],
+        quality: 1,
       });
-  
+      console.log("hgvbn", result);
+
       if (!result.canceled) {
-        console.log("checking image from library", result.assets)
+        console.log("checking image from library", result.assets);
         const multipleImages = result.assets.map((image) => image.uri);
         const singlePhoto = result.assets[0].uri;
-        
-  
-  
+
         navigation.navigate("EventPhotosScreen", {
           eventFormData: eventFormData,
           eventPhotos: multipleImages,
-          singlePhoto :singlePhoto
+          singlePhoto: singlePhoto,
         });
       }
-    }else if(!res.granted){      
+    } else if (!res.granted) {
       Alert.alert(
         "Media Library Access",
         "FoodHealers app needs PhotoLibrary permission to let you update your profile picture, and create/modify events with appropriate images for community.You can enable it anytime from settings.",
@@ -112,8 +132,6 @@ const UploadPhotosScreen = ({ route }: any) => {
         { cancelable: true }
       );
     }
-
-    
   };
 
   const appLoader = (loader: any) => {
@@ -131,12 +149,30 @@ const UploadPhotosScreen = ({ route }: any) => {
   };
 
   return (
-    <LinearGradient
-      colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
-      style={styles.background}
-    >
-      <SafeAreaView>
-        {menuOpen && (
+    <TouchableWithoutFeedback onPress={() => setMenuOpen(false)}>
+      <LinearGradient
+        colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
+        style={styles.background}
+      >
+        <SafeAreaView>
+          <ScrollView keyboardShouldPersistTaps="handled">
+            <View style={styles.containerVolunteer}>
+              <FoodhealersHeader />
+              <View style={styles.rootVolunteerHome}>
+                <Ionicons
+                  name="chevron-back"
+                  size={32}
+                  color="white"
+                  onPress={() => navigation.goBack()}
+                />
+                <View style={styles.item}>
+                  <Text style={styles.itemText}>Post an Event</Text>
+                </View>
+                <View style={styles.item}>
+                  <BurgerIcon />
+                </View>
+              </View>
+              {/* {menuOpen && (
           <View
             style={{
               position: "absolute",
@@ -144,7 +180,7 @@ const UploadPhotosScreen = ({ route }: any) => {
               top: Platform.OS === "ios" ? h2dp(13.2) : h2dp(9),
               backgroundColor: "white",
               borderColor: "black",
-              borderWidth:0.2,
+              borderWidth: 0.2,
               borderRadius: 5,
               width: w2dp("32"),
               zIndex: 9999,
@@ -177,7 +213,9 @@ const UploadPhotosScreen = ({ route }: any) => {
               </Text>
             </TouchableOpacity>
             {isAuthenticated && (
-              <TouchableOpacity onPress={() => navigation.navigate("ProfileScreen")}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("ProfileScreen")}
+              >
                 <Text
                   style={{
                     padding: 10,
@@ -191,8 +229,8 @@ const UploadPhotosScreen = ({ route }: any) => {
               </TouchableOpacity>
             )}
           </View>
-        )}
-        <View style={styles.row}>
+        )} */}
+              {/* <View style={styles.row}>
           <View style={styles.item}>
             <Text style={styles.itemText}>{"Post an Event"}</Text>
           </View>
@@ -204,125 +242,138 @@ const UploadPhotosScreen = ({ route }: any) => {
               onPress={toggleMenu}
             />
           </View>
-        </View>
+        </View> */}
 
-        <View style={styles.card}>
-          <TouchableOpacity
-            style={{
-              backgroundColor: "#FC5A56",
-              paddingVertical: 10,
-              paddingHorizontal: 35,
-              marginBottom: 10,
-            }}
-            onPress={openImagePickerAsync}
-          >
-            <AntDesign name="upload" size={24} color="black" />
-          </TouchableOpacity>
+              <View
+                style={[
+                  styles.card,
+                  {
+                    height: h2dp(40),
+                    borderRadius: h2dp(1),
+                    alignItems: "center",
+                  },
+                ]}
+              >
+                <TouchableOpacity
+                  style={{
+                    backgroundColor: "#FC5A56",
+                    paddingVertical: h2dp(1),
+                    paddingHorizontal: w2dp(5),
+                    marginBottom: h2dp(1),
+                    marginTop:h2dp(12),
+                  }}
+                  onPress={openImagePickerAsync}
+                >
+                  <AntDesign name="upload" size={24} color="black" />
+                </TouchableOpacity>
 
-          <Text style={{ fontSize: 20, marginTop: 10 }}>
-            Upload event photo
-          </Text>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Text
-              style={{
-                fontSize: 20,
-                marginTop: 40,
-                textDecorationLine: "underline",
-              }}
-            >
-              Back
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </SafeAreaView>
-    </LinearGradient>
+                <Text style={{ fontSize: 20, marginTop: 10 }}>
+                  Upload event photo
+                </Text>
+                <TouchableOpacity onPress={() => navigation.goBack()}>
+                  <Text
+                    style={{
+                      fontSize: 20,
+                      marginTop: 40,
+                      textDecorationLine: "underline",
+                    }}
+                  >
+                    Back
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </ScrollView>
+        </SafeAreaView>
+      </LinearGradient>
+    </TouchableWithoutFeedback>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-  },
-  background: {
-    flex: 1,
-    resizeMode: "cover",
-  },
-  row: {
-    flexDirection: "row",
-    justifyContent: "flex-end",
-    alignItems: "center",
-    width: "100%",
-  },
-  item: {
-    marginRight: 35,
-    height: 100,
-    justifyContent: "center",
-  },
-  itemText: {
-    fontSize: 25,
-    color: "white",
-    marginRight: 20,
-  },
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     alignItems: "center",
+//   },
+//   background: {
+//     flex: 1,
+//     resizeMode: "cover",
+//   },
+//   row: {
+//     flexDirection: "row",
+//     justifyContent: "flex-end",
+//     alignItems: "center",
+//     width: "100%",
+//   },
+//   item: {
+//     marginRight: 35,
+//     height: 100,
+//     justifyContent: "center",
+//   },
+//   itemText: {
+//     fontSize: 25,
+//     color: "white",
+//     marginRight: 20,
+//   },
 
-  card: {
-    backgroundColor: "white",
-    width: "90%",
-    height: "65%",
-    marginLeft: 20,
-    borderRadius: 10,
-    marginTop: 20,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  buttonStyles: {
-    backgroundColor: "#FC5A56",
-    color: "black",
-    borderRadius: 5,
-    width: 190,
-    marginTop: 20,
-    marginLeft: 85,
-  },
-  titleStyle: {
-    color: "white",
-    fontSize: 26,
-    fontWeight: "400",
-    lineHeight: 35,
-    fontFamily: "OpenSans-Regular",
-  },
-  cardTextConainer: {
-    marginTop: 30,
-  },
-  cardText: {
-    fontSize: 20,
-    marginLeft: 10,
-    fontFamily: "OpenSans-Light",
-  },
-  boldText: {
-    fontWeight: "bold",
-  },
-  centeredView: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 22,
-  },
-  modalView: {
-    margin: 20,
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-    borderRadius: 20,
-    padding: 35,
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-});
+//   card: {
+//     backgroundColor: "white",
+//     width: "90%",
+//     height: "65%",
+//     marginLeft: 20,
+//     borderRadius: 10,
+//     marginTop: 20,
+//     display: "flex",
+//     justifyContent: "center",
+//     alignItems: "center",
+//   },
+//   buttonStyles: {
+//     backgroundColor: "#FC5A56",
+//     color: "black",
+//     borderRadius: 5,
+//     width: 190,
+//     marginTop: 20,
+//     marginLeft: 85,
+//   },
+//   titleStyle: {
+//     color: "white",
+//     fontSize: 26,
+//     fontWeight: "400",
+//     lineHeight: 35,
+//     fontFamily: "OpenSans-Regular",
+//   },
+//   cardTextConainer: {
+//     marginTop: 30,
+//   },
+//   cardText: {
+//     fontSize: 20,
+//     marginLeft: 10,
+//     fontFamily: "OpenSans-Light",
+//   },
+//   boldText: {
+//     fontWeight: "bold",
+//   },
+//   centeredView: {
+//     flex: 1,
+//     justifyContent: "center",
+//     alignItems: "center",
+//     marginTop: 22,
+//   },
+//   modalView: {
+//     margin: 20,
+//     backgroundColor: "rgba(0, 0, 0, 0.5)",
+//     borderRadius: 20,
+//     padding: 35,
+//     alignItems: "center",
+//     shadowColor: "#000",
+//     shadowOffset: {
+//       width: 0,
+//       height: 2,
+//     },
+//     shadowOpacity: 0.25,
+//     shadowRadius: 4,
+//     elevation: 5,
+//   },
+// });
 
 export default UploadPhotosScreen;

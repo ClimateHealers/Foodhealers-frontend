@@ -1,13 +1,11 @@
+import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useState } from "react";
 import {
-  Image,
   Keyboard,
   ScrollView,
-  StyleSheet,
   Text,
-  TouchableOpacity,
   TouchableWithoutFeedback,
   View,
 } from "react-native";
@@ -16,12 +14,12 @@ import {
   widthPercentageToDP as w2dp,
 } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
-import Carousel from "react-native-snap-carousel";
-import BurgerIcon from "../Components/BurgerIcon";
-import PrimaryButton from "../Components/PrimaryButton";
-import { getLocation } from "../Components/getCurrentLocation";
-import { localized } from "../locales/localization";
 import { useSelector } from "react-redux";
+import BurgerIcon from "../Components/BurgerIcon";
+import FoodhealersHeader from "../Components/FoodhealersHeader";
+import PrimaryButton from "../Components/PrimaryButton";
+import { styles } from "../Components/Styles";
+import { getLocation } from "../Components/getCurrentLocation";
 
 const VolunteerThankYouScreen = ({ route }: any) => {
   const { id, itemTypeId, title } = route?.params;
@@ -56,69 +54,43 @@ const VolunteerThankYouScreen = ({ route }: any) => {
 
   return (
     <TouchableWithoutFeedback onPress={handlePressOutside}>
-      <View style={styles.container}>
-        <LinearGradient
-          colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
-          style={styles.background}
-        >
-          <SafeAreaView>
-            <View style={styles.row}>
-              <Text style={styles.itemText}>{title}</Text>
-              <View style={styles.item}>
+      <LinearGradient
+        colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
+        style={styles.background}
+      >
+        <SafeAreaView>
+          <ScrollView keyboardShouldPersistTaps="handled">
+            <View style={styles.containerVolunteer}>
+              <FoodhealersHeader />
+              <View style={styles.rootVolunteerHome}>
+                <Ionicons
+                  name="chevron-back"
+                  size={32}
+                  color="white"
+                  onPress={() => navigation.goBack()}
+                />
+                <View style={styles.item}>
+                  <Text style={styles.itemText}>
+                    {title}
+                    jhbcdjajch
+                  </Text>
+                </View>
                 <BurgerIcon />
-                {menuOpen && (
-                  <View
-                    style={{
-                      position: "absolute",
-                      right: 60,
-                      top: 70,
-                      backgroundColor: "white",
-                      borderColor: "white",
-                      height: 100,
-                      borderRadius: 5,
-                      zIndex: 9999,
-                    }}
-                  >
-                    <TouchableOpacity
-                      onPress={() => handleMenuItemPress("Home")}
-                    >
-                      <Text
-                        style={{
-                          padding: 10,
-                          fontSize: 20,
-                          fontWeight: "300",
-                          lineHeight: 27.24,
-                        }}
-                      >
-                        Home
-                      </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={() => findFoodMenuItemPress("Find Food")}
-                    >
-                      <Text
-                        style={{
-                          padding: 10,
-                          fontSize: 20,
-                          fontWeight: "300",
-                          lineHeight: 27.24,
-                        }}
-                      >
-                        Find Food
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-                )}
               </View>
-            </View>
-            <View>
-              <View style={[styles.card, { backgroundColor: "white" }]}>
-                <View style={styles.description}>
+              <View
+                style={[
+                  styles.cardText,
+                  { backgroundColor: "white", paddingHorizontal: w2dp(5) },
+                ]}
+              >
+                <View
+                  style={[styles.description, { paddingVertical: w2dp(5) }]}
+                >
                   <Text
                     style={{
                       alignSelf: "center",
-                      fontSize: h2dp(3.2),
-                      fontWeight: "500",
+                      fontSize: h2dp(2.8),
+                      fontWeight: "400",
                       marginTop: h2dp(3),
                     }}
                   >
@@ -127,8 +99,8 @@ const VolunteerThankYouScreen = ({ route }: any) => {
                   <Text
                     style={{
                       alignSelf: "center",
-                      fontSize: h2dp(3.2),
-                      fontWeight: "500",
+                      fontSize: h2dp(2.8),
+                      fontWeight: "400",
                     }}
                   >
                     Thank you ! {data?.user?.name}
@@ -138,7 +110,7 @@ const VolunteerThankYouScreen = ({ route }: any) => {
                   <Text
                     style={{
                       alignSelf: "center",
-                      fontSize: h2dp(2.8),
+                      fontSize: h2dp(2.4),
                       textAlign: "center",
                     }}
                   >
@@ -156,7 +128,7 @@ const VolunteerThankYouScreen = ({ route }: any) => {
                       <Text
                         style={{
                           alignSelf: "center",
-                          fontSize: h2dp(2.8),
+                          fontSize: h2dp(2.4),
                           textAlign: "center",
                         }}
                       >
@@ -184,7 +156,7 @@ const VolunteerThankYouScreen = ({ route }: any) => {
                       })
                     }
                     buttonStyle={styles.buttonStyles}
-                    titleStyle={styles.titleStyle}
+                    titleStyle={styles.titleMainStyle}
                   />
                 ) : itemTypeId === 2 ? (
                   <PrimaryButton
@@ -197,26 +169,26 @@ const VolunteerThankYouScreen = ({ route }: any) => {
                       })
                     }
                     buttonStyle={styles.buttonStyles}
-                    titleStyle={styles.titleStyle}
+                    titleStyle={styles.titleMainStyle}
                   />
                 ) : (
                   <PrimaryButton
                     title={"Volunteer another event"}
                     onPress={() =>
                       navigation.navigate("VolunteerEventScreen", {
-                        itemTypeId: itemTypeId,
-                        id: id,
-                        title: title,
+                        // itemTypeId: itemTypeId,
+                        // id: id,
+                        // title: title,
                       })
                     }
                     buttonStyle={styles.buttonStyles}
-                    titleStyle={styles.titleStyle}
+                    titleStyle={styles.titleMainStyle}
                   />
                 )}
-                </View>
-                <View>
-                  {itemTypeId === 3 ?(
-                    <PrimaryButton
+              </View>
+              <View>
+                {itemTypeId === 3 ? (
+                  <PrimaryButton
                     title={"History"}
                     onPress={() =>
                       navigation.navigate("VolunteerEventHistoryScreen", {
@@ -226,9 +198,10 @@ const VolunteerThankYouScreen = ({ route }: any) => {
                       })
                     }
                     buttonStyle={styles.buttonHistoryStyles}
-                    titleStyle={styles.titleStyle}
+                    titleStyle={styles.titleMainStyle}
                   />
-                  ):(<PrimaryButton
+                ) : (
+                  <PrimaryButton
                     title={"History"}
                     onPress={() =>
                       navigation.navigate("VolunteerDonationHistoryScreen", {
@@ -238,124 +211,16 @@ const VolunteerThankYouScreen = ({ route }: any) => {
                       })
                     }
                     buttonStyle={styles.buttonHistoryStyles}
-                    titleStyle={styles.titleStyle}
-                  />)}
+                    titleStyle={styles.titleMainStyle}
+                  />
+                )}
               </View>
             </View>
-          </SafeAreaView>
-        </LinearGradient>
-      </View>
+          </ScrollView>
+        </SafeAreaView>
+      </LinearGradient>
     </TouchableWithoutFeedback>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-  },
-  background: {
-    flex: 1,
-    resizeMode: "cover",
-  },
-  row: {
-    flexDirection: "row",
-    justifyContent: "flex-end",
-    alignItems: "center",
-    width: "100%",
-    zIndex: 9999,
-  },
-  item: {
-    width: "30%",
-    marginTop: 25,
-    marginLeft: 30,
-    height: 100,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  itemText: {
-    fontSize: 25,
-    color: "white",
-    marginTop: h2dp(3),
-  },
-  card: {
-    backgroundColor: "white",
-    width: "85%",
-    borderRadius: h2dp(3),
-    marginTop: h2dp(8),
-    marginBottom: 10,
-    height: h2dp(40),
-    alignSelf: "center",
-  },
-  buttonStyles: {
-    backgroundColor: "#FC5A56",
-    color: "white",
-    borderRadius: 5,
-    width: 300,
-    marginTop: h2dp(6.5),
-    alignSelf: "center",
-  },
-  buttonHistoryStyles: {
-    backgroundColor: "#FFFFFF",
-    color: "black",
-    borderRadius: 5,
-    width: 300,
-    marginTop: h2dp(3),
-    alignSelf: "center",
-  },
-  buttonMainStyles: {
-    backgroundColor: "#FC5A56",
-    color: "black",
-    borderRadius: 5,
-    width: 300,
-    marginTop: h2dp(5),
-    alignSelf: "center",
-  },
-  titleStyle: {
-    color: "black",
-    fontSize: 26,
-
-    lineHeight: 35,
-    fontFamily: "OpenSans-Regular",
-  },
-  titleMainStyle: {
-    color: "black",
-    fontSize: 26,
-
-    lineHeight: 35,
-    fontFamily: "OpenSans-Regular",
-  },
-  cardTextConainer: {
-    marginTop: 30,
-  },
-  cardText: {
-    fontSize: 20,
-    marginLeft: 10,
-    fontFamily: "OpenSans-Light",
-  },
-  boldText: {
-    fontWeight: "300",
-    fontSize: 20,
-  },
-  headerContainer: {
-    display: "flex",
-    flexDirection: "column",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-    justifyContent: "center",
-    width: "100%",
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
-    position: "absolute",
-    bottom: 0,
-    height: h2dp(10),
-  },
-  description: {
-    marginTop: h2dp(3),
-    marginLeft: h2dp(2),
-    marginRight: h2dp(2),
-    display: "flex",
-    justifyContent: "space-around",
-  },
-});
 
 export default VolunteerThankYouScreen;

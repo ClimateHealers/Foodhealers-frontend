@@ -1,16 +1,15 @@
 import { AntDesign, Feather, FontAwesome, Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
+import moment from "moment";
 import React, { useEffect, useState } from "react";
 import {
   FlatList,
   Keyboard,
   ScrollView,
-  StyleSheet,
   Text,
-  TouchableOpacity,
   TouchableWithoutFeedback,
-  View,
+  View
 } from "react-native";
 import {
   heightPercentageToDP as h2dp,
@@ -19,18 +18,16 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
+import FoodhealersHeader from "../Components/FoodhealersHeader";
+import { styles } from "../Components/Styles";
 import { getLocation } from "../Components/getCurrentLocation";
 import { localized } from "../locales/localization";
 import { myDonations } from "../redux/actions/myDonations";
-import { Button } from "react-native-elements";
-import moment from "moment";
 
 const VolunteerDonationHistoryScreen = ({ route }: any) => {
   const { itemTypeId, title } = route?.params;
   console.log("params", route?.params);
   const [donationData, setDonationData] = useState<[]>([]);
-
-  //   console.log("Event Details", eventDetails);
   useEffect(() => {
     fetchingDonationData();
   }, []);
@@ -163,7 +160,6 @@ const VolunteerDonationHistoryScreen = ({ route }: any) => {
         <Text
           style={{
             marginLeft: w2dp(3),
-            // width: w2dp(46),
             fontSize: 16,
             lineHeight: 30,
             paddingTop: h2dp(0.5),
@@ -174,7 +170,6 @@ const VolunteerDonationHistoryScreen = ({ route }: any) => {
         <Text
           style={{
             marginLeft: w2dp(3),
-            // width: w2dp(52),
             fontWeight: "500",
             fontSize: 16,
             lineHeight: 30,
@@ -186,7 +181,6 @@ const VolunteerDonationHistoryScreen = ({ route }: any) => {
         <Text
           style={{
             marginLeft: w2dp(3),
-            // width: w2dp(47),
             fontWeight: "300",
             fontSize: 16,
             lineHeight: 20,
@@ -207,14 +201,16 @@ const VolunteerDonationHistoryScreen = ({ route }: any) => {
 
   return (
     <TouchableWithoutFeedback onPress={handlePressOutside}>
-      <View style={styles.container}>
+      
         <LinearGradient
           colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
           style={styles.background}
         >
           <SafeAreaView>
-            <ScrollView>
-              <View style={styles.row}>
+            <ScrollView keyboardShouldPersistTaps="handled">
+            <View style={styles.container}>
+            <FoodhealersHeader />
+              <View style={styles.root}>
                 <Ionicons
                   name="chevron-back"
                   size={32}
@@ -222,52 +218,11 @@ const VolunteerDonationHistoryScreen = ({ route }: any) => {
                   style={{ marginTop: h2dp(3) }}
                   onPress={() => navigation.goBack()}
                 />
+                <View style={styles.item}>
                 <Text style={styles.itemText}>{title} History</Text>
+                </View>
                 <View style={styles.item}>
                   <BurgerIcon />
-                  {/* {menuOpen && (
-                    <View
-                      style={{
-                        position: "absolute",
-                        right: 60,
-                        top: 70,
-                        backgroundColor: "white",
-                        borderColor: "white",
-                        height: 100,
-                        borderRadius: 5,
-                        zIndex: 9999,
-                      }}
-                    >
-                      <TouchableOpacity
-                        onPress={() => handleMenuItemPress("Home")}
-                      >
-                        <Text
-                          style={{
-                            padding: 10,
-                            fontSize: 20,
-                            fontWeight: "300",
-                            lineHeight: 27.24,
-                          }}
-                        >
-                          Home
-                        </Text>
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        onPress={() => findFoodMenuItemPress("Find Food")}
-                      >
-                        <Text
-                          style={{
-                            padding: 10,
-                            fontSize: 20,
-                            fontWeight: "300",
-                            lineHeight: 27.24,
-                          }}
-                        >
-                          Find Food
-                        </Text>
-                      </TouchableOpacity>
-                    </View>
-                  )} */}
                 </View>
               </View>
               <View>
@@ -281,6 +236,7 @@ const VolunteerDonationHistoryScreen = ({ route }: any) => {
                     renderItem={({ item }: any) => (
                       <Item
                         status={item?.status}
+                        id= {item.id}
                         foodItem={`${item?.foodItem}  (${item?.quantity})`}
                         delivery={item?.delivery?.pickupAddress?.fullAddress}
                         createdAt={item?.createdAt}
@@ -289,106 +245,12 @@ const VolunteerDonationHistoryScreen = ({ route }: any) => {
                   />
                 </ScrollView>
               </View>
+              </View>
             </ScrollView>
           </SafeAreaView>
         </LinearGradient>
-      </View>
     </TouchableWithoutFeedback>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-  },
-  background: {
-    flex: 1,
-    resizeMode: "cover",
-  },
-  row: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    width: "100%",
-    zIndex: 9999,
-  },
-  item: {
-    // width: "30%",
-    marginTop: h2dp(2.5),
-    // marginLeft: h2dp(3),
-    height: 100,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  itemText: {
-    fontSize: 28,
-    color: "white",
-    marginTop: h2dp(3),
-    justifyContent: "center",
-    textAlign: "center",
-    alignSelf: "center",
-  },
-  itemFilterText: {
-    fontSize: 16,
-    color: "white",
-    marginTop: h2dp(1),
-    justifyContent: "center",
-    textAlign: "center",
-  },
-  cardContainer: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginVertical: h2dp(1),
-    backgroundColor: "white",
-    marginHorizontal: w2dp(3),
-    // height: h2dp(13),
-    borderRadius: 5,
-  },
-  itemFilter: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginVertical: h2dp(1),
-    marginHorizontal: w2dp(3),
-    // height: h2dp(13),
-  },
-  card: {
-    backgroundColor: "white",
-    width: "90%",
-    marginLeft: w2dp("5%"),
-    borderRadius: 10,
-    marginBottom: 10,
-  },
-  buttonStyles: {
-    backgroundColor: "#FC5A56",
-    color: "white",
-    borderRadius: 5,
-    width: 190,
-    marginTop: h2dp("1.5"),
-  },
-  titleStyle: {
-    color: "white",
-    fontSize: 26,
-
-    lineHeight: 35,
-    fontFamily: "OpenSans-Regular",
-  },
-  cardTextConainer: {
-    marginTop: 30,
-  },
-  cardText: {
-    fontSize: 20,
-    marginLeft: 10,
-    fontFamily: "OpenSans-Light",
-  },
-  boldText: {
-    fontWeight: "300",
-    fontSize: 20,
-  },
-});
 
 export default VolunteerDonationHistoryScreen;

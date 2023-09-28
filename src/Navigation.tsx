@@ -236,7 +236,7 @@ const Navigation = () => {
             options={{ title: "", header: () => null }}
           />
           <Stack.Screen
-            name="AddVolunteerToEvent"
+            name="AddVolunteerToEventScreen"
             component={AddVolunteerToEvent}
             options={{ title: "", header: () => null }}
           />

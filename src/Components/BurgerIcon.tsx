@@ -1,17 +1,15 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { TouchableOpacity, Text, View, StyleSheet } from "react-native";
-import { CommonActions, useNavigation } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
+import { Text, TouchableOpacity, View } from "react-native";
 
-import { useDispatch, useSelector } from "react-redux";
-import { removeAuthData } from "../redux/actions/authAction";
-import { logOut } from "../redux/reducers/authreducers";
-import { getLocation } from "../Components/getCurrentLocation";
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import { getLocation } from "../Components/getCurrentLocation";
+import { styles } from "./Styles";
 
 const BurgerIcon = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const navigation: any = useNavigation();
-  const dispatch = useDispatch();
   const isAuthenticated = useSelector(
     (state: any) => state.auth.data.isAuthenticated
   );
@@ -35,17 +33,6 @@ const BurgerIcon = () => {
     });
     setMenuOpen(false);
   };
-  // const logout = async (item: any) => {
-  //   // persistor.purge()
-  //   await dispatch(logOut({}) as any);
-  //   await removeAuthData();
-  //   navigation.dispatch(
-  //     CommonActions.reset({
-  //       index: 0,
-  //       routes: [{ name: "LoginScreen" }],
-  //     })
-  //   );
-  // };
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
@@ -58,63 +45,34 @@ const BurgerIcon = () => {
         color="white"
         onPress={() => toggleMenu()}
         style={{
-          // alignSelf: "flex-end",
-          paddingRight: 10,
-          // zIndex: 10,
+          zIndex: 1,
+          marginRight: 0,
         }}
       />
       {menuOpen && (
         <View
           style={{
             position: "absolute",
-            right: 50,
-            width: "250%",
+            right: 40,
             top: 65,
             backgroundColor: "white",
             borderColor: "black",
             borderWidth: 0.2,
             borderRadius: 5,
-            // zIndex: 9999,
+            zIndex: 9999,
           }}
         >
           <TouchableOpacity onPress={() => handleMenuItemPress("Home")}>
-            <Text
-              style={{
-                padding: 10,
-                fontSize: 20,
-                fontWeight: "300",
-                lineHeight: 27.24,
-              }}
-            >
-              Home
-            </Text>
+            <Text style={styles.burgerText}>Home</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => findFoodMenuItemPress("Find Food")}>
-            <Text
-              style={{
-                padding: 10,
-                fontSize: 20,
-                fontWeight: "300",
-                lineHeight: 27.24,
-              }}
-            >
-              Find Food
-            </Text>
+            <Text style={styles.burgerText}>Find Food</Text>
           </TouchableOpacity>
           {isAuthenticated && (
             <TouchableOpacity
               onPress={() => navigation.navigate("ProfileScreen")}
             >
-              <Text
-                style={{
-                  padding: 10,
-                  fontSize: 20,
-                  fontWeight: "300",
-                  lineHeight: 27.24,
-                }}
-              >
-                Account
-              </Text>
+              <Text style={styles.burgerText}>Account</Text>
             </TouchableOpacity>
           )}
         </View>
@@ -122,15 +80,5 @@ const BurgerIcon = () => {
     </>
   );
 };
-
-const styles = StyleSheet.create({
-  menuContainer: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    zIndex: 9999,
-  },
-});
 
 export default BurgerIcon;
