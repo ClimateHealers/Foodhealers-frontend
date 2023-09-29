@@ -22,6 +22,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { getLocation } from "../Components/getCurrentLocation";
 import { VeganRecipesCategory } from "../redux/actions/veganRecipesCategory";
+import FoodhealersHeader from "../Components/FoodhealersHeader";
 const CategoryScreen = ({ route }: any) => {
   const { categoryId, recipeName } = route.params;
 
@@ -99,11 +100,20 @@ const CategoryScreen = ({ route }: any) => {
           style={styles.background}
         >
           <SafeAreaView style={styles.container}>
+            <FoodhealersHeader/>
             <View style={styles.row}>
+            <Ionicons
+                name="chevron-back"
+                size={32}
+                color="white"
+                onPress={() => navigation.goBack()}
+              />
               <View style={styles.dropdownContainer}></View>
-              <View style={styles.item}>
+              <ScrollView showsVerticalScrollIndicator={false}>
+              <View style={[styles.item, {alignItems: "center"}]}>
                 <Text style={styles.itemText}>{recipeName}</Text>
               </View>
+              </ScrollView>
               <View style={styles.item}>
                 <MaterialCommunityIcons
                   name="menu"
@@ -308,7 +318,7 @@ const styles = StyleSheet.create({
   },
   row: {
     flexDirection: "row",
-    justifyContent: "space-around",
+    justifyContent: "space-between",
     alignItems: "center",
     width: "100%",
     zIndex: 9999,

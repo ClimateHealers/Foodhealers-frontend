@@ -221,9 +221,7 @@ const VolunteerDonationHistoryScreen = ({ route }: any) => {
                 <View style={styles.item}>
                 <Text style={styles.itemText}>{title} History</Text>
                 </View>
-                <View style={styles.item}>
                   <BurgerIcon />
-                </View>
               </View>
               <View>
                 <View style={styles.itemFilter}>

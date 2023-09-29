@@ -89,9 +89,7 @@ const UploadPhotosScreen = ({ route }: any) => {
 
   const openImagePickerAsync = async () => {
     const res = await MediaLibrary.requestPermissionsAsync();
-    console.log("jfbvdjkbdbfkjd", res.granted);
     if (res.granted) {
-      console.log("sdvskdvjnsdkvjnkdbn", res.granted);
       const result = await ImagePicker.launchImageLibraryAsync({
         allowsMultipleSelection: true,
         selectionLimit: 1,
@@ -100,7 +98,6 @@ const UploadPhotosScreen = ({ route }: any) => {
         aspect: [4, 3],
         quality: 1,
       });
-      console.log("hgvbn", result);
 
       if (!result.canceled) {
         console.log("checking image from library", result.assets);
@@ -168,82 +165,8 @@ const UploadPhotosScreen = ({ route }: any) => {
                 <View style={styles.item}>
                   <Text style={styles.itemText}>Post an Event</Text>
                 </View>
-                <View style={styles.item}>
-                  <BurgerIcon />
-                </View>
+                <BurgerIcon />
               </View>
-              {/* {menuOpen && (
-          <View
-            style={{
-              position: "absolute",
-              right: w2dp("16"),
-              top: Platform.OS === "ios" ? h2dp(13.2) : h2dp(9),
-              backgroundColor: "white",
-              borderColor: "black",
-              borderWidth: 0.2,
-              borderRadius: 5,
-              width: w2dp("32"),
-              zIndex: 9999,
-            }}
-          >
-            <TouchableOpacity onPress={() => handleMenuItemPress("Home")}>
-              <Text
-                style={{
-                  padding: 10,
-                  fontSize: 20,
-                  fontWeight: "300",
-                  lineHeight: 27.24,
-                }}
-              >
-                Home
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => findFoodMenuItemPress("Find Food")}
-            >
-              <Text
-                style={{
-                  padding: 10,
-                  fontSize: 20,
-                  fontWeight: "300",
-                  lineHeight: 27.24,
-                }}
-              >
-                Find Food
-              </Text>
-            </TouchableOpacity>
-            {isAuthenticated && (
-              <TouchableOpacity
-                onPress={() => navigation.navigate("ProfileScreen")}
-              >
-                <Text
-                  style={{
-                    padding: 10,
-                    fontSize: 20,
-                    fontWeight: "300",
-                    lineHeight: 27.24,
-                  }}
-                >
-                  Account
-                </Text>
-              </TouchableOpacity>
-            )}
-          </View>
-        )} */}
-              {/* <View style={styles.row}>
-          <View style={styles.item}>
-            <Text style={styles.itemText}>{"Post an Event"}</Text>
-          </View>
-          <View style={styles.item}>
-            <MaterialCommunityIcons
-              name="menu"
-              size={40}
-              color="white"
-              onPress={toggleMenu}
-            />
-          </View>
-        </View> */}
-
               <View
                 style={[
                   styles.card,
@@ -260,7 +183,7 @@ const UploadPhotosScreen = ({ route }: any) => {
                     paddingVertical: h2dp(1),
                     paddingHorizontal: w2dp(5),
                     marginBottom: h2dp(1),
-                    marginTop:h2dp(12),
+                    marginTop: h2dp(12),
                   }}
                   onPress={openImagePickerAsync}
                 >
@@ -289,91 +212,5 @@ const UploadPhotosScreen = ({ route }: any) => {
     </TouchableWithoutFeedback>
   );
 };
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     alignItems: "center",
-//   },
-//   background: {
-//     flex: 1,
-//     resizeMode: "cover",
-//   },
-//   row: {
-//     flexDirection: "row",
-//     justifyContent: "flex-end",
-//     alignItems: "center",
-//     width: "100%",
-//   },
-//   item: {
-//     marginRight: 35,
-//     height: 100,
-//     justifyContent: "center",
-//   },
-//   itemText: {
-//     fontSize: 25,
-//     color: "white",
-//     marginRight: 20,
-//   },
-
-//   card: {
-//     backgroundColor: "white",
-//     width: "90%",
-//     height: "65%",
-//     marginLeft: 20,
-//     borderRadius: 10,
-//     marginTop: 20,
-//     display: "flex",
-//     justifyContent: "center",
-//     alignItems: "center",
-//   },
-//   buttonStyles: {
-//     backgroundColor: "#FC5A56",
-//     color: "black",
-//     borderRadius: 5,
-//     width: 190,
-//     marginTop: 20,
-//     marginLeft: 85,
-//   },
-//   titleStyle: {
-//     color: "white",
-//     fontSize: 26,
-//     fontWeight: "400",
-//     lineHeight: 35,
-//     fontFamily: "OpenSans-Regular",
-//   },
-//   cardTextConainer: {
-//     marginTop: 30,
-//   },
-//   cardText: {
-//     fontSize: 20,
-//     marginLeft: 10,
-//     fontFamily: "OpenSans-Light",
-//   },
-//   boldText: {
-//     fontWeight: "bold",
-//   },
-//   centeredView: {
-//     flex: 1,
-//     justifyContent: "center",
-//     alignItems: "center",
-//     marginTop: 22,
-//   },
-//   modalView: {
-//     margin: 20,
-//     backgroundColor: "rgba(0, 0, 0, 0.5)",
-//     borderRadius: 20,
-//     padding: 35,
-//     alignItems: "center",
-//     shadowColor: "#000",
-//     shadowOffset: {
-//       width: 0,
-//       height: 2,
-//     },
-//     shadowOpacity: 0.25,
-//     shadowRadius: 4,
-//     elevation: 5,
-//   },
-// });
 
 export default UploadPhotosScreen;

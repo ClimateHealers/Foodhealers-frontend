@@ -6,7 +6,7 @@ import {
 
 export const styles = StyleSheet.create({
   container: {
-    flex: 0,
+    flex: 1,
     // alignItems: "center",
     marginHorizontal: w2dp(4),
     marginTop: h2dp(3),
@@ -102,9 +102,7 @@ export const styles = StyleSheet.create({
   dropdownContainer: {
     display: "flex",
     flexDirection: "row",
-    justifyContent: "flex-end",
     alignItems: "center",
-    marginTop: h2dp(3),
     borderColor: "red",
   },
   inputError: {
@@ -139,7 +137,7 @@ export const styles = StyleSheet.create({
   item: {
     height: h2dp(10),
     justifyContent: "center",
-    // width: w2dp(70),
+    // width: w2dp(30),
     // paddingHorizontal: w2dp(20),
   },
   itemText: {
@@ -246,7 +244,7 @@ export const styles = StyleSheet.create({
   horizonatalView: {
     display: "flex",
     flexDirection: "row",
-    // justifyContent: "center",
+    // justifyContent: "space-between",
     // alignItems: "flex-end",
     // marginTop: h2dp(2),
   },
@@ -350,5 +348,56 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     marginTop: 30,
+  },
+  markerIcon: {
+    width: 40,
+    height: 40,
+  },
+  mapContainer: {
+    height: h2dp(65),
+    marginTop: h2dp(3),
+    borderRadius: 10,
+  },
+  dropdown1BtnStyle: {
+    marginTop: 15,
+    // marginLeft: 45,
+    width: "70%",
+    height: 50,
+    backgroundColor: "#FFF",
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: "#D1D1D6",
+  },
+  dropdown1BtnTxtStyle: { color: "#B50000", textAlign: "left", fontSize: 14 },
+  dropdown1DropdownStyle: {
+    backgroundColor: "#EFEFEF",
+    color: "black",
+    borderRadius: 4,
+    height: 180,
+    fontSize: 14,
+    borderColor: "blue",
+  },
+  dropdown1RowStyle: {
+    backgroundColor: "#EFEFEF",
+    color: "#B50000",
+    borderBottomColor: "#D1D1D6",
+    borderRadius: 5,
+  },
+  dropdown1RowTxtStyle: { color: "black", textAlign: "center", fontSize: 10 },
+  calendarView: {
+    width: w2dp(85),
+    alignSelf: "center",
+    marginTop: h2dp(10),
+    // borderWidth:13,
+    borderRadius: 10,
+  },
+  tabLabel: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  tabIndicator: {
+    backgroundColor: "white",
+    height: 2,
   },
 });

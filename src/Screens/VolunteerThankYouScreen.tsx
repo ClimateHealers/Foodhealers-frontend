@@ -72,7 +72,6 @@ const VolunteerThankYouScreen = ({ route }: any) => {
                 <View style={styles.item}>
                   <Text style={styles.itemText}>
                     {title}
-                    jhbcdjajch
                   </Text>
                 </View>
                 <BurgerIcon />

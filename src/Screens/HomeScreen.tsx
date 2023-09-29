@@ -1,12 +1,10 @@
 import { MaterialIcons } from "@expo/vector-icons";
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import * as Location from "expo-location";
+import { useNavigation } from "@react-navigation/native";
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
-  ImageBackground,
-  Linking,
   Modal,
   Platform,
   StatusBar,
@@ -16,17 +14,14 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import {
-  heightPercentageToDP as h2dp,
-  widthPercentageToDP as w2dp,
-} from "react-native-responsive-screen";
+import { heightPercentageToDP as h2dp } from "react-native-responsive-screen";
 import SelectDropdown from "react-native-select-dropdown";
 import { useDispatch, useSelector } from "react-redux";
+import BackgroundImg from "../Components/BackGroundImage";
 import PrimaryButton from "../Components/PrimaryButton";
 import { localized } from "../locales/localization";
 import { myTheme } from "../myTheme";
 import { setLanguage } from "../redux/reducers/langReducer";
-import axios from "axios";
 
 const HomeScreen = ({ route }: any) => {
   const userDetails = useSelector((state: any) => state.auth);
@@ -136,14 +131,12 @@ const HomeScreen = ({ route }: any) => {
   return (
     <TouchableWithoutFeedback onPress={handlePressOutside}>
       <View style={styles.container}>
+        <BackgroundImg />
         <StatusBar
           backgroundColor="auto"
           barStyle={Platform.OS === "ios" ? "light-content" : "dark-content"}
         />
-        <ImageBackground
-          source={require("../../assets/homeImage2.jpg")}
-          style={styles.backgroundImage}
-        >
+        <View style={{ zIndex: 1 }}>
           <View style={styles.dropdownContainer}>
             <SelectDropdown
               buttonStyle={styles.dropdown1BtnStyle}
@@ -173,7 +166,9 @@ const HomeScreen = ({ route }: any) => {
               }}
             />
           </View>
+
           <View style={{ flex: 1 }}>{appLoader(loc == true)}</View>
+
           <View style={styles.headerContainer}>
             <PrimaryButton
               title={localized.t("Find Food")}
@@ -205,9 +200,6 @@ const HomeScreen = ({ route }: any) => {
                   ]);
                 }
               }}
-              // onPress={() =>
-              //   navigation.navigate("VolunteerDonationHistoryScreen")
-              // }
               titleStyle={styles.titleStyle}
             />
             {data?.user?.name ? (
@@ -255,7 +247,7 @@ const HomeScreen = ({ route }: any) => {
               </TouchableOpacity>
             )}
           </View>
-        </ImageBackground>
+        </View>
       </View>
     </TouchableWithoutFeedback>
   );
@@ -265,21 +257,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  backgroundImage: {
-    flex: 1,
-    width: "110%",
-    height: "100%",
-    resizeMode: "cover",
-    justifyContent: "flex-end",
-    alignItems: "center",
-  },
   headerContainer: {
     display: "flex",
     flexDirection: "column",
     backgroundColor: "rgba(0, 0, 0, 0.5)",
     alignItems: "center",
+    justifyContent: "center",
     width: "100%",
-    // height: Platform.OS === "ios" ? h2dp(37) : h2dp(36),
+    top: h2dp(70),
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
   },
@@ -301,7 +286,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     color: "black",
     borderRadius: 5,
-    marginBottom: 25,
+    marginBottom: 20,
     minWidth: 190,
     maxHeight: 50,
   },

@@ -29,7 +29,7 @@ import { allEvents } from "../redux/actions/allEvents";
 const VolunteerEventScreen = ({ route }: any) => {
   //   const { eventDetails } = route.params;
   const { itemTypeId, title } = route?.params;
-  const [eventData, setEventData] = useState("");
+  const [eventData, setEventData] = useState<[]>([]);
   useEffect(() => {
     fetchingEventsData();
   }, []);

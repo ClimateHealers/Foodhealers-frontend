@@ -101,13 +101,17 @@ const EventPhotosScreen = ({ route }: any) => {
   const naivgateToAllEvents = async () => {
     try {
       setLoading(true);
-
-      await dispatch(postEvent(formData as any) as any);
-
-      setLoading(false);
-
-      navigation.navigate("AllEventScreen", { fromEventPhotosScreen: true });
-      setShowDialog(false);
+      const response = await dispatch(postEvent(formData as any) as any);
+      console.log("responseresponse", response)
+      if (response?.payload?.success === true){
+        setLoading(false);
+        setShowDialog(false);
+        navigation.navigate("AllEventScreen", { fromEventPhotosScreen: true });
+      }else{
+        setLoading(false);
+        setShowDialog(false);
+        console.log("Error in posteventAPI", response?.payload)
+      }
     } catch (error) {
       console.log("firstfirstfirstfirst", error);
     }
@@ -133,9 +137,7 @@ const EventPhotosScreen = ({ route }: any) => {
                 <View style={styles.item}>
                   <Text style={styles.itemText}>Post an Event</Text>
                 </View>
-                <View style={styles.item}>
                   <BurgerIcon />
-                </View>
               </View>
                 <Modal
                   visible={showDialog}

@@ -1,58 +1,56 @@
 import { AntDesign, Feather, FontAwesome } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import moment from "moment";
 import React, { useEffect, useState } from "react";
-import { FlatList, ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+  FlatList,
+  ScrollView,
+  Text,
+  View
+} from "react-native";
 import { Button } from "react-native-elements";
 import {
   heightPercentageToDP as h2dp,
   widthPercentageToDP as w2dp,
 } from "react-native-responsive-screen";
-import SegmentedControlTab from "react-native-segmented-control-tab";
 import { useDispatch } from "react-redux";
-import { allDonations } from "../redux/actions/allDonations";
-import { myDonations } from "../redux/actions/myDonations";
-import moment from "moment";
+import { styles } from "../Components/Styles";
+import { allEvents } from "../redux/actions/allEvents";
 
-const DonationTabScreen = () => {
+const VolunteerTabScreen = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const [donationData, setDonationData] = useState<[]>([]);
+  const [eventData, setEventData] = useState<[]>([]);
   const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
 
   const navigation: any = useNavigation();
 
-  const fetchingDonationData = async () => {
-    const response = await dispatch(myDonations({} as any) as any);
-    setDonationData(response?.payload?.donationList);
-  };
-
-  const fetchingallDonationData = async () => {
-    const response = await dispatch(allDonations({} as any) as any);
-    setDonationData(response?.payload?.AllDonations);
-  };
-
   useEffect(() => {
-    fetchingDonationData();
-    fetchingallDonationData();
+    fetchingEventsData();
   }, []);
 
-  const handleSingleIndexSelect = async (index: any) => {
-    setSelectedIndex(index);
-    if (index === 0) {
-      fetchingDonationData();
-    } else if (index === 1) {
-      const res = await dispatch(allDonations({} as any) as any);
-      const donationsAll = res?.payload?.AllDonations;
-      const verifiedDonations = donationsAll?.filter(
-        (event: any) => event?.status === "approved"
-      );
-      setDonationData(donationsAll);
-    }
+  const fetchingEventsData = async () => {
+    const response = await dispatch(allEvents({} as any) as any);
+    const data = response?.payload?.foodEvents;
+    setEventData(data);
   };
 
-  const Item = ({ foodItem, status, delivery, createdAt, donatedBy, quantity }: any) => (
+  const Item = ({
+    status,
+    address,
+    id,
+    eventTimings,
+    name,
+    requiredVolunteers,
+    additionalInfo,
+    eventStartDate,
+    eventEndDate,
+    lat,
+    long,
+    eventPhoto,
+  }: any) => (
     <View style={styles.cardContainer}>
       {status === "approved" ? (
         <View>
@@ -128,7 +126,7 @@ const DonationTabScreen = () => {
             paddingTop: h2dp(0.5),
           }}
         >
-          {moment(createdAt).format("MMM DD, YYYY  ddd, hh:mm A")}
+          {eventTimings}
         </Text>
         <Text
           style={{
@@ -140,7 +138,7 @@ const DonationTabScreen = () => {
             paddingTop: h2dp(0.7),
           }}
         >
-          {foodItem}
+          {name}
         </Text>
         <Text
           style={{
@@ -150,15 +148,28 @@ const DonationTabScreen = () => {
             fontSize: 16,
             lineHeight: 20,
             paddingBottom: h2dp(1),
-            marginHorizontal:w2dp(0.5),
           }}
         >
-          {delivery}
+          {address}
         </Text>
       </ScrollView>
-      {/* <Button
+      <Button
         title={"Details"}
-        onPress={() => navigation.navigate("SingleEventDetails")}
+        onPress={() =>
+          navigation.navigate("VolunteerSingleEventDetails", {
+            eventDetails: {
+              id: id,
+              name: name,
+              address: address,
+              eventStartDate: eventStartDate,
+              eventEndDate: eventEndDate,
+              lat: lat,
+              long: long,
+              eventPhoto: eventPhoto,
+              requiredVolunteers: requiredVolunteers,
+            },
+          })
+        }
         buttonStyle={{
           marginRight: w2dp(5),
           backgroundColor: "white",
@@ -172,77 +183,40 @@ const DonationTabScreen = () => {
           color: "black",
           fontWeight: "300",
         }}
-      /> */}
+      />
     </View>
   );
 
   return (
     <>
-      <View style={{ flex: 1 }}>
-        <View style={styles.toggle}>
-          <SegmentedControlTab
-            values={["My Donations", "All Donations"]}
-            selectedIndex={selectedIndex}
-            tabsContainerStyle={{
-              width: w2dp(50),
-              height: h2dp(6),
-              marginTop: h2dp(2),
-            }}
-            tabTextStyle={{
-              color: "black",
-              fontWeight: "400",
-            }}
-            tabStyle={styles.tabStyle}
-            activeTabStyle={{
-              backgroundColor: "#EDC258",
-            }}
-            activeTabTextStyle={{ color: "black" }}
-            onTabPress={handleSingleIndexSelect}
-          />
-        </View>
-        <View style={{ flex: 1 }}>
+      <View style={{ flex: 1 , marginTop: h2dp(1.5)}}>
+        <ScrollView style={{ flex: 1 }}>
           <FlatList
-            data={donationData}
+            data={eventData}
             renderItem={({ item }: any) => (
               <Item
+                name={item?.name}
+                eventTimings={`${moment(item?.eventStartDate).format(
+                  "DD,  ddd, hh:mm A"
+                )}`}
+                address={item?.address?.streetAddress}
+                additionalInfo={item?.additionalInfo}
+                lat={item?.address?.lat}
+                long={item?.address?.lng}
+                eventStartDate={item?.eventStartDate}
+                eventEndDate={item?.eventEndDate}
+                id={item?.id}
                 status={item?.status}
-                foodItem={`${item?.foodItem}  (${item?.quantity})`}
-                delivery={item?.delivery?.pickupAddress?.fullAddress}
-                createdAt={item?.createdAt}
-                donatedBy={item?.donatedBy?.name}
+                eventPhoto={item?.eventPhoto}
+                requiredVolunteers={item?.requiredVolunteers}
               />
             )}
             keyExtractor={(item: any) => item?.id}
           />
-        </View>
+        </ScrollView>
       </View>
     </>
   );
 };
 
-const styles = StyleSheet.create({
-  cardContainer: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginVertical: h2dp(1),
-    backgroundColor: "white",
-    marginHorizontal: w2dp(1),
-    // height: h2dp(13),
-    borderRadius: 5,
-  },
-  toggle: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "flex-start",
-    alignItems: "center",
-    marginBottom: h2dp(1),
-    // marginLeft: 15,
-  },
-  tabStyle: {
-    borderColor: "#EDC258",
-  },
-});
-
-export default DonationTabScreen;
+export default VolunteerTabScreen;

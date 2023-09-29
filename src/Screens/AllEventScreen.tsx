@@ -81,9 +81,12 @@ const AllEventScreen = () => {
       const verifiedFoodEvents = foodEvents?.filter(
         (event: any) => event.status === "approved"
       );
+      const activeFoodEvents = foodEvents?.filter(
+        (event: any) => event.active === true
+      );
 
-      console.log("checking response from all events API", verifiedFoodEvents);
-      setEventData(verifiedFoodEvents);
+      console.log("checking response from all events API", activeFoodEvents);
+      setEventData(activeFoodEvents);
     }
   };
 
@@ -274,6 +277,7 @@ const AllEventScreen = () => {
                   data={eventData}
                   renderItem={({ item }: any) => (
                     <Item
+                      id={item.id}
                       additionalInfo={item?.additionalInfo}
                       name={item?.name}
                       address={item?.address?.fullAddress}

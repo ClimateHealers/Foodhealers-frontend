@@ -10,10 +10,11 @@ import {
   Linking,
   ScrollView,
   Share,
+  StatusBar,
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  View
+  View,
 } from "react-native";
 import { Divider } from "react-native-paper";
 import {
@@ -25,10 +26,11 @@ import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
 import PrimaryButton from "../Components/PrimaryButton";
 import { styles } from "../Components/Styles";
+import { getLocation } from "../Components/getCurrentLocation";
 import { localized } from "../locales/localization";
 
-const EventDetailsScreen = ({ route }: any) => {
-  const { eventDetails, lat, lng } = route.params;
+const VolunteerSingleEventDetails = ({ route }: any) => {
+  const { eventDetails } = route.params;
   const navigation: any = useNavigation();
 
   const [langOpen, setlangOpen] = useState(false);
@@ -45,15 +47,28 @@ const EventDetailsScreen = ({ route }: any) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState(localized.locale);
 
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
+
   const handlePressOutside = () => {
     setlangOpen(false);
     Keyboard.dismiss();
   };
-
-  const changeLanguage = (itemValue: any, index: any) => {
-    const selectedLanguage = lang[index].value;
-    localized.locale = selectedLanguage;
-    setSelectedLanguage(selectedLanguage);
+  const handleMenuItemPress = (item: any) => {
+    setMenuOpen(false);
+    navigation.navigate("HomeScreen");
+  };
+  const findFoodMenuItemPress = (item: any) => {
+    getLocation().then((res) => {
+      if (res) {
+        navigation?.navigate("MapScreen", {
+          latitude: res?.latitude,
+          longitude: res?.longitude,
+        });
+      }
+    });
+    setMenuOpen(false);
   };
 
   const startTime = eventDetails?.eventStartDate;
@@ -62,10 +77,23 @@ const EventDetailsScreen = ({ route }: any) => {
   const EndTime = eventDetails?.eventEndDate;
   const formattedEndTime = moment(EndTime).format("h:mm a");
 
+  console.log(
+    "checking formatted start and end time",
+    formattedStartTime,
+    formattedEndTime
+  );
+
+  const changeLanguage = (itemValue: any, index: any) => {
+    const selectedLanguage = lang[index].value;
+    localized.locale = selectedLanguage;
+    setSelectedLanguage(selectedLanguage);
+  };
+
   const navigationHandler = () => {
-    const url = `https://www.google.com/maps/dir/?api=1&origin=${lat},${lng}&destination=${eventDetails?.address?.lat},${eventDetails?.address?.lng}`;
+    const url = `https://www.google.com/maps/dir/?api=1&destination=${eventDetails?.lat},${eventDetails?.long}`;
     Linking.openURL(url);
   };
+
   const onShare = async () => {
     try {
       const result = await Share.share({
@@ -77,6 +105,7 @@ const EventDetailsScreen = ({ route }: any) => {
         } else {
         }
       } else if (result.action === Share.dismissedAction) {
+        // dismissed
       }
     } catch (error: any) {
       Alert.alert(error.message);
@@ -87,11 +116,12 @@ const EventDetailsScreen = ({ route }: any) => {
   return (
     <TouchableWithoutFeedback onPress={handlePressOutside}>
       <LinearGradient
-        colors={["#012e17", "#017439", "#009b4d"]}
+        colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
         style={styles.background}
       >
         <SafeAreaView>
           <ScrollView keyboardShouldPersistTaps="handled">
+            <StatusBar animated={true} backgroundColor="auto" />
             <View style={styles.containerVolunteer}>
               <FoodhealersHeader />
               <View style={styles.rootVolunteerHome}>
@@ -102,9 +132,7 @@ const EventDetailsScreen = ({ route }: any) => {
                   onPress={() => navigation.goBack()}
                 />
                 <View style={styles.item}>
-                  <Text style={styles.itemText}>
-                    {localized.t("Find Food")}
-                  </Text>
+                  <Text style={styles.itemText}>{eventDetails.name}</Text>
                 </View>
                 <BurgerIcon />
               </View>
@@ -119,12 +147,10 @@ const EventDetailsScreen = ({ route }: any) => {
               >
                 <View>
                   <Image
-                    // source={require("../../assets/images/hostingEvent.png")}
                     source={{ uri: eventDetails?.eventPhoto }}
                     style={{
-                      // tintColor:"blue",
                       width: "100%",
-                      height: 200,
+                      height: 250,
                       borderTopLeftRadius: 10,
                       borderTopRightRadius: 10,
                       opacity: expired ? 0.3 : 1,
@@ -139,8 +165,9 @@ const EventDetailsScreen = ({ route }: any) => {
                     }}
                   >
                     <Text style={styles.boldText}>
-                      From:{" "}
+                      From:
                       <Text style={styles.cardText}>
+                        {" "}
                         {moment(eventDetails?.eventStartDate).format(
                           "ddd, MMM D"
                         )}{" "}
@@ -179,7 +206,7 @@ const EventDetailsScreen = ({ route }: any) => {
                     <Text style={styles.boldText}>
                       Location:{" "}
                       <Text style={styles.cardText}>
-                        {eventDetails.address?.fullAddress}
+                        {eventDetails.address}
                       </Text>
                     </Text>
 
@@ -191,7 +218,12 @@ const EventDetailsScreen = ({ route }: any) => {
                       }}
                     />
                   </View>
-                  <View style={{ marginBottom: 10, paddingHorizontal: 10 }}>
+                  <View
+                    style={{
+                      marginBottom: h2dp("2%"),
+                      paddingHorizontal: 10,
+                    }}
+                  >
                     <Text style={styles.boldText}>
                       What:{" "}
                       <Text style={styles.cardText}>
@@ -207,11 +239,16 @@ const EventDetailsScreen = ({ route }: any) => {
                       }}
                     />
                   </View>
-                  <View style={{ marginBottom: 10, paddingHorizontal: 10 }}>
+                  <View
+                    style={{
+                      marginBottom: h2dp("2%"),
+                      paddingHorizontal: 10,
+                    }}
+                  >
                     <Text style={styles.boldText}>
-                      Volunteers Required:{" "}
+                      Volunteer's Required:{" "}
                       <Text style={styles.cardText}>
-                        {eventDetails?.volunteers}
+                        {eventDetails?.requiredVolunteers}
                       </Text>
                     </Text>
 
@@ -225,34 +262,96 @@ const EventDetailsScreen = ({ route }: any) => {
                   </View>
                 </View>
               </View>
-              <View
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <PrimaryButton
-                  disabled={expired}
-                  title={expired ? "Event Expired" : "Get directions"}
-                  onPress={navigationHandler}
-                  buttonStyle={styles.buttonStyles}
-                  titleStyle={styles.titleStyle}
-                />
-
-                {!expired && (
-                  <TouchableOpacity onPress={onShare}>
-                    <Text
-                      style={{
-                        color: "white",
-                        fontSize: 20,
-                        marginTop: w2dp(5),
-                        textDecorationLine: "underline",
-                      }}
-                    >
-                      Share
-                    </Text>
-                  </TouchableOpacity>
+              <View>
+                {eventDetails?.map ? (
+                  <View
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <PrimaryButton
+                      disabled={expired}
+                      title={expired ? "Event Expired" : "Get directions"}
+                      // title={"Get directions"}
+                      onPress={navigationHandler}
+                      buttonStyle={styles.buttonStyles}
+                      titleStyle={styles.titleStyle}
+                    />
+                    <TouchableOpacity onPress={onShare}>
+                      <Text
+                        style={{
+                          color: "white",
+                          fontSize: 20,
+                          marginTop: w2dp(5),
+                          textDecorationLine: "underline",
+                          alignSelf: "center",
+                        }}
+                      >
+                        Share
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                ) : (
+                  <View
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <PrimaryButton
+                      disabled={expired}
+                      title={expired ? "Event Expired" : "See all Volunteers()"}
+                      onPress={() =>
+                        navigation.navigate("AllVolunteersScreen", {
+                          id: eventDetails.id,
+                          title: "Volunteer at an event",
+                          itemTypeId: 3,
+                        })
+                      }
+                      buttonStyle={styles.buttonStyles}
+                      titleStyle={styles.titleStyle}
+                    />
+                    <TouchableOpacity onPress={onShare}>
+                      <Text
+                        style={{
+                          color: "white",
+                          fontSize: 20,
+                          marginTop: w2dp(5),
+                          textDecorationLine: "underline",
+                          alignSelf: "center",
+                        }}
+                      >
+                        Share
+                      </Text>
+                    </TouchableOpacity>
+                    {/* {!expired && (
+                      <View>
+                        <PrimaryButton
+                          disabled={expired}
+                          title="Get directions"
+                          onPress={navigationHandler}
+                          buttonStyle={styles.buttonStyles}
+                          titleStyle={styles.titleStyle}
+                        />
+                        <TouchableOpacity onPress={onShare}>
+                          <Text
+                            style={{
+                              color: "white",
+                              fontSize: 20,
+                              marginTop: w2dp(5),
+                              textDecorationLine: "underline",
+                              alignSelf: "center",
+                            }}
+                          >
+                            Share
+                          </Text>
+                        </TouchableOpacity>
+                      </View>
+                    )} */}
+                  </View>
                 )}
               </View>
             </View>
@@ -263,4 +362,4 @@ const EventDetailsScreen = ({ route }: any) => {
   );
 };
 
-export default EventDetailsScreen;
+export default VolunteerSingleEventDetails;

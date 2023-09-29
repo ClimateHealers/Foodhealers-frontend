@@ -1,7 +1,6 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { Text, TouchableOpacity, View } from "react-native";
-
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { getLocation } from "../Components/getCurrentLocation";
@@ -39,6 +38,11 @@ const BurgerIcon = () => {
   };
   return (
     <>
+      {/* <TouchableWithoutFeedback
+        onPress={() => {
+          setMenuOpen(!menuOpen);
+        }}
+      > */}
       <MaterialCommunityIcons
         name="menu"
         size={40}
@@ -46,7 +50,7 @@ const BurgerIcon = () => {
         onPress={() => toggleMenu()}
         style={{
           zIndex: 1,
-          marginRight: 0,
+          right: 0,
         }}
       />
       {menuOpen && (
@@ -57,9 +61,9 @@ const BurgerIcon = () => {
             top: 65,
             backgroundColor: "white",
             borderColor: "black",
-            borderWidth: 0.2,
+            borderWidth: 0.5,
             borderRadius: 5,
-            zIndex: 9999,
+            zIndex: 1,
           }}
         >
           <TouchableOpacity onPress={() => handleMenuItemPress("Home")}>
@@ -77,6 +81,7 @@ const BurgerIcon = () => {
           )}
         </View>
       )}
+      {/* </TouchableWithoutFeedback> */}
     </>
   );
 };

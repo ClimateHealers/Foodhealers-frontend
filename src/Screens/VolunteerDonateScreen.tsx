@@ -190,9 +190,7 @@ const VolunteerDonateScreen = ({ route }: any) => {
                 <View style={styles.item}>
                   <Text style={styles.itemText}>Volunteer</Text>
                 </View>
-                <View style={styles.item}>
                   <BurgerIcon />
-                </View>
               </View>
               <Carousel
                 data={cardData}

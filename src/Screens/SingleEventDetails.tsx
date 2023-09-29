@@ -14,7 +14,7 @@ import {
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  View
+  View,
 } from "react-native";
 import { Divider } from "react-native-paper";
 import {
@@ -117,15 +117,15 @@ const SingleEventDetails = ({ route }: any) => {
   const expired = moment(eventDetails?.eventEndDate).isBefore(moment());
   return (
     <TouchableWithoutFeedback onPress={handlePressOutside}>
-        <LinearGradient
-          colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
-          style={styles.background}
-        >
-          <SafeAreaView>
-            <ScrollView keyboardShouldPersistTaps="handled">
+      <LinearGradient
+        colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
+        style={styles.background}
+      >
+        <SafeAreaView>
+          <ScrollView keyboardShouldPersistTaps="handled">
             <StatusBar animated={true} backgroundColor="auto" />
             <View style={styles.containerVolunteer}>
-            <FoodhealersHeader/>
+              <FoodhealersHeader />
               <View style={styles.rootVolunteerHome}>
                 <Ionicons
                   name="chevron-back"
@@ -134,174 +134,189 @@ const SingleEventDetails = ({ route }: any) => {
                   onPress={() => navigation.goBack()}
                 />
                 <View style={styles.item}>
-                <Text style={styles.itemText}>{eventDetails.name}</Text>
+                  <Text style={styles.itemText}>{eventDetails.name}</Text>
                 </View>
-                  <BurgerIcon />
+                <BurgerIcon />
               </View>
-                <View
-                  style={[
-                    styles.card,
-                    { backgroundColor: expired ? "#bab7b6" : "white", borderRadius:h2dp(1) },
-                  ]}
-                >
-                  <View>
-                    <Image
-                      source={{ uri: eventDetails?.eventPhoto }}
+              <View
+                style={[
+                  styles.card,
+                  {
+                    backgroundColor: expired ? "#bab7b6" : "white",
+                    borderRadius: h2dp(1),
+                  },
+                ]}
+              >
+                <View>
+                  <Image
+                    source={{ uri: eventDetails?.eventPhoto }}
+                    style={{
+                      width: "100%",
+                      height: 250,
+                      borderTopLeftRadius: 10,
+                      borderTopRightRadius: 10,
+                      opacity: expired ? 0.3 : 1,
+                    }}
+                  />
+                </View>
+                <View style={{ marginTop: h2dp(3) }}>
+                  <View
+                    style={{
+                      marginBottom: h2dp(2),
+                      paddingHorizontal: w2dp(1),
+                    }}
+                  >
+                    <Text style={styles.boldText}>
+                      From:
+                      <Text style={styles.cardText}>
+                        {" "}
+                        {moment(eventDetails?.eventStartDate).format(
+                          "ddd, MMM D"
+                        )}{" "}
+                        {formattedStartTime}
+                      </Text>
+                    </Text>
+
+                    <Divider
                       style={{
-                        width: "100%",
-                        height: 250,
-                        borderTopLeftRadius: 10,
-                        borderTopRightRadius: 10,
-                        opacity: expired ? 0.3 : 1,
+                        backgroundColor: "black",
+                        height: 1,
+                        width: "95%",
                       }}
                     />
                   </View>
-                  <View style={{ marginTop: h2dp(3) }}>
-                    <View style={{ marginBottom: h2dp(2), paddingHorizontal: 10 }}>
-                      <Text style={styles.boldText}>
-                        From:
-                        <Text style={styles.cardText}>
-                          {" "}
-                          {moment(eventDetails?.eventStartDate).format(
-                            "ddd, MMM D"
-                          )}{" "}
-                          {formattedStartTime}
-                        </Text>
+                  <View style={{ marginBottom: 20, paddingHorizontal: 10 }}>
+                    <Text style={styles.boldText}>
+                      To:{" "}
+                      <Text style={styles.cardText}>
+                        {moment(eventDetails?.eventEndDate).format(
+                          "ddd, MMM D"
+                        )}{" "}
+                        {formattedEndTime}
                       </Text>
+                    </Text>
 
-                      <Divider
-                        style={{
-                          backgroundColor: "black",
-                          height: 1,
-                          width: "95%",
-                        }}
-                      />
-                    </View>
-                    <View style={{ marginBottom: 20, paddingHorizontal: 10 }}>
-                      <Text style={styles.boldText}>
-                        To:{" "}
-                        <Text style={styles.cardText}>
-                          {moment(eventDetails?.eventEndDate).format(
-                            "ddd, MMM D"
-                          )}{" "}
-                          {formattedEndTime}
-                        </Text>
-                      </Text>
-
-                      <Divider
-                        style={{
-                          backgroundColor: "black",
-                          height: 1,
-                          width: "95%",
-                        }}
-                      />
-                    </View>
-                    <View style={{ marginBottom: 20, paddingHorizontal: 10 }}>
-                      <Text style={styles.boldText}>
-                        Location:{" "}
-                        <Text style={styles.cardText}>
-                          {eventDetails.address}
-                        </Text>
-                      </Text>
-
-                      <Divider
-                        style={{
-                          backgroundColor: "black",
-                          height: 1,
-                          width: "95%",
-                        }}
-                      />
-                    </View>
-                    <View
+                    <Divider
                       style={{
-                        marginBottom: h2dp("2%"),
-                        paddingHorizontal: 10,
+                        backgroundColor: "black",
+                        height: 1,
+                        width: "95%",
                       }}
-                    >
-                      <Text style={styles.boldText}>
-                        What:{" "}
-                        <Text style={styles.cardText}>
-                          {eventDetails?.additionalInfo}
-                        </Text>
+                    />
+                  </View>
+                  <View style={{ marginBottom: 20, paddingHorizontal: 10 }}>
+                    <Text style={styles.boldText}>
+                      Location:{" "}
+                      <Text style={styles.cardText}>
+                        {eventDetails.address}
                       </Text>
+                    </Text>
 
-                      <Divider
-                        style={{
-                          backgroundColor: "black",
-                          height: 1,
-                          width: "95%",
-                        }}
-                      />
-                    </View>
-                    <View
+                    <Divider
                       style={{
-                        marginBottom: h2dp("2%"),
-                        paddingHorizontal: 10,
+                        backgroundColor: "black",
+                        height: 1,
+                        width: "95%",
                       }}
-                    >
-                      <Text style={styles.boldText}>
-                        Volunteer's Required:{" "}
-                        <Text style={styles.cardText}>
-                          {eventDetails?.requiredVolunteers}
-                        </Text>
+                    />
+                  </View>
+                  <View
+                    style={{
+                      marginBottom: h2dp("2%"),
+                      paddingHorizontal: 10,
+                    }}
+                  >
+                    <Text style={styles.boldText}>
+                      What:{" "}
+                      <Text style={styles.cardText}>
+                        {eventDetails?.additionalInfo}
                       </Text>
+                    </Text>
 
-                      <Divider
-                        style={{
-                          backgroundColor: "black",
-                          height: 1,
-                          width: "95%",
-                        }}
-                      />
-                    </View>
+                    <Divider
+                      style={{
+                        backgroundColor: "black",
+                        height: 1,
+                        width: "95%",
+                      }}
+                    />
+                  </View>
+                  <View
+                    style={{
+                      marginBottom: h2dp("2%"),
+                      paddingHorizontal: 10,
+                    }}
+                  >
+                    <Text style={styles.boldText}>
+                      Volunteer's Required:{" "}
+                      <Text style={styles.cardText}>
+                        {eventDetails?.volunteers}
+                      </Text>
+                    </Text>
+
+                    <Divider
+                      style={{
+                        backgroundColor: "black",
+                        height: 1,
+                        width: "95%",
+                      }}
+                    />
                   </View>
                 </View>
-                <View>
-                  {eventDetails?.itemTypeId === 3 ? (
-                    <View
-                      style={{
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                      }}
-                    >
-                      <PrimaryButton
-                        title="Volunteer"
-                        // title={"Get directions"}
-                        onPress={() =>
-                          navigation.navigate("AddVolunteerToEventScreen", {
-                            id: eventDetails.id,
-                            title: eventDetails.title,
-                            itemTypeId: eventDetails.itemTypeId,
-                          })
-                        }
-                        buttonStyle={styles.buttonStyles}
-                        titleStyle={styles.titleStyle}
-                      />
-                    </View>
-                  ) : (
-                    <View
-                      style={{
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                      }}
-                    >
-                      <PrimaryButton
-                        disabled={expired}
-                        title={expired ? "Event Expired" : "Volunteer"}
-                        // title={"Get directions"}
-                        onPress={() =>
-                          navigation.navigate("AddVolunteerToEventScreen", {
-                            id: eventDetails.id,
-                            title: "Volunteer at an event",
-                            itemTypeId: 3,
-                          })
-                        }
-                        buttonStyle={styles.buttonStyles}
-                        titleStyle={styles.titleStyle}
-                      />
-                      {!expired && (
+              </View>
+              <View>
+                {/* {eventDetails?.itemTypeId === 3 ? (
+                  <View
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <PrimaryButton
+                      title="Volunteer"
+                      // title={"Get directions"}
+                      onPress={() =>
+                        navigation.navigate("AddVolunteerToEventScreen", {
+                          id: eventDetails.id,
+                          title: eventDetails.title,
+                          itemTypeId: eventDetails.itemTypeId,
+                        })
+                      }
+                      buttonStyle={styles.buttonStyles}
+                      titleStyle={styles.titleStyle}
+                    />
+                  </View>
+                ) : ( */}
+                  <View
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <PrimaryButton
+                      disabled={expired}
+                      title={expired ? "Event Expired" : "Volunteer"}
+                      onPress={() =>
+                        navigation.navigate("AddVolunteerToEventScreen", {
+                          id: eventDetails.id,
+                          title: "Volunteer at an event",
+                          itemTypeId: 3,
+                        })
+                      }
+                      buttonStyle={styles.buttonStyles}
+                      titleStyle={styles.titleStyle}
+                    />
+                    {!expired && (
+                      <View>
+                        {/* <PrimaryButton
+                          disabled={expired}
+                          title="Get directions"
+                          onPress={navigationHandler}
+                          buttonStyle={styles.buttonStyles}
+                          titleStyle={styles.titleStyle}
+                        /> */}
                         <TouchableOpacity onPress={onShare}>
                           <Text
                             style={{
@@ -309,19 +324,21 @@ const SingleEventDetails = ({ route }: any) => {
                               fontSize: 20,
                               marginTop: w2dp(5),
                               textDecorationLine: "underline",
+                              alignSelf: "center",
                             }}
                           >
                             Share
                           </Text>
                         </TouchableOpacity>
-                      )}
-                    </View>
-                  )}
-                </View>
+                      </View>
+                    )}
+                  </View>
+                {/* )} */}
               </View>
-            </ScrollView>
-          </SafeAreaView>
-        </LinearGradient>
+            </View>
+          </ScrollView>
+        </SafeAreaView>
+      </LinearGradient>
     </TouchableWithoutFeedback>
   );
 };

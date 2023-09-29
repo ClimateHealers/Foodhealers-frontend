@@ -11,7 +11,7 @@ import {
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  View
+  View,
 } from "react-native";
 import {
   heightPercentageToDP as h2dp,
@@ -40,8 +40,8 @@ const VolunteerHomeScreen = () => {
   const allEvents = useSelector(
     (state: any) => state?.allEvents?.data?.foodEvents
   );
-  const eve = allEvents?.slice(1, 2)?.map((event: any) => (event.id))
-  console.log("allEvents", allEvents);
+  // const eve = allEvents?.map((event: any) => event);
+  // console.log("allEvents", eve);
 
   const fetchRecipesCategories = async () => {
     const response = await dispatch(VeganRecipesCategory(1 as any) as any);
@@ -102,12 +102,8 @@ const VolunteerHomeScreen = () => {
                     {/* <Text style={styles.itemText}>{localized.t("Find Food")}</Text> */}
                     <Text style={styles.itemText}>Home</Text>
                   </View>
-                  <View style={{}}>
                   <BurgerIcon />
-                  </View>
                 </View>
-
-                {/* <View style={[styles.centeredView]}> */}
                 <View
                   style={{
                     marginBottom: h2dp(3),
@@ -144,7 +140,7 @@ const VolunteerHomeScreen = () => {
                     </View>
                   </TouchableOpacity>
                 </View>
-                  <Text style={[styles.subHeading]}>Events</Text>
+                <Text style={[styles.subHeading]}>Events</Text>
                 <ScrollView
                   horizontal={true}
                   keyboardShouldPersistTaps="always"
@@ -152,23 +148,39 @@ const VolunteerHomeScreen = () => {
                   style={{ marginBottom: h2dp(3) }}
                 >
                   <View style={styles.horizonatalView}>
-                    {allEvents?.slice(1, 2)?.map((event: any) => (
+                    {allEvents?.map((event: any) => (
                       <View
                         key={event?.id}
                         style={{
-                          // marginLeft: w2dp(7),
+                          marginLeft: w2dp(2),
                           position: "relative",
                         }}
                       >
                         <TouchableOpacity
                           onPress={() =>
-                            getLocation().then((location: any) => {
-                              if (location) {
-                                navigation?.navigate("MapScreen", {
-                                  location: location,
-                                });
+                            // getLocation().then((location: any) => {
+                            //   if (location) {
+                            navigation?.navigate(
+                              "VolunteerSingleEventDetails",
+                              {
+                                eventDetails: {
+                                  id: event?.id,
+                                  map: true,
+                                  name: event?.name,
+                                  address: event?.address?.fullAddress,
+                                  eventStartDate: event?.eventStartDate,
+                                  eventEndDate: event?.eventEndDate,
+                                  lat: event?.address?.lat,
+                                  long: event?.address?.lng,
+                                  eventPhoto: event?.eventPhoto,
+                                  requiredVolunteers: event?.requiredVolunteers,
+                                  additionalInfo: event?.additionalInfo,
+                                },
+                                //     }
+                                //   );
+                                // }
                               }
-                            })
+                            )
                           }
                         >
                           <Image

@@ -206,15 +206,12 @@ const VolunteerEventHistoryScreen = ({ route }: any) => {
                   name="chevron-back"
                   size={32}
                   color="white"
-                  style={{ marginTop: h2dp(3) }}
                   onPress={() => navigation.goBack()}
                 />
                 <View style={styles.item}>
                   <Text style={styles.itemText}>Event History</Text>
                 </View>
-                <View style={styles.item}>
                   <BurgerIcon />
-                </View>
               </View>
               <View>
                 <View style={styles.itemFilter}>
