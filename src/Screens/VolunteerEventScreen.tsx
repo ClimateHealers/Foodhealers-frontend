@@ -9,9 +9,11 @@ import {
   ScrollView,
   StatusBar,
   Text,
+  TouchableOpacity,
   TouchableWithoutFeedback,
-  View
+  View,
 } from "react-native";
+import { Image } from "react-native-elements";
 import { Button } from "react-native-elements";
 import {
   heightPercentageToDP as h2dp,
@@ -44,7 +46,7 @@ const VolunteerEventScreen = ({ route }: any) => {
     const verifiedFoodEvents = requiredVolunteers?.filter(
       (event: any) => event.active === true
     );
-    setEventData(verifiedFoodEvents);
+    setEventData(requiredVolunteers);
   };
 
   console.log("EventData", eventData);
@@ -259,7 +261,7 @@ const VolunteerEventScreen = ({ route }: any) => {
           <ScrollView keyboardShouldPersistTaps="handled">
             <StatusBar animated={true} backgroundColor="auto" />
             <View style={styles.container}>
-              <FoodhealersHeader/>
+              <FoodhealersHeader />
               <View style={styles.root}>
                 <Ionicons
                   name="chevron-back"
@@ -268,35 +270,57 @@ const VolunteerEventScreen = ({ route }: any) => {
                   onPress={() => navigation.goBack()}
                 />
                 <View style={styles.item}>
-                  <Text style={styles.itemText}>{localized.t("Events")}</Text>
+                  <Text style={styles.itemText}>{eventData?.length > 0 ? "Post Event" : `${localized.t("Events")}`}</Text>
                 </View>
                 <BurgerIcon />
               </View>
+              {eventData.length > 0 ? (
+                <View>
               <View style={styles.itemFilter}>
-                <Text style={styles.itemFilterText}>{localized.t("Events")}</Text>
-                <Text style={styles.itemFilterText}>{localized.t("Filter")}</Text>
+                <Text style={styles.itemFilterText}>
+                  {localized.t("Events")}
+                </Text>
+                <Text style={styles.itemFilterText}>
+                  {localized.t("Filter")}
+                </Text>
               </View>
-              <FlatList
-                data={eventData}
-                renderItem={({ item }: any) => (
-                  <Item
-                    name={item?.name}
-                    eventTimings={`${moment(item?.eventStartDate).format(
-                      "DD,  ddd, hh:mm A"
-                    )}`}
-                    address={item?.address?.streetAddress}
-                    additionalInfo={item?.additionalInfo}
-                    lat={item?.address?.lat}
-                    long={item?.address?.lng}
-                    eventStartDate={item?.eventStartDate}
-                    eventEndDate={item?.eventEndDate}
-                    id={item?.id}
-                    status={item?.status}
-                    eventPhoto={item?.eventPhoto}
-                    requiredVolunteers={item?.requiredVolunteers}
+                <FlatList
+                  data={eventData}
+                  renderItem={({ item }: any) => (
+                    <Item
+                      name={item?.name}
+                      eventTimings={`${moment(item?.eventStartDate).format(
+                        "DD,  ddd, hh:mm A"
+                      )}`}
+                      address={item?.address?.streetAddress}
+                      additionalInfo={item?.additionalInfo}
+                      lat={item?.address?.lat}
+                      long={item?.address?.lng}
+                      eventStartDate={item?.eventStartDate}
+                      eventEndDate={item?.eventEndDate}
+                      id={item?.id}
+                      status={item?.status}
+                      eventPhoto={item?.eventPhoto}
+                      requiredVolunteers={item?.requiredVolunteers}
+                    />
+                  )}
+                />
+                </View>
+              ) : (
+                <View style={{ marginTop: h2dp(3), alignItems: "center" }}>
+                  <Image
+                    source={require("../../assets/images/shutterShock.png")}
+                    style={styles.imageStyle}
                   />
-                )}
-              />
+                  <View style={styles.title}>
+                    <TouchableOpacity
+                      onPress={() => navigation.navigate("PostEvent")}
+                    >
+                      <Text style={styles.textStyle}>Post an event</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              )}
             </View>
           </ScrollView>
         </SafeAreaView>

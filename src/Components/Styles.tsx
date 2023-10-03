@@ -9,7 +9,7 @@ export const styles = StyleSheet.create({
     flex: 1,
     // alignItems: "center",
     marginHorizontal: w2dp(4),
-    marginTop: h2dp(3),
+    marginTop: h2dp(2),
   },
   subcontainer: {
     flex: 1,
@@ -21,7 +21,7 @@ export const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     marginHorizontal: w2dp(4),
-    marginTop: h2dp(3),
+    marginTop: h2dp(2),
   },
   root: {
     flexDirection: "row",
@@ -29,6 +29,7 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     width: "100%",
     zIndex: 1,
+    marginBottom:h2dp(1),
   },
   leftalign: {
     textAlign: "left",
@@ -39,6 +40,7 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     width: w2dp(85),
     zIndex: 1,
+    marginBottom:h2dp(1),
   },
   centeredView: {
     flex: 1,
@@ -189,9 +191,9 @@ export const styles = StyleSheet.create({
     lineHeight: 35,
   },
   foodhealersHeader: {
-    backgroundColor: "white",
+    // backgroundColor: "white",
     borderRadius: 10,
-    height: h2dp(4),
+    // height: h2dp(2),
     width: "100%",
   },
   row: {

@@ -90,173 +90,188 @@ const VolunteerHomeScreen = () => {
         >
           <SafeAreaView>
             <ScrollView keyboardShouldPersistTaps="handled">
-              <View style={styles.containerVolunteer}>
-                <FoodhealersHeader />
-                <View style={styles.rootVolunteerHome}>
-                  <Ionicons
-                    name="chevron-back"
-                    size={32}
-                    color="white"
-                    onPress={() => navigation.goBack()}
-                  />
-                  <View style={styles.item}>
-                    {/* <Text style={styles.itemText}>{localized.t("Find Food")}</Text> */}
-                    <Text style={styles.itemText}>{localized.t("Home")}</Text>
+              <TouchableOpacity activeOpacity={1}>
+                <View style={styles.containerVolunteer}>
+                  <FoodhealersHeader />
+                  <View style={styles.rootVolunteerHome}>
+                    <Ionicons
+                      name="chevron-back"
+                      size={32}
+                      color="white"
+                      onPress={() => navigation.goBack()}
+                    />
+                    <View style={styles.item}>
+                      {/* <Text style={styles.itemText}>{localized.t("Find Food")}</Text> */}
+                      <Text style={styles.itemText}>{localized.t("Home")}</Text>
+                    </View>
+                    <BurgerIcon />
                   </View>
-                  <BurgerIcon />
-                </View>
-                <View
-                  style={{
-                    marginBottom: h2dp(3),
-                    position: "relative",
-                  }}
-                >
-                  <TouchableOpacity
-                    onPress={() => navigation.navigate("VolunteerDonateScreen")}
+                  <View
+                    style={{
+                      marginBottom: h2dp(3),
+                      position: "relative",
+                    }}
                   >
                     <Image
                       source={require("../../assets/images/shutterShock.png")}
                       style={styles.imageStyle}
                     />
-                    <View style={styles.title}>
-                      <Text style={styles.textStyle}>{localized.t("Volunteer/Donate")}</Text>
-                    </View>
-                  </TouchableOpacity>
-                </View>
-                <View
-                  style={{
-                    marginBottom: h2dp(3),
-                    position: "relative",
-                  }}
-                >
-                  <TouchableOpacity
-                    onPress={() => navigation.navigate("CategoryScreen")}
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigation.navigate("VolunteerDonateScreen")
+                      }
+                    >
+                      <View style={styles.title}>
+                        <Text style={styles.textStyle}>
+                          {localized.t("Volunteer/Donate")}
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                  </View>
+                  <View
+                    style={{
+                      marginBottom: h2dp(3),
+                      position: "relative",
+                    }}
                   >
                     <Image
                       source={require("../../assets/images/volunteerToDrive.png")}
                       style={styles.imageStyle}
                     />
-                    <View style={styles.title}>
-                      <Text style={styles.textStyle}>{localized.t("Volunteer to Drive")}</Text>
-                    </View>
-                  </TouchableOpacity>
-                </View>
-                <Text style={[styles.subHeading]}>{localized.t("Events")}</Text>
-                <ScrollView
-                  horizontal={true}
-                  keyboardShouldPersistTaps="always"
-                  showsHorizontalScrollIndicator={false}
-                  style={{ marginBottom: h2dp(3) }}
-                >
-                  <View style={styles.horizonatalView}>
-                    {allEvents?.map((event: any) => (
-                      <View
-                        key={event?.id}
-                        style={{
-                          marginLeft: w2dp(2),
-                          position: "relative",
-                        }}
-                      >
-                        <TouchableOpacity
-                          onPress={() =>
-                            // getLocation().then((location: any) => {
-                            //   if (location) {
-                            navigation?.navigate(
-                              "VolunteerSingleEventDetails",
-                              {
-                                eventDetails: {
-                                  id: event?.id,
-                                  map: true,
-                                  name: event?.name,
-                                  address: event?.address?.fullAddress,
-                                  eventStartDate: event?.eventStartDate,
-                                  eventEndDate: event?.eventEndDate,
-                                  lat: event?.address?.lat,
-                                  long: event?.address?.lng,
-                                  eventPhoto: event?.eventPhoto,
-                                  requiredVolunteers: event?.requiredVolunteers,
-                                  additionalInfo: event?.additionalInfo,
-                                },
-                                //     }
-                                //   );
-                                // }
-                              }
-                            )
-                          }
-                        >
-                          <Image
-                            source={{ uri: event?.eventPhoto }}
-                            style={styles.imageStyle}
-                          />
-                          <View style={styles.title}>
-                            <Text style={styles.textStyle}>
-                              {event?.address?.city}
-                            </Text>
-                          </View>
-                        </TouchableOpacity>
+                    <TouchableOpacity
+                    // onPress={() => navigation.navigate("CategoryScreen")}
+                    >
+                      <View style={styles.title}>
+                        <Text style={styles.textStyle}>
+                          {localized.t("Volunteer to Drive")}
+                        </Text>
                       </View>
-                    ))}
+                    </TouchableOpacity>
                   </View>
-                </ScrollView>
-                <Text style={styles.subHeading}>{localized.t("Vegan Recipes")}</Text>
-                <ScrollView
-                  keyboardShouldPersistTaps="handled"
-                  horizontal={true}
-                  showsHorizontalScrollIndicator={false}
-                  // style={{ marginBottom: h2dp(3) }}
-                >
-                  <View style={styles.horizonatalView}>
-                    {recipeData &&
-                      recipeData?.slice(0, 1)?.map((recipe: any) => (
+                  <Text style={[styles.subHeading]}>
+                    {localized.t("Events")}
+                  </Text>
+                  <ScrollView
+                    horizontal={true}
+                    keyboardShouldPersistTaps="always"
+                    showsHorizontalScrollIndicator={false}
+                    style={{ marginBottom: h2dp(3) }}
+                  >
+                    <View style={styles.horizonatalView}>
+                      {allEvents?.map((event: any) => (
                         <View
-                          key={recipe?.id}
+                          key={event?.id}
                           style={{
-                            marginLeft: w2dp(7),
+                            marginLeft: w2dp(2),
                             position: "relative",
                           }}
                         >
-                          <Image
-                            source={{ uri: recipe?.foodImage }}
-                            style={styles.imageStyle}
-                          />
-                          <View style={styles.title}>
-                            <TouchableOpacity
-                              onPress={() =>
-                                navigation.navigate("SingleRecipeScreen", {
-                                  recipeData: {
-                                    recipeImage: recipe?.foodImage,
-                                    recipeIngredient: recipe?.ingredients,
-                                    recipeName: recipe?.foodName,
-                                    recipeInstructions:
-                                      recipe?.cookingInstructions,
-                                    cookingTime: recipe?.preparationTime,
-                                    recipeSource: recipe?.recipeSource,
-                                    recipeCredits: recipe?.recipeCredits,
+                        <Image
+                          source={{ uri: event?.eventPhoto }}
+                          style={styles.imageStyle}
+                        />
+                          <TouchableOpacity
+                            onPress={() =>
+                              // getLocation().then((location: any) => {
+                              //   if (location) {
+                              navigation?.navigate(
+                                "VolunteerSingleEventDetails",
+                                {
+                                  eventDetails: {
+                                    id: event?.id,
+                                    map: true,
+                                    name: event?.name,
+                                    address: event?.address?.fullAddress,
+                                    eventStartDate: event?.eventStartDate,
+                                    eventEndDate: event?.eventEndDate,
+                                    lat: event?.address?.lat,
+                                    long: event?.address?.lng,
+                                    eventPhoto: event?.eventPhoto,
+                                    requiredVolunteers:
+                                      event?.requiredVolunteers,
+                                    additionalInfo: event?.additionalInfo,
                                   },
-                                })
-                              }
-                            >
+                                  //     }
+                                  //   );
+                                  // }
+                                }
+                              )
+                            }
+                          >
+                            <View style={styles.title}>
                               <Text style={styles.textStyle}>
-                                {recipe?.foodName}
+                                {event?.address?.city}
                               </Text>
-                            </TouchableOpacity>
-                          </View>
+                            </View>
+                          </TouchableOpacity>
                         </View>
                       ))}
+                    </View>
+                  </ScrollView>
+                  <Text style={styles.subHeading}>
+                    {localized.t("Vegan Recipes")}
+                  </Text>
+                  <ScrollView
+                    keyboardShouldPersistTaps="handled"
+                    horizontal={true}
+                    showsHorizontalScrollIndicator={false}
+                    // style={{ marginBottom: h2dp(3) }}
+                  >
+                    <View style={styles.horizonatalView}>
+                      {recipeData &&
+                        recipeData?.slice(0, 1)?.map((recipe: any) => (
+                          <View
+                            key={recipe?.id}
+                            style={{
+                              marginLeft: w2dp(7),
+                              position: "relative",
+                            }}
+                          >
+                            <Image
+                              source={{ uri: recipe?.foodImage }}
+                              style={styles.imageStyle}
+                            />
+                            <View style={styles.title}>
+                              <TouchableOpacity
+                                onPress={() =>
+                                  navigation.navigate("SingleRecipeScreen", {
+                                    recipeData: {
+                                      recipeImage: recipe?.foodImage,
+                                      recipeIngredient: recipe?.ingredients,
+                                      recipeName: recipe?.foodName,
+                                      recipeInstructions:
+                                        recipe?.cookingInstructions,
+                                      cookingTime: recipe?.preparationTime,
+                                      recipeSource: recipe?.recipeSource,
+                                      recipeCredits: recipe?.recipeCredits,
+                                    },
+                                  })
+                                }
+                              >
+                                <Text style={styles.textStyle}>
+                                  {recipe?.foodName}
+                                </Text>
+                              </TouchableOpacity>
+                            </View>
+                          </View>
+                        ))}
+                    </View>
+                  </ScrollView>
+                  <TouchableOpacity>
+                    <Image
+                      source={require("../../assets/images/map.png")}
+                      style={styles.mapImage}
+                    />
+                  </TouchableOpacity>
+                  <View style={{ marginVertical: h2dp(4) }}>
+                    <Text style={styles.mapContent}>15346</Text>
+                    <Text style={styles.mapContent}>
+                      {localized.t("Events Scheduled")}
+                    </Text>
                   </View>
-                </ScrollView>
-                <TouchableOpacity>
-                  <Image
-                    source={require("../../assets/images/map.png")}
-                    style={styles.mapImage}
-                  />
-                </TouchableOpacity>
-                <View style={{ marginVertical: h2dp(4) }}>
-                  <Text style={styles.mapContent}>15346</Text>
-                  <Text style={styles.mapContent}>{localized.t("Events Scheduled")}</Text>
                 </View>
-              </View>
-              {/* </View> */}
+                {/* </View> */}
+              </TouchableOpacity>
             </ScrollView>
           </SafeAreaView>
         </LinearGradient>
