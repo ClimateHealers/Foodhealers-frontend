@@ -274,7 +274,7 @@ const VolunteerEventScreen = ({ route }: any) => {
                 </View>
                 <BurgerIcon />
               </View>
-              {eventData.length > 0 ? (
+              {eventData?.length > 0 ? (
                 <View>
               <View style={styles.itemFilter}>
                 <Text style={styles.itemFilterText}>

@@ -221,6 +221,7 @@ export const styles = StyleSheet.create({
   },
   mapImage: {
     borderRadius: 10,
+    marginTop: h2dp(1),
     width: w2dp(85),
     // height: h2dp(15),
     alignSelf: "center",

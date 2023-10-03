@@ -42,7 +42,7 @@ const VolunteerHomeScreen = () => {
     (state: any) => state?.allEvents?.data?.foodEvents
   );
   // const eve = allEvents?.map((event: any) => event);
-  // console.log("allEvents", eve);
+  console.log("allEvents", allEvents);
 
   const fetchRecipesCategories = async () => {
     const response = await dispatch(VeganRecipesCategory(1 as any) as any);
@@ -148,9 +148,13 @@ const VolunteerHomeScreen = () => {
                       </View>
                     </TouchableOpacity>
                   </View>
-                  <Text style={[styles.subHeading]}>
-                    {localized.t("Events")}
-                  </Text>
+                  {allEvents && allEvents?.length && (
+                    <View>
+                      <Text style={[styles.subHeading]}>
+                        {localized.t("Events")}
+                      </Text>
+                    </View>
+                  )}
                   <ScrollView
                     horizontal={true}
                     keyboardShouldPersistTaps="always"
@@ -162,14 +166,14 @@ const VolunteerHomeScreen = () => {
                         <View
                           key={event?.id}
                           style={{
-                            marginLeft: w2dp(2),
+                            // marginLeft: w2dp(1),
                             position: "relative",
                           }}
                         >
-                        <Image
-                          source={{ uri: event?.eventPhoto }}
-                          style={styles.imageStyle}
-                        />
+                          <Image
+                            source={{ uri: event?.eventPhoto }}
+                            style={styles.imageStyle}
+                          />
                           <TouchableOpacity
                             onPress={() =>
                               // getLocation().then((location: any) => {
@@ -208,9 +212,14 @@ const VolunteerHomeScreen = () => {
                       ))}
                     </View>
                   </ScrollView>
-                  <Text style={styles.subHeading}>
-                    {localized.t("Vegan Recipes")}
-                  </Text>
+                  {recipeData && (
+                    <View>
+                      <Text style={styles.subHeading}>
+                        {localized.t("Vegan Recipes")}
+                      </Text>
+                    </View>
+                  )}
+
                   <ScrollView
                     keyboardShouldPersistTaps="handled"
                     horizontal={true}
@@ -219,7 +228,7 @@ const VolunteerHomeScreen = () => {
                   >
                     <View style={styles.horizonatalView}>
                       {recipeData &&
-                        recipeData?.slice(0, 1)?.map((recipe: any) => (
+                        recipeData?.map((recipe: any) => (
                           <View
                             key={recipe?.id}
                             style={{

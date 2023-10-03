@@ -1,19 +1,8 @@
-import {
-  AntDesign,
-  Feather,
-  FontAwesome,
-  Ionicons
-} from "@expo/vector-icons";
+import { AntDesign, Feather, FontAwesome, Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useEffect, useState } from "react";
-import {
-  FlatList,
-  SafeAreaView,
-  ScrollView,
-  Text,
-  View
-} from "react-native";
+import { FlatList, SafeAreaView, ScrollView, Text, View } from "react-native";
 import { Button } from "react-native-elements";
 import {
   heightPercentageToDP as h2dp,
@@ -209,7 +198,7 @@ const AllEventScreen = () => {
               lat: lat,
               long: long,
               eventPhoto: eventPhoto,
-              volunteers: requiredVolunteers,
+              requiredVolunteers: requiredVolunteers,
             },
           })
         }
@@ -238,7 +227,6 @@ const AllEventScreen = () => {
       >
         <SafeAreaView>
           <ScrollView keyboardShouldPersistTaps="handled">
-            <View style={{ flex: 1 }}>
               <View style={styles.container}>
                 <FoodhealersHeader />
                 <View style={styles.root}>
@@ -273,30 +261,29 @@ const AllEventScreen = () => {
                     onTabPress={handleSingleIndexSelect}
                   />
                 </View>
-                <ScrollView style={{ flex: 1 }}>
-                <FlatList
-                  data={eventData}
-                  renderItem={({ item }: any) => (
-                    <Item
-                      id={item.id}
-                      additionalInfo={item?.additionalInfo}
-                      name={item?.name}
-                      address={item?.address?.fullAddress}
-                      lat={item.address?.lat}
-                      long={item.address?.lng}
-                      eventStartDate={item?.eventStartDate}
-                      eventEndDate={item?.eventEndDate}
-                      verified={item?.verified}
-                      status={item?.status}
-                      eventPhoto={item?.eventPhoto}
-                      requiredVolunteers={item?.requiredVolunteers}
-                    />
-                  )}
-                  keyExtractor={(item: any) => item?.id}
-                />
-                </ScrollView>
+                <View style={{ flex: 1 }}>
+                  <FlatList
+                    data={eventData}
+                    renderItem={({ item }: any) => (
+                      <Item
+                        id={item.id}
+                        additionalInfo={item?.additionalInfo}
+                        name={item?.name}
+                        address={item?.address?.fullAddress}
+                        lat={item.address?.lat}
+                        long={item.address?.lng}
+                        eventStartDate={item?.eventStartDate}
+                        eventEndDate={item?.eventEndDate}
+                        verified={item?.verified}
+                        status={item?.status}
+                        eventPhoto={item?.eventPhoto}
+                        requiredVolunteers={item?.requiredVolunteers}
+                      />
+                    )}
+                    keyExtractor={(item: any) => item?.id}
+                  />
+                </View>
               </View>
-            </View>
           </ScrollView>
         </SafeAreaView>
       </LinearGradient>

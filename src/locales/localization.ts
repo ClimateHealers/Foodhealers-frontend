@@ -30,7 +30,7 @@ function settingFallback(locale: any) {
   if (localized.translations[locale]) {
     localized.locale = locale;
   } else {
-    if (preferredLocales && preferredLocales.length > 0) {
+    if (preferredLocales && preferredLocales?.length > 0) {
       localized.locale = preferredLocales[0].languageCode;
     } else {
       localized.locale = "en";

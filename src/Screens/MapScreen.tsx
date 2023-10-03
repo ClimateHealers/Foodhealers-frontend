@@ -263,7 +263,7 @@ const MapScreen = ({ route }: any) => {
                 const verifiedFoodEvents = foodEvents?.filter(
                   (event: any) => event.status === "approved"
                 );
-                if (verifiedFoodEvents.length > 0) {
+                if (verifiedFoodEvents?.length > 0) {
                   setEvents(verifiedFoodEvents);
                   setEmptyEvents(false);
                 } else {
