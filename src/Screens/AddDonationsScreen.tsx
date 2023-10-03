@@ -31,6 +31,7 @@ import BurgerIcon from "../Components/BurgerIcon";
 import { postDonation } from "../redux/actions/myDonations";
 import { styles } from "../Components/Styles";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
+import { localized } from "../locales/localization";
 
 const AddDonationsScreen = ({ route }: any) => {
   const { itemTypeId, title } = route?.params;
@@ -223,7 +224,7 @@ const AddDonationsScreen = ({ route }: any) => {
                       value={values?.foodItem}
                       // placeholder={localized.t("Email")}
                       placeholder={
-                        itemTypeId == 1 ? "Food Item" : "Supplies List"
+                        itemTypeId == 1 ? `${localized.t("Food Item")}` : `${localized.t("Supplies List")}`
                       }
                       placeholderTextColor={"black"}
                       style={styles.textInput}
@@ -233,7 +234,7 @@ const AddDonationsScreen = ({ route }: any) => {
                       onChangeText={handleChange("quantity")}
                       onBlur={handleBlur("quantity")}
                       value={values?.quantity}
-                      placeholder={"Quantity"}
+                      placeholder={localized.t("Quantity")}
                       placeholderTextColor={"black"}
                       style={styles.textInput}
                     />
@@ -243,7 +244,7 @@ const AddDonationsScreen = ({ route }: any) => {
                       onBlur={handleBlur("flatNo")}
                       keyboardType="numeric"
                       value={values?.flatNo}
-                      placeholder={"Flat No."}
+                      placeholder={localized.t("Flat No")}
                       placeholderTextColor={"black"}
                       style={styles.textInput}
                     />
@@ -330,7 +331,7 @@ const AddDonationsScreen = ({ route }: any) => {
                           onChangeText={handleChange("city")}
                           onBlur={handleBlur("city")}
                           value={values?.city}
-                          placeholder={"City"}
+                          placeholder={localized.t("City")}
                           placeholderTextColor={"black"}
                           style={[
                             styles.textInput,
@@ -349,7 +350,7 @@ const AddDonationsScreen = ({ route }: any) => {
                           onChangeText={handleChange("state")}
                           onBlur={handleBlur("state")}
                           value={values?.state}
-                          placeholder={"State"}
+                          placeholder={localized.t("State")}
                           placeholderTextColor={"black"}
                           style={[
                             styles.textInput,
@@ -365,7 +366,7 @@ const AddDonationsScreen = ({ route }: any) => {
                         onBlur={handleBlur("zipCode")}
                         value={values?.zipCode}
                         keyboardType="numeric"
-                        placeholder={"Zip Code"}
+                        placeholder={localized.t("Zip Code")}
                         placeholderTextColor={"black"}
                         style={[styles.textInput]}
                       />
@@ -391,7 +392,7 @@ const AddDonationsScreen = ({ route }: any) => {
                                 marginLeft: 15,
                               }}
                             >
-                              Pickup Date
+                              {localized.t("Pickup Date")}
                             </Text>
                             <Text
                               style={{
@@ -441,7 +442,7 @@ const AddDonationsScreen = ({ route }: any) => {
                                 marginLeft: 15,
                               }}
                             >
-                              Pickup Time
+                              {localized.t("Pickup Time")}
                             </Text>
                             <Text
                               style={{
@@ -466,7 +467,7 @@ const AddDonationsScreen = ({ route }: any) => {
                       <PhoneInput
                         ref={phoneInput}
                         defaultCode={"US"}
-                        placeholder={"Phone Number"}
+                        placeholder={localized.t("Phone Number")}
                         onChangeText={(text) => {
                           const callingCode =
                             phoneInput.current?.getCallingCode();
@@ -498,7 +499,7 @@ const AddDonationsScreen = ({ route }: any) => {
                       }}
                     >
                       <PrimaryButton
-                        title={"Submit"}
+                        title={localized.t("Submit")}
                         buttonStyle={styles.buttonStyles}
                         titleStyle={styles.titleStyle}
                         onPress={handleSubmit}

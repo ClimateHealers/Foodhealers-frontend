@@ -73,9 +73,9 @@ const RecipesHomeScreen = () => {
           colors={["#012e17", "#017439", "#009b4d"]}
           style={styles.background}
         >
-          <SafeAreaView style={styles.container}>
+          <SafeAreaView style={styles.containerVolunteer}>
             <FoodhealersHeader />
-            <View style={styles.root}>
+            <View style={styles.rootVolunteerHome}>
               <Ionicons
                 name="chevron-back"
                 size={32}
@@ -125,75 +125,5 @@ const RecipesHomeScreen = () => {
     </>
   );
 };
-
-// const styles = StyleSheet.create({
-//   container: {
-//     display: "flex",
-//     flexDirection: "column",
-//     flex: 1,
-//     height: h2dp("100%"),
-//     // marginBottom: h2dp(15),
-//   },
-//   background: {
-//     flex: 1,
-//     resizeMode: "cover",
-//   },
-//   row: {
-//     flexDirection: "row",
-//     justifyContent: "space-around",
-//     alignItems: "center",
-//     width: "100%",
-//     zIndex: 9999,
-//   },
-//   item: {
-//     width: "30%",
-//     marginTop: 25,
-//     height: 100,
-//     justifyContent: "center",
-//     alignItems: "center",
-//     position: "relative",
-//   },
-//   dropdownContainer: {
-//     marginTop: 15,
-//     marginLeft: 15,
-//     width: "30%",
-//     height: 100,
-//     justifyContent: "center",
-//     alignItems: "center",
-//   },
-//   itemText: {
-//     fontSize: 25,
-//     color: "white",
-//   },
-//   imageStyle: {
-//     borderRadius: 10,
-//     width: w2dp(85),
-//     height:h2dp(20)
-//   },
-//   title: {
-//     backgroundColor: "white",
-//     opacity: 0.9,
-//     width: w2dp(85),
-//     // height: "20%",
-//     position: "absolute",
-//     bottom: 0,
-//     borderBottomRightRadius: 10,
-//     borderBottomLeftRadius: 10,
-//   },
-//   textStyle: {
-//     textAlign: "center",
-//     fontSize: 26,
-//     lineHeight: 35,
-//     fontWeight: "normal",
-//     fontStyle: "normal",
-//     marginTop: 13,
-//   },
-//   centeredView: {
-//     display: "flex",
-//     justifyContent: "space-between",
-//     alignItems: "center",
-//     marginTop: h2dp(2),
-//   },
-// });
 
 export default RecipesHomeScreen;

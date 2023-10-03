@@ -1,7 +1,8 @@
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import {
+  Dimensions,
   Image,
   Keyboard,
   ScrollView,
@@ -40,11 +41,15 @@ const VolunteerDonateScreen = ({ route }: any) => {
     { id: 8, label: "Spanish", value: "es" },
   ]);
   const [menuOpen, setMenuOpen] = useState(false);
+  const { width: screenWidth } = Dimensions.get("window");
+  const [activeSlide, setActiveSlide] = useState(0);
   const [selectedLanguage, setSelectedLanguage] = useState(localized.locale);
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
+
+  const sliderRef: any = useRef(null);
 
   const handlePressOutside = () => {
     setlangOpen(false);
@@ -68,28 +73,28 @@ const VolunteerDonateScreen = ({ route }: any) => {
   const cardData = [
     {
       id: 1,
-      title: "Donate Food",
+      title: `${localized.t("Donate Food")}`,
       image: require("../../assets/images/donateFood.png"),
       navigation: "AddDonationsScreen",
       itemTypeId: 1,
     },
     {
-      id: 3,
-      title: "Volunteer at an event",
+      id: 2,
+      title: `${localized.t("Volunteer at an event")}`,
       image: require("../../assets/images/volunteerAtEvent.png"),
       itemTypeId: 3,
       navigation: "VolunteerEventScreen",
     },
     {
-      id: 4,
-      title: "Donate supplies",
+      id: 3,
+      title: `${localized.t("Donate supplies")}`,
       image: require("../../assets/images/donateSupplies.png"),
       navigation: "AddDonationsScreen",
       itemTypeId: 2,
     },
     {
-      id: 5,
-      title: "See all donations & Volunteers",
+      id: 4,
+      title: `${localized.t("See all donations & Volunteers")}`,
       image: require("../../assets/images/seeAllDonations.png"),
       navigation: "VolunteerAndDonateScreen",
     },
@@ -98,8 +103,10 @@ const VolunteerDonateScreen = ({ route }: any) => {
   const renderItem = ({ item }: any) => {
     return (
       <View>
-        <TouchableOpacity>
-          <View style={[styles.card,{height: h2dp(70), borderRadius: h2dp(3)}]}>
+        <TouchableOpacity activeOpacity={1}>
+          <View
+            style={[styles.card, { height: h2dp(70), borderRadius: h2dp(3) }]}
+          >
             <View style={styles.cardText}>
               <View>
                 <Image
@@ -130,14 +137,14 @@ const VolunteerDonateScreen = ({ route }: any) => {
             </View>
             <View style={styles.description}>
               <Text style={{ alignSelf: "center", fontSize: h2dp(2.2) }}>
-                You can make a Difference
+                {localized.t("You can make a Difference")}
               </Text>
               <PrimaryButton
-                title={"Select"}
+                title={localized.t("Select")}
                 onPress={() =>
                   navigation.navigate(item?.navigation, {
                     itemTypeId: item?.itemTypeId,
-                    title: item?.title,
+                    title: `${localized.t(item?.title)}`,
                   })
                 }
                 buttonStyle={styles.buttonStyles}
@@ -147,26 +154,6 @@ const VolunteerDonateScreen = ({ route }: any) => {
           </View>
         </TouchableOpacity>
       </View>
-    );
-  };
-
-  const pagination = ({ item, activeSlide }: any) => {
-    return (
-      <Pagination
-        dotsLength={item.length}
-        activeDotIndex={activeSlide}
-        containerStyle={{ backgroundColor: "rgba(0, 0, 0, 0.75)" }}
-        dotStyle={{
-          width: 10,
-          height: 10,
-          borderRadius: 5,
-          marginHorizontal: 8,
-          backgroundColor: "rgba(255, 255, 255, 0.92)",
-        }}
-        inactiveDotStyle={{}}
-        inactiveDotOpacity={0.4}
-        inactiveDotScale={0.6}
-      />
     );
   };
 
@@ -188,22 +175,44 @@ const VolunteerDonateScreen = ({ route }: any) => {
                   onPress={() => navigation.goBack()}
                 />
                 <View style={styles.item}>
-                  <Text style={styles.itemText}>Volunteer</Text>
+                  <Text style={styles.itemText}>
+                    {localized.t("Volunteer")}
+                  </Text>
                 </View>
-                  <BurgerIcon />
+                <BurgerIcon />
               </View>
+              <View style={{marginHorizontal: "-4%"}}>
               <Carousel
+                ref={sliderRef}
                 data={cardData}
                 renderItem={renderItem}
-                sliderWidth={500}
-                itemWidth={400}
+                sliderWidth={screenWidth}
+                sliderHeight={screenWidth}
+                itemWidth={screenWidth}
                 layout={"default"}
                 inactiveSlideScale={0.8}
                 inactiveSlideOpacity={0.8}
                 firstItem={0}
                 loopClonesPerSide={2}
-                pagingEnabled={false}
+                onSnapToItem={(index) => setActiveSlide(index)}
+                pagingEnabled={true}
               />
+              <Pagination
+                dotsLength={cardData?.length}
+                activeDotIndex={activeSlide}
+                dotStyle={{
+                  width: 10,
+                  height: 10,
+                  borderRadius: 5,
+                  backgroundColor: "#CDDE85",
+                }}
+                inactiveDotStyle={{
+                  backgroundColor: "#CDDE85",
+                }}
+                inactiveDotOpacity={0.4}
+                inactiveDotScale={0.6}
+              />
+              </View>
             </View>
           </ScrollView>
         </SafeAreaView>

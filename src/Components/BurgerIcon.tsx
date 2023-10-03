@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { getLocation } from "../Components/getCurrentLocation";
 import { styles } from "./Styles";
+import { localized } from "../locales/localization";
 
 const BurgerIcon = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -49,7 +50,7 @@ const BurgerIcon = () => {
         color="white"
         onPress={() => toggleMenu()}
         style={{
-          zIndex: 1,
+          zIndex: 9999,
           right: 0,
         }}
       />
@@ -67,16 +68,16 @@ const BurgerIcon = () => {
           }}
         >
           <TouchableOpacity onPress={() => handleMenuItemPress("Home")}>
-            <Text style={styles.burgerText}>Home</Text>
+            <Text style={styles.burgerText}>{localized.t("Home")}</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => findFoodMenuItemPress("Find Food")}>
-            <Text style={styles.burgerText}>Find Food</Text>
+            <Text style={styles.burgerText}>{localized.t("Find Food")}</Text>
           </TouchableOpacity>
           {isAuthenticated && (
             <TouchableOpacity
               onPress={() => navigation.navigate("ProfileScreen")}
             >
-              <Text style={styles.burgerText}>Account</Text>
+              <Text style={styles.burgerText}>{localized.t("Account")}</Text>
             </TouchableOpacity>
           )}
         </View>

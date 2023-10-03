@@ -24,6 +24,7 @@ import { styles } from "../Components/Styles";
 import { getLocation } from "../Components/getCurrentLocation";
 import { VeganRecipesCategories } from "../redux/actions/veganRecipes";
 import { VeganRecipesCategory } from "../redux/actions/veganRecipesCategory";
+import { localized } from "../locales/localization";
 
 const VolunteerHomeScreen = () => {
   const [langOpen, setlangOpen] = useState(false);
@@ -100,7 +101,7 @@ const VolunteerHomeScreen = () => {
                   />
                   <View style={styles.item}>
                     {/* <Text style={styles.itemText}>{localized.t("Find Food")}</Text> */}
-                    <Text style={styles.itemText}>Home</Text>
+                    <Text style={styles.itemText}>{localized.t("Home")}</Text>
                   </View>
                   <BurgerIcon />
                 </View>
@@ -118,7 +119,7 @@ const VolunteerHomeScreen = () => {
                       style={styles.imageStyle}
                     />
                     <View style={styles.title}>
-                      <Text style={styles.textStyle}>Volunteer/Donate</Text>
+                      <Text style={styles.textStyle}>{localized.t("Volunteer/Donate")}</Text>
                     </View>
                   </TouchableOpacity>
                 </View>
@@ -136,11 +137,11 @@ const VolunteerHomeScreen = () => {
                       style={styles.imageStyle}
                     />
                     <View style={styles.title}>
-                      <Text style={styles.textStyle}>Volunteer to Drive</Text>
+                      <Text style={styles.textStyle}>{localized.t("Volunteer to Drive")}</Text>
                     </View>
                   </TouchableOpacity>
                 </View>
-                <Text style={[styles.subHeading]}>Events</Text>
+                <Text style={[styles.subHeading]}>{localized.t("Events")}</Text>
                 <ScrollView
                   horizontal={true}
                   keyboardShouldPersistTaps="always"
@@ -197,7 +198,7 @@ const VolunteerHomeScreen = () => {
                     ))}
                   </View>
                 </ScrollView>
-                <Text style={styles.subHeading}>Vegan Recipes</Text>
+                <Text style={styles.subHeading}>{localized.t("Vegan Recipes")}</Text>
                 <ScrollView
                   keyboardShouldPersistTaps="handled"
                   horizontal={true}
@@ -252,7 +253,7 @@ const VolunteerHomeScreen = () => {
                 </TouchableOpacity>
                 <View style={{ marginVertical: h2dp(4) }}>
                   <Text style={styles.mapContent}>15346</Text>
-                  <Text style={styles.mapContent}>Events Scheduled</Text>
+                  <Text style={styles.mapContent}>{localized.t("Events Scheduled")}</Text>
                 </View>
               </View>
               {/* </View> */}

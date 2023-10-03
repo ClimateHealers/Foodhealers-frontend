@@ -183,7 +183,7 @@ const HomeScreen = ({ route }: any) => {
               titleStyle={styles.titleStyle}
             />
             <PrimaryButton
-              title={"Volunteer"}
+              title={localized.t("Volunteer")}
               buttonStyle={[
                 styles.postEventButton,
                 { backgroundColor: "#5FBB3F" },

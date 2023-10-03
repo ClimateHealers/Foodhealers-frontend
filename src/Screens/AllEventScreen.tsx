@@ -273,6 +273,7 @@ const AllEventScreen = () => {
                     onTabPress={handleSingleIndexSelect}
                   />
                 </View>
+                <ScrollView style={{ flex: 1 }}>
                 <FlatList
                   data={eventData}
                   renderItem={({ item }: any) => (
@@ -293,6 +294,7 @@ const AllEventScreen = () => {
                   )}
                   keyExtractor={(item: any) => item?.id}
                 />
+                </ScrollView>
               </View>
             </View>
           </ScrollView>

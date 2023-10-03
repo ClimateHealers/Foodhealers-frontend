@@ -1,7 +1,14 @@
 import { AntDesign, Feather, FontAwesome } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
-import { FlatList, ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+  FlatList,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { Button } from "react-native-elements";
 import {
   heightPercentageToDP as h2dp,
@@ -30,7 +37,7 @@ const DonationTabScreen = () => {
 
   const fetchingallDonationData = async () => {
     const response = await dispatch(allDonations({} as any) as any);
-    setDonationData(response?.payload?.AllDonations);
+    // setDonationData(response?.payload?.AllDonations);
   };
 
   useEffect(() => {
@@ -52,111 +59,119 @@ const DonationTabScreen = () => {
     }
   };
 
-  const Item = ({ foodItem, status, delivery, createdAt, donatedBy, quantity }: any) => (
-    <View style={styles.cardContainer}>
-      {status === "approved" ? (
-        <View>
-          <AntDesign
-            name="checkcircleo"
-            size={24}
-            color="green"
-            style={{
-              marginLeft: h2dp(2.5),
-              marginTop: h2dp(1.5),
-            }}
-          />
+  const Item = ({
+    foodItem,
+    status,
+    delivery,
+    createdAt,
+    donatedBy,
+    quantity,
+  }: any) => (
+    <TouchableOpacity activeOpacity={1}>
+      <View style={styles.cardContainer}>
+        {status === "approved" ? (
+          <View>
+            <AntDesign
+              name="checkcircleo"
+              size={24}
+              color="green"
+              style={{
+                marginLeft: h2dp(2.5),
+                marginTop: h2dp(1.5),
+              }}
+            />
+            <Text
+              style={{
+                marginLeft: h2dp(1.5),
+                fontSize: 11,
+                color: "green",
+                marginTop: h2dp(0.5),
+              }}
+            >
+              Approved
+            </Text>
+          </View>
+        ) : status === "pending" ? (
+          <View>
+            <FontAwesome
+              name="clock-o"
+              size={24}
+              color="#f2db0a"
+              style={{
+                marginLeft: h2dp(2.3),
+                marginTop: h2dp(1.5),
+              }}
+            />
+            <Text
+              style={{
+                marginLeft: h2dp(1.5),
+                fontSize: 11,
+                color: "#f2db0a",
+                marginTop: h2dp(0.5),
+              }}
+            >
+              Pending
+            </Text>
+          </View>
+        ) : (
+          <View>
+            <Feather
+              name="x-circle"
+              size={24}
+              color="red"
+              style={{ marginLeft: h2dp(2.3), marginTop: h2dp(1.5) }}
+            />
+            <Text
+              style={{
+                marginLeft: h2dp(1.5),
+                fontSize: 11,
+                color: "red",
+                marginTop: h2dp(0.5),
+              }}
+            >
+              Rejected
+            </Text>
+          </View>
+        )}
+        <ScrollView showsVerticalScrollIndicator={false}>
           <Text
             style={{
-              marginLeft: h2dp(1.5),
-              fontSize: 11,
-              color: "green",
-              marginTop: h2dp(0.5),
+              marginLeft: w2dp(3),
+              // width: w2dp(46),
+              fontSize: 16,
+              lineHeight: 30,
+              paddingTop: h2dp(0.5),
             }}
           >
-            Approved
+            {moment(createdAt).format("MMM DD, YYYY  ddd, hh:mm A")}
           </Text>
-        </View>
-      ) : status === "pending" ? (
-        <View>
-          <FontAwesome
-            name="clock-o"
-            size={24}
-            color="#f2db0a"
-            style={{
-              marginLeft: h2dp(2.3),
-              marginTop: h2dp(1.5),
-            }}
-          />
           <Text
             style={{
-              marginLeft: h2dp(1.5),
-              fontSize: 11,
-              color: "#f2db0a",
-              marginTop: h2dp(0.5),
+              marginLeft: w2dp(3),
+              // width: w2dp(52),
+              fontWeight: "500",
+              fontSize: 16,
+              lineHeight: 30,
+              paddingTop: h2dp(0.7),
             }}
           >
-            Pending
+            {foodItem}
           </Text>
-        </View>
-      ) : (
-        <View>
-          <Feather
-            name="x-circle"
-            size={24}
-            color="red"
-            style={{ marginLeft: h2dp(2.3), marginTop: h2dp(1.5) }}
-          />
           <Text
             style={{
-              marginLeft: h2dp(1.5),
-              fontSize: 11,
-              color: "red",
-              marginTop: h2dp(0.5),
+              marginLeft: w2dp(3),
+              // width: w2dp(47),
+              fontWeight: "200",
+              fontSize: 16,
+              lineHeight: 20,
+              paddingBottom: h2dp(1),
+              marginHorizontal: w2dp(0.5),
             }}
           >
-            Rejected
+            {delivery}
           </Text>
-        </View>
-      )}
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <Text
-          style={{
-            marginLeft: w2dp(3),
-            // width: w2dp(46),
-            fontSize: 16,
-            lineHeight: 30,
-            paddingTop: h2dp(0.5),
-          }}
-        >
-          {moment(createdAt).format("MMM DD, YYYY  ddd, hh:mm A")}
-        </Text>
-        <Text
-          style={{
-            marginLeft: w2dp(3),
-            // width: w2dp(52),
-            fontWeight: "500",
-            fontSize: 16,
-            lineHeight: 30,
-            paddingTop: h2dp(0.7),
-          }}
-        >
-          {foodItem}
-        </Text>
-        <Text
-          style={{
-            marginLeft: w2dp(3),
-            // width: w2dp(47),
-            fontWeight: "200",
-            fontSize: 16,
-            lineHeight: 20,
-            paddingBottom: h2dp(1),
-            marginHorizontal:w2dp(0.5),
-          }}
-        >
-          {delivery}
-        </Text>
-      </ScrollView>
-      {/* <Button
+        </ScrollView>
+        {/* <Button
         title={"Details"}
         onPress={() => navigation.navigate("SingleEventDetails")}
         buttonStyle={{
@@ -173,7 +188,8 @@ const DonationTabScreen = () => {
           fontWeight: "300",
         }}
       /> */}
-    </View>
+      </View>
+    </TouchableOpacity>
   );
 
   return (

@@ -7,22 +7,23 @@ import {
   heightPercentageToDP as h2dp,
   widthPercentageToDP as w2dp,
 } from "react-native-responsive-screen";
+import { localized } from "../locales/localization";
 
 const slides = [
   {
     key: 1,
     title: "Welcome to My App",
-    text: "Volunteer at an event, donate food, or become a driver.",
+    text: "Volunteer at an event, donate food, or become a driver",
     image: require("../../assets/images/volunteerscollecting.png"),
   },
   {
     key: 2,
-    text: "Keep track of your donation history.",
+    text: "Keep track of your donation history",
     image: require("../../assets/images/onlineTaxes.png"),
   },
   {
     key: 3,
-    text: "Easily share your volunteer successes with your social network.",
+    text: "Easily share your volunteer successes with your social network",
     image: require("../../assets/images/shareAdvertising.png"),
   },
 ];
@@ -53,7 +54,7 @@ const IntroSlider = () => {
               marginBottom: h2dp(15),
             }}
           >
-            {item?.text}
+            {localized.t(item?.text)}
           </Text>
         </View>
       </SafeAreaView>
@@ -63,7 +64,7 @@ const IntroSlider = () => {
   const renderNextButton = () => (
     <View>
       <Button
-        title="Next"
+        title={localized.t("NEXT")}
         onPress={() => {
           if (sliderRef?.current) {
             const nextIndex = currentSlideIndex + 1;
@@ -79,7 +80,7 @@ const IntroSlider = () => {
   const renderDoneButton = () => (
     <View>
       <Button
-        title="Done"
+        title={localized.t("DONE")}
         color="#5FBB3F"
         onPress={() => {
           navigation.navigate("VolunteerHomeScreen");
@@ -91,7 +92,7 @@ const IntroSlider = () => {
   const renderSkipButton = () => (
     <View>
       <Button
-        title="Skip"
+        title={localized.t("SKIP")}
         onPress={() => navigation.navigate("VolunteerHomeScreen")}
         color="#080d07"
       />
@@ -101,7 +102,7 @@ const IntroSlider = () => {
   const renderPrevButton = () => (
     <View>
       <Button
-        title="Previous"
+        title={localized.t("PREVIOUS")}
         onPress={() => {
           if (sliderRef?.current) {
             const prevIndex = currentSlideIndex - 1;

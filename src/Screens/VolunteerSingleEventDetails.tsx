@@ -2,7 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import moment from "moment";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Alert,
   Image,
@@ -28,12 +28,15 @@ import PrimaryButton from "../Components/PrimaryButton";
 import { styles } from "../Components/Styles";
 import { getLocation } from "../Components/getCurrentLocation";
 import { localized } from "../locales/localization";
+import { useDispatch } from "react-redux";
+import { GetEventVolunteers } from "../redux/actions/eventVolunteers";
 
 const VolunteerSingleEventDetails = ({ route }: any) => {
   const { eventDetails } = route.params;
   const navigation: any = useNavigation();
 
   const [langOpen, setlangOpen] = useState(false);
+  const [eventVolunteersData, setEventVolunteersData] = useState<[]>([]);
   const [lang, setLang] = useState([
     { id: 1, label: "French", value: "fr" },
     { id: 2, label: "Hindi", value: "hi" },
@@ -69,6 +72,22 @@ const VolunteerSingleEventDetails = ({ route }: any) => {
       }
     });
     setMenuOpen(false);
+  };
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    fetchEventVolunteers();
+  }, []);
+  const fetchEventVolunteers = async () => {
+    try {
+      const eventVolunteerData = await dispatch(
+        GetEventVolunteers(eventDetails.id) as any
+      );
+      setEventVolunteersData(eventVolunteerData?.payload?.EventVolunteers);
+      console.log("voluntterssLength", eventVolunteersData?.length)
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const startTime = eventDetails?.eventStartDate;
@@ -303,12 +322,13 @@ const VolunteerSingleEventDetails = ({ route }: any) => {
                   >
                     <PrimaryButton
                       disabled={expired}
-                      title={expired ? "Event Expired" : "See all Volunteers()"}
+                      title={expired ? "Event Expired" : `Volunteers (${eventVolunteersData?.length})`}
                       onPress={() =>
                         navigation.navigate("AllVolunteersScreen", {
-                          id: eventDetails.id,
+                          eventId: eventDetails?.id,
                           title: "Volunteer at an event",
                           itemTypeId: 3,
+                          eventVolunteersData: eventVolunteersData,
                         })
                       }
                       buttonStyle={styles.buttonStyles}

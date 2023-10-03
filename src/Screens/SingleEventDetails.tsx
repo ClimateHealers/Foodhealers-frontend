@@ -167,7 +167,7 @@ const SingleEventDetails = ({ route }: any) => {
                     }}
                   >
                     <Text style={styles.boldText}>
-                      From:
+                      {localized.t("From")}:
                       <Text style={styles.cardText}>
                         {" "}
                         {moment(eventDetails?.eventStartDate).format(
@@ -187,7 +187,7 @@ const SingleEventDetails = ({ route }: any) => {
                   </View>
                   <View style={{ marginBottom: 20, paddingHorizontal: 10 }}>
                     <Text style={styles.boldText}>
-                      To:{" "}
+                    {localized.t("To")}:{" "}
                       <Text style={styles.cardText}>
                         {moment(eventDetails?.eventEndDate).format(
                           "ddd, MMM D"
@@ -206,7 +206,7 @@ const SingleEventDetails = ({ route }: any) => {
                   </View>
                   <View style={{ marginBottom: 20, paddingHorizontal: 10 }}>
                     <Text style={styles.boldText}>
-                      Location:{" "}
+                    {localized.t("Location")}:{" "}
                       <Text style={styles.cardText}>
                         {eventDetails.address}
                       </Text>
@@ -227,7 +227,7 @@ const SingleEventDetails = ({ route }: any) => {
                     }}
                   >
                     <Text style={styles.boldText}>
-                      What:{" "}
+                    {localized.t("What")}:{" "}
                       <Text style={styles.cardText}>
                         {eventDetails?.additionalInfo}
                       </Text>
@@ -248,9 +248,9 @@ const SingleEventDetails = ({ route }: any) => {
                     }}
                   >
                     <Text style={styles.boldText}>
-                      Volunteer's Required:{" "}
+                    {localized.t("Volunteer's Required")}:{" "}
                       <Text style={styles.cardText}>
-                        {eventDetails?.volunteers}
+                        {eventDetails?.requiredVolunteers}
                       </Text>
                     </Text>
 
@@ -297,7 +297,7 @@ const SingleEventDetails = ({ route }: any) => {
                   >
                     <PrimaryButton
                       disabled={expired}
-                      title={expired ? "Event Expired" : "Volunteer"}
+                      title={expired ? `${localized.t("Event Expired")}` : `${localized.t("Volunteer")}`}
                       onPress={() =>
                         navigation.navigate("AddVolunteerToEventScreen", {
                           id: eventDetails.id,
@@ -327,7 +327,7 @@ const SingleEventDetails = ({ route }: any) => {
                               alignSelf: "center",
                             }}
                           >
-                            Share
+                            {localized.t("Share")}
                           </Text>
                         </TouchableOpacity>
                       </View>

@@ -207,7 +207,7 @@ const VolunteerEventScreen = ({ route }: any) => {
         </Text>
       </ScrollView>
       <Button
-        title={"Details"}
+        title={localized.t("Details")}
         onPress={() =>
           navigation.navigate("SingleEventDetails", {
             eventDetails: {
@@ -268,13 +268,13 @@ const VolunteerEventScreen = ({ route }: any) => {
                   onPress={() => navigation.goBack()}
                 />
                 <View style={styles.item}>
-                  <Text style={styles.itemText}>Events</Text>
+                  <Text style={styles.itemText}>{localized.t("Events")}</Text>
                 </View>
                 <BurgerIcon />
               </View>
               <View style={styles.itemFilter}>
-                <Text style={styles.itemFilterText}>All Events</Text>
-                <Text style={styles.itemFilterText}> Filter</Text>
+                <Text style={styles.itemFilterText}>{localized.t("Events")}</Text>
+                <Text style={styles.itemFilterText}>{localized.t("Filter")}</Text>
               </View>
               <FlatList
                 data={eventData}

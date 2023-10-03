@@ -387,7 +387,7 @@ export const styles = StyleSheet.create({
   calendarView: {
     width: w2dp(85),
     alignSelf: "center",
-    marginTop: h2dp(10),
+    marginTop: h2dp(1),
     // borderWidth:13,
     borderRadius: 10,
   },
@@ -399,5 +399,40 @@ export const styles = StyleSheet.create({
   tabIndicator: {
     backgroundColor: "white",
     height: 2,
+  },
+  inputContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#f5f5f5",
+    borderRadius: 8,
+    width: w2dp(86),
+    height: h2dp(6),
+    alignSelf: "center",
+    borderWidth: 1,
+    borderColor: "#f5f5f5",
+  },
+  icon: {
+    paddingHorizontal: 10,
+  },
+  touchableView: {
+    borderRadius: 15,
+    marginTop: h2dp(4),
+    width: "85%",
+    backgroundColor: "white",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "flex-start",
+  },
+  timerIcon: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: h2dp(2),
+  },
+  heading: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "flex-start",
+    marginLeft: w2dp(4),
   },
 });

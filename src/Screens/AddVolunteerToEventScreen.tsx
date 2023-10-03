@@ -211,8 +211,6 @@ const AddVolunteerToEvent = ({ route }: any) => {
                     const res = await dispatch(
                       volunteerAtEvent(data as any) as any
                     );
-                    console.log("ksdnksdnvknkvj", res);
-                    console.log("response", res);
                     if (res?.payload?.success == true) {
                       setLoading(false);
                       setResponse({
@@ -284,13 +282,13 @@ const AddVolunteerToEvent = ({ route }: any) => {
                       value={values?.name}
                       // placeholder={localized.t("Email")}
                       // placeholder={itemTypeId == 1 ? "Food Item" : "Supplies List"}
-                      placeholder="Volunteer Name"
+                      placeholder={localized.t("Volunteer Name")}
                       placeholderTextColor={"black"}
                       style={styles.textInput}
                     />
                     <Text style={styles.inputError}>{errors?.name}</Text>
                     <GooglePlacesAutocomplete
-                      placeholder="Address"
+                      placeholder={localized.t("Address")}
                       fetchDetails={true}
                       keepResultsAfterBlur={true}
                       listViewDisplayed="auto"
@@ -376,7 +374,7 @@ const AddVolunteerToEvent = ({ route }: any) => {
                           onChangeText={handleChange("city")}
                           onBlur={handleBlur("city")}
                           value={values?.city}
-                          placeholder={"City"}
+                          placeholder={localized.t("City")}
                           placeholderTextColor={"black"}
                           style={[
                             styles.textInput,
@@ -395,7 +393,7 @@ const AddVolunteerToEvent = ({ route }: any) => {
                           onChangeText={handleChange("state")}
                           onBlur={handleBlur("state")}
                           value={values?.state}
-                          placeholder={"State"}
+                          placeholder={localized.t("State")}
                           placeholderTextColor={"black"}
                           style={[
                             styles.textInput,
@@ -411,7 +409,7 @@ const AddVolunteerToEvent = ({ route }: any) => {
                         onBlur={handleBlur("zipCode")}
                         value={values?.zipCode}
                         keyboardType="numeric"
-                        placeholder={"Zip Code"}
+                        placeholder={localized.t("Zip Code")}
                         placeholderTextColor={"black"}
                         editable={false}
                         style={[styles.textInput]}
@@ -439,7 +437,7 @@ const AddVolunteerToEvent = ({ route }: any) => {
                                 marginLeft: 15,
                               }}
                             >
-                              Start Date
+                              {localized.t("Start Date")}
                             </Text>
                             <Text
                               style={{
@@ -490,7 +488,7 @@ const AddVolunteerToEvent = ({ route }: any) => {
                                 marginLeft: 15,
                               }}
                             >
-                              Start Time
+                              {localized.t("Start Time")}
                             </Text>
                             <Text
                               style={{
@@ -529,7 +527,7 @@ const AddVolunteerToEvent = ({ route }: any) => {
                                 marginLeft: 15,
                               }}
                             >
-                              End Date
+                              {localized.t("End Date")}
                             </Text>
                             <Text
                               style={{
@@ -582,7 +580,7 @@ const AddVolunteerToEvent = ({ route }: any) => {
                                 marginLeft: 15,
                               }}
                             >
-                              End Time
+                              {localized.t("End Time")}
                             </Text>
                             <Text
                               style={{
@@ -608,7 +606,7 @@ const AddVolunteerToEvent = ({ route }: any) => {
                       <PhoneInput
                         ref={phoneInput}
                         defaultCode={"US"}
-                        placeholder={"Phone Number"}
+                        placeholder={localized.t("Phone Number")}
                         onChangeText={(text) => {
                           const callingCode =
                             phoneInput.current?.getCallingCode();
@@ -640,7 +638,7 @@ const AddVolunteerToEvent = ({ route }: any) => {
                       }}
                     >
                       <PrimaryButton
-                        title={"Submit"}
+                        title={localized.t("Submit")}
                         buttonStyle={styles.buttonStyles}
                         titleStyle={styles.titleStyle}
                         onPress={handleSubmit}
