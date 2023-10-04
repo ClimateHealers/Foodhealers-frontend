@@ -408,11 +408,11 @@ const MapScreen = ({ route }: any) => {
 
               {emptyEvents ? (
                 <View
-                  style={{
-                    position: "absolute",
-                    top: Platform.OS === "ios" ? h2dp(40) : h2dp(48),
-                    left: w2dp(26),
-                  }}
+                  // style={{
+                  //   position: "absolute",
+                  //   top: Platform.OS === "ios" ? h2dp(40) : h2dp(48),
+                  //   // left: w2dp(26),
+                  // }}
                 >
                   <PrimaryButton
                     title={"Home"}
