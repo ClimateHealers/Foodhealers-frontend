@@ -60,6 +60,9 @@ const AddVolunteerToEvent = ({ route }: any) => {
   const [selectedEndDate, setSelectedEndDate] = useState<Date | any>(
     moment().add(1, "hour")
   );
+  
+  const userDetails = useSelector((state: any) => state.auth);
+  const { data } = userDetails;
   const eventDateTime = moment(selectedDate).utc().unix();
   const eventEndDateTime = moment(selectedEndDate).utc().unix();
   const [minmumEndDate, setMinmumEndDate] = useState<Date | any>(
@@ -167,7 +170,7 @@ const AddVolunteerToEvent = ({ route }: any) => {
               <Formik
                 validationSchema={addVolunteer}
                 initialValues={{
-                  name: "",
+                  name: data?.user?.name,
                   phoneNumber: "",
                   lat: 0,
                   long: 0,
@@ -282,7 +285,7 @@ const AddVolunteerToEvent = ({ route }: any) => {
                       value={values?.name}
                       // placeholder={localized.t("Email")}
                       // placeholder={itemTypeId == 1 ? "Food Item" : "Supplies List"}
-                      placeholder={localized.t("Volunteer Name")}
+                      placeholder={data?.user?.name ? data?.user?.name : `${localized.t("Volunteer Name")}`}
                       placeholderTextColor={"black"}
                       style={styles.textInput}
                     />
@@ -411,7 +414,6 @@ const AddVolunteerToEvent = ({ route }: any) => {
                         keyboardType="numeric"
                         placeholder={localized.t("Zip Code")}
                         placeholderTextColor={"black"}
-                        editable={false}
                         style={[styles.textInput]}
                       />
                     </View>

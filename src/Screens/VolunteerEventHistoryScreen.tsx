@@ -98,7 +98,7 @@ const VolunteerEventHistoryScreen = ({ route }: any) => {
               marginTop: h2dp(0.5),
             }}
           >
-            Approved
+            {localized.t("Approved")}
           </Text>
         </View>
       ) : status === "pending" ? (
@@ -120,7 +120,7 @@ const VolunteerEventHistoryScreen = ({ route }: any) => {
               marginTop: h2dp(0.5),
             }}
           >
-            Pending
+            {localized.t("Pending")}
           </Text>
         </View>
       ) : (
@@ -139,7 +139,7 @@ const VolunteerEventHistoryScreen = ({ route }: any) => {
               marginTop: h2dp(0.5),
             }}
           >
-            Rejected
+            {localized.t("Rejected")}
           </Text>
         </View>
       )}
@@ -209,14 +209,14 @@ const VolunteerEventHistoryScreen = ({ route }: any) => {
                   onPress={() => navigation.goBack()}
                 />
                 <View style={styles.item}>
-                  <Text style={styles.itemText}>Event History</Text>
+                  <Text style={styles.itemText}>{localized.t("Event History")}</Text>
                 </View>
                   <BurgerIcon />
               </View>
               <View>
                 <View style={styles.itemFilter}>
-                  <Text style={styles.itemFilterText}>All History</Text>
-                  <Text style={styles.itemFilterText}> Filter</Text>
+                  <Text style={styles.itemFilterText}>{localized.t("All History")}</Text>
+                  <Text style={styles.itemFilterText}>{localized.t("Filter")}</Text>
                 </View>
                 <ScrollView style={{ flex: 1 }}>
                   <FlatList

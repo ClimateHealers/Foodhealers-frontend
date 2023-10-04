@@ -20,6 +20,7 @@ import {
 } from "react-native-responsive-screen";
 import { useNavigation } from "@react-navigation/native";
 import { getLocation } from "../Components/getCurrentLocation";
+import { localized } from "../locales/localization";
 // import ViolationFlatlist from "./components/ViolationFlatlist";
 // import { elogLogger } from "../util/helper/logger";
 
@@ -62,7 +63,7 @@ export default function NotificationScreen() {
                   color: "white",
                 }}
               >
-                Coming Soon!
+                `${localized.t("Coming soon!")}`!
               </Text>
             </View>
           }

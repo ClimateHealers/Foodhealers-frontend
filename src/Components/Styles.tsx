@@ -247,7 +247,8 @@ export const styles = StyleSheet.create({
   horizonatalView: {
     display: "flex",
     flexDirection: "row",
-    // justifyContent: "space-between",
+    // marginHorizontalAlignment: "4%",
+    // justifyContent: "center",
     // alignItems: "flex-end",
     // marginTop: h2dp(2),
   },
@@ -326,7 +327,7 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "rgba(0, 0, 0, 0.5)",
-    paddingHorizontal: w2dp(2),
+    paddingHorizontal: w2dp(4),
   },
   modalContent: {
     backgroundColor: "rgba(0,0,0,0.5)",

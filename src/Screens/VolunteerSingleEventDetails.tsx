@@ -89,6 +89,7 @@ const VolunteerSingleEventDetails = ({ route }: any) => {
       console.error(error);
     }
   };
+  const volunteerNumber = eventVolunteersData?.length ? eventVolunteersData?.length : 0
 
   const startTime = eventDetails?.eventStartDate;
   const formattedStartTime = moment(startTime).format("h:mm a");
@@ -117,7 +118,7 @@ const VolunteerSingleEventDetails = ({ route }: any) => {
     try {
       const result = await Share.share({
         // message: `${eventDetails?.additionalInfo}`,
-        message: `Coming soon!`,
+        message: `${localized.t("Coming soon!")}`,
       });
       if (result.action === Share.sharedAction) {
         if (result.activityType) {
@@ -184,7 +185,7 @@ const VolunteerSingleEventDetails = ({ route }: any) => {
                     }}
                   >
                     <Text style={styles.boldText}>
-                      From:
+                    {localized.t("From")}:
                       <Text style={styles.cardText}>
                         {" "}
                         {moment(eventDetails?.eventStartDate).format(
@@ -204,7 +205,7 @@ const VolunteerSingleEventDetails = ({ route }: any) => {
                   </View>
                   <View style={{ marginBottom: 20, paddingHorizontal: 10 }}>
                     <Text style={styles.boldText}>
-                      To:{" "}
+                    {localized.t("To")}:{" "}
                       <Text style={styles.cardText}>
                         {moment(eventDetails?.eventEndDate).format(
                           "ddd, MMM D"
@@ -223,7 +224,7 @@ const VolunteerSingleEventDetails = ({ route }: any) => {
                   </View>
                   <View style={{ marginBottom: 20, paddingHorizontal: 10 }}>
                     <Text style={styles.boldText}>
-                      Location:{" "}
+                    {localized.t("Location")}:{" "}
                       <Text style={styles.cardText}>
                         {eventDetails.address}
                       </Text>
@@ -244,7 +245,7 @@ const VolunteerSingleEventDetails = ({ route }: any) => {
                     }}
                   >
                     <Text style={styles.boldText}>
-                      What:{" "}
+                    {localized.t("What")}:{" "}
                       <Text style={styles.cardText}>
                         {eventDetails?.additionalInfo}
                       </Text>
@@ -265,7 +266,7 @@ const VolunteerSingleEventDetails = ({ route }: any) => {
                     }}
                   >
                     <Text style={styles.boldText}>
-                      Volunteer's Required:{" "}
+                    {localized.t("Volunteer's Required")}:{" "}
                       <Text style={styles.cardText}>
                         {eventDetails?.requiredVolunteers}
                       </Text>
@@ -292,7 +293,7 @@ const VolunteerSingleEventDetails = ({ route }: any) => {
                   >
                     <PrimaryButton
                       disabled={expired}
-                      title={expired ? "Event Expired" : "Get directions"}
+                      title={expired ? `${localized.t("Event Expired")}` : `${localized.t("Get directions")}`}
                       // title={"Get directions"}
                       onPress={navigationHandler}
                       buttonStyle={styles.buttonStyles}
@@ -308,7 +309,7 @@ const VolunteerSingleEventDetails = ({ route }: any) => {
                           alignSelf: "center",
                         }}
                       >
-                        Share
+                        {localized.t("Share")}
                       </Text>
                     </TouchableOpacity>
                   </View>
@@ -322,14 +323,14 @@ const VolunteerSingleEventDetails = ({ route }: any) => {
                   >
                     <PrimaryButton
                       disabled={expired}
-                      title={expired ? "Event Expired" : `Volunteers (${eventVolunteersData?.length})`}
-                      onPress={() =>
-                        navigation.navigate("AllVolunteersScreen", {
-                          eventId: eventDetails?.id,
-                          title: "Volunteer at an event",
-                          itemTypeId: 3,
-                          eventVolunteersData: eventVolunteersData,
-                        })
+                      title={expired ? "Event Expired" : `Volunteers (${volunteerNumber})`}
+                      onPress={() =>{volunteerNumber? navigation.navigate("AllVolunteersScreen", {
+                        eventId: eventDetails?.id,
+                        title: `${localized.t("Volunteer at an event")}`,
+                        itemTypeId: 3,
+                        eventVolunteersData: eventVolunteersData,
+                      }): null}
+                        
                       }
                       buttonStyle={styles.buttonStyles}
                       titleStyle={styles.titleStyle}
@@ -344,7 +345,7 @@ const VolunteerSingleEventDetails = ({ route }: any) => {
                           alignSelf: "center",
                         }}
                       >
-                        Share
+                        {localized.t("Share")}
                       </Text>
                     </TouchableOpacity>
                     {/* {!expired && (

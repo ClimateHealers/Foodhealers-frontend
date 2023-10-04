@@ -22,6 +22,7 @@ import { getLocation } from "../Components/getCurrentLocation";
 import moment from "moment";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
 import BurgerIcon from "../Components/BurgerIcon";
+import { localized } from "../locales/localization";
 
 const CalendarEventScreen = ({ route }: any) => {
   const navigation: any = useNavigation();
@@ -93,7 +94,7 @@ const CalendarEventScreen = ({ route }: any) => {
                   />
             <View style={styles.item}>
               {/* <Text style={styles.itemText}>{localized.t("Find Food")}</Text> */}
-              <Text style={styles.itemText}>Food Events</Text>
+              <Text style={styles.itemText}>{localized.t("Food Events")}</Text>
             </View>
             <BurgerIcon/>
           </View>
@@ -131,7 +132,7 @@ const CalendarEventScreen = ({ route }: any) => {
                 fontSize: h2dp(2),
               }}
             >
-              Events
+              {localized.t("Events")}
             </Text>
           </View>
           <ScrollView>

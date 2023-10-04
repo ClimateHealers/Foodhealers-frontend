@@ -26,6 +26,7 @@ import { getLocation } from "../Components/getCurrentLocation";
 import PrimaryButton from "../Components/PrimaryButton";
 import { removeAuthData } from "../redux/actions/authAction";
 import { logOut } from "../redux/reducers/authreducers";
+import { localized } from "../locales/localization";
 
 
 const ProfileScreen = () => {
@@ -110,7 +111,7 @@ const ProfileScreen = () => {
                   lineHeight: 27.24,
                 }}
               >
-                Home
+                {localized.t("Home")}
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -124,14 +125,14 @@ const ProfileScreen = () => {
                   lineHeight: 27.24,
                 }}
               >
-                Find Food
+                
               </Text>
             </TouchableOpacity>
           </View>
         )}
         <View style={styles.row}>
           <View style={styles.item}>
-            <Text style={styles.itemText}>{"Account"}</Text>
+            <Text style={styles.itemText}>{localized.t("Acoount")}</Text>
           </View>
           <TouchableOpacity
           onPress={() => {
@@ -163,7 +164,7 @@ const ProfileScreen = () => {
           <View>
             <View
             >
-              <Text style={styles.profileDetailsText1}>Personal Info</Text>
+              <Text style={styles.profileDetailsText1}>{localized.t("Personal Info")}</Text>
               <View style={styles.rowItem}>
                 <View
                   style={{
@@ -183,7 +184,7 @@ const ProfileScreen = () => {
                     name="account"
                   />
                   <View style={{ justifyContent: "center" }}>
-                    <Text style={styles.profileDetailsText3}>Name</Text>
+                    <Text style={styles.profileDetailsText3}>{localized.t("Name")}</Text>
                     <Text
                       style={[
                         styles.profileDetailsText2,
@@ -226,7 +227,7 @@ const ProfileScreen = () => {
                     name="email"
                   />
                   <View style={{ justifyContent: "center" }}>
-                    <Text style={styles.profileDetailsText3}>Email</Text>
+                    <Text style={styles.profileDetailsText3}>{localized.t("Email")}</Text>
                     <Text
                       style={[
                         styles.profileDetailsText2,
@@ -257,7 +258,7 @@ const ProfileScreen = () => {
             <View style={[styles.logout, { alignSelf: "center" }]}>
   
               <PrimaryButton
-                title={"Logout"}
+                title={localized.t("Logout")}
                 onPress={logout}
                 buttonStyle={styles.buttonStyles}
                 titleStyle={styles.titleStyle}
@@ -267,10 +268,10 @@ const ProfileScreen = () => {
               <TouchableOpacity
                 style={styles.deleteProfileTextContainer}
                 onPress={() => navigation.navigate("DeleteAccount")}>
-                <Text style={styles.deleteProfileText}>Delete my Account</Text>
+                <Text style={styles.deleteProfileText}>{localized.t("Delete my Account")}</Text>
               </TouchableOpacity>
             </View>
-            <Text style={styles.appVersion}>App version {appVersion}</Text>
+            <Text style={styles.appVersion}>{localized.t("App version")} {appVersion}</Text>
           </View>
         </ScrollView>
       </SafeAreaView>

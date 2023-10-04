@@ -13,7 +13,7 @@ import {
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  View
+  View,
 } from "react-native";
 import { Divider } from "react-native-paper";
 import {
@@ -70,7 +70,7 @@ const EventDetailsScreen = ({ route }: any) => {
     try {
       const result = await Share.share({
         // message: `${eventDetails?.additionalInfo}`,
-        message: `Coming soon!`,
+        message: `${localized.t("Coming soon!")}`,
       });
       if (result.action === Share.sharedAction) {
         if (result.activityType) {
@@ -139,7 +139,7 @@ const EventDetailsScreen = ({ route }: any) => {
                     }}
                   >
                     <Text style={styles.boldText}>
-                      From:{" "}
+                      {localized.t("From")}:{" "}
                       <Text style={styles.cardText}>
                         {moment(eventDetails?.eventStartDate).format(
                           "ddd, MMM D"
@@ -158,7 +158,7 @@ const EventDetailsScreen = ({ route }: any) => {
                   </View>
                   <View style={{ marginBottom: 20, paddingHorizontal: 10 }}>
                     <Text style={styles.boldText}>
-                      To:{" "}
+                      {localized.t("To")}:{" "}
                       <Text style={styles.cardText}>
                         {moment(eventDetails?.eventEndDate).format(
                           "ddd, MMM D"
@@ -177,7 +177,7 @@ const EventDetailsScreen = ({ route }: any) => {
                   </View>
                   <View style={{ marginBottom: 20, paddingHorizontal: 10 }}>
                     <Text style={styles.boldText}>
-                      Location:{" "}
+                      {localized.t("Location")}:{" "}
                       <Text style={styles.cardText}>
                         {eventDetails.address?.fullAddress}
                       </Text>
@@ -193,7 +193,7 @@ const EventDetailsScreen = ({ route }: any) => {
                   </View>
                   <View style={{ marginBottom: 10, paddingHorizontal: 10 }}>
                     <Text style={styles.boldText}>
-                      What:{" "}
+                      {localized.t("What")}:{" "}
                       <Text style={styles.cardText}>
                         {eventDetails?.additionalInfo}
                       </Text>
@@ -209,7 +209,7 @@ const EventDetailsScreen = ({ route }: any) => {
                   </View>
                   <View style={{ marginBottom: 10, paddingHorizontal: 10 }}>
                     <Text style={styles.boldText}>
-                      Volunteers Required:{" "}
+                      {localized.t("Volunteer's Required")}:{" "}
                       <Text style={styles.cardText}>
                         {eventDetails?.volunteers}
                       </Text>
@@ -234,7 +234,7 @@ const EventDetailsScreen = ({ route }: any) => {
               >
                 <PrimaryButton
                   disabled={expired}
-                  title={expired ? "Event Expired" : "Get directions"}
+                  title={expired ? `${localized.t("Event Expired")}` : `${localized.t("Get directions")}`}
                   onPress={navigationHandler}
                   buttonStyle={styles.buttonStyles}
                   titleStyle={styles.titleStyle}
@@ -250,7 +250,7 @@ const EventDetailsScreen = ({ route }: any) => {
                         textDecorationLine: "underline",
                       }}
                     >
-                      Share
+                      {localized.t("Share")}
                     </Text>
                   </TouchableOpacity>
                 )}

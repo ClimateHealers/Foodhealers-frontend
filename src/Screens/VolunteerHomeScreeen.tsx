@@ -25,6 +25,7 @@ import { getLocation } from "../Components/getCurrentLocation";
 import { VeganRecipesCategories } from "../redux/actions/veganRecipes";
 import { VeganRecipesCategory } from "../redux/actions/veganRecipesCategory";
 import { localized } from "../locales/localization";
+import { myDonations } from "../redux/actions/myDonations";
 
 const VolunteerHomeScreen = () => {
   const [langOpen, setlangOpen] = useState(false);
@@ -160,13 +161,14 @@ const VolunteerHomeScreen = () => {
                     keyboardShouldPersistTaps="always"
                     showsHorizontalScrollIndicator={false}
                     style={{ marginBottom: h2dp(3) }}
-                  >
+                  ><TouchableOpacity activeOpacity={1}>
                     <View style={styles.horizonatalView}>
                       {allEvents?.map((event: any) => (
                         <View
                           key={event?.id}
                           style={{
-                            // marginLeft: w2dp(1),
+                            marginRight: w2dp(4),
+                            // justifyContent: "center"
                             position: "relative",
                           }}
                         >
@@ -191,8 +193,7 @@ const VolunteerHomeScreen = () => {
                                     lat: event?.address?.lat,
                                     long: event?.address?.lng,
                                     eventPhoto: event?.eventPhoto,
-                                    requiredVolunteers:
-                                      event?.requiredVolunteers,
+                                    requiredVolunteers: event?.requiredVolunteers,
                                     additionalInfo: event?.additionalInfo,
                                   },
                                   //     }
@@ -211,6 +212,7 @@ const VolunteerHomeScreen = () => {
                         </View>
                       ))}
                     </View>
+                    </TouchableOpacity>
                   </ScrollView>
                   {recipeData && (
                     <View>

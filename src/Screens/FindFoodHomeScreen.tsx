@@ -183,7 +183,7 @@ const FindFoodHomeScreen = ({ route }: any) => {
                     latitudeDelta : LATITUDE_DELTA,
                     longitudeDelta: LONGITUDE_DELTA,
                   }}
-                  title={"selected location"}
+                  title={localized.t("selected location")}
                 >
                   <Image
                     source={require("../../assets/currentLocationPin.png")}
@@ -248,7 +248,7 @@ const FindFoodHomeScreen = ({ route }: any) => {
                       fontWeight: "500",
                     }}
                   >
-                    Food Events Calendar
+                    {localized.t("Food Events Calendar")}
                   </Text>
                 </View>
               </TouchableOpacity>
@@ -271,7 +271,7 @@ const FindFoodHomeScreen = ({ route }: any) => {
                       fontWeight: "500",
                     }}
                   >
-                    Vegan Recipes
+                    {localized.t("Vegan Recipes")}
                   </Text>
                 </View>
               </TouchableOpacity>

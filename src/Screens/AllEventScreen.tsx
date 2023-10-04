@@ -16,6 +16,7 @@ import { styles } from "../Components/Styles";
 import { getLocation } from "../Components/getCurrentLocation";
 import { allEvents } from "../redux/actions/allEvents";
 import { myEvents } from "../redux/actions/myEvents";
+import { localized } from "../locales/localization";
 
 const AllEventScreen = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -113,7 +114,7 @@ const AllEventScreen = () => {
               marginTop: h2dp(0.5),
             }}
           >
-            Approved
+            {localized.t("Approved")}
           </Text>
         </View>
       ) : status === "pending" ? (
@@ -135,7 +136,7 @@ const AllEventScreen = () => {
               marginTop: h2dp(0.5),
             }}
           >
-            Pending
+            {localized.t("Pending")}
           </Text>
         </View>
       ) : (
@@ -154,7 +155,7 @@ const AllEventScreen = () => {
               marginTop: h2dp(0.5),
             }}
           >
-            Rejected
+            {localized.t("Rejected")}
           </Text>
         </View>
       )}
@@ -227,63 +228,68 @@ const AllEventScreen = () => {
       >
         <SafeAreaView>
           <ScrollView keyboardShouldPersistTaps="handled">
-              <View style={styles.container}>
-                <FoodhealersHeader />
-                <View style={styles.root}>
-                  <Ionicons
-                    name="chevron-back"
-                    size={32}
-                    color="white"
-                    onPress={() => navigation.goBack()}
-                  />
-                  <View style={styles.item}>
-                    <Text style={styles.itemText}>{"See All Events"}</Text>
-                  </View>
-                  <BurgerIcon />
+            <View style={styles.container}>
+              <FoodhealersHeader />
+              <View style={styles.root}>
+                <Ionicons
+                  name="chevron-back"
+                  size={32}
+                  color="white"
+                  onPress={() => navigation.goBack()}
+                />
+                <View style={styles.item}>
+                  <Text style={styles.itemText}>
+                    {localized.t("See All Events")}
+                  </Text>
                 </View>
-                <View style={styles.toggle}>
-                  <SegmentedControlTab
-                    values={["My Events", "All Events"]}
-                    selectedIndex={selectedIndex}
-                    tabsContainerStyle={{
-                      width: w2dp(50),
-                      height: h2dp(6),
-                    }}
-                    tabTextStyle={{
-                      color: "black",
-                      fontWeight: "400",
-                    }}
-                    tabStyle={styles.tabStyle}
-                    activeTabStyle={{
-                      backgroundColor: "#EDC258",
-                    }}
-                    activeTabTextStyle={{ color: "black" }}
-                    onTabPress={handleSingleIndexSelect}
-                  />
-                </View>
-                <View style={{ flex: 1 }}>
-                  <FlatList
-                    data={eventData}
-                    renderItem={({ item }: any) => (
-                      <Item
-                        id={item.id}
-                        additionalInfo={item?.additionalInfo}
-                        name={item?.name}
-                        address={item?.address?.fullAddress}
-                        lat={item.address?.lat}
-                        long={item.address?.lng}
-                        eventStartDate={item?.eventStartDate}
-                        eventEndDate={item?.eventEndDate}
-                        verified={item?.verified}
-                        status={item?.status}
-                        eventPhoto={item?.eventPhoto}
-                        requiredVolunteers={item?.requiredVolunteers}
-                      />
-                    )}
-                    keyExtractor={(item: any) => item?.id}
-                  />
-                </View>
+                <BurgerIcon />
               </View>
+              <View style={styles.toggle}>
+                <SegmentedControlTab
+                  values={[
+                    `${localized.t("My Events")}`,
+                    `${localized.t("All Events")}`,
+                  ]}
+                  selectedIndex={selectedIndex}
+                  tabsContainerStyle={{
+                    width: w2dp(50),
+                    height: h2dp(6),
+                  }}
+                  tabTextStyle={{
+                    color: "black",
+                    fontWeight: "400",
+                  }}
+                  tabStyle={styles.tabStyle}
+                  activeTabStyle={{
+                    backgroundColor: "#EDC258",
+                  }}
+                  activeTabTextStyle={{ color: "black" }}
+                  onTabPress={handleSingleIndexSelect}
+                />
+              </View>
+              <View style={{ flex: 1 }}>
+                <FlatList
+                  data={eventData}
+                  renderItem={({ item }: any) => (
+                    <Item
+                      id={item.id}
+                      additionalInfo={item?.additionalInfo}
+                      name={item?.name}
+                      address={item?.address?.fullAddress}
+                      lat={item.address?.lat}
+                      long={item.address?.lng}
+                      eventStartDate={item?.eventStartDate}
+                      eventEndDate={item?.eventEndDate}
+                      verified={item?.verified}
+                      status={item?.status}
+                      eventPhoto={item?.eventPhoto}
+                      requiredVolunteers={item?.requiredVolunteers}
+                    />
+                  )}
+                  keyExtractor={(item: any) => item?.id}
+                />
+              </View>
+            </View>
           </ScrollView>
         </SafeAreaView>
       </LinearGradient>

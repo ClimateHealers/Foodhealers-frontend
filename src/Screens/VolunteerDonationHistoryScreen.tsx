@@ -110,7 +110,7 @@ const VolunteerDonationHistoryScreen = ({ route }: any) => {
               marginTop: h2dp(0.5),
             }}
           >
-            Approved
+            {localized.t("Approved")}
           </Text>
         </View>
       ) : status === "pending" ? (
@@ -132,7 +132,7 @@ const VolunteerDonationHistoryScreen = ({ route }: any) => {
               marginTop: h2dp(0.5),
             }}
           >
-            Pending
+            {localized.t("Pending")}
           </Text>
         </View>
       ) : (
@@ -151,7 +151,7 @@ const VolunteerDonationHistoryScreen = ({ route }: any) => {
               marginTop: h2dp(0.5),
             }}
           >
-            Rejected
+            {localized.t("Rejected")}
           </Text>
         </View>
       )}

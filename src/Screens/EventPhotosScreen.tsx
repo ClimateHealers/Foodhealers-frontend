@@ -9,14 +9,12 @@ import {
   ScrollView,
   Text,
   TouchableWithoutFeedback,
-  View
+  View,
 } from "react-native";
 
 import { Button } from "react-native-elements";
 import Spinner from "react-native-loading-spinner-overlay";
-import {
-  heightPercentageToDP as h2dp
-} from "react-native-responsive-screen";
+import { heightPercentageToDP as h2dp } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
@@ -27,6 +25,7 @@ import { getLocation } from "../Components/getCurrentLocation";
 import { removeAuthData } from "../redux/actions/authAction";
 import { postEvent } from "../redux/actions/postEventaction";
 import { logOut } from "../redux/reducers/authreducers";
+import { localized } from "../locales/localization";
 
 const EventPhotosScreen = ({ route }: any) => {
   const { eventPhotos, eventFormData, singlePhoto } = route.params;
@@ -102,15 +101,15 @@ const EventPhotosScreen = ({ route }: any) => {
     try {
       setLoading(true);
       const response = await dispatch(postEvent(formData as any) as any);
-      console.log("responseresponse", response)
-      if (response?.payload?.success === true){
+      console.log("responseresponse", response);
+      if (response?.payload?.success === true) {
         setLoading(false);
         setShowDialog(false);
         navigation.navigate("AllEventScreen", { fromEventPhotosScreen: true });
-      }else{
+      } else {
         setLoading(false);
         setShowDialog(false);
-        console.log("Error in posteventAPI", response?.payload)
+        console.log("Error in posteventAPI", response?.payload);
       }
     } catch (error) {
       console.log("firstfirstfirstfirst", error);
@@ -135,58 +134,52 @@ const EventPhotosScreen = ({ route }: any) => {
                   onPress={() => navigation.goBack()}
                 />
                 <View style={styles.item}>
-                  <Text style={styles.itemText}>Post an Event</Text>
+                  <Text style={styles.itemText}>{localized.t("Post an Event")}</Text>
                 </View>
-                  <BurgerIcon />
+                <BurgerIcon />
               </View>
-                <Modal
-                  visible={showDialog}
-                  onRequestClose={() =>
-                    navigation.navigate("EventPhotosScreen")
-                  }
-                  transparent
-                >
-                  <View style={styles.modalContainer}>
-                    <View style={styles.modalContent}>
-                      <Text style={styles.HeaderText}>
-                        Submitted your event
-                      </Text>
-                      <Text style={styles.modalText}>
-                        Your event "{eventFormData?.eventName}" has been
-                        submitted, awaiting approval from Admin. If you wish to
-                        change event details, please click on Resubmit
-                      </Text>
-                      <View style={styles.buttonContainer}>
-                        <Button
-                          title="Resubmit"
-                          type="solid"
-                          buttonStyle={{
-                            backgroundColor: "green",
-                            paddingHorizontal: 20,
-                            paddingVertical: 10,
-                          }}
-                          titleStyle={{
-                            fontSize: 20,
-                          }}
-                          onPress={() => navigation.navigate("PostEvent")}
-                        />
-                        <Button
-                          title="Next"
-                          type="solid"
-                          buttonStyle={{
-                            backgroundColor: "green",
-                            paddingHorizontal: 20,
-                            paddingVertical: 10,
-                          }}
-                          titleStyle={{
-                            fontSize: 20,
-                          }}
-                          onPress={naivgateToAllEvents}
-                        />
-                      </View>
+              <Modal
+                visible={showDialog}
+                onRequestClose={() => navigation.navigate("EventPhotosScreen")}
+                transparent
+              >
+                <View style={styles.modalContainer}>
+                  <View style={styles.modalContent}>
+                    <Text style={styles.HeaderText}>{localized.t("Submitted your event")}</Text>
+                    <Text style={styles.modalText}>
+                      {localized.t("Your event")} "{eventFormData?.eventName}" {localized.t("has been submitted, awaiting approval from Admin")}. {localized.t("If you wish to change event details, please click on Resubmit")}
+                    </Text>
+                    <View style={styles.buttonContainer}>
+                      <Button
+                        title={localized.t("Resubmit")}
+                        type="solid"
+                        buttonStyle={{
+                          backgroundColor: "green",
+                          paddingHorizontal: 20,
+                          paddingVertical: 10,
+                        }}
+                        titleStyle={{
+                          fontSize: 20,
+                        }}
+                        onPress={() => navigation.navigate("PostEvent")}
+                      />
+                      <Button
+                        title={localized.t("Next")}
+                        type="solid"
+                        buttonStyle={{
+                          backgroundColor: "green",
+                          paddingHorizontal: 20,
+                          paddingVertical: 10,
+                        }}
+                        titleStyle={{
+                          fontSize: 20,
+                        }}
+                        onPress={naivgateToAllEvents}
+                      />
                     </View>
                   </View>
-                </Modal>
+                </View>
+              </Modal>
               <View
                 style={{
                   display: "flex",
@@ -195,18 +188,26 @@ const EventPhotosScreen = ({ route }: any) => {
                 }}
               >
                 <Text style={{ fontSize: 25, color: "white" }}>
-                  Selected Photos
+                  {localized.t("Selected Photos")}
                 </Text>
               </View>
 
-              <View style={[styles.card,{
-                height: h2dp(40),
-                borderRadius: h2dp(1),
-                alignItems: "center",
-                marginTop: h2dp(2),
-              }]}>
+              <View
+                style={[
+                  styles.card,
+                  {
+                    height: h2dp(45),
+                    borderRadius: h2dp(1),
+                    alignItems: "center",
+                    marginTop: h2dp(2),
+                  },
+                ]}
+              >
                 {eventPhotos.map((imageUri: any, index: any) => (
-                  <View style={{ marginTop: h2dp(3), justifyContent: "center", }} key={index}>
+                  <View
+                    style={{ marginTop: h2dp(3), justifyContent: "center" }}
+                    key={index}
+                  >
                     <Image
                       key={index}
                       source={{ uri: imageUri }}
@@ -218,14 +219,14 @@ const EventPhotosScreen = ({ route }: any) => {
               <View>
                 <Spinner
                   visible={loading}
-                  textContent="Posting event"
+                  textContent={localized.t("Posting event")}
                   cancelable={false}
                   textStyle={{
                     color: "white",
                   }}
                 />
                 <PrimaryButton
-                  title={"Submit"}
+                  title={localized.t("Submit")}
                   buttonStyle={styles.buttonStyles}
                   titleStyle={styles.titleStyle}
                   onPress={submitEvent}

@@ -22,13 +22,13 @@ import PrimaryButton from "../Components/PrimaryButton";
 import { localized } from "../locales/localization";
 import { myTheme } from "../myTheme";
 import { setLanguage } from "../redux/reducers/langReducer";
+import { myDonations } from "../redux/actions/myDonations";
+import { volunteerHistory } from "../redux/actions/volunteerHistoryAction";
 
 const HomeScreen = ({ route }: any) => {
   const userDetails = useSelector((state: any) => state.auth);
-
-  const languageName = useSelector((state: any) => state.language);
-
   const { data } = userDetails;
+  const languageName = useSelector((state: any) => state.language);
 
   const dispatch = useDispatch();
 
@@ -36,6 +36,8 @@ const HomeScreen = ({ route }: any) => {
 
   const [loc, setLoc] = useState(false);
   const [langOpen, setlangOpen] = useState(false);
+  const [donationData, setDonationData] = useState("");
+  const [volunteerData, setVolunteerData] = useState("");
   const [selectedLanguage, setSelectedLanguage] = useState(localized.locale);
   const [lat, setLat] = useState(0);
   const [long, setLong] = useState(0);
@@ -78,7 +80,19 @@ const HomeScreen = ({ route }: any) => {
       }
     };
     getUserLocation();
+    fetchingDonationData();
+    fetchingvolunteerHistory();
   }, []);
+
+  const fetchingDonationData = async () => {
+    const response = await dispatch(myDonations({} as any) as any);
+    setDonationData(response?.payload?.donationList);
+  };
+
+  const fetchingvolunteerHistory = async () => {
+    const response = await dispatch(volunteerHistory({} as any) as any);
+    setVolunteerData(response?.payload?.volunteerHistory);
+  };
 
   const navigateToMapScreen = () => {
     navigation.navigate("MapScreen", {
@@ -105,7 +119,7 @@ const HomeScreen = ({ route }: any) => {
     } else {
       Alert.alert(
         `Registration Required !`,
-        "Only a registered user can post an event. Please login.",
+        "Only a registered user can Post an Event. Please login.",
         [
           {
             text: "Login",
@@ -190,7 +204,11 @@ const HomeScreen = ({ route }: any) => {
               ]}
               onPress={() => {
                 if (data.isAuthenticated) {
-                  navigation.navigate("IntroSlider");
+                  if (volunteerData.length > 0 || donationData.length > 0) {
+                    navigation.navigate("VolunteerHomeScreen");
+                  } else {
+                    navigation.navigate("IntroSlider");
+                  }
                 } else {
                   Alert.alert("Alert!", "Please login", [
                     {

@@ -134,7 +134,7 @@ useEffect(()=>{
                     lineHeight: 27.24,
                   }}
                 >
-                  Home
+                  {localized.t("Home")}
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
@@ -148,7 +148,7 @@ useEffect(()=>{
                     lineHeight: 27.24,
                   }}
                 >
-                  Find Food
+                  {localized.t("Home")}Find Food
                 </Text>
               </TouchableOpacity>
             </View>
@@ -241,11 +241,11 @@ useEffect(()=>{
                   console.error("Error signing in:", errorCode, errorMessage);
                   if (errorCode === "auth/email-already-in-use") {
                     Alert.alert(
-                      "Email already in use",
-                      "Please use a different email or sign in instead.",
+                      `${localized.t("Email already in use")}`,
+                      `${localized.t("Please use a different email or sign in instead.")}`,
                       [
                         {
-                          text: "Ok",
+                          text: `${localized.t("Ok")}`,
                           style: "cancel",
                         },
                       ],
@@ -345,7 +345,7 @@ useEffect(()=>{
                     marginTop: h2dp(9),
                   }}
                 >
-                  Already have an account ?
+                  {localized.t("Already have an account")} ?
                 </Text>
                 <TouchableOpacity
                   onPress={() => navigation.navigate("LoginScreen")}

@@ -23,6 +23,7 @@ import { getLocation } from "../Components/getCurrentLocation";
 import { styles } from "../Components/Styles";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
 import BurgerIcon from "../Components/BurgerIcon";
+import { localized } from "../locales/localization";
 
 const RecipesHomeScreen = () => {
   const [langOpen, setlangOpen] = useState(false);
@@ -84,7 +85,7 @@ const RecipesHomeScreen = () => {
               />
               <View style={styles.item}>
                 {/* <Text style={styles.itemText}>{localized.t("Find Food")}</Text> */}
-                <Text style={styles.itemText}>Recipes</Text>
+                <Text style={styles.itemText}>{localized.t("Recipes")}</Text>
               </View>
               <BurgerIcon />
             </View>

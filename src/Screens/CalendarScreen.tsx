@@ -23,6 +23,7 @@ import { calendarEvent } from "../redux/actions/calendarEventAction";
 import { styles } from "../Components/Styles";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
 import BurgerIcon from "../Components/BurgerIcon";
+import { localized } from "../locales/localization";
 
 const CalendarScreen = ({ route }: any) => {
   const navigation: any = useNavigation();
@@ -86,7 +87,7 @@ const CalendarScreen = ({ route }: any) => {
                 />
                 <View style={styles.item}>
                   {/* <Text style={styles.itemText}>{localized.t("Find Food")}</Text> */}
-                  <Text style={styles.itemText}>My calendar</Text>
+                  <Text style={styles.itemText}>{localized.t("My Calendar")}</Text>
                 </View>
                   <BurgerIcon />
               </View>

@@ -390,7 +390,7 @@ const MapScreen = ({ route }: any) => {
                     color: "white",
                   }}
                 >
-                  No events found
+                  {localized.t("No events found")}
                 </Text>
               ) : (
                 <Text
@@ -402,7 +402,7 @@ const MapScreen = ({ route }: any) => {
                     opacity: 0,
                   }}
                 >
-                  No Events Found
+                  {localized.t("No events found")}
                 </Text>
               )}
 

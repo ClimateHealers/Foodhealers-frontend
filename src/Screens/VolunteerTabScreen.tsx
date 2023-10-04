@@ -17,6 +17,7 @@ import {
 import { useDispatch } from "react-redux";
 import { styles } from "../Components/Styles";
 import { allEvents } from "../redux/actions/allEvents";
+import { localized } from "../locales/localization";
 
 const VolunteerTabScreen = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -73,7 +74,7 @@ const VolunteerTabScreen = () => {
                 marginTop: h2dp(0.5),
               }}
             >
-              Approved
+              {localized.t("Approved")}
             </Text>
           </View>
         ) : status === "pending" ? (
@@ -95,7 +96,7 @@ const VolunteerTabScreen = () => {
                 marginTop: h2dp(0.5),
               }}
             >
-              Pending
+              {localized.t("Pending")}
             </Text>
           </View>
         ) : (
@@ -114,7 +115,7 @@ const VolunteerTabScreen = () => {
                 marginTop: h2dp(0.5),
               }}
             >
-              Rejected
+              {localized.t("Rejected")}
             </Text>
           </View>
         )}

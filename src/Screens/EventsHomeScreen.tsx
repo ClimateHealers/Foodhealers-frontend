@@ -9,7 +9,7 @@ import {
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  View
+  View,
 } from "react-native";
 import { Image } from "react-native-elements";
 import { heightPercentageToDP as h2dp } from "react-native-responsive-screen";
@@ -31,7 +31,7 @@ const EventsHomeScreen = () => {
     { id: 6, label: "Mandarin", value: "ma" },
     { id: 7, label: "Punjabi", value: "pu" },
     { id: 8, label: "Spanish", value: "es" },
-  ])
+  ]);
 
   const handlePressOutside = () => {
     setlangOpen(false);
@@ -66,7 +66,7 @@ const EventsHomeScreen = () => {
                 />
                 <View style={styles.item}>
                   {/* <Text style={styles.itemText}>{localized.t("Find Food")}</Text> */}
-                  <Text style={styles.itemText}>Events</Text>
+                  <Text style={styles.itemText}>{localized.t("Events")}</Text>
                 </View>
                 <BurgerIcon />
               </View>
@@ -79,7 +79,7 @@ const EventsHomeScreen = () => {
                   <TouchableOpacity
                     onPress={() => navigation.navigate("PostEvent")}
                   >
-                    <Text style={styles.textStyle}>Post an event</Text>
+                    <Text style={styles.textStyle}>{localized.t("Post an Event")}</Text>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -92,7 +92,7 @@ const EventsHomeScreen = () => {
                   <TouchableOpacity
                     onPress={() => navigation.navigate("AllEventScreen")}
                   >
-                    <Text style={styles.textStyle}>See all events</Text>
+                    <Text style={styles.textStyle}>{localized.t("See All Events")}</Text>
                   </TouchableOpacity>
                 </View>
               </View>

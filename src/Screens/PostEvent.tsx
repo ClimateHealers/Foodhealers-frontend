@@ -204,7 +204,9 @@ const PostEvent = () => {
                   onPress={() => navigation.goBack()}
                 />
                 <View style={styles.item}>
-                  <Text style={styles.itemText}>Post an Event</Text>
+                  <Text style={styles.itemText}>
+                    {localized.t("Post an Event")}
+                  </Text>
                 </View>
                 <BurgerIcon />
               </View>
@@ -277,14 +279,14 @@ const PostEvent = () => {
                       onBlur={handleBlur("eventName")}
                       value={values.eventName}
                       // placeholder={localized.t("Email")}
-                      placeholder={"Event name"}
+                      placeholder={localized.t("Event name")}
                       placeholderTextColor={"black"}
                       style={styles.textInput}
                     />
                     <Text style={styles.inputError}>{errors.eventName}</Text>
 
                     <GooglePlacesAutocomplete
-                      placeholder="Address"
+                      placeholder={localized.t("Address")}
                       fetchDetails={true}
                       keepResultsAfterBlur={true}
                       listViewDisplayed="auto"
@@ -367,7 +369,7 @@ const PostEvent = () => {
                                 marginLeft: 15,
                               }}
                             >
-                              Start Date
+                              {localized.t("Start Date")}
                             </Text>
                             <Text
                               style={{
@@ -419,7 +421,7 @@ const PostEvent = () => {
                                 marginLeft: 15,
                               }}
                             >
-                              Start Time
+                              {localized.t("Start Time")}
                             </Text>
                             <Text
                               style={{
@@ -458,7 +460,7 @@ const PostEvent = () => {
                                 marginLeft: 15,
                               }}
                             >
-                              End Date
+                              {localized.t("End Date")}
                             </Text>
                             <Text
                               style={{
@@ -512,7 +514,7 @@ const PostEvent = () => {
                                 marginLeft: 15,
                               }}
                             >
-                              End Time
+                              {localized.t("End Time")}
                             </Text>
                             <Text
                               style={{
@@ -536,7 +538,7 @@ const PostEvent = () => {
                       value={values?.served}
                       // placeholder={localized.t("Password")}
                       // multiline={true}
-                      placeholder={"What's being served"}
+                      placeholder={localized.t("What's being served")}
                       placeholderTextColor={"black"}
                       style={styles.textArea}
                       id={"served"}
@@ -547,7 +549,9 @@ const PostEvent = () => {
                       onBlur={handleBlur("volunteers")}
                       value={values?.volunteers}
                       keyboardType="numeric"
-                      placeholder={"Numbers of volunteers required"}
+                      placeholder={localized.t(
+                        "Numbers of volunteers required"
+                      )}
                       placeholderTextColor={"black"}
                       style={styles.textArea}
                       id={"volunteers"}
@@ -562,7 +566,7 @@ const PostEvent = () => {
                     >
                       <PrimaryButton
                         // title={localized.t("Sign in")}
-                        title={"Submit"}
+                        title={localized.t("Submit")}
                         buttonStyle={styles.buttonStyles}
                         titleStyle={styles.titleStyle}
                         onPress={handleSubmit}

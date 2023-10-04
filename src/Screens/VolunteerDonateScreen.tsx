@@ -144,7 +144,7 @@ const VolunteerDonateScreen = ({ route }: any) => {
                 onPress={() =>
                   navigation.navigate(item?.navigation, {
                     itemTypeId: item?.itemTypeId,
-                    title: `${localized.t(item?.title)}`,
+                    title: (item?.title),
                   })
                 }
                 buttonStyle={styles.buttonStyles}

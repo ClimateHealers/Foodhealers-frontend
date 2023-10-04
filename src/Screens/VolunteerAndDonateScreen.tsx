@@ -1,15 +1,12 @@
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
-  FlatList,
   Keyboard,
-  ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
   TouchableWithoutFeedback,
-  View,
+  View
 } from "react-native";
 import {
   heightPercentageToDP as h2dp,
@@ -17,18 +14,15 @@ import {
 } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { SceneMap, TabBar, TabView } from "react-native-tab-view";
+import { useDispatch } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
 import { getLocation } from "../Components/getCurrentLocation";
 import { localized } from "../locales/localization";
 import DonationTabScreen from "./DonationTabScreen";
-import { useDispatch } from "react-redux";
-import { allDonations } from "../redux/actions/allDonations";
-import { myDonations } from "../redux/actions/myDonations";
-import AllEventScreen from "./AllEventScreen";
 import VolunteerTabScreen from "./VolunteerTabScreen";
 // import { styles } from "../Components/Styles";
-import FoodhealersHeader from "../Components/FoodhealersHeader";
 import { Ionicons } from "@expo/vector-icons";
+import FoodhealersHeader from "../Components/FoodhealersHeader";
 
 const VolunteerAndDonateScreen = ({ route }: any) => {
   const navigation: any = useNavigation();
@@ -81,8 +75,8 @@ const VolunteerAndDonateScreen = ({ route }: any) => {
   });
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
-    { key: "first", title: "Donations" },
-    { key: "second", title: "Volunteers" },
+    { key: "first", title: `${localized.t("Donations")}` },
+    { key: "second", title: `${localized.t("Volunteers")}` },
   ]);
 
   return (
@@ -105,7 +99,7 @@ const VolunteerAndDonateScreen = ({ route }: any) => {
                 />
                 </View>
                 <View style={styles.item}>
-                  <Text style={[styles.itemText,{marginTop:h2dp(-0.5)}]}>Volunteer</Text>
+                  <Text style={[styles.itemText,{marginTop:h2dp(-0.5)}]}>{localized.t("Volunteer")}</Text>
                 </View>
                 <BurgerIcon />
               </View>

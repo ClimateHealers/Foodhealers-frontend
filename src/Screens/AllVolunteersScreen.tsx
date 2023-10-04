@@ -45,7 +45,7 @@ const AllVolunteersScreen = ({ route }: any) => {
           <View style={{ width: w2dp(90), alignSelf: "center" }}>
             <TextInput
               placeholder={
-                item?.volunteer?.name ? item?.volunteer?.name : "Volunteer Name"
+                item?.volunteer?.name ? item?.volunteer?.name : `${localized.t("Volunteer Name")}`
               }
               placeholderTextColor={"black"}
               style={[styles.textInput, { marginBottom: h2dp(2) }]}
@@ -55,7 +55,7 @@ const AllVolunteersScreen = ({ route }: any) => {
               placeholder={
                 item?.volunteer?.address?.fullAddress
                   ? item?.volunteer?.address?.fullAddress
-                  : "Address"
+                  : `${localized.t("Address")}`
               }
               placeholderTextColor={"black"}
               style={[styles.textInput, { marginBottom: h2dp(2) }]}
@@ -75,7 +75,7 @@ const AllVolunteersScreen = ({ route }: any) => {
                 placeholder={
                   item?.volunteer?.address?.city
                     ? item?.volunteer?.address?.city
-                    : "City"
+                    : `${localized.t("City")}`
                 }
                 placeholderTextColor={"black"}
                 style={[styles.textInput, { width: w2dp(43) }]}
@@ -87,7 +87,7 @@ const AllVolunteersScreen = ({ route }: any) => {
                 placeholder={
                   item?.volunteer?.address?.state
                     ? item?.volunteer?.address?.state
-                    : "State"
+                    : `${localized.t("State")}`
                 }
                 placeholderTextColor={"black"}
                 style={[styles.textInput, { width: w2dp(43) }]}
@@ -100,7 +100,7 @@ const AllVolunteersScreen = ({ route }: any) => {
                 placeholder={
                   item?.volunteer?.address?.postalCode
                     ? item?.volunteer?.address?.postalCode
-                    : "Zip Code"
+                    : `${localized.t("Zip Code")}`
                 }
                 placeholderTextColor={"black"}
                 editable={false}
@@ -135,7 +135,7 @@ const AllVolunteersScreen = ({ route }: any) => {
                     marginLeft: 15,
                   }}
                 >
-                  Start Date
+                  {localized.t("Start Date")}
                 </Text>
                 <Text
                   style={{
@@ -168,7 +168,7 @@ const AllVolunteersScreen = ({ route }: any) => {
                     marginLeft: 15,
                   }}
                 >
-                  Start Time
+                  {localized.t("Start Time")}
                 </Text>
                 <Text
                   style={{
@@ -212,7 +212,7 @@ const AllVolunteersScreen = ({ route }: any) => {
                     marginLeft: 15,
                   }}
                 >
-                  End Date
+                  {localized.t("End Date")}
                 </Text>
                 <Text
                   style={{
@@ -246,7 +246,7 @@ const AllVolunteersScreen = ({ route }: any) => {
                     marginLeft: 15,
                   }}
                 >
-                  End Time
+                  {localized.t("End Time")}
                 </Text>
                 <Text
                   style={{
@@ -274,7 +274,7 @@ const AllVolunteersScreen = ({ route }: any) => {
                 placeholder={
                   item?.volunteer?.phoneNumber
                     ? item?.volunteer?.phoneNumber
-                    : "Phone Number : N/A"
+                    : `${localized.t("Phone Number")} : N/A`
                 }
                 style={[
                   styles.textInput,
@@ -313,7 +313,7 @@ const AllVolunteersScreen = ({ route }: any) => {
                   onPress={() => navigation.goBack()}
                 />
                 <View style={styles.item}>
-                  <Text style={styles.itemText}>{title}</Text>
+                  <Text style={styles.itemText}>{localized.t(title)}</Text>
                 </View>
                 <BurgerIcon />
               </View>

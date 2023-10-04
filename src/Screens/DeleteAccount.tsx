@@ -19,6 +19,7 @@ import { systemWeights } from "react-native-typography";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteUser, removeAuthData } from "../redux/actions/authAction";
 import { logOut } from "../redux/reducers/authreducers";
+import { localized } from "../locales/localization";
 
 const DeleteAccount = () => {
   const [showModal, setShowModal] = useState<Boolean>(false);
@@ -86,11 +87,10 @@ const DeleteAccount = () => {
                 color: "white",
               }}
             >
-              Attention!
+              {localized.t("Attention!")}
             </Text>
             <Text style={{ fontSize: 18, color: "white" }}>
-              Deleting your account will remove all of your information from our
-              database records. This cannot be undone.
+              {localized.t("Deleting your account will remove all of your information from our database records")} {localized.t("This cannot be undone")}
             </Text>
           </View>
           <View style={{ marginVertical: hp2dp("8%") }}>
@@ -106,7 +106,7 @@ const DeleteAccount = () => {
                 <View style={{ flexDirection: "row" }}>
                   <View
                   >
-                    <Text style={styles.googletext}>Delete Account</Text>
+                    <Text style={styles.googletext}>{localized.t("Delete Account")}</Text>
                   </View>
                 </View>
               </TouchableOpacity>
@@ -124,7 +124,7 @@ const DeleteAccount = () => {
                         fontSize: 18,
                       }}
                     >
-                      Keep Account
+                      {localized.t("Keep Account")}
                     </Text>
                   </View>
                 </View>
@@ -142,14 +142,12 @@ const DeleteAccount = () => {
                       marginVertical: hp2dp("2%"),
                     }}
                   >
-                    Almost done.
+                    {localized.t("Almost done")}
                   </Text>
                 </View>
                 <View>
                   <Text style={{ fontSize: 18, color: "black" }}>
-                    We received your request to delete your account. To complete
-                    your deletion, please check your email and confirm the
-                    deletion request.
+                    {localized.t("We received your request to delete your account")} {localized.t("To complete your deletion, please check your email and confirm the deletion request")}
                   </Text>
                 </View>
                 <View style={{ alignItems: "center", marginTop: hp2dp("2%") }}>
@@ -171,7 +169,7 @@ const DeleteAccount = () => {
                       ]}
                     >
                       <Text style={{ color: "#ffff", fontWeight: "bold" }}>
-                        CLOSE
+                        {localized.t("CLOSE")}
                       </Text>
                     </View>
                   </TouchableOpacity>

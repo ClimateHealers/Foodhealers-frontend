@@ -124,7 +124,7 @@ const VolunteerEventScreen = ({ route }: any) => {
               marginTop: h2dp(0.5),
             }}
           >
-            Approved
+            {localized.t("Approved")}
           </Text>
         </View>
       ) : status === "pending" ? (
@@ -146,7 +146,7 @@ const VolunteerEventScreen = ({ route }: any) => {
               marginTop: h2dp(0.5),
             }}
           >
-            Pending
+            {localized.t("Pending")}
           </Text>
         </View>
       ) : (
@@ -165,7 +165,7 @@ const VolunteerEventScreen = ({ route }: any) => {
               marginTop: h2dp(0.5),
             }}
           >
-            Rejected
+            {localized.t("Rejected")}
           </Text>
         </View>
       )} */}
@@ -270,41 +270,45 @@ const VolunteerEventScreen = ({ route }: any) => {
                   onPress={() => navigation.goBack()}
                 />
                 <View style={styles.item}>
-                  <Text style={styles.itemText}>{eventData?.length > 0 ? "Post Event" : `${localized.t("Events")}`}</Text>
+                  <Text style={styles.itemText}>
+                    {eventData?.length > 0
+                      ? `${localized.t("Post an Event")}`
+                      : `${localized.t("Events")}`}
+                  </Text>
                 </View>
                 <BurgerIcon />
               </View>
               {eventData?.length > 0 ? (
                 <View>
-              <View style={styles.itemFilter}>
-                <Text style={styles.itemFilterText}>
-                  {localized.t("Events")}
-                </Text>
-                <Text style={styles.itemFilterText}>
-                  {localized.t("Filter")}
-                </Text>
-              </View>
-                <FlatList
-                  data={eventData}
-                  renderItem={({ item }: any) => (
-                    <Item
-                      name={item?.name}
-                      eventTimings={`${moment(item?.eventStartDate).format(
-                        "DD,  ddd, hh:mm A"
-                      )}`}
-                      address={item?.address?.streetAddress}
-                      additionalInfo={item?.additionalInfo}
-                      lat={item?.address?.lat}
-                      long={item?.address?.lng}
-                      eventStartDate={item?.eventStartDate}
-                      eventEndDate={item?.eventEndDate}
-                      id={item?.id}
-                      status={item?.status}
-                      eventPhoto={item?.eventPhoto}
-                      requiredVolunteers={item?.requiredVolunteers}
-                    />
-                  )}
-                />
+                  <View style={styles.itemFilter}>
+                    <Text style={styles.itemFilterText}>
+                      {localized.t("Events")}
+                    </Text>
+                    <Text style={styles.itemFilterText}>
+                      {localized.t("Filter")}
+                    </Text>
+                  </View>
+                  <FlatList
+                    data={eventData}
+                    renderItem={({ item }: any) => (
+                      <Item
+                        name={item?.name}
+                        eventTimings={`${moment(item?.eventStartDate).format(
+                          "DD,  ddd, hh:mm A"
+                        )}`}
+                        address={item?.address?.streetAddress}
+                        additionalInfo={item?.additionalInfo}
+                        lat={item?.address?.lat}
+                        long={item?.address?.lng}
+                        eventStartDate={item?.eventStartDate}
+                        eventEndDate={item?.eventEndDate}
+                        id={item?.id}
+                        status={item?.status}
+                        eventPhoto={item?.eventPhoto}
+                        requiredVolunteers={item?.requiredVolunteers}
+                      />
+                    )}
+                  />
                 </View>
               ) : (
                 <View style={{ marginTop: h2dp(3), alignItems: "center" }}>
@@ -316,7 +320,9 @@ const VolunteerEventScreen = ({ route }: any) => {
                     <TouchableOpacity
                       onPress={() => navigation.navigate("PostEvent")}
                     >
-                      <Text style={styles.textStyle}>Post an event</Text>
+                      <Text style={styles.textStyle}>
+                        {localized.t("Post an Event")}
+                      </Text>
                     </TouchableOpacity>
                   </View>
                 </View>

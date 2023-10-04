@@ -100,7 +100,7 @@ const SingleEventDetails = ({ route }: any) => {
     try {
       const result = await Share.share({
         // message: `${eventDetails?.additionalInfo}`,
-        message: `Coming soon!`,
+        message: `${localized.t("Coming soon!")}`,
       });
       if (result.action === Share.sharedAction) {
         if (result.activityType) {

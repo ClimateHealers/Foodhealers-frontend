@@ -26,7 +26,7 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import PhoneInput from "react-native-phone-number-input";
 import { heightPercentageToDP as h2dp } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
 import { postDonation } from "../redux/actions/myDonations";
 import { styles } from "../Components/Styles";
@@ -90,7 +90,7 @@ const AddDonationsScreen = ({ route }: any) => {
           <ScrollView keyboardShouldPersistTaps="handled">
             <StatusBar animated={true} backgroundColor="auto" />
             <View style={styles.container}>
-              <FoodhealersHeader/>
+              <FoodhealersHeader />
               <View style={styles.root}>
                 <Ionicons
                   name="chevron-back"
@@ -224,7 +224,9 @@ const AddDonationsScreen = ({ route }: any) => {
                       value={values?.foodItem}
                       // placeholder={localized.t("Email")}
                       placeholder={
-                        itemTypeId == 1 ? `${localized.t("Food Item")}` : `${localized.t("Supplies List")}`
+                        itemTypeId == 1
+                          ? `${localized.t("Food Item")}`
+                          : `${localized.t("Supplies List")}`
                       }
                       placeholderTextColor={"black"}
                       style={styles.textInput}
@@ -250,7 +252,7 @@ const AddDonationsScreen = ({ route }: any) => {
                     />
                     <Text style={styles.inputError}>{errors?.flatNo}</Text>
                     <GooglePlacesAutocomplete
-                      placeholder="Address"
+                      placeholder={localized.t("Address")}
                       fetchDetails={true}
                       keepResultsAfterBlur={true}
                       listViewDisplayed="auto"

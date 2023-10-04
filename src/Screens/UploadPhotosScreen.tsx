@@ -112,8 +112,8 @@ const UploadPhotosScreen = ({ route }: any) => {
       }
     } else if (!res.granted) {
       Alert.alert(
-        "Media Library Access",
-        "FoodHealers app needs PhotoLibrary permission to let you update your profile picture, and create/modify events with appropriate images for community.You can enable it anytime from settings.",
+        `${localized.t("Media Library Access")}`,
+        `${localized.t("FoodHealers app needs PhotoLibrary permission to let you update your profile picture, and create/modify events with appropriate images for community.You can enable it anytime from settings.")}`,
         [
           {
             text: "Ok",
@@ -163,7 +163,7 @@ const UploadPhotosScreen = ({ route }: any) => {
                   onPress={() => navigation.goBack()}
                 />
                 <View style={styles.item}>
-                  <Text style={styles.itemText}>Post an Event</Text>
+                  <Text style={styles.itemText}>{localized.t("Post an Event")}</Text>
                 </View>
                 <BurgerIcon />
               </View>
@@ -191,7 +191,7 @@ const UploadPhotosScreen = ({ route }: any) => {
                 </TouchableOpacity>
 
                 <Text style={{ fontSize: 20, marginTop: 10 }}>
-                  Upload event photo
+                  {localized.t("Upload event photo")}
                 </Text>
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                   <Text
@@ -201,7 +201,7 @@ const UploadPhotosScreen = ({ route }: any) => {
                       textDecorationLine: "underline",
                     }}
                   >
-                    Back
+                    {localized.t("Back")}
                   </Text>
                 </TouchableOpacity>
               </View>

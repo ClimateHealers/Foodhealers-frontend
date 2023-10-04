@@ -19,6 +19,7 @@ import { useDispatch } from "react-redux";
 import { allDonations } from "../redux/actions/allDonations";
 import { myDonations } from "../redux/actions/myDonations";
 import moment from "moment";
+import { localized } from "../locales/localization";
 
 const DonationTabScreen = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -88,7 +89,7 @@ const DonationTabScreen = () => {
                 marginTop: h2dp(0.5),
               }}
             >
-              Approved
+              {localized.t("Approved")}
             </Text>
           </View>
         ) : status === "pending" ? (
@@ -110,7 +111,7 @@ const DonationTabScreen = () => {
                 marginTop: h2dp(0.5),
               }}
             >
-              Pending
+              {localized.t("Pending")}
             </Text>
           </View>
         ) : (
@@ -129,7 +130,7 @@ const DonationTabScreen = () => {
                 marginTop: h2dp(0.5),
               }}
             >
-              Rejected
+              {localized.t("Rejected")}
             </Text>
           </View>
         )}
@@ -197,7 +198,7 @@ const DonationTabScreen = () => {
       <View style={{ flex: 1 }}>
         <View style={styles.toggle}>
           <SegmentedControlTab
-            values={["My Donations", "All Donations"]}
+            values={[`${localized.t("My Donations")}`, `${localized.t("All Donations")}`]}
             selectedIndex={selectedIndex}
             tabsContainerStyle={{
               width: w2dp(50),

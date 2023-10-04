@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { Camera } from "expo-camera";
+import { localized } from "../locales/localization";
 
 export default function App(): JSX.Element {
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
@@ -28,14 +29,14 @@ export default function App(): JSX.Element {
     return <View />;
   }
   if (hasPermission === false) {
-    return <Text>No access to camera</Text>;
+    return <Text>{localized.t("No access to camera")}</Text>;
   }
   return (
     <View style={styles.container}>
       <Camera style={styles.camera} ref={cameraRef}>
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.button} onPress={handleTakePicture}>
-            <Text style={styles.buttonText}>Take Picture</Text>
+            <Text style={styles.buttonText}>{localized.t("Take Picture")}</Text>
           </TouchableOpacity>
         </View>
       </Camera>

@@ -71,11 +71,11 @@ function ForgotPassword() {
                 style={{ marginLeft: 1 }}
                 onPress={() => navigation.goBack()}
               />
-              <Text style={styles.header}> Forgot Password </Text>
+              <Text style={styles.header}> {localized.t("Forgot Password")} </Text>
             </View>
             <View style={styles.container2}>
               <Text style={styles.lineText}>
-                Enter your email and we will send you a reset link!
+                {localized.t("Enter your email and we will send you a reset link!")}
               </Text>
 
               <Formik
@@ -165,13 +165,13 @@ function ForgotPassword() {
                       />
                       <TouchableOpacity
                         disabled={!isValid}
-                        onPress={handleSubmit}
+                        onPress={() => handleSubmit}
                         style={[
                           styles.regBtn,
                           !isValid && styles.regBtnDisabled,
                         ]}
                       >
-                        <Text style={styles.regText}>Send Reset Link</Text>
+                        <Text style={styles.regText}>{localized.t("Send Reset Link")}</Text>
                       </TouchableOpacity>
                     </>
                   );

@@ -13,7 +13,7 @@ import {
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  View
+  View,
 } from "react-native";
 import { Divider } from "react-native-paper";
 import {
@@ -47,7 +47,7 @@ const CalendarEventDetailScreen = ({ route }: any) => {
   const [selectedLanguage, setSelectedLanguage] = useState(localized.locale);
 
   const dispatch = useDispatch();
-  
+
   const handlePressOutside = () => {
     setlangOpen(false);
     Keyboard.dismiss();
@@ -140,7 +140,7 @@ const CalendarEventDetailScreen = ({ route }: any) => {
                     }}
                   >
                     <Text style={styles.boldText}>
-                      From:{" "}
+                      {localized.t("From")}:{" "}
                       <Text style={styles.cardText}>
                         {moment(eventDetails?.eventStartDate).format(
                           "ddd, MMM D"
@@ -159,7 +159,7 @@ const CalendarEventDetailScreen = ({ route }: any) => {
                   </View>
                   <View style={{ marginBottom: 20, paddingHorizontal: 10 }}>
                     <Text style={styles.boldText}>
-                      To:{" "}
+                      {localized.t("To")}:{" "}
                       <Text style={styles.cardText}>
                         {moment(eventDetails?.eventEndDate).format(
                           "ddd, MMM D"
@@ -178,7 +178,7 @@ const CalendarEventDetailScreen = ({ route }: any) => {
                   </View>
                   <View style={{ marginBottom: 20, paddingHorizontal: 10 }}>
                     <Text style={styles.boldText}>
-                      Location:{" "}
+                      {localized.t("Location")}:{" "}
                       <Text style={styles.cardText}>
                         {eventDetails?.address?.fullAddress}
                       </Text>
@@ -194,7 +194,7 @@ const CalendarEventDetailScreen = ({ route }: any) => {
                   </View>
                   <View style={{ marginBottom: 10, paddingHorizontal: 10 }}>
                     <Text style={styles.boldText}>
-                      What:{" "}
+                      {localized.t("What")}:{" "}
                       <Text style={styles.cardText}>
                         {eventDetails?.additionalInfo}
                       </Text>
@@ -220,7 +220,11 @@ const CalendarEventDetailScreen = ({ route }: any) => {
             >
               <PrimaryButton
                 disabled={expired}
-                title={expired ? "Event Expired" : "Get directions"}
+                title={
+                  expired
+                    ? `${localized.t("Event Expired")}`
+                    : `${localized.t("Get directions")}`
+                }
                 onPress={navigationHandler}
                 buttonStyle={styles.buttonStyles}
                 titleStyle={styles.titleStyle}
@@ -236,7 +240,7 @@ const CalendarEventDetailScreen = ({ route }: any) => {
                       textDecorationLine: "underline",
                     }}
                   >
-                    Share
+                    {localized.t("Share")}
                   </Text>
                 </TouchableOpacity>
               )}
