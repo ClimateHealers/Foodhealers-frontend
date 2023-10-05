@@ -1,13 +1,21 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
-import { useSelector } from "react-redux";
+import IntroSlider from "./Components/IntroSlider";
+import AddDonationsScreen from "./Screens/AddDonationsScreen";
+import AddVolunteerToEvent from "./Screens/AddVolunteerToEventScreen";
 import AllEventScreen from "./Screens/AllEventScreen";
+import CalendarEventDetailScreen from "./Screens/CalendarEventDetailScreen";
+import CalendarEventScreen from "./Screens/CalendarEventScreen";
+import CalendarScreen from "./Screens/CalendarScreen";
 import Camera from "./Screens/Camera";
+import CategoryScreen from "./Screens/CategoryScreen";
 import DeleteAccount from "./Screens/DeleteAccount";
+import DonationTabScreen from "./Screens/DonationTabScreen";
 import EventDetailsScreen from "./Screens/EventDetailsScreen";
 import EventPhotosScreen from "./Screens/EventPhotosScreen";
 import EventsHomeScreen from "./Screens/EventsHomeScreen";
+import FindFoodHomeScreen from "./Screens/FindFoodHomeScreen";
 import Forgotpassword from "./Screens/ForgotPassword";
 import HomeScreen from "./Screens/HomeScreen";
 import LinkingDemo from "./Screens/LinkingDemo";
@@ -17,24 +25,22 @@ import NotificationScreen from "./Screens/NotificationScreen";
 import PostEvent from "./Screens/PostEvent";
 import PostEventDetailsScreen from "./Screens/PostEventDetailsScreen";
 import ProfileScreen from "./Screens/ProfileScreen";
+import RecipesHomeScreen from "./Screens/RecipesHomeScreen";
 import SignupScreen from "./Screens/SignupScreen";
 import SingleEventDetails from "./Screens/SingleEventDetails";
+import SingleRecipeScreen from "./Screens/SingleRecipeScreen";
 import UploadPhotosScreen from "./Screens/UploadPhotosScreen";
+import VolunteerAndDonateScreen from "./Screens/VolunteerAndDonateScreen";
+import VolunteerDonateScreen from "./Screens/VolunteerDonateScreen";
+import VolunteerDonationHistoryScreen from "./Screens/VolunteerDonationHistoryScreen";
+import VolunteerEventHistoryScreen from "./Screens/VolunteerEventHistoryScreen";
+import VolunteerEventScreen from "./Screens/VolunteerEventScreen";
+import VolunteerHomeScreen from "./Screens/VolunteerHomeScreeen";
+import VolunteerThankYouScreen from "./Screens/VolunteerThankYouScreen";
 import WeekScreen from "./Screens/WeekScreen";
 import WelcomeScreen from "./Screens/WelcomeScreen";
-import CalendarScreen from "./Screens/CalendarScreen";
-import CalendarEventScreen from "./Screens/CalendarEventScreen";
-import CalendarEventDetailScreen from "./Screens/CalendarEventDetailScreen";
-import FindFoodHomeScreen from "./Screens/FindFoodHomeScreen";
-import RecipesHomeScreen from "./Screens/RecipesHomeScreen";
-import CategoryScreen from "./Screens/CategoryScreen";
-import SingleRecipeScreen from "./Screens/SingleRecipeScreen";
-import IntroSlider from "./Components/IntroSlider";
-import VolunteerHomeScreen from "./Screens/VolunteerHomeScreeen";
-import VolunteerDonateScreen from "./Screens/VolunteerDonateScreen";
-import VolunteerAndDonateScreen from "./Screens/VolunteerAndDonateScreen";
-import DonationTabScreen from "./Screens/DonationTabScreen";
-import AddDonationsScreen from "./Screens/AddDonationsScreen";
+import VolunteerSingleEventDetails from "./Screens/VolunteerSingleEventDetails";
+import AllVolunteersScreen from "./Screens/AllVolunteersScreen";
 
 const Navigation = () => {
   const Stack = createNativeStackNavigator();
@@ -213,6 +219,41 @@ const Navigation = () => {
           <Stack.Screen
             name="AddDonationsScreen"
             component={AddDonationsScreen}
+            options={{ title: "", header: () => null }}
+          />
+          <Stack.Screen
+            name="VolunteerThankYouScreen"
+            component={VolunteerThankYouScreen}
+            options={{ title: "", header: () => null }}
+          />
+          <Stack.Screen
+            name="VolunteerDonationHistoryScreen"
+            component={VolunteerDonationHistoryScreen}
+            options={{ title: "", header: () => null }}
+          />
+          <Stack.Screen
+            name="VolunteerEventScreen"
+            component={VolunteerEventScreen}
+            options={{ title: "", header: () => null }}
+          />
+          <Stack.Screen
+            name="AddVolunteerToEventScreen"
+            component={AddVolunteerToEvent}
+            options={{ title: "", header: () => null }}
+          />
+          <Stack.Screen
+            name="VolunteerEventHistoryScreen"
+            component={VolunteerEventHistoryScreen}
+            options={{ title: "", header: () => null }}
+          />
+          <Stack.Screen
+            name="VolunteerSingleEventDetails"
+            component={VolunteerSingleEventDetails}
+            options={{ title: "", header: () => null }}
+          />
+          <Stack.Screen
+            name="AllVolunteersScreen"
+            component={AllVolunteersScreen}
             options={{ title: "", header: () => null }}
           />
         </Stack.Navigator>

@@ -21,6 +21,8 @@ import {
 } from "react-native-responsive-screen";
 import { useDispatch, useSelector } from "react-redux";
 import { getLocation } from "../Components/getCurrentLocation";
+import { getLocalizationAsync } from "expo-localization";
+import { localized } from "../locales/localization";
 
 const SingleRecipeScreen = ({ route }: any) => {
   const { recipeData } = route.params;
@@ -114,7 +116,7 @@ const SingleRecipeScreen = ({ route }: any) => {
                         lineHeight: 27.24,
                       }}
                     >
-                      Home
+                      {localized.t("Home")}
                     </Text>
                   </TouchableOpacity>
                   <TouchableOpacity
@@ -128,7 +130,7 @@ const SingleRecipeScreen = ({ route }: any) => {
                         lineHeight: 27.24,
                       }}
                     >
-                      Find Food
+                      {localized.t("Find Food")}
                     </Text>
                   </TouchableOpacity>
                   {isAuthenticated && (
@@ -143,7 +145,7 @@ const SingleRecipeScreen = ({ route }: any) => {
                           lineHeight: 27.24,
                         }}
                       >
-                        Account
+                        {localized.t("Account")}
                       </Text>
                     </TouchableOpacity>
                   )}
@@ -169,7 +171,7 @@ const SingleRecipeScreen = ({ route }: any) => {
                       fontSize: h2dp(3),
                     }}
                   >
-                    Cooking time
+                    {localized.t("Cooking time")}
                   </Text>
                   <View>
                     <View style={styles.timerIcon}>
@@ -184,7 +186,7 @@ const SingleRecipeScreen = ({ route }: any) => {
                           color: "white",
                         }}
                       >
-                       {recipeData?.cookingTime ==="preparation time not specified" ? "Not specified" :recipeData?.cookingTime}
+                       {recipeData?.cookingTime ==="preparation time not specified" ? `${localized.t("Not specified")}` :recipeData?.cookingTime}
                       </Text>
                     </View>
                   </View>
@@ -198,7 +200,7 @@ const SingleRecipeScreen = ({ route }: any) => {
                       marginBottom: h2dp(2),
                     }}
                   >
-                    Ingredients
+                    {localized.t("Ingredients")}
                   </Text>
                   {ingredients.map((ingredient: any, index: any) => (
                     <Text key={index} style={styles.ingredient}>
@@ -214,7 +216,7 @@ const SingleRecipeScreen = ({ route }: any) => {
                       margin: h2dp(2),
                     }}
                   >
-                    Instructions
+                    {localized.t("Instructions")}
                   </Text>
                   <Text style={styles.ingredient}>{instructions}</Text>
                 </View>
@@ -225,9 +227,8 @@ const SingleRecipeScreen = ({ route }: any) => {
                       fontSize: h2dp(2),
                       margin: h2dp(2),
                     }}
-                    
                   >
-                    Source : <Text style = {styles.underlineTextStyle} onPress={() => Linking.openURL(recipeData?.recipeSource)}>{recipeData?.recipeSource}</Text>
+                    {localized.t("Source")} : <Text style = {styles.underlineTextStyle} onPress={() => Linking.openURL(recipeData?.recipeSource)}>{recipeData?.recipeSource}</Text>
                   </Text>
                 </View>
                 <View>
@@ -239,7 +240,7 @@ const SingleRecipeScreen = ({ route }: any) => {
                       marginLeft: h2dp(2),
                     }}
                   >
-                    Credits : {recipeData?.recipeCredits}
+                    {localized.t("Credits")} : {recipeData?.recipeCredits}
                   </Text>
                 </View>
               </TouchableOpacity>

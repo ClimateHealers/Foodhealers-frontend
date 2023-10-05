@@ -2,7 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import moment from "moment";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Alert,
   Image,
@@ -28,14 +28,15 @@ import PrimaryButton from "../Components/PrimaryButton";
 import { styles } from "../Components/Styles";
 import { getLocation } from "../Components/getCurrentLocation";
 import { localized } from "../locales/localization";
+import { useDispatch } from "react-redux";
+import { GetEventVolunteers } from "../redux/actions/eventVolunteers";
 
-const SingleEventDetails = ({ route }: any) => {
+const VolunteerSingleEventDetails = ({ route }: any) => {
   const { eventDetails } = route.params;
-
-  console.log("Event Details", eventDetails);
   const navigation: any = useNavigation();
 
   const [langOpen, setlangOpen] = useState(false);
+  const [eventVolunteersData, setEventVolunteersData] = useState<[]>([]);
   const [lang, setLang] = useState([
     { id: 1, label: "French", value: "fr" },
     { id: 2, label: "Hindi", value: "hi" },
@@ -72,6 +73,23 @@ const SingleEventDetails = ({ route }: any) => {
     });
     setMenuOpen(false);
   };
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    fetchEventVolunteers();
+  }, []);
+  const fetchEventVolunteers = async () => {
+    try {
+      const eventVolunteerData = await dispatch(
+        GetEventVolunteers(eventDetails.id) as any
+      );
+      setEventVolunteersData(eventVolunteerData?.payload?.EventVolunteers);
+      console.log("voluntterssLength", eventVolunteersData?.length)
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const volunteerNumber = eventVolunteersData?.length ? eventVolunteersData?.length : 0
 
   const startTime = eventDetails?.eventStartDate;
   const formattedStartTime = moment(startTime).format("h:mm a");
@@ -167,7 +185,7 @@ const SingleEventDetails = ({ route }: any) => {
                     }}
                   >
                     <Text style={styles.boldText}>
-                      {localized.t("From")}:
+                    {localized.t("From")}:
                       <Text style={styles.cardText}>
                         {" "}
                         {moment(eventDetails?.eventStartDate).format(
@@ -265,29 +283,7 @@ const SingleEventDetails = ({ route }: any) => {
                 </View>
               </View>
               <View>
-                {/* {eventDetails?.itemTypeId === 3 ? (
-                  <View
-                    style={{
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                  >
-                    <PrimaryButton
-                      title="Volunteer"
-                      // title={"Get directions"}
-                      onPress={() =>
-                        navigation.navigate("AddVolunteerToEventScreen", {
-                          id: eventDetails.id,
-                          title: eventDetails.title,
-                          itemTypeId: eventDetails.itemTypeId,
-                        })
-                      }
-                      buttonStyle={styles.buttonStyles}
-                      titleStyle={styles.titleStyle}
-                    />
-                  </View>
-                ) : ( */}
+                {eventDetails?.map ? (
                   <View
                     style={{
                       display: "flex",
@@ -297,26 +293,70 @@ const SingleEventDetails = ({ route }: any) => {
                   >
                     <PrimaryButton
                       disabled={expired}
-                      title={expired ? `${localized.t("Event Expired")}` : `${localized.t("Volunteer")}`}
-                      onPress={() =>
-                        navigation.navigate("AddVolunteerToEventScreen", {
-                          id: eventDetails.id,
-                          title: "Volunteer at an event",
-                          itemTypeId: 3,
-                        })
+                      title={expired ? `${localized.t("Event Expired")}` : `${localized.t("Get directions")}`}
+                      // title={"Get directions"}
+                      onPress={navigationHandler}
+                      buttonStyle={styles.buttonStyles}
+                      titleStyle={styles.titleStyle}
+                    />
+                    <TouchableOpacity onPress={onShare}>
+                      <Text
+                        style={{
+                          color: "white",
+                          fontSize: 20,
+                          marginTop: w2dp(5),
+                          textDecorationLine: "underline",
+                          alignSelf: "center",
+                        }}
+                      >
+                        {localized.t("Share")}
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                ) : (
+                  <View
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <PrimaryButton
+                      disabled={expired}
+                      title={expired ? "Event Expired" : `Volunteers (${volunteerNumber})`}
+                      onPress={() =>{volunteerNumber? navigation.navigate("AllVolunteersScreen", {
+                        eventId: eventDetails?.id,
+                        title: `${localized.t("Volunteer at an event")}`,
+                        itemTypeId: 3,
+                        eventVolunteersData: eventVolunteersData,
+                      }): null}
+                        
                       }
                       buttonStyle={styles.buttonStyles}
                       titleStyle={styles.titleStyle}
                     />
-                    {!expired && (
+                    <TouchableOpacity onPress={onShare}>
+                      <Text
+                        style={{
+                          color: "white",
+                          fontSize: 20,
+                          marginTop: w2dp(5),
+                          textDecorationLine: "underline",
+                          alignSelf: "center",
+                        }}
+                      >
+                        {localized.t("Share")}
+                      </Text>
+                    </TouchableOpacity>
+                    {/* {!expired && (
                       <View>
-                        {/* <PrimaryButton
+                        <PrimaryButton
                           disabled={expired}
                           title="Get directions"
                           onPress={navigationHandler}
                           buttonStyle={styles.buttonStyles}
                           titleStyle={styles.titleStyle}
-                        /> */}
+                        />
                         <TouchableOpacity onPress={onShare}>
                           <Text
                             style={{
@@ -327,13 +367,13 @@ const SingleEventDetails = ({ route }: any) => {
                               alignSelf: "center",
                             }}
                           >
-                            {localized.t("Share")}
+                            Share
                           </Text>
                         </TouchableOpacity>
                       </View>
-                    )}
+                    )} */}
                   </View>
-                {/* )} */}
+                )}
               </View>
             </View>
           </ScrollView>
@@ -343,4 +383,4 @@ const SingleEventDetails = ({ route }: any) => {
   );
 };
 
-export default SingleEventDetails;
+export default VolunteerSingleEventDetails;

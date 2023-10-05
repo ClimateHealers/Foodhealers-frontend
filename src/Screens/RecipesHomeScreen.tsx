@@ -1,4 +1,4 @@
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useState } from "react";
@@ -20,6 +20,10 @@ import {
 } from "react-native-responsive-screen";
 import { useSelector } from "react-redux";
 import { getLocation } from "../Components/getCurrentLocation";
+import { styles } from "../Components/Styles";
+import FoodhealersHeader from "../Components/FoodhealersHeader";
+import BurgerIcon from "../Components/BurgerIcon";
+import { localized } from "../locales/localization";
 
 const RecipesHomeScreen = () => {
   const [langOpen, setlangOpen] = useState(false);
@@ -30,8 +34,6 @@ const RecipesHomeScreen = () => {
   const recipesCategory = useSelector(
     (state: any) => state?.recipesCategory?.data?.categoriesList
   );
-
-
 
   const isAuthenticated = useSelector(
     (state: any) => state?.auth?.data?.isAuthenticated
@@ -72,81 +74,20 @@ const RecipesHomeScreen = () => {
           colors={["#012e17", "#017439", "#009b4d"]}
           style={styles.background}
         >
-          <SafeAreaView style={styles.container}>
-            <View style={styles.row}>
-              <View style={styles.dropdownContainer}></View>
+          <SafeAreaView style={styles.containerVolunteer}>
+            <FoodhealersHeader />
+            <View style={styles.rootVolunteerHome}>
+              <Ionicons
+                name="chevron-back"
+                size={32}
+                color="white"
+                onPress={() => navigation.goBack()}
+              />
               <View style={styles.item}>
                 {/* <Text style={styles.itemText}>{localized.t("Find Food")}</Text> */}
-                <Text style={styles.itemText}>Recipes</Text>
+                <Text style={styles.itemText}>{localized.t("Recipes")}</Text>
               </View>
-              <View style={styles.item}>
-                <MaterialCommunityIcons
-                  name="menu"
-                  size={40}
-                  color="white"
-                  onPress={() => toggleMenu()}
-                />
-                {menuOpen && (
-                  <View
-                    style={{
-                      position: "absolute",
-                      right: 60,
-                      top: Platform.OS === "ios" ? h2dp(8) : h2dp(9),
-                      backgroundColor: "white",
-                      borderColor: "black",
-                      borderWidth: 0.2,
-
-                      borderRadius: 5,
-                      zIndex: 9999,
-                    }}
-                  >
-                    <TouchableOpacity
-                      onPress={() => handleMenuItemPress("Home")}
-                    >
-                      <Text
-                        style={{
-                          padding: 10,
-                          fontSize: 20,
-                          fontWeight: "300",
-                          lineHeight: 27.24,
-                        }}
-                      >
-                        Home
-                      </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={() => findFoodMenuItemPress("Find Food")}
-                    >
-                      <Text
-                        style={{
-                          padding: 10,
-                          fontSize: 20,
-                          fontWeight: "300",
-                          lineHeight: 27.24,
-                        }}
-                      >
-                        Find Food
-                      </Text>
-                    </TouchableOpacity>
-                    {isAuthenticated && (
-                      <TouchableOpacity
-                        onPress={() => navigation.navigate("ProfileScreen")}
-                      >
-                        <Text
-                          style={{
-                            padding: 10,
-                            fontSize: 20,
-                            fontWeight: "300",
-                            lineHeight: 27.24,
-                          }}
-                        >
-                          Account
-                        </Text>
-                      </TouchableOpacity>
-                    )}
-                  </View>
-                )}
-              </View>
+              <BurgerIcon />
             </View>
             <ScrollView keyboardShouldPersistTaps="always">
               <View style={[styles.centeredView]}>
@@ -165,12 +106,12 @@ const RecipesHomeScreen = () => {
                     />
                     <View style={styles.title}>
                       <TouchableOpacity
-                        onPress={
-
-                          () => navigation.navigate("CategoryScreen",{
-                          categoryId :recipe?.id,
-                          recipeName :recipe?.name
-                        })}
+                        onPress={() =>
+                          navigation.navigate("CategoryScreen", {
+                            categoryId: recipe?.id,
+                            recipeName: recipe?.name,
+                          })
+                        }
                       >
                         <Text style={styles.textStyle}>{recipe?.name}</Text>
                       </TouchableOpacity>
@@ -185,75 +126,5 @@ const RecipesHomeScreen = () => {
     </>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    display: "flex",
-    flexDirection: "column",
-    flex: 1,
-    height: h2dp("100%"),
-    // marginBottom: h2dp(15),
-  },
-  background: {
-    flex: 1,
-    resizeMode: "cover",
-  },
-  row: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    alignItems: "center",
-    width: "100%",
-    zIndex: 9999,
-  },
-  item: {
-    width: "30%",
-    marginTop: 25,
-    height: 100,
-    justifyContent: "center",
-    alignItems: "center",
-    position: "relative",
-  },
-  dropdownContainer: {
-    marginTop: 15,
-    marginLeft: 15,
-    width: "30%",
-    height: 100,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  itemText: {
-    fontSize: 25,
-    color: "white",
-  },
-  imageStyle: {
-    borderRadius: 10,
-    width: w2dp(85),
-    height:h2dp(20)
-  },
-  title: {
-    backgroundColor: "white",
-    opacity: 0.9,
-    width: w2dp(85),
-    // height: "20%",
-    position: "absolute",
-    bottom: 0,
-    borderBottomRightRadius: 10,
-    borderBottomLeftRadius: 10,
-  },
-  textStyle: {
-    textAlign: "center",
-    fontSize: 26,
-    lineHeight: 35,
-    fontWeight: "normal",
-    fontStyle: "normal",
-    marginTop: 13,
-  },
-  centeredView: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginTop: h2dp(2),
-  },
-});
 
 export default RecipesHomeScreen;

@@ -2,24 +2,31 @@ import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useState } from "react";
 import {
-  FlatList,
   Keyboard,
   StyleSheet,
   Text,
-  TouchableOpacity,
   TouchableWithoutFeedback,
-  View,
+  View
 } from "react-native";
-import { heightPercentageToDP as h2dp } from "react-native-responsive-screen";
+import {
+  heightPercentageToDP as h2dp,
+  widthPercentageToDP as w2dp,
+} from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { SceneMap, TabBar, TabView } from "react-native-tab-view";
+import { useDispatch } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
 import { getLocation } from "../Components/getCurrentLocation";
 import { localized } from "../locales/localization";
 import DonationTabScreen from "./DonationTabScreen";
+import VolunteerTabScreen from "./VolunteerTabScreen";
+// import { styles } from "../Components/Styles";
+import { Ionicons } from "@expo/vector-icons";
+import FoodhealersHeader from "../Components/FoodhealersHeader";
 
 const VolunteerAndDonateScreen = ({ route }: any) => {
   const navigation: any = useNavigation();
+  const [loading, setLoading] = useState(false);
 
   const [langOpen, setlangOpen] = useState(false);
   const [lang, setLang] = useState([
@@ -34,7 +41,7 @@ const VolunteerAndDonateScreen = ({ route }: any) => {
   ]);
   const [menuOpen, setMenuOpen] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState(localized.locale);
-
+  const dispatch = useDispatch();
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
@@ -61,115 +68,60 @@ const VolunteerAndDonateScreen = ({ route }: any) => {
 
   const FirstRoute = () => <DonationTabScreen />;
 
-  const dummyData = [
-    { id: "1", title: "Item ", description: "Description " },
-    { id: "2", title: "Item ", description: "Description " },
-    { id: "3", title: "Item ", description: "Description " },
-  ];
-
-  const SecondRoute = () => {
-    const renderItem = ({ item }: any) => (
-      <TouchableOpacity>
-        <View style={styles.itemStyle}>
-          <Text style={styles.itemTitle}>{item?.title}</Text>
-          <Text style={styles.itemDescription}>{item?.description}</Text>
-        </View>
-      </TouchableOpacity>
-    );
-
-    return (
-      <FlatList
-        data={dummyData}
-        renderItem={renderItem}
-        keyExtractor={(item) => item?.id}
-        contentContainerStyle={styles.flatListContainer}
-      />
-    );
-  };
+  const SecondRoute = () => <VolunteerTabScreen />;
   const renderScene = SceneMap({
     first: FirstRoute,
     second: SecondRoute,
   });
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
-    { key: "first", title: "Donations" },
-    { key: "second", title: "Volunteers" },
+    { key: "first", title: `${localized.t("Donations")}` },
+    { key: "second", title: `${localized.t("Volunteers")}` },
   ]);
 
   return (
     <TouchableWithoutFeedback onPress={handlePressOutside}>
-      <View style={styles.container}>
-        <LinearGradient
-          colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
-          style={styles.background}
-        >
+      <LinearGradient
+        colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
+        style={styles.background}
+      >
+        <View style={styles.container}>
+          <FoodhealersHeader />
           <SafeAreaView>
-            <View style={styles.row}>
-              <Text style={styles.itemText}>Volunteer</Text>
+            <View>
+              <View style={styles.row}>
               <View style={styles.item}>
-                <BurgerIcon />
-                {menuOpen && (
-                  <View
-                    style={{
-                      position: "absolute",
-                      right: 60,
-                      top: 70,
-                      backgroundColor: "white",
-                      borderColor: "white",
-                      height: 100,
-                      borderRadius: 5,
-                      zIndex: 9999,
-                    }}
-                  >
-                    <TouchableOpacity
-                      onPress={() => handleMenuItemPress("Home")}
-                    >
-                      <Text
-                        style={{
-                          padding: 10,
-                          fontSize: 20,
-                          fontWeight: "300",
-                          lineHeight: 27.24,
-                        }}
-                      >
-                        Home
-                      </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={() => findFoodMenuItemPress("Find Food")}
-                    >
-                      <Text
-                        style={{
-                          padding: 10,
-                          fontSize: 20,
-                          fontWeight: "300",
-                          lineHeight: 27.24,
-                        }}
-                      >
-                        Find Food
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-                )}
-              </View>
-            </View>
-            <TabView
-              navigationState={{ index, routes }}
-              renderScene={renderScene}
-              onIndexChange={setIndex}
-              style={{ flex: 1 }}
-              renderTabBar={(props) => (
-                <TabBar
-                  {...props}
-                  style={{ backgroundColor: "transparent" }}
-                  labelStyle={styles.tabLabel}
-                  indicatorStyle={styles.tabIndicator}
+                <Ionicons
+                  name="chevron-back"
+                  size={32}
+                  color="white"
+                  onPress={() => navigation.goBack()}
                 />
-              )}
-            />
+                </View>
+                <View style={styles.item}>
+                  <Text style={[styles.itemText,{marginTop:h2dp(-0.5)}]}>{localized.t("Volunteer")}</Text>
+                </View>
+                <BurgerIcon />
+              </View>
+              <TabView
+                navigationState={{ index, routes }}
+                renderScene={renderScene}
+                onIndexChange={setIndex}
+                style={{ flex: 1 }}
+                renderTabBar={(props) => (
+                  <TabBar
+                    {...props}
+                    style={{ backgroundColor: "transparent" }}
+                    labelStyle={styles.tabLabel}
+                    indicatorStyle={styles.tabIndicator}
+                  />
+                )}
+              />
+            </View>
           </SafeAreaView>
-        </LinearGradient>
-      </View>
+        </View>
+      </LinearGradient>
+      {/* </View> */}
     </TouchableWithoutFeedback>
   );
 };
@@ -178,6 +130,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
+    marginHorizontal: w2dp(4),
+    marginTop: h2dp(3),
   },
   background: {
     flex: 1,
@@ -185,16 +139,14 @@ const styles = StyleSheet.create({
   },
   row: {
     flexDirection: "row",
-    justifyContent: "flex-end",
+    justifyContent: "space-between",
     alignItems: "center",
-    width: "100%",
+    width: w2dp(95),
     zIndex: 9999,
   },
   item: {
-    width: "30%",
-    marginTop: 25,
-    marginLeft: 30,
-    height: 100,
+    // width: "30%",
+    height: h2dp(10),
     justifyContent: "center",
     alignItems: "center",
   },
@@ -257,8 +209,8 @@ const styles = StyleSheet.create({
     height: 2,
   },
   flatListContainer: {
-    paddingHorizontal: 16, 
-    paddingTop: 16, 
+    paddingHorizontal: 16,
+    paddingTop: 16,
   },
   itemStyle: {
     backgroundColor: "white",

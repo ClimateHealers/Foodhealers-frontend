@@ -1,4 +1,4 @@
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import moment from "moment";
@@ -26,6 +26,8 @@ import { localized } from "../locales/localization";
 import PrimaryButton from "../Components/PrimaryButton";
 import MapView, { Marker } from "react-native-maps";
 import { VeganRecipesCategories } from "../redux/actions/veganRecipes";
+import FoodhealersHeader from "../Components/FoodhealersHeader";
+import BurgerIcon from "../Components/BurgerIcon";
 
 const FindFoodHomeScreen = ({ route }: any) => {
   const {
@@ -137,81 +139,20 @@ const FindFoodHomeScreen = ({ route }: any) => {
       >
         <ScrollView keyboardShouldPersistTaps="always">
           <SafeAreaView style={styles.container}>
+            <FoodhealersHeader/>
             <View style={styles.row}>
-              <View style={styles.dropdownContainer}></View>
+              {/* <View style={styles.dropdownContainer}></View> */}
+              <Ionicons
+                  name="chevron-back"
+                  size={32}
+                  color="white"
+                  onPress={() => navigation.goBack()}
+                />
               <View style={styles.item}>
                 <Text style={styles.itemText}>{localized.t("Find Food")}</Text>
               </View>
-              <View style={styles.item}>
-                <MaterialCommunityIcons
-                  name="menu"
-                  size={40}
-                  color="white"
-                  onPress={() => toggleMenu()}
-                />
-                {menuOpen && (
-                  <View
-                    style={{
-                      position: "absolute",
-                      right: 60,
-                      top: Platform.OS === "ios" ? h2dp(8) : h2dp(9),
-                      backgroundColor: "white",
-                      borderColor: "black",
-                      borderWidth: 0.2,
-
-                      borderRadius: 5,
-                      zIndex: 9999,
-                    }}
-                  >
-                    <TouchableOpacity
-                      onPress={() => handleMenuItemPress("Home")}
-                    >
-                      <Text
-                        style={{
-                          padding: 10,
-                          fontSize: 20,
-                          fontWeight: "300",
-                          lineHeight: 27.24,
-                        }}
-                      >
-                        Home
-                      </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={() => findFoodMenuItemPress("Find Food")}
-                    >
-                      <Text
-                        style={{
-                          padding: 10,
-                          fontSize: 20,
-                          fontWeight: "300",
-                          lineHeight: 27.24,
-                        }}
-                      >
-                        Find Food
-                      </Text>
-                    </TouchableOpacity>
-                    {isAuthenticated && (
-                      <TouchableOpacity
-                        onPress={() => navigation.navigate("ProfileScreen")}
-                      >
-                        <Text
-                          style={{
-                            padding: 10,
-                            fontSize: 20,
-                            fontWeight: "300",
-                            lineHeight: 27.24,
-                          }}
-                        >
-                          Account
-                        </Text>
-                      </TouchableOpacity>
-                    )}
-                  </View>
-                )}
-              </View>
+                <BurgerIcon/>
             </View>
-
             <MapView
               onPress={clickHandler}
               ref={mapRef}
@@ -220,7 +161,7 @@ const FindFoodHomeScreen = ({ route }: any) => {
                 position:"relative",
                 alignSelf: "center",
                 height: Platform.OS === "ios" ? "18%" : "18%",
-                width: Platform.OS === "ios" ? "85%" : "85%",
+                width: Platform.OS === "ios" ? "100%" : "100%",
                 borderRadius: 15,
 
               }}
@@ -242,7 +183,7 @@ const FindFoodHomeScreen = ({ route }: any) => {
                     latitudeDelta : LATITUDE_DELTA,
                     longitudeDelta: LONGITUDE_DELTA,
                   }}
-                  title={"selected location"}
+                  title={localized.t("selected location")}
                 >
                   <Image
                     source={require("../../assets/currentLocationPin.png")}
@@ -307,7 +248,7 @@ const FindFoodHomeScreen = ({ route }: any) => {
                       fontWeight: "500",
                     }}
                   >
-                    Food Events Calendar
+                    {localized.t("Food Events Calendar")}
                   </Text>
                 </View>
               </TouchableOpacity>
@@ -330,7 +271,7 @@ const FindFoodHomeScreen = ({ route }: any) => {
                       fontWeight: "500",
                     }}
                   >
-                    Vegan Recipes
+                    {localized.t("Vegan Recipes")}
                   </Text>
                 </View>
               </TouchableOpacity>
@@ -346,8 +287,11 @@ const styles = StyleSheet.create({
   container: {
     display: "flex",
     flexDirection: "column",
+    marginHorizontal: w2dp(4),
+    alignItems: "center",
     flex: 1,
     height: h2dp("100%"),
+    marginTop: h2dp(3)
   },
   background: {
     flex: 1,
@@ -355,18 +299,16 @@ const styles = StyleSheet.create({
   },
   row: {
     flexDirection: "row",
-    justifyContent: "space-around",
+    justifyContent: "space-between",
     alignItems: "center",
-    width: "100%",
+    width: w2dp(90),
     zIndex: 9999,
   },
   item: {
-    width: "30%",
-    marginTop: 25,
+    // width: "30%",
     height: 100,
     justifyContent: "center",
-    alignItems: "center",
-    position: "relative",
+    // alignItems: "center",
   },
   dropdownContainer: {
     marginTop: 15,
@@ -451,7 +393,7 @@ const styles = StyleSheet.create({
     height: "21%",
     borderRadius: 15,
     // marginTop: h2dp(4),
-    width: "85%",
+    width: w2dp(90),
     // backgroundColor: "white",
     display: "flex",
     flexDirection: "row",
@@ -463,7 +405,7 @@ const styles = StyleSheet.create({
     height: "27%",
     borderRadius: 15,
     marginTop: h2dp(4),
-    width: "85%",
+    width: w2dp(90),
     backgroundColor: "white",
     display: "flex",
     flexDirection: "row",

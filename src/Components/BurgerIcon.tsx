@@ -1,19 +1,15 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { TouchableOpacity, Text, View, StyleSheet } from "react-native";
-import { CommonActions, useNavigation } from "@react-navigation/native";
-
-
-import { useDispatch, useSelector } from "react-redux";
-import { removeAuthData } from "../redux/actions/authAction";
-import { logOut } from "../redux/reducers/authreducers";
-import { getLocation } from "../Components/getCurrentLocation";
+import { useNavigation } from "@react-navigation/native";
+import { Text, TouchableOpacity, View } from "react-native";
 import React, { useState } from "react";
-
+import { useSelector } from "react-redux";
+import { getLocation } from "../Components/getCurrentLocation";
+import { styles } from "./Styles";
+import { localized } from "../locales/localization";
 
 const BurgerIcon = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const navigation: any = useNavigation();
-  const dispatch = useDispatch();
   const isAuthenticated = useSelector(
     (state: any) => state.auth.data.isAuthenticated
   );
@@ -28,106 +24,67 @@ const BurgerIcon = () => {
   };
   const findFoodMenuItemPress = (item: any) => {
     getLocation().then((res) => {
-      if(res){
+      if (res) {
         navigation?.navigate("MapScreen", {
           latitude: res?.latitude,
           longitude: res?.longitude,
-
         });
       }
     });
     setMenuOpen(false);
   };
-  // const logout = async (item: any) => {
-  //   // persistor.purge()
-  //   await dispatch(logOut({}) as any);
-  //   await removeAuthData();
-  //   navigation.dispatch(
-  //     CommonActions.reset({
-  //       index: 0,
-  //       routes: [{ name: "LoginScreen" }],
-  //     })
-  //   );
-  // };
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
   return (
     <>
+      {/* <TouchableWithoutFeedback
+        onPress={() => {
+          setMenuOpen(!menuOpen);
+        }}
+      > */}
       <MaterialCommunityIcons
         name="menu"
         size={40}
         color="white"
         onPress={() => toggleMenu()}
+        style={{
+          zIndex: 9999,
+          right: 0,
+        }}
       />
       {menuOpen && (
         <View
           style={{
             position: "absolute",
-            right: 60,
+            right: 40,
             top: 65,
             backgroundColor: "white",
             borderColor: "black",
-            borderWidth: 0.2,
+            borderWidth: 0.5,
             borderRadius: 5,
-            // zIndex: 9999,
+            zIndex: 1,
           }}
         >
           <TouchableOpacity onPress={() => handleMenuItemPress("Home")}>
-            <Text
-              style={{
-                padding: 10,
-                fontSize: 20,
-                fontWeight: "300",
-                lineHeight: 27.24,
-              }}
-            >
-              Home
-            </Text>
+            <Text style={styles.burgerText}>{localized.t("Home")}</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => findFoodMenuItemPress("Find Food")}>
-            <Text
-              style={{
-                padding: 10,
-                fontSize: 20,
-                fontWeight: "300",
-                lineHeight: 27.24,
-              }}
-            >
-              Find Food
-            </Text>
+            <Text style={styles.burgerText}>{localized.t("Find Food")}</Text>
           </TouchableOpacity>
           {isAuthenticated && (
             <TouchableOpacity
               onPress={() => navigation.navigate("ProfileScreen")}
             >
-              <Text
-                style={{
-                  padding: 10,
-                  fontSize: 20,
-                  fontWeight: "300",
-                  lineHeight: 27.24,
-                }}
-              >
-                Account
-              </Text>
+              <Text style={styles.burgerText}>{localized.t("Account")}</Text>
             </TouchableOpacity>
           )}
         </View>
       )}
+      {/* </TouchableWithoutFeedback> */}
     </>
   );
 };
-
-const styles = StyleSheet.create({
-  menuContainer: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    zIndex: 9999,
-  },
-});
 
 export default BurgerIcon;

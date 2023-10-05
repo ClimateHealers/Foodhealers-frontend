@@ -32,9 +32,8 @@ import { auth } from "../firebase/firebaseConfig";
 import { localized } from "../locales/localization";
 import { login } from "../redux/actions/authAction";
 import { setLanguage } from "../redux/reducers/langReducer";
-import * as Notifications from 'expo-notifications';
+import * as Notifications from "expo-notifications";
 import Constants from "expo-constants";
-
 
 const LoginScreen = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -54,26 +53,27 @@ const LoginScreen = () => {
   ]);
   const [error, setError] = useState("");
   const navigation: any = useNavigation<string>();
-  const [expoPushToken, setExpoPushToken] = useState<any>("")
-
+  const [expoPushToken, setExpoPushToken] = useState<any>("");
 
   const dispatch = useDispatch();
 
   const data = useSelector((state: any) => state.auth.data);
-  const languageName = useSelector((state:any) => state.language)
+  const languageName = useSelector((state: any) => state.language);
 
-
-  useEffect(()=>{
+  useEffect(() => {
     const getExpoPushToken = async () => {
       const token = await Notifications.getExpoPushTokenAsync({
-        projectId : Constants?.manifest?.extra?.eas?.projectID
+        projectId: Constants?.manifest?.extra?.eas?.projectID,
       });
-      const tokenKey = token?.data.substring(token?.data.indexOf('[') + 1, token?.data.indexOf(']'));
+      const tokenKey = token?.data.substring(
+        token?.data.indexOf("[") + 1,
+        token?.data.indexOf("]")
+      );
       setExpoPushToken(token?.data);
       // sendPushNotification(token);
     };
-    getExpoPushToken()
-  },[])
+    getExpoPushToken();
+  }, []);
 
   const handlePressOutside = () => {
     setlangOpen(false);
@@ -88,7 +88,7 @@ const LoginScreen = () => {
   };
   const findFoodMenuItemPress = (item: any) => {
     getLocation().then((res) => {
-      if(res){
+      if (res) {
         navigation?.navigate("MapScreen", {
           latitude: res?.latitude,
           longitude: res?.longitude,
@@ -100,7 +100,7 @@ const LoginScreen = () => {
 
   const changeLanguage = (itemValue: any, index: any) => {
     const selectedLanguage = lang[index].value;
-    dispatch(setLanguage(selectedLanguage))
+    dispatch(setLanguage(selectedLanguage));
     localized.locale = selectedLanguage;
     setSelectedLanguage(selectedLanguage);
   };
@@ -135,7 +135,7 @@ const LoginScreen = () => {
                       lineHeight: 27.24,
                     }}
                   >
-                    Home
+                    {localized.t("Home")}Home
                   </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -149,7 +149,7 @@ const LoginScreen = () => {
                       lineHeight: 27.24,
                     }}
                   >
-                    Find Food
+                    {localized.t("Find Food")}
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -173,8 +173,8 @@ const LoginScreen = () => {
                 rowTextStyle={styles.dropdown1RowTxtStyle}
                 data={lang && lang.map((dd) => dd.label)}
                 onSelect={changeLanguage}
-              // defaultButtonText={"EN"}
-              defaultButtonText={languageName.toUpperCase()}
+                // defaultButtonText={"EN"}
+                defaultButtonText={languageName.toUpperCase()}
                 buttonTextAfterSelection={(itemValue, index) => {
                   return languageName.toUpperCase();
                 }}
@@ -214,29 +214,31 @@ const LoginScreen = () => {
                       const user = userCredential.user;
                       setLoading(false);
                       console.log("user signed in successfully");
-                      
+
                       return user.getIdToken();
                     })
                     .then((token) => {
                       const data = {
                         tokenId: token,
-                        expoPushToken: expoPushToken
+                        expoPushToken: expoPushToken,
                       };
-                      dispatch(login(data) as any).then((res:any)=>{
-                        if(!res?.payload?.success){
+                      dispatch(login(data) as any).then((res: any) => {
+                        if (!res?.payload?.success) {
                           Alert.alert(
-                            "Account does not exist",
-                            "Please Sign up",
+                            `${localized.t("Account does not exist")}`,
+                            `${localized.t("Please Sign up")}`,
                             [
                               {
-                                text: "Sign up",
-                                onPress : ()=>{navigation.navigate("SignupScreen")},
+                                text: `${localized.t("Sign up")}`,
+                                onPress: () => {
+                                  navigation.navigate("SignupScreen");
+                                },
                                 style: "cancel",
                               },
                             ],
                             { cancelable: true }
                           );
-                        }else{
+                        } else {
                           navigation.dispatch(
                             CommonActions.reset({
                               index: 0,
@@ -244,7 +246,7 @@ const LoginScreen = () => {
                             })
                           );
                         }
-                      })
+                      });
                     })
                     .catch((error) => {
                       setLoading(false);
@@ -256,7 +258,7 @@ const LoginScreen = () => {
                             "Incorrect email or password entered, please check your credentials and try again.",
                             [
                               {
-                                text: "Ok",
+                                text: `${localized.t("Ok")}`,
                                 style: "cancel",
                               },
                             ],
@@ -307,7 +309,7 @@ const LoginScreen = () => {
                       <Text style={styles.inputError}>{errors.password}</Text>
                       <TouchableOpacity
                         onPress={() => navigation.navigate("ForgotPassword")}
-                        style= {{ alignSelf:"flex-end"}}
+                        style={{ alignSelf: "flex-end" }}
                       >
                         <Text
                           style={{
@@ -316,7 +318,7 @@ const LoginScreen = () => {
                             textDecorationLine: "underline",
                           }}
                         >
-                          Forgot password?
+                          {localized.t("Forgot password")}?
                         </Text>
                       </TouchableOpacity>
                     </View>
@@ -352,7 +354,7 @@ const LoginScreen = () => {
                           marginTop: 10,
                         }}
                       >
-                        Not a user?
+                        {localized.t("Not a user")}?
                       </Text>
                       <TouchableOpacity
                         onPress={() => navigation.navigate("SignupScreen")}

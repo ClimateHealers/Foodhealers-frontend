@@ -7,6 +7,7 @@ import {
   StatusBar,
   Image,
 } from "react-native";
+import { localized } from "../locales/localization";
 
 
 const WelcomeScreen = () => {
@@ -25,7 +26,7 @@ const WelcomeScreen = () => {
            />
           </View>
         <View style={styles.headerContainer}>
-          <Text style={styles.Headers}>Healthy Food should be Free</Text>
+          <Text style={styles.Headers}>{localized.t("Healthy Food should be Free")}</Text>
         </View>
       </ImageBackground>
     </View>

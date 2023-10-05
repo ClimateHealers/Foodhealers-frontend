@@ -330,7 +330,7 @@ const WeekScreen = ({ route }: any) => {
             </View>
             <View style={{ marginTop: h2dp(1) }}>
               <Text style={styles.boldText}>
-                <Text style={styles.cardText}>You are seeing event for </Text>
+                <Text style={styles.cardText}>{localized.t("You are seeing event for")} </Text>
                 {fullAddress}
               </Text>
               <TouchableOpacity onPress={focusCurrentLocation}>
@@ -344,7 +344,7 @@ const WeekScreen = ({ route }: any) => {
                     fontWeight: "300",
                   }}
                 >
-                  Click here to see events in your current location
+                  {localized.t("Click here to see events in your current location")}
                 </Text>
               </TouchableOpacity>
             </View>

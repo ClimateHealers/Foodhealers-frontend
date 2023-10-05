@@ -98,7 +98,7 @@ const PostEventDetailsScreen = ({ route }: any) => {
             <SafeAreaView>
               <View style={styles.row}>
                 <View style={styles.item}>
-                  <Text style={styles.itemText}>Post an Event</Text>
+                  <Text style={styles.itemText}>{localized.t("Post an Event")}</Text>
                 </View>
                 <View style={styles.item}>
                   <MaterialCommunityIcons
@@ -133,7 +133,7 @@ const PostEventDetailsScreen = ({ route }: any) => {
                             lineHeight: 27.24,
                           }}
                         >
-                          Home
+                          {localized.t("Home")}
                         </Text>
                       </TouchableOpacity>
                       <TouchableOpacity
@@ -147,7 +147,7 @@ const PostEventDetailsScreen = ({ route }: any) => {
                             lineHeight: 27.24,
                           }}
                         >
-                          Find Food
+                          {localized.t("Find Food")}
                         </Text>
                       </TouchableOpacity>
                     </View>
@@ -171,7 +171,7 @@ const PostEventDetailsScreen = ({ route }: any) => {
                   <View style={styles.cardTextConainer}>
                     <View style={{ marginBottom: 30, paddingHorizontal: 10 }}>
                       <Text style={styles.boldText}>
-                        Date:{" "}
+                      {localized.t("Date")}:{" "}
                         <Text style={styles.cardText}>
                           {formattedDate} - {formattedEndDate}
                         </Text>
@@ -186,7 +186,7 @@ const PostEventDetailsScreen = ({ route }: any) => {
                     </View>
                     <View style={{ marginBottom: 20, paddingHorizontal: 10 }}>
                       <Text style={styles.boldText}>
-                        Time:{" "}
+                      {localized.t("Time")}:{" "}
                         <Text style={styles.cardText}>
                           {formattedTime}- {formattedEndTime}
                         </Text>
@@ -203,7 +203,7 @@ const PostEventDetailsScreen = ({ route }: any) => {
                     </View>
                     <View style={{ marginBottom: 30, paddingHorizontal: 10 }}>
                       <Text style={styles.boldText}>
-                        Location:{" "}
+                      {localized.t("Location")}:{" "}
                         <Text style={styles.cardText}>
                           {eventDetails?.address}
                         </Text>
@@ -219,7 +219,7 @@ const PostEventDetailsScreen = ({ route }: any) => {
                     </View>
                     <View style={{ marginBottom: 20, paddingHorizontal: 10 }}>
                       <Text style={styles.boldText}>
-                        What:{" "}
+                      {localized.t("What")}:{" "}
                         <Text style={styles.cardText}>
                           {eventDetails?.served}
                         </Text>
@@ -246,7 +246,7 @@ const PostEventDetailsScreen = ({ route }: any) => {
                 }}
               >
                 <PrimaryButton
-                  title={"See All Events"}
+                  title={localized.t("See All Events")}
                   // title={localized.t("Sign in")}
                   buttonStyle={styles.buttonStyles}
                   titleStyle={styles.titleStyle}

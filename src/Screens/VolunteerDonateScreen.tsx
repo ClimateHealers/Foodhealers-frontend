@@ -1,7 +1,8 @@
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import {
+  Dimensions,
   Image,
   Keyboard,
   ScrollView,
@@ -16,11 +17,14 @@ import {
   widthPercentageToDP as w2dp,
 } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
-import Carousel from "react-native-snap-carousel";
+import Carousel, { Pagination } from "react-native-snap-carousel";
 import BurgerIcon from "../Components/BurgerIcon";
 import PrimaryButton from "../Components/PrimaryButton";
 import { getLocation } from "../Components/getCurrentLocation";
 import { localized } from "../locales/localization";
+import { styles } from "../Components/Styles";
+import FoodhealersHeader from "../Components/FoodhealersHeader";
+import { Ionicons } from "@expo/vector-icons";
 
 const VolunteerDonateScreen = ({ route }: any) => {
   const navigation: any = useNavigation();
@@ -37,11 +41,15 @@ const VolunteerDonateScreen = ({ route }: any) => {
     { id: 8, label: "Spanish", value: "es" },
   ]);
   const [menuOpen, setMenuOpen] = useState(false);
+  const { width: screenWidth } = Dimensions.get("window");
+  const [activeSlide, setActiveSlide] = useState(0);
   const [selectedLanguage, setSelectedLanguage] = useState(localized.locale);
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
+
+  const sliderRef: any = useRef(null);
 
   const handlePressOutside = () => {
     setlangOpen(false);
@@ -64,233 +72,153 @@ const VolunteerDonateScreen = ({ route }: any) => {
   };
   const cardData = [
     {
-      id:1,
-      title: "Donate Food",
+      id: 1,
+      title: `${localized.t("Donate Food")}`,
       image: require("../../assets/images/donateFood.png"),
-      navigation:"AddDonationsScreen"
+      navigation: "AddDonationsScreen",
+      itemTypeId: 1,
+    },
+    {
+      id: 2,
+      title: `${localized.t("Volunteer at an event")}`,
+      image: require("../../assets/images/volunteerAtEvent.png"),
+      itemTypeId: 3,
+      navigation: "VolunteerEventScreen",
     },
     {
       id: 3,
-      title: "Volunteer at an event",
-      image: require("../../assets/images/volunteerAtEvent.png"),
+      title: `${localized.t("Donate supplies")}`,
+      image: require("../../assets/images/donateSupplies.png"),
+      navigation: "AddDonationsScreen",
+      itemTypeId: 2,
     },
     {
       id: 4,
-      title: "Donate supplies",
-      image: require("../../assets/images/donateSupplies.png"),
-    },
-    {
-      id: 5,
-      title: "See all donations & Volunteers",
+      title: `${localized.t("See all donations & Volunteers")}`,
       image: require("../../assets/images/seeAllDonations.png"),
-      navigation:"VolunteerAndDonateScreen"
+      navigation: "VolunteerAndDonateScreen",
     },
   ];
 
   const renderItem = ({ item }: any) => {
     return (
       <View>
-        <View style={[styles.card, { backgroundColor: "white" }]}>
-          <TouchableOpacity>
-            <View>
-              <Image
-                source={item?.image}
-                style={{
-                  width: "100%",
-                  height: h2dp(45),
-                  borderTopLeftRadius: h2dp(3),
-                  borderTopRightRadius: h2dp(3),
-                  opacity: 1,
-                  position: "relative",
-                }}
+        <TouchableOpacity activeOpacity={1}>
+          <View
+            style={[styles.card, { height: h2dp(70), borderRadius: h2dp(3) }]}
+          >
+            <View style={styles.cardText}>
+              <View>
+                <Image
+                  source={item?.image}
+                  style={{
+                    width: "100%",
+                    height: h2dp(45),
+                    borderTopLeftRadius: h2dp(3),
+                    borderTopRightRadius: h2dp(3),
+                    opacity: 1,
+                    position: "relative",
+                  }}
+                />
+              </View>
+
+              <View style={styles.headerContainer}>
+                <Text
+                  style={{
+                    color: "white",
+                    fontSize: h2dp(3),
+                    // marginLeft: w2dp(5),
+                    textAlign: "center",
+                  }}
+                >
+                  {item?.title}
+                </Text>
+              </View>
+            </View>
+            <View style={styles.description}>
+              <Text style={{ alignSelf: "center", fontSize: h2dp(2.2) }}>
+                {localized.t("You can make a Difference")}
+              </Text>
+              <PrimaryButton
+                title={localized.t("Select")}
+                onPress={() =>
+                  navigation.navigate(item?.navigation, {
+                    itemTypeId: item?.itemTypeId,
+                    title: (item?.title),
+                  })
+                }
+                buttonStyle={styles.buttonStyles}
+                titleStyle={styles.titleStyle}
               />
             </View>
-            <View style={styles.headerContainer}>
-              <Text
-                style={{
-                  color: "white",
-                  fontSize: h2dp(3),
-                  marginLeft: w2dp(5),
-                }}
-              >
-                {item?.title}
-              </Text>
-            </View>
-          </TouchableOpacity>
-          <View style={styles.description}>
-            <Text style={{ alignSelf: "center", fontSize: h2dp(2.2) }}>
-              You can make a Difference
-            </Text>
-            <PrimaryButton
-              title={"Select"}
-              onPress={()=>navigation.navigate(item?.navigation)}
-              buttonStyle={styles.buttonStyles}
-              titleStyle={styles.titleStyle}
-            />
           </View>
-        </View>
+        </TouchableOpacity>
       </View>
     );
   };
 
   return (
     <TouchableWithoutFeedback onPress={handlePressOutside}>
-      <View style={styles.container}>
-        <LinearGradient
-          colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
-          style={styles.background}
-        >
-          <SafeAreaView>
-            <View style={styles.row}>
-              <Text style={styles.itemText}>Volunteer</Text>
-              <View style={styles.item}>
+      <LinearGradient
+        colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
+        style={styles.background}
+      >
+        <SafeAreaView>
+          <ScrollView keyboardShouldPersistTaps="handled">
+            <View style={styles.container}>
+              <FoodhealersHeader />
+              <View style={styles.root}>
+                <Ionicons
+                  name="chevron-back"
+                  size={32}
+                  color="white"
+                  onPress={() => navigation.goBack()}
+                />
+                <View style={styles.item}>
+                  <Text style={styles.itemText}>
+                    {localized.t("Volunteer")}
+                  </Text>
+                </View>
                 <BurgerIcon />
-                {menuOpen && (
-                  <View
-                    style={{
-                      position: "absolute",
-                      right: 60,
-                      top: 70,
-                      backgroundColor: "white",
-                      borderColor: "white",
-                      height: 100,
-                      borderRadius: 5,
-                      zIndex: 9999,
-                    }}
-                  >
-                    <TouchableOpacity
-                      onPress={() => handleMenuItemPress("Home")}
-                    >
-                      <Text
-                        style={{
-                          padding: 10,
-                          fontSize: 20,
-                          fontWeight: "300",
-                          lineHeight: 27.24,
-                        }}
-                      >
-                        Home
-                      </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={() => findFoodMenuItemPress("Find Food")}
-                    >
-                      <Text
-                        style={{
-                          padding: 10,
-                          fontSize: 20,
-                          fontWeight: "300",
-                          lineHeight: 27.24,
-                        }}
-                      >
-                        Find Food
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-                )}
               </View>
-            </View>
-            <ScrollView>
+              <View style={{marginHorizontal: "-4%"}}>
               <Carousel
+                ref={sliderRef}
                 data={cardData}
                 renderItem={renderItem}
-                sliderWidth={400}
-                itemWidth={400}
+                sliderWidth={screenWidth}
+                sliderHeight={screenWidth}
+                itemWidth={screenWidth}
                 layout={"default"}
-                inactiveSlideScale={0.9}
-                inactiveSlideOpacity={0.7}
+                inactiveSlideScale={0.8}
+                inactiveSlideOpacity={0.8}
                 firstItem={0}
                 loopClonesPerSide={2}
+                onSnapToItem={(index) => setActiveSlide(index)}
+                pagingEnabled={true}
               />
-            </ScrollView>
-          </SafeAreaView>
-        </LinearGradient>
-      </View>
+              <Pagination
+                dotsLength={cardData?.length}
+                activeDotIndex={activeSlide}
+                dotStyle={{
+                  width: 10,
+                  height: 10,
+                  borderRadius: 5,
+                  backgroundColor: "#CDDE85",
+                }}
+                inactiveDotStyle={{
+                  backgroundColor: "#CDDE85",
+                }}
+                inactiveDotOpacity={0.4}
+                inactiveDotScale={0.6}
+              />
+              </View>
+            </View>
+          </ScrollView>
+        </SafeAreaView>
+      </LinearGradient>
     </TouchableWithoutFeedback>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-  },
-  background: {
-    flex: 1,
-    resizeMode: "cover",
-  },
-  row: {
-    flexDirection: "row",
-    justifyContent: "flex-end",
-    alignItems: "center",
-    width: "100%",
-    zIndex: 9999,
-  },
-  item: {
-    width: "30%",
-    marginTop: 25,
-    marginLeft: 30,
-    height: 100,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  itemText: {
-    fontSize: 25,
-    color: "white",
-    marginTop: h2dp(3),
-  },
-  card: {
-    backgroundColor: "white",
-    width: "85%",
-    borderRadius: h2dp(3),
-    marginBottom: 10,
-    height: h2dp(70),
-    alignSelf: "center",
-  },
-  buttonStyles: {
-    backgroundColor: "#FC5A56",
-    color: "white",
-    borderRadius: 5,
-    width: 150,
-    marginTop: h2dp(6.5),
-    alignSelf: "center",
-  },
-  titleStyle: {
-    color: "white",
-    fontSize: 26,
-
-    lineHeight: 35,
-    fontFamily: "OpenSans-Regular",
-  },
-  cardTextConainer: {
-    marginTop: 30,
-  },
-  cardText: {
-    fontSize: 20,
-    marginLeft: 10,
-    fontFamily: "OpenSans-Light",
-  },
-  boldText: {
-    fontWeight: "300",
-    fontSize: 20,
-  },
-  headerContainer: {
-    display: "flex",
-    flexDirection: "column",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-    justifyContent: "center",
-    width: "100%",
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
-    position: "absolute",
-    bottom: 0,
-    height: h2dp(10),
-  },
-  description: {
-    marginTop: h2dp(3),
-    display: "flex",
-    justifyContent: "space-around",
-  },
-});
 
 export default VolunteerDonateScreen;

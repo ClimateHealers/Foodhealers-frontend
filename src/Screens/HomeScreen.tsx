@@ -1,12 +1,10 @@
 import { MaterialIcons } from "@expo/vector-icons";
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import * as Location from "expo-location";
+import { useNavigation } from "@react-navigation/native";
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
-  ImageBackground,
-  Linking,
   Modal,
   Platform,
   StatusBar,
@@ -16,24 +14,21 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import {
-  heightPercentageToDP as h2dp,
-  widthPercentageToDP as w2dp,
-} from "react-native-responsive-screen";
+import { heightPercentageToDP as h2dp } from "react-native-responsive-screen";
 import SelectDropdown from "react-native-select-dropdown";
 import { useDispatch, useSelector } from "react-redux";
+import BackgroundImg from "../Components/BackGroundImage";
 import PrimaryButton from "../Components/PrimaryButton";
 import { localized } from "../locales/localization";
 import { myTheme } from "../myTheme";
 import { setLanguage } from "../redux/reducers/langReducer";
-import axios from "axios";
+import { myDonations } from "../redux/actions/myDonations";
+import { volunteerHistory } from "../redux/actions/volunteerHistoryAction";
 
 const HomeScreen = ({ route }: any) => {
   const userDetails = useSelector((state: any) => state.auth);
-  
-  const languageName = useSelector((state:any) => state.language)
-
   const { data } = userDetails;
+  const languageName = useSelector((state: any) => state.language);
 
   const dispatch = useDispatch();
 
@@ -41,9 +36,11 @@ const HomeScreen = ({ route }: any) => {
 
   const [loc, setLoc] = useState(false);
   const [langOpen, setlangOpen] = useState(false);
+  const [donationData, setDonationData] = useState("");
+  const [volunteerData, setVolunteerData] = useState("");
   const [selectedLanguage, setSelectedLanguage] = useState(localized.locale);
-  const[lat,setLat] = useState(0)
-  const[long,setLong] = useState(0)
+  const [lat, setLat] = useState(0);
+  const [long, setLong] = useState(0);
   const [lang, setLang] = useState([
     { id: 1, label: "Bengali", value: "be" },
     { id: 2, label: "Chinese", value: "ch" },
@@ -60,35 +57,49 @@ const HomeScreen = ({ route }: any) => {
   };
   const changeLanguage = (itemValue: any, index: any) => {
     const selectedLanguage = lang[index].value;
-    dispatch(setLanguage(selectedLanguage))
+    dispatch(setLanguage(selectedLanguage));
     localized.locale = selectedLanguage;
     setSelectedLanguage(selectedLanguage);
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     const getUserLocation = async () => {
       try {
-        const response = await axios.get('http://ipinfo.io/json');
+        const response = await axios.get("http://ipinfo.io/json");
         const { loc } = response.data;
-        console.log("cheking location from IP address", loc)
-        const [latitude, longitude] = loc.split(',').map((coord:any) => parseFloat(coord));
-        console.log("objectobjectobjectobject",latitude,longitude)
-        setLat(latitude)
-        setLong(longitude)
+        console.log("cheking location from IP address", loc);
+        const [latitude, longitude] = loc
+          .split(",")
+          .map((coord: any) => parseFloat(coord));
+        setLat(latitude);
+        setLong(longitude);
         return { latitude, longitude };
       } catch (error) {
-        console.error('Error fetching user location', error);
+        console.error("Error fetching user location", error);
         return null;
       }
     };
-    getUserLocation()
-   },[])
-  
-   const navigateToMapScreen =()=>{
-    navigation.navigate("MapScreen",{
-      latitude:lat,
-      longitude : long
-    }) }
+    getUserLocation();
+    fetchingDonationData();
+    fetchingvolunteerHistory();
+  }, []);
+
+  const fetchingDonationData = async () => {
+    const response = await dispatch(myDonations({} as any) as any);
+    setDonationData(response?.payload?.donationList);
+  };
+
+  const fetchingvolunteerHistory = async () => {
+    const response = await dispatch(volunteerHistory({} as any) as any);
+    setVolunteerData(response?.payload?.volunteerHistory);
+  };
+
+  const navigateToMapScreen = () => {
+    navigation.navigate("MapScreen", {
+      latitude: lat,
+      longitude: long,
+    });
+  };
   const appLoader = (loader: any) => {
     return (
       <View style={styles.centeredView}>
@@ -108,7 +119,7 @@ const HomeScreen = ({ route }: any) => {
     } else {
       Alert.alert(
         `Registration Required !`,
-        "Only a registered user can post an event. Please login.",
+        "Only a registered user can Post an Event. Please login.",
         [
           {
             text: "Login",
@@ -134,11 +145,12 @@ const HomeScreen = ({ route }: any) => {
   return (
     <TouchableWithoutFeedback onPress={handlePressOutside}>
       <View style={styles.container}>
-        <StatusBar backgroundColor="auto" barStyle= {Platform.OS ==="ios"?"light-content":"dark-content"} />
-        <ImageBackground
-          source={require("../../assets/homeImage2.jpg")}
-          style={styles.backgroundImage}
-        >
+        <BackgroundImg />
+        <StatusBar
+          backgroundColor="auto"
+          barStyle={Platform.OS === "ios" ? "light-content" : "dark-content"}
+        />
+        <View style={{ zIndex: 1 }}>
           <View style={styles.dropdownContainer}>
             <SelectDropdown
               buttonStyle={styles.dropdown1BtnStyle}
@@ -159,7 +171,7 @@ const HomeScreen = ({ route }: any) => {
               data={lang && lang.map((dd) => dd.label)}
               onSelect={changeLanguage}
               // defaultButtonText={"EN"}
-              defaultButtonText={ selectedLanguage.toUpperCase()}
+              defaultButtonText={selectedLanguage.toUpperCase()}
               buttonTextAfterSelection={(itemValue, index) => {
                 return languageName.toUpperCase();
               }}
@@ -168,7 +180,9 @@ const HomeScreen = ({ route }: any) => {
               }}
             />
           </View>
+
           <View style={{ flex: 1 }}>{appLoader(loc == true)}</View>
+
           <View style={styles.headerContainer}>
             <PrimaryButton
               title={localized.t("Find Food")}
@@ -183,10 +197,27 @@ const HomeScreen = ({ route }: any) => {
               titleStyle={styles.titleStyle}
             />
             <PrimaryButton
-              // title={localized.t("Post Event")}
-              title={"Volunteer"}
-              buttonStyle={[styles.postEventButton,{backgroundColor: "#5FBB3F"}]}
-              onPress={()=>navigation.navigate('IntroSlider')}
+              title={localized.t("Volunteer")}
+              buttonStyle={[
+                styles.postEventButton,
+                { backgroundColor: "#5FBB3F" },
+              ]}
+              onPress={() => {
+                if (data.isAuthenticated) {
+                  if (volunteerData.length > 0 || donationData.length > 0) {
+                    navigation.navigate("VolunteerHomeScreen");
+                  } else {
+                    navigation.navigate("IntroSlider");
+                  }
+                } else {
+                  Alert.alert("Alert!", "Please login", [
+                    {
+                      text: "Login",
+                      onPress: () => navigation.navigate("LoginScreen"),
+                    },
+                  ]);
+                }
+              }}
               titleStyle={styles.titleStyle}
             />
             {data?.user?.name ? (
@@ -210,7 +241,7 @@ const HomeScreen = ({ route }: any) => {
                   color: "white",
                   fontSize: 18,
                   fontFamily: "OpenSans-bold",
-                  marginBottom:h2dp(6)
+                  marginBottom: h2dp(6),
                 }}
               >
                 {localized.t("Welcome")}{" "}
@@ -226,7 +257,7 @@ const HomeScreen = ({ route }: any) => {
                     fontSize: 18,
                     textDecorationLine: "underline",
                     fontFamily: "OpenSans-Bold",
-                    marginBottom:h2dp(6)
+                    marginBottom: h2dp(6),
                   }}
                 >
                   {localized.t("Sign in")}
@@ -234,7 +265,7 @@ const HomeScreen = ({ route }: any) => {
               </TouchableOpacity>
             )}
           </View>
-        </ImageBackground>
+        </View>
       </View>
     </TouchableWithoutFeedback>
   );
@@ -244,21 +275,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  backgroundImage: {
-    flex: 1,
-    width: "110%",
-    height: "100%",
-    resizeMode: "cover",
-    justifyContent: "flex-end",
-    alignItems: "center",
-  },
   headerContainer: {
     display: "flex",
     flexDirection: "column",
     backgroundColor: "rgba(0, 0, 0, 0.5)",
     alignItems: "center",
+    justifyContent: "center",
     width: "100%",
-    // height: Platform.OS === "ios" ? h2dp(37) : h2dp(36),
+    top: h2dp(70),
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
   },
@@ -280,7 +304,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     color: "black",
     borderRadius: 5,
-    marginBottom: 25,
+    marginBottom: 20,
     minWidth: 190,
     maxHeight: 50,
   },

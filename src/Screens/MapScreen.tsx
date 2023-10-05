@@ -1,4 +1,4 @@
-import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import Constants from "expo-constants";
 import { LinearGradient } from "expo-linear-gradient";
@@ -11,11 +11,9 @@ import {
   Linking,
   Platform,
   ScrollView,
-  StyleSheet,
   Text,
-  TouchableOpacity,
   TouchableWithoutFeedback,
-  View,
+  View
 } from "react-native";
 import { Image } from "react-native-elements";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
@@ -27,19 +25,18 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import SelectDropdown from "react-native-select-dropdown";
 import { useDispatch, useSelector } from "react-redux";
-import { getLocation } from "../Components/getCurrentLocation";
+import BurgerIcon from "../Components/BurgerIcon";
+import FoodhealersHeader from "../Components/FoodhealersHeader";
 import PrimaryButton from "../Components/PrimaryButton";
+import { styles } from "../Components/Styles";
 import { localized } from "../locales/localization";
 import { findFood } from "../redux/actions/findFoodaction";
-import { CommonActions } from "@react-navigation/native";
-import { logOut } from "../redux/reducers/authreducers";
-import { removeAuthData } from "../redux/actions/authAction";
 import { setLanguage } from "../redux/reducers/langReducer";
 
 const MapScreen = ({ route }: any) => {
   const { latitude, longitude } = route.params;
 
-  const startDate = moment(new Date().setHours(0, 0, 0, 0)).utc().unix()
+  const startDate = moment(new Date().setHours(0, 0, 0, 0)).utc().unix();
   const endDate = moment(new Date().setHours(23, 59, 59, 0))
     .add(6, "d")
     .utc()
@@ -80,11 +77,7 @@ const MapScreen = ({ route }: any) => {
   const API_KEY = Constants?.manifest?.extra?.googleMapsApiKey;
 
   const dispatch = useDispatch();
-
-  const isAuthenticated = useSelector(
-    (state: any) => state?.auth?.data?.isAuthenticated
-  );
-  const languageName = useSelector((state:any) => state.language)
+  const languageName = useSelector((state: any) => state.language);
 
   const focusMarker = () => {
     if (mapRef.current) {
@@ -107,49 +100,11 @@ const MapScreen = ({ route }: any) => {
     setMenuOpen(false);
   };
 
-  const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
-  };
-
-  const handleMenuItemPress = (item: any) => {
-    // console.log(`Selected menu item: ${item}`);
-    setMenuOpen(false);
-    if (isAuthenticated) {
-      navigation.navigate("HomeScreen");
-    } else {
-      navigation.navigate("SignupScreen");
-    }
-  };
-  const findFoodMenuItemPress = (item: any) => {
-    getLocation().then((res) => {
-      if(res){
-        navigation?.navigate("MapScreen", {
-          latitude: res?.latitude,
-          longitude: res?.longitude,
-
-        });
-      }
-    });
-    setMenuOpen(false);
-  };
-  // const logout = async (item: any) => {
-  //   // persistor.purge()
-  //   // await dispatch(logOut({}) as any);
-  //   // await removeAuthData();
-  //   // navigation.dispatch(
-  //   //   CommonActions.reset({
-  //   //     index: 0,
-  //   //     routes: [{ name: "LoginScreen" }],
-  //   //   })
-  //   // );
-  //   navigation.navigate("ProfileScreen")
-  // };
-
-  const  clickHandler = () => {
+  const clickHandler = () => {
     navigation.navigate("FindFoodHomeScreen", {
       // location: location,
-      currentlat:latitude,
-      currentlong:longitude,
+      currentlat: latitude,
+      currentlong: longitude,
       city: city,
       state: state,
       fullAddress: fullAddress,
@@ -162,7 +117,7 @@ const MapScreen = ({ route }: any) => {
 
   const changeLanguage = (itemValue: any, index: any) => {
     const selectedLanguage = lang[index].value;
-    dispatch(setLanguage(selectedLanguage))
+    dispatch(setLanguage(selectedLanguage));
     localized.locale = selectedLanguage;
     setSelectedLanguage(selectedLanguage);
   };
@@ -213,10 +168,12 @@ const MapScreen = ({ route }: any) => {
         colors={["#012e17", "#017439", "#009b4d"]}
         style={styles.background}
       >
+        <SafeAreaView>
         <ScrollView keyboardShouldPersistTaps="always">
-          <SafeAreaView style={styles.container}>
-            <View style={styles.row}>
-              <View style={styles.dropdownContainer}>
+        <View style={styles.container}>
+            <FoodhealersHeader />
+            <View style={styles.root}>
+              <View style={[styles.dropdownContainer,{width: "30%"}]}>
                 <SelectDropdown
                   buttonStyle={styles.dropdown1BtnStyle}
                   buttonTextStyle={styles.dropdown1BtnTxtStyle}
@@ -236,7 +193,7 @@ const MapScreen = ({ route }: any) => {
                   data={lang && lang.map((dd) => dd.label)}
                   onSelect={changeLanguage}
                   // defaultButtonText={"EN"}
-                  defaultButtonText={ selectedLanguage.toUpperCase()}
+                  defaultButtonText={selectedLanguage.toUpperCase()}
                   buttonTextAfterSelection={(itemValue, index) => {
                     return languageName.toUpperCase();
                   }}
@@ -245,77 +202,10 @@ const MapScreen = ({ route }: any) => {
                   }}
                 />
               </View>
-              <View style={styles.item}>
+              <View style={[styles.item, {marginLeft:w2dp(-15)}]}>
                 <Text style={styles.itemText}>{localized.t("Find Food")}</Text>
               </View>
-              <View style={styles.item}>
-                <MaterialCommunityIcons
-                  name="menu"
-                  size={40}
-                  color="white"
-                  onPress={() => toggleMenu()}
-                />
-                {menuOpen && (
-                  <View
-                    style={{
-                      position: "absolute",
-                      right: 60,
-                      top: Platform.OS === "ios" ? h2dp(8) : h2dp(9),
-                      backgroundColor: "white",
-                      borderColor: "black",
-                      borderWidth:0.2,
-
-                      borderRadius: 5,
-                      zIndex: 9999,
-                    }}
-                  >
-                    <TouchableOpacity
-                      onPress={() => handleMenuItemPress("Home")}
-                    >
-                      <Text
-                        style={{
-                          padding: 10,
-                          fontSize: 20,
-                          fontWeight: "300",
-                          lineHeight: 27.24,
-                        }}
-                      >
-                        Home
-                      </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={() => findFoodMenuItemPress("Find Food")}
-                    >
-                      <Text
-                        style={{
-                          padding: 10,
-                          fontSize: 20,
-                          fontWeight: "300",
-                          lineHeight: 27.24,
-                        }}
-                      >
-                        Find Food
-                      </Text>
-                    </TouchableOpacity>
-                    {isAuthenticated && (
-                      <TouchableOpacity
-                        onPress={() => navigation.navigate("ProfileScreen")}
-                      >
-                        <Text
-                          style={{
-                            padding: 10,
-                            fontSize: 20,
-                            fontWeight: "300",
-                            lineHeight: 27.24,
-                          }}
-                        >
-                          Account
-                        </Text>
-                      </TouchableOpacity>
-                    )}
-                  </View>
-                )}
-              </View>
+              <BurgerIcon/>
             </View>
 
             <GooglePlacesAutocomplete
@@ -373,7 +263,7 @@ const MapScreen = ({ route }: any) => {
                 const verifiedFoodEvents = foodEvents?.filter(
                   (event: any) => event.status === "approved"
                 );
-                if (verifiedFoodEvents.length > 0) {
+                if (verifiedFoodEvents?.length > 0) {
                   setEvents(verifiedFoodEvents);
                   setEmptyEvents(false);
                 } else {
@@ -392,8 +282,8 @@ const MapScreen = ({ route }: any) => {
                   borderColor: "black",
                   borderRadius: 3,
                   marginTop: 12,
-                  width: "92%",
-                  marginLeft: 15,
+                  width: "100%",
+                  // marginLeft: 15,
                   marginBottom: 1,
                 },
                 description: {
@@ -433,8 +323,8 @@ const MapScreen = ({ route }: any) => {
                   height: Platform.OS === "ios" ? "55%" : "60%",
                 }}
                 initialRegion={{
-                  latitude: latitude ? latitude: 0,
-                  longitude: longitude ? longitude: 0,
+                  latitude: latitude ? latitude : 0,
+                  longitude: longitude ? longitude : 0,
                   latitudeDelta: LATITUDE_DELTA,
                   longitudeDelta: LONGITUDE_DELTA,
                 }}
@@ -500,7 +390,7 @@ const MapScreen = ({ route }: any) => {
                     color: "white",
                   }}
                 >
-                  No events found
+                  {localized.t("No events found")}
                 </Text>
               ) : (
                 <Text
@@ -512,17 +402,17 @@ const MapScreen = ({ route }: any) => {
                     opacity: 0,
                   }}
                 >
-                  No Events Found
+                  {localized.t("No events found")}
                 </Text>
               )}
 
               {emptyEvents ? (
                 <View
-                  style={{
-                    position: "absolute",
-                    top: Platform.OS === "ios" ? h2dp(40) : h2dp(48),
-                    left: w2dp(26),
-                  }}
+                  // style={{
+                  //   position: "absolute",
+                  //   top: Platform.OS === "ios" ? h2dp(40) : h2dp(48),
+                  //   // left: w2dp(26),
+                  // }}
                 >
                   <PrimaryButton
                     title={"Home"}
@@ -542,106 +432,12 @@ const MapScreen = ({ route }: any) => {
                 </View>
               ) : null}
             </View>
-          </SafeAreaView>
+          </View>
         </ScrollView>
+        </SafeAreaView>
       </LinearGradient>
     </TouchableWithoutFeedback>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    display: "flex",
-    flexDirection: "column",
-    flex: 1,
-    height: h2dp("100%"),
-  },
-  background: {
-    flex: 1,
-    resizeMode: "cover",
-  },
-  row: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    alignItems: "center",
-    width: "100%",
-    zIndex: 9999,
-  },
-  item: {
-    width: "30%",
-    marginTop: 25,
-    height: 100,
-    justifyContent: "center",
-    alignItems: "center",
-    position: "relative",
-  },
-  dropdownContainer: {
-    marginTop: 15,
-    marginLeft: 15,
-    width: "30%",
-    height: 100,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  itemText: {
-    fontSize: 25,
-    color: "white",
-  },
-  mapContainer: {},
-  dropdown1BtnStyle: {
-    marginTop: 15,
-    marginLeft: 45,
-    width: "70%",
-    height: 50,
-    backgroundColor: "#FFF",
-    borderRadius: 5,
-    borderWidth: 1,
-    borderColor: "#D1D1D6",
-  },
-  dropdown1BtnTxtStyle: { color: "#B50000", textAlign: "left", fontSize: 14 },
-  dropdown1DropdownStyle: {
-    backgroundColor: "#EFEFEF",
-    color: "black",
-    borderRadius: 4,
-    height: 180,
-    fontSize: 14,
-    borderColor: "blue",
-  },
-  dropdown1RowStyle: {
-    backgroundColor: "#EFEFEF",
-    color: "#B50000",
-    borderBottomColor: "#D1D1D6",
-    borderRadius: 5,
-  },
-  dropdown1RowTxtStyle: { color: "black", textAlign: "center", fontSize: 10 },
-  buttonStyles: {
-    backgroundColor: "#FC5A56",
-    color: "white",
-    borderRadius: 5,
-    width: 190,
-    alignSelf: "center",
-  },
-
-  titleStyle: {
-    color: "white",
-    fontSize: 26,
-    fontWeight: "400",
-    lineHeight: 35,
-    fontFamily: "OpenSans-Regular",
-  },
-
-  blueDot: {
-    width: 20,
-    height: 20,
-    borderRadius: 10,
-    backgroundColor: "rgba(0, 122, 255, 0.3)",
-    borderWidth: 1,
-    borderColor: "rgba(0, 122, 255, 0.7)",
-  },
-  markerIcon: {
-    width: 40,
-    height: 40,
-  },
-});
 
 export default MapScreen;

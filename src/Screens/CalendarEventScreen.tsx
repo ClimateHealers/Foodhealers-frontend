@@ -1,4 +1,4 @@
-import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
+import { Ionicons, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useState } from "react";
@@ -20,6 +20,9 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useSelector } from "react-redux";
 import { getLocation } from "../Components/getCurrentLocation";
 import moment from "moment";
+import FoodhealersHeader from "../Components/FoodhealersHeader";
+import BurgerIcon from "../Components/BurgerIcon";
+import { localized } from "../locales/localization";
 
 const CalendarEventScreen = ({ route }: any) => {
   const navigation: any = useNavigation();
@@ -75,84 +78,36 @@ const CalendarEventScreen = ({ route }: any) => {
         colors={["#012e17", "#017439", "#009b4d"]}
         style={styles.background}
       >
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView
+          style={[
+            styles.container,
+            { marginTop: h2dp(3), marginHorizontal: "4%" },
+          ]}
+        >
+          <FoodhealersHeader />
           <View style={styles.row}>
-            <View style={styles.dropdownContainer}></View>
+          <Ionicons
+                    name="chevron-back"
+                    size={32}
+                    color="white"
+                    onPress={() => navigation.goBack()}
+                  />
             <View style={styles.item}>
               {/* <Text style={styles.itemText}>{localized.t("Find Food")}</Text> */}
-              <Text style={styles.itemText}>Food Events</Text>
+              <Text style={styles.itemText}>{localized.t("Food Events")}</Text>
             </View>
-            <View style={styles.item}>
-              <MaterialCommunityIcons
-                name="menu"
-                size={40}
-                color="white"
-                onPress={() => toggleMenu()}
-              />
-              {menuOpen && (
-                <View
-                  style={{
-                    position: "absolute",
-                    right: 60,
-                    top: Platform.OS === "ios" ? h2dp(8) : h2dp(9),
-                    backgroundColor: "white",
-                    borderColor: "black",
-                    borderWidth: 0.2,
-
-                    borderRadius: 5,
-                    zIndex: 9999,
-                  }}
-                >
-                  <TouchableOpacity onPress={() => handleMenuItemPress("Home")}>
-                    <Text
-                      style={{
-                        padding: 10,
-                        fontSize: 20,
-                        fontWeight: "300",
-                        lineHeight: 27.24,
-                      }}
-                    >
-                      Home
-                    </Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    onPress={() => findFoodMenuItemPress("Find Food")}
-                  >
-                    <Text
-                      style={{
-                        padding: 10,
-                        fontSize: 20,
-                        fontWeight: "300",
-                        lineHeight: 27.24,
-                      }}
-                    >
-                      Find Food
-                    </Text>
-                  </TouchableOpacity>
-                  {isAuthenticated && (
-                    <TouchableOpacity
-                      onPress={() => navigation.navigate("ProfileScreen")}
-                    >
-                      <Text
-                        style={{
-                          padding: 10,
-                          fontSize: 20,
-                          fontWeight: "300",
-                          lineHeight: 27.24,
-                        }}
-                      >
-                        Account
-                      </Text>
-                    </TouchableOpacity>
-                  )}
-                </View>
-              )}
-            </View>
+            <BurgerIcon/>
           </View>
 
           <View style={styles.subHeader}>
             <TouchableOpacity onPress={() => navigation.goBack()}>
-              <View style={{ display: "flex", flexDirection: "row" }}>
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                }}
+              >
                 <MaterialIcons
                   name="keyboard-arrow-left"
                   size={26}
@@ -177,47 +132,49 @@ const CalendarEventScreen = ({ route }: any) => {
                 fontSize: h2dp(2),
               }}
             >
-              Events
+              {localized.t("Events")}
             </Text>
           </View>
           <ScrollView>
-            <View style={styles.eventsContainer}>
-              <View style={styles.dateContainer}>
-                {singleDayEvent.map((event: any, index: any) => (
-                  <Text key={index} style={styles.date}>
-                    {formattedDate}
-                  </Text>
-                ))}
+            <TouchableOpacity activeOpacity={1}>
+              <View style={styles.eventsContainer}>
+                <View style={styles.dateContainer}>
+                  {singleDayEvent.map((event: any, index: any) => (
+                    <Text key={index} style={styles.date}>
+                      {formattedDate}
+                    </Text>
+                  ))}
+                </View>
+                <TouchableOpacity>
+                  <View
+                    style={{
+                      backgroundColor: "white",
+                      // height: "1000%",
+                      height: Platform.OS === "ios" ? "1000%" : h2dp(100),
+                      width: w2dp(0.5),
+                      marginTop: 10,
+                      marginLeft: w2dp(2),
+                    }}
+                  ></View>
+                </TouchableOpacity>
+                <View style={styles.eventName}>
+                  {singleDayEvent.map((event: any, index: any) => (
+                    <TouchableOpacity
+                      key={index}
+                      onPress={() =>
+                        navigation.navigate("CalendarEventDetailScreen", {
+                          eventDetails: event,
+                        })
+                      }
+                    >
+                      <View style={styles.eventCon}>
+                        <Text style={styles.eventTitle}>{event?.name}</Text>
+                      </View>
+                    </TouchableOpacity>
+                  ))}
+                </View>
               </View>
-              <TouchableOpacity>
-                <View
-                  style={{
-                    backgroundColor: "white",
-                    // height: "1000%",
-                    height :Platform.OS=== "ios"?"1000%":h2dp(100),
-                    width: w2dp(0.5),
-                    marginTop: 10,
-                    marginLeft: w2dp(2),
-                  }}
-                ></View>
-              </TouchableOpacity>
-              <View style={styles.eventName}>
-                {singleDayEvent.map((event: any, index: any) => (
-                  <TouchableOpacity
-                    key={index}
-                    onPress={() =>
-                      navigation.navigate("CalendarEventDetailScreen", {
-                        eventDetails: event,
-                      })
-                    }
-                  >
-                    <View style={styles.eventCon}>
-                      <Text style={styles.eventTitle}>{event?.name}</Text>
-                    </View>
-                  </TouchableOpacity>
-                ))}
-              </View>
-            </View>
+            </TouchableOpacity>
           </ScrollView>
         </SafeAreaView>
       </LinearGradient>
@@ -238,14 +195,14 @@ const styles = StyleSheet.create({
   },
   row: {
     flexDirection: "row",
-    justifyContent: "space-around",
+    justifyContent: "space-between",
     alignItems: "center",
     width: "100%",
     zIndex: 9999,
   },
   item: {
-    width: "35%",
-    marginTop: 25,
+    // width: "35%",
+    // marginTop: 25,
     height: 100,
     justifyContent: "center",
     alignItems: "center",
@@ -336,7 +293,7 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     // justifyContent: "flex-start",
-    marginBottom: h2dp(7),
+    marginBottom: h2dp(2),
   },
   eventCon: {
     backgroundColor: "white",
@@ -374,7 +331,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     // borderWidth:3,
     width: w2dp(80),
-    height: "100%",
+    // height: "100%",
   },
 });
 
