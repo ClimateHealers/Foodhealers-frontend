@@ -135,7 +135,7 @@ const LoginScreen = () => {
                       lineHeight: 27.24,
                     }}
                   >
-                    {localized.t("Home")}Home
+                    {localized.t("Home")}
                   </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -318,7 +318,7 @@ const LoginScreen = () => {
                             textDecorationLine: "underline",
                           }}
                         >
-                          {localized.t("Forgot password")}?
+                          {localized.t("Forgot Password")}?
                         </Text>
                       </TouchableOpacity>
                     </View>
@@ -354,7 +354,7 @@ const LoginScreen = () => {
                           marginTop: 10,
                         }}
                       >
-                        {localized.t("Not a user")}?
+                        {localized.t("Not a user?")}
                       </Text>
                       <TouchableOpacity
                         onPress={() => navigation.navigate("SignupScreen")}

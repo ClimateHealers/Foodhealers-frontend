@@ -135,10 +135,10 @@ export const addVolunteer = Yup.object().shape({
     .matches(/\w*[a-z]\w*/, `${localized.t("Only alphabets are allowed")}`),
     // volunteerFullAddress: Yup.string()
     // .required("Address is required")
-    // .matches(/\w*[a-z]\w*/, "Only alphabets are allowed"),
-  address: Yup.string()
-    .required(`${localized.t("Address is required")}`)
-    .matches(/\w*[a-z]\w*/, `${localized.t("Only alphabets are allowed")}`),
+  //   // .matches(/\w*[a-z]\w*/, "Only alphabets are allowed"),
+  // address: Yup.string()
+  //   .required(`${localized.t("Address is required")}`)
+  //   .matches(/\w*[a-z]\w*/, `${localized.t("Only alphabets are allowed")}`),
   phoneNumber: Yup.string()
     .required(`${localized.t("This field is required")}`)
     .matches(/^[0-9]+$/, {

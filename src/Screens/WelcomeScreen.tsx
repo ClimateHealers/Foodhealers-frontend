@@ -26,7 +26,7 @@ const WelcomeScreen = () => {
            />
           </View>
         <View style={styles.headerContainer}>
-          <Text style={styles.Headers}>{localized.t("Healthy Food should be Free")}</Text>
+          <Text style={styles.Headers}>{localized.t("Healthy Food should be free")}</Text>
         </View>
       </ImageBackground>
     </View>

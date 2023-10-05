@@ -167,7 +167,7 @@ const VolunteerHomeScreen = () => {
                         <View
                           key={event?.id}
                           style={{
-                            marginRight: w2dp(4),
+                            // marginRight: w2dp(4),
                             // justifyContent: "center"
                             position: "relative",
                           }}

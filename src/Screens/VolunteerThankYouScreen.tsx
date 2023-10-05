@@ -71,9 +71,7 @@ const VolunteerThankYouScreen = ({ route }: any) => {
                   onPress={() => navigation.goBack()}
                 />
                 <View style={styles.item}>
-                  <Text style={styles.itemText}>
-                    {title}
-                  </Text>
+                  <Text style={styles.itemText}>{title}</Text>
                 </View>
                 <BurgerIcon />
               </View>
@@ -132,12 +130,14 @@ const VolunteerThankYouScreen = ({ route }: any) => {
                           textAlign: "center",
                         }}
                       >
-                        {localized.t("A Food Healer team member will be in touch")}
+                        {localized.t(
+                          "A Food Healer team member will be in touch"
+                        )}
                       </Text>
                     )}
                   </Text>
                   <PrimaryButton
-                    title={"Home"}
+                    title={localized.t("Home")}
                     onPress={() => navigation.navigate("VolunteerHomeScreen")}
                     buttonStyle={styles.buttonMainStyles}
                     titleStyle={styles.titleMainStyle}
@@ -174,13 +174,13 @@ const VolunteerThankYouScreen = ({ route }: any) => {
                 ) : (
                   <PrimaryButton
                     title={localized.t("Volunteer another event")}
-                    onPress={() =>
+                    onPress={() => {
                       navigation.navigate("VolunteerEventScreen", {
-                        // itemTypeId: itemTypeId,
-                        // id: id,
-                        // title: title,
-                      })
-                    }
+                        itemTypeId: itemTypeId,
+                        id: id,
+                        title: title,
+                      });
+                    }}
                     buttonStyle={styles.buttonStyles}
                     titleStyle={styles.titleMainStyle}
                   />
