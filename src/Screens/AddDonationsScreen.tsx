@@ -1,5 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { CommonActions, useNavigation } from "@react-navigation/native";
 import Constants from "expo-constants";
 import { LinearGradient } from "expo-linear-gradient";
 import { Formik } from "formik";
@@ -16,7 +16,6 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { Text, TextInput } from "react-native-paper";
 import PrimaryButton from "../Components/PrimaryButton";
@@ -38,6 +37,8 @@ const AddDonationsScreen = ({ route }: any) => {
   const [loading, setLoading] = useState(false);
   const [langOpen, setlangOpen] = useState(false);
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const [countryPhoneCode, setCountryPhoneCode] = useState("");
+  const phoneCode = countryPhoneCode.toString();
   const [response, setResponse] = useState({
     loading: false,
     error: false,
@@ -162,7 +163,6 @@ const AddDonationsScreen = ({ route }: any) => {
                     const res = await dispatch(
                       postDonation(data as any) as any
                     );
-                    console.log("ksdnksdnvknkvj", res);
                     if (res?.payload?.success == true) {
                       setLoading(false);
                       setResponse({
@@ -179,10 +179,20 @@ const AddDonationsScreen = ({ route }: any) => {
                           {
                             text: "OK",
                             onPress: () =>
-                              navigation.navigate("VolunteerThankYouScreen", {
-                                itemTypeId: itemTypeId,
-                                title: title,
-                              }),
+                              navigation.dispatch(
+                                CommonActions.reset({
+                                  index: 0,
+                                  routes: [
+                                    {
+                                      name: "VolunteerThankYouScreen",
+                                      params: {
+                                        itemTypeId: itemTypeId,
+                                        title: title,
+                                      },
+                                    },
+                                  ],
+                                })
+                              ),
                           },
                         ],
                         { cancelable: false }
@@ -222,11 +232,10 @@ const AddDonationsScreen = ({ route }: any) => {
                       onChangeText={handleChange("foodItem")}
                       onBlur={handleBlur("foodItem")}
                       value={values?.foodItem}
-                      // placeholder={localized.t("Email")}
                       placeholder={
                         itemTypeId == 1
-                          ? `${localized.t("Food Item")}`
-                          : `${localized.t("Supplies List")}`
+                          ? `${localized.t("FOOD_ITEM")}`
+                          : `${localized.t("SUPPLIES_LIST")}`
                       }
                       placeholderTextColor={"black"}
                       style={styles.textInput}
@@ -236,7 +245,7 @@ const AddDonationsScreen = ({ route }: any) => {
                       onChangeText={handleChange("quantity")}
                       onBlur={handleBlur("quantity")}
                       value={values?.quantity}
-                      placeholder={localized.t("Quantity")}
+                      placeholder={localized.t("QUANTITY")}
                       placeholderTextColor={"black"}
                       style={styles.textInput}
                     />
@@ -246,13 +255,13 @@ const AddDonationsScreen = ({ route }: any) => {
                       onBlur={handleBlur("flatNo")}
                       keyboardType="numeric"
                       value={values?.flatNo}
-                      placeholder={localized.t("Flat No")}
+                      placeholder={localized.t("FLAT_NO")}
                       placeholderTextColor={"black"}
                       style={styles.textInput}
                     />
                     <Text style={styles.inputError}>{errors?.flatNo}</Text>
                     <GooglePlacesAutocomplete
-                      placeholder={localized.t("Address")}
+                      placeholder={localized.t("ADDRESS")}
                       fetchDetails={true}
                       keepResultsAfterBlur={true}
                       listViewDisplayed="auto"
@@ -281,6 +290,10 @@ const AddDonationsScreen = ({ route }: any) => {
                           if (component?.types?.includes("locality")) {
                             const city = component?.long_name;
                             setFieldValue("city", city);
+                          }
+                          if (component?.types?.includes("country")) {
+                            const country = component?.short_name;
+                            setCountryPhoneCode(country);
                           }
 
                           if (component?.types?.includes("postal_code")) {
@@ -333,7 +346,7 @@ const AddDonationsScreen = ({ route }: any) => {
                           onChangeText={handleChange("city")}
                           onBlur={handleBlur("city")}
                           value={values?.city}
-                          placeholder={localized.t("City")}
+                          placeholder={localized.t("CITY")}
                           placeholderTextColor={"black"}
                           style={[
                             styles.textInput,
@@ -352,7 +365,7 @@ const AddDonationsScreen = ({ route }: any) => {
                           onChangeText={handleChange("state")}
                           onBlur={handleBlur("state")}
                           value={values?.state}
-                          placeholder={localized.t("State")}
+                          placeholder={localized.t("STATE")}
                           placeholderTextColor={"black"}
                           style={[
                             styles.textInput,
@@ -368,7 +381,7 @@ const AddDonationsScreen = ({ route }: any) => {
                         onBlur={handleBlur("zipCode")}
                         value={values?.zipCode}
                         keyboardType="numeric"
-                        placeholder={localized.t("Zip Code")}
+                        placeholder={localized.t("ZIP_CODE")}
                         placeholderTextColor={"black"}
                         style={[styles.textInput]}
                       />
@@ -394,7 +407,7 @@ const AddDonationsScreen = ({ route }: any) => {
                                 marginLeft: 15,
                               }}
                             >
-                              {localized.t("Pickup Date")}
+                              {localized.t("PICKUP_DATE")}
                             </Text>
                             <Text
                               style={{
@@ -444,7 +457,7 @@ const AddDonationsScreen = ({ route }: any) => {
                                 marginLeft: 15,
                               }}
                             >
-                              {localized.t("Pickup Time")}
+                              {localized.t("PICKUP_TIME")}
                             </Text>
                             <Text
                               style={{
@@ -469,11 +482,11 @@ const AddDonationsScreen = ({ route }: any) => {
                       <PhoneInput
                         ref={phoneInput}
                         defaultCode={"US"}
-                        placeholder={localized.t("Phone Number")}
+                        // initialCountry={countryPhoneCode}
+                        placeholder={localized.t("PHONE_NUMBER")}
                         onChangeText={(text) => {
                           const callingCode =
                             phoneInput.current?.getCallingCode();
-                          console.log("text", callingCode, text);
                           setFieldValue("phoneNumber", `${callingCode}${text}`);
                         }}
                         containerStyle={[
@@ -501,7 +514,7 @@ const AddDonationsScreen = ({ route }: any) => {
                       }}
                     >
                       <PrimaryButton
-                        title={localized.t("Submit")}
+                        title={localized.t("SUBMIT")}
                         buttonStyle={styles.buttonStyles}
                         titleStyle={styles.titleStyle}
                         onPress={handleSubmit}

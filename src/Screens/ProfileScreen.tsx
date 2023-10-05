@@ -5,7 +5,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
+  View,
 } from "react-native";
 
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
@@ -16,7 +16,7 @@ import { Divider } from "react-native-elements";
 import { Badge } from "react-native-paper";
 import {
   heightPercentageToDP as hp2dp,
-  widthPercentageToDP as wp2dp
+  widthPercentageToDP as wp2dp,
 } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { iOSColors, systemWeights } from "react-native-typography";
@@ -27,7 +27,6 @@ import PrimaryButton from "../Components/PrimaryButton";
 import { removeAuthData } from "../redux/actions/authAction";
 import { logOut } from "../redux/reducers/authreducers";
 import { localized } from "../locales/localization";
-
 
 const ProfileScreen = () => {
   const [imagePickerVisible, setImagePickerVisible] = useState(false);
@@ -43,10 +42,8 @@ const ProfileScreen = () => {
   );
   const userInfo = useSelector((state: any) => state.auth.data.user);
 
-
   const appVersion = Constants?.manifest?.version;
 
-  console.log("checking app version",appVersion)
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
@@ -57,7 +54,7 @@ const ProfileScreen = () => {
   };
   const findFoodMenuItemPress = (item: any) => {
     getLocation().then((res) => {
-      if(res){
+      if (res) {
         navigation?.navigate("MapScreen", {
           latitude: res?.latitude,
           longitude: res?.longitude,
@@ -67,7 +64,6 @@ const ProfileScreen = () => {
     setMenuOpen(false);
   };
   const logout = async () => {
-    // persistor.purge()
     await dispatch(logOut({}) as any);
     await removeAuthData();
     navigation.dispatch(
@@ -81,7 +77,6 @@ const ProfileScreen = () => {
   const navigationHandler = () => {
     navigation.navigate("DeleteAccount");
   };
-
 
   return (
     <LinearGradient
@@ -111,7 +106,7 @@ const ProfileScreen = () => {
                   lineHeight: 27.24,
                 }}
               >
-                {localized.t("Home")}
+                {localized.t("HOME")}
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -125,46 +120,56 @@ const ProfileScreen = () => {
                   lineHeight: 27.24,
                 }}
               >
-                
+                {localized.t("FIND_FOOD")}
               </Text>
             </TouchableOpacity>
           </View>
         )}
         <View style={styles.row}>
-          <View style={styles.item}>
-            <Text style={styles.itemText}>{localized.t("Account")}</Text>
+          <View style={{ height: 100, justifyContent: "center",width: wp2dp(25) }}></View>
+          <View style={{ height: 100, justifyContent: "center" }}>
+            <Text style={styles.itemText}>{localized.t("ACCOUNT")}</Text>
           </View>
-          <TouchableOpacity
-          onPress={() => {
-            navigation.navigate("NotificationScreen")
-          }}
-          style={styles.circleAvatar}>
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("NotificationScreen");
+              }}
+              style={styles.circleAvatar}
+            >
+              <Badge style={styles.notificatioAvatarLogo}>
+                {/* {notificationList?.data ? notificationList?.data?.length : 0} */}
+                0
+              </Badge>
 
-            <Badge style={styles.notificatioAvatarLogo}>
-              {/* {notificationList?.data ? notificationList?.data?.length : 0} */}
-              0
-            </Badge>
-
-          <Ionicons
-            name="md-notifications-outline"
-            style={styles.avatarLogo}
-            size={28}
-          />
-        </TouchableOpacity>
-          <View style={styles.item}>
-            <MaterialCommunityIcons
-              name="menu"
-              size={40}
-              color="white"
-              onPress={toggleMenu}
-            />
+              <Ionicons
+                name="md-notifications-outline"
+                style={styles.avatarLogo}
+                size={28}
+              />
+            </TouchableOpacity>
+            <View style={styles.item}>
+              <MaterialCommunityIcons
+                name="menu"
+                size={40}
+                color="white"
+                onPress={toggleMenu}
+              />
+            </View>
           </View>
         </View>
         <ScrollView style={styles.ScrollView}>
           <View>
-            <View
-            >
-              <Text style={styles.profileDetailsText1}>{localized.t("Personal Info")}</Text>
+            <View>
+              <Text style={styles.profileDetailsText1}>
+                {localized.t("PERSONAL_INFO")}
+              </Text>
               <View style={styles.rowItem}>
                 <View
                   style={{
@@ -184,12 +189,10 @@ const ProfileScreen = () => {
                     name="account"
                   />
                   <View style={{ justifyContent: "center" }}>
-                    <Text style={styles.profileDetailsText3}>{localized.t("Name")}</Text>
-                    <Text
-                      style={[
-                        styles.profileDetailsText2,
-                      ]}
-                    >
+                    <Text style={styles.profileDetailsText3}>
+                      {localized.t("NAME")}
+                    </Text>
+                    <Text style={[styles.profileDetailsText2]}>
                       {userInfo?.name}
                     </Text>
                   </View>
@@ -227,12 +230,10 @@ const ProfileScreen = () => {
                     name="email"
                   />
                   <View style={{ justifyContent: "center" }}>
-                    <Text style={styles.profileDetailsText3}>{localized.t("Email")}</Text>
-                    <Text
-                      style={[
-                        styles.profileDetailsText2,
-                      ]}
-                    >
+                    <Text style={styles.profileDetailsText3}>
+                      {localized.t("EMAIL")}
+                    </Text>
+                    <Text style={[styles.profileDetailsText2]}>
                       {userInfo?.email}
                     </Text>
                   </View>
@@ -251,27 +252,29 @@ const ProfileScreen = () => {
                   marginTop: hp2dp("0.5%"),
                 }}
               />
-
-              
             </View>
 
             <View style={[styles.logout, { alignSelf: "center" }]}>
-  
               <PrimaryButton
-                title={localized.t("Logout")}
+                title={localized.t("LOGOUT")}
                 onPress={logout}
                 buttonStyle={styles.buttonStyles}
                 titleStyle={styles.titleStyle}
               />
             </View>
-						<View style={[styles.deleteProfile, { alignSelf: "center" }]}>
+            <View style={[styles.deleteProfile, { alignSelf: "center" }]}>
               <TouchableOpacity
                 style={styles.deleteProfileTextContainer}
-                onPress={() => navigation.navigate("DeleteAccount")}>
-                <Text style={styles.deleteProfileText}>{localized.t("Delete my Account")}</Text>
+                onPress={() => navigation.navigate("DeleteAccount")}
+              >
+                <Text style={styles.deleteProfileText}>
+                  {localized.t("DELETE_MY_ACCOUNT")}
+                </Text>
               </TouchableOpacity>
             </View>
-            <Text style={styles.appVersion}>{localized.t("App version")} {appVersion}</Text>
+            <Text style={styles.appVersion}>
+              {localized.t("APP_VERSION")} {appVersion}
+            </Text>
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -286,7 +289,7 @@ const styles = StyleSheet.create({
   },
   row: {
     flexDirection: "row",
-    justifyContent: "flex-end",
+    justifyContent: "space-between",
     alignItems: "center",
     width: "100%",
   },
@@ -298,7 +301,6 @@ const styles = StyleSheet.create({
   itemText: {
     fontSize: 25,
     color: "white",
-    // marginRight: wp2dp(10),
   },
   mainContainer: {
     display: "flex",
@@ -309,8 +311,8 @@ const styles = StyleSheet.create({
   EditContainer: {
     backgroundColor: "#0ACF83",
     borderRadius: 50,
-    justifyContent: "center", //Centered horizontally
-    alignItems: "center", //Centered vertically
+    justifyContent: "center",
+    alignItems: "center",
     paddingHorizontal: 10,
   },
   rowItem: {
@@ -376,7 +378,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     textAlign: "center",
     color: "white",
-    marginBottom:hp2dp(3)
+    marginBottom: hp2dp(3),
   },
   editProfileRoot: {
     marginTop: 10,
@@ -494,7 +496,6 @@ const styles = StyleSheet.create({
     top: -4,
     right: 11,
     zIndex: 1000,
-
   },
   avatarLogo: {
     color: "white",

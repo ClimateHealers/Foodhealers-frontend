@@ -19,47 +19,20 @@ import { myEvents } from "../redux/actions/myEvents";
 import { localized } from "../locales/localization";
 
 const AllEventScreen = () => {
-  const [menuOpen, setMenuOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [eventData, setEventData] = useState<[]>([]);
 
   const dispatch = useDispatch();
 
   const navigation: any = useNavigation();
-
-  const handleMenuItemPress = (item: any) => {
-    // console.log(`Selected menu item: ${item}`);
-    setMenuOpen(false);
-    navigation.navigate("HomeScreen");
-  };
-  const findFoodMenuItemPress = (item: any) => {
-    getLocation().then((res) => {
-      if (res) {
-        navigation?.navigate("MapScreen", {
-          latitude: res?.latitude,
-          longitude: res?.longitude,
-        });
-      }
-    });
-    // console.log(`Selected menu item: ${item}`);
-    setMenuOpen(false);
-  };
-
-  //disptaching  my event
   const fetchingEventData = async () => {
     const response = await dispatch(myEvents({}) as any);
-    console.log(
-      "checking repsonse from my events api",
-      response?.payload?.foodEvents
-    );
     setEventData(response?.payload?.foodEvents);
   };
 
   useEffect(() => {
     fetchingEventData();
   }, []);
-
-  //handling segmented tab
 
   const handleSingleIndexSelect = async (index: any) => {
     setSelectedIndex(index);
@@ -71,11 +44,9 @@ const AllEventScreen = () => {
       const verifiedFoodEvents = foodEvents?.filter(
         (event: any) => event.status === "approved"
       );
-      const activeFoodEvents = foodEvents?.filter(
+      const activeFoodEvents = verifiedFoodEvents?.filter(
         (event: any) => event.active === true
       );
-
-      console.log("checking response from all events API", activeFoodEvents);
       setEventData(activeFoodEvents);
     }
   };
@@ -114,7 +85,7 @@ const AllEventScreen = () => {
               marginTop: h2dp(0.5),
             }}
           >
-            {localized.t("Approved")}
+            {localized.t("APPROVED")}
           </Text>
         </View>
       ) : status === "pending" ? (
@@ -136,7 +107,7 @@ const AllEventScreen = () => {
               marginTop: h2dp(0.5),
             }}
           >
-            {localized.t("Pending")}
+            {localized.t("PENDING")}
           </Text>
         </View>
       ) : (
@@ -155,7 +126,7 @@ const AllEventScreen = () => {
               marginTop: h2dp(0.5),
             }}
           >
-            {localized.t("Rejected")}
+            {localized.t("REJECTED")}
           </Text>
         </View>
       )}
@@ -186,7 +157,7 @@ const AllEventScreen = () => {
         </Text>
       </ScrollView>
       <Button
-        title={"Details"}
+        title={localized.t("DETAILS")}
         onPress={() =>
           navigation.navigate("SingleEventDetails", {
             eventDetails: {
@@ -239,7 +210,7 @@ const AllEventScreen = () => {
                 />
                 <View style={styles.item}>
                   <Text style={styles.itemText}>
-                    {localized.t("See All Events")}
+                    {localized.t("SEE_ALL_EVENTS")}
                   </Text>
                 </View>
                 <BurgerIcon />
@@ -247,8 +218,8 @@ const AllEventScreen = () => {
               <View style={styles.toggle}>
                 <SegmentedControlTab
                   values={[
-                    `${localized.t("My Events")}`,
-                    `${localized.t("All Events")}`,
+                    `${localized.t("MY_EVENTS")}`,
+                    `${localized.t("ALL_EVENTS")}`,
                   ]}
                   selectedIndex={selectedIndex}
                   tabsContainerStyle={{

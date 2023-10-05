@@ -4,7 +4,6 @@ export const getLocation = async () => {
   try {
     const response = await axios.get("http://ipinfo.io/json");
     const { loc } = response.data;
-    console.log("cheking location from IP address", loc);
     const [latitude, longitude] = loc
       .split(",")
       .map((coord: any) => parseFloat(coord));

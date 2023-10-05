@@ -1,4 +1,8 @@
-import { Ionicons, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
+import {
+  Ionicons,
+  MaterialCommunityIcons,
+  MaterialIcons,
+} from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useState } from "react";
@@ -86,17 +90,16 @@ const CalendarEventScreen = ({ route }: any) => {
         >
           <FoodhealersHeader />
           <View style={styles.row}>
-          <Ionicons
-                    name="chevron-back"
-                    size={32}
-                    color="white"
-                    onPress={() => navigation.goBack()}
-                  />
+            <Ionicons
+              name="chevron-back"
+              size={32}
+              color="white"
+              onPress={() => navigation.goBack()}
+            />
             <View style={styles.item}>
-              {/* <Text style={styles.itemText}>{localized.t("Find Food")}</Text> */}
-              <Text style={styles.itemText}>{localized.t("Food Events")}</Text>
+              <Text style={styles.itemText}>{localized.t("FOOD_EVENTS")}</Text>
             </View>
-            <BurgerIcon/>
+            <BurgerIcon />
           </View>
 
           <View style={styles.subHeader}>
@@ -132,7 +135,7 @@ const CalendarEventScreen = ({ route }: any) => {
                 fontSize: h2dp(2),
               }}
             >
-              {localized.t("Events")}
+              {localized.t("EVENTS")}
             </Text>
           </View>
           <ScrollView>

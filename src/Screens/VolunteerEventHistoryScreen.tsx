@@ -9,7 +9,7 @@ import {
   ScrollView,
   Text,
   TouchableWithoutFeedback,
-  View
+  View,
 } from "react-native";
 import {
   heightPercentageToDP as h2dp,
@@ -98,7 +98,7 @@ const VolunteerEventHistoryScreen = ({ route }: any) => {
               marginTop: h2dp(0.5),
             }}
           >
-            {localized.t("Approved")}
+            {localized.t("APPROVED")}
           </Text>
         </View>
       ) : status === "pending" ? (
@@ -120,7 +120,7 @@ const VolunteerEventHistoryScreen = ({ route }: any) => {
               marginTop: h2dp(0.5),
             }}
           >
-            {localized.t("Pending")}
+            {localized.t("PENDING")}
           </Text>
         </View>
       ) : (
@@ -139,7 +139,7 @@ const VolunteerEventHistoryScreen = ({ route }: any) => {
               marginTop: h2dp(0.5),
             }}
           >
-            {localized.t("Rejected")}
+            {localized.t("REJECTED")}
           </Text>
         </View>
       )}
@@ -148,23 +148,19 @@ const VolunteerEventHistoryScreen = ({ route }: any) => {
         <Text
           style={{
             marginLeft: w2dp(3),
-            // width: w2dp(46),
             fontSize: 16,
             lineHeight: 30,
             paddingTop: h2dp(0.5),
           }}
         >
-          {/* {moment(eventTimings).format("MMM DD, YYYY  ddd, hh:mm A")} */}
           {moment(fromDate).format("MMM DD, YYYY  ddd, hh:mm A")}
         </Text>
         <Text
           style={{
             marginLeft: w2dp(3),
-            // width: w2dp(52),
             fontWeight: "500",
             fontSize: 16,
             lineHeight: 30,
-            // paddingTop: h2dp(0.5),
           }}
         >
           {name}
@@ -172,7 +168,6 @@ const VolunteerEventHistoryScreen = ({ route }: any) => {
         <Text
           style={{
             marginLeft: w2dp(3),
-            // width: w2dp(47),
             fontWeight: "300",
             fontSize: 16,
             lineHeight: 20,
@@ -209,14 +204,20 @@ const VolunteerEventHistoryScreen = ({ route }: any) => {
                   onPress={() => navigation.goBack()}
                 />
                 <View style={styles.item}>
-                  <Text style={styles.itemText}>{localized.t("Event History")}</Text>
+                  <Text style={styles.itemText}>
+                    {localized.t("EVENT_HISTORY")}
+                  </Text>
                 </View>
-                  <BurgerIcon />
+                <BurgerIcon />
               </View>
               <View>
                 <View style={styles.itemFilter}>
-                  <Text style={styles.itemFilterText}>{localized.t("All History")}</Text>
-                  <Text style={styles.itemFilterText}>{localized.t("Filter")}</Text>
+                  <Text style={styles.itemFilterText}>
+                    {localized.t("ALL_HISTORY")}
+                  </Text>
+                  <Text style={styles.itemFilterText}>
+                    {localized.t("FILTER")}
+                  </Text>
                 </View>
                 <ScrollView style={{ flex: 1 }}>
                   <FlatList

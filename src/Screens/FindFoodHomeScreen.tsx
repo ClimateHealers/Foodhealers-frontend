@@ -31,7 +31,6 @@ import BurgerIcon from "../Components/BurgerIcon";
 
 const FindFoodHomeScreen = ({ route }: any) => {
   const {
-    // location,
     currentlat,
     currentlong,
     city,
@@ -43,7 +42,6 @@ const FindFoodHomeScreen = ({ route }: any) => {
     address,
   } = route.params;
 
-  console.log("cheking params from map screen", latitude, lng);
   const { width, height } = Dimensions.get("window");
   const navigation: any = useNavigation();
   const ASPECT_RATIO = width / height;
@@ -54,7 +52,7 @@ const FindFoodHomeScreen = ({ route }: any) => {
   const [events, setEvents] = useState<[]>([]);
 
   const mapRef = useRef<any>(null);
-  const dispatch= useDispatch()
+  const dispatch = useDispatch();
 
   const isAuthenticated = useSelector(
     (state: any) => state?.auth?.data?.isAuthenticated
@@ -75,17 +73,16 @@ const FindFoodHomeScreen = ({ route }: any) => {
     }
   };
 
-  const fetchRecipesCategories = async()=>{
-     await dispatch(VeganRecipesCategories() as any)
-     navigation.navigate("RecipesHomeScreen")
-     
-  }
+  const fetchRecipesCategories = async () => {
+    await dispatch(VeganRecipesCategories() as any);
+    navigation.navigate("RecipesHomeScreen");
+  };
 
-   setTimeout(() => {
+  setTimeout(() => {
     if (latitude && lng) {
       focusMarker();
     }
-   }, 500);
+  }, 500);
 
   const handlePressOutside = () => {
     setlangOpen(false);
@@ -98,7 +95,6 @@ const FindFoodHomeScreen = ({ route }: any) => {
   };
 
   const handleMenuItemPress = (item: any) => {
-    // console.log(`Selected menu item: ${item}`);
     setMenuOpen(false);
     if (isAuthenticated) {
       navigation.navigate("HomeScreen");
@@ -118,9 +114,8 @@ const FindFoodHomeScreen = ({ route }: any) => {
   };
   const clickHandler = () => {
     navigation.navigate("WeekScreen", {
-      // location: location,
-      currentlatitude:currentlat,
-      currentlongitude:currentlong,
+      currentlatitude: currentlat,
+      currentlongitude: currentlong,
       city: city,
       state: state,
       fullAddress: fullAddress,
@@ -139,31 +134,30 @@ const FindFoodHomeScreen = ({ route }: any) => {
       >
         <ScrollView keyboardShouldPersistTaps="always">
           <SafeAreaView style={styles.container}>
-            <FoodhealersHeader/>
+            <FoodhealersHeader />
             <View style={styles.row}>
               {/* <View style={styles.dropdownContainer}></View> */}
               <Ionicons
-                  name="chevron-back"
-                  size={32}
-                  color="white"
-                  onPress={() => navigation.goBack()}
-                />
+                name="chevron-back"
+                size={32}
+                color="white"
+                onPress={() => navigation.goBack()}
+              />
               <View style={styles.item}>
-                <Text style={styles.itemText}>{localized.t("Find Food")}</Text>
+                <Text style={styles.itemText}>{localized.t("FIND_FOOD")}</Text>
               </View>
-                <BurgerIcon/>
+              <BurgerIcon />
             </View>
             <MapView
               onPress={clickHandler}
               ref={mapRef}
               provider={"google"}
               style={{
-                position:"relative",
+                position: "relative",
                 alignSelf: "center",
                 height: Platform.OS === "ios" ? "18%" : "18%",
                 width: Platform.OS === "ios" ? "100%" : "100%",
                 borderRadius: 15,
-
               }}
               initialRegion={{
                 latitude: currentlat,
@@ -173,24 +167,23 @@ const FindFoodHomeScreen = ({ route }: any) => {
               }}
               showsUserLocation={true}
             >
-                {/* <Text style = {{textAlign:"center",fontSize:h2dp(3),fontWeight:"300",marginTop:h2dp(0.5)}}>Today</Text> */}
-              
-                <Marker
-                  pinColor="#FC5A56"
-                  coordinate={{
-                    latitude: latitude ? latitude : 0,
-                    longitude: lng ? lng : 0,
-                    latitudeDelta : LATITUDE_DELTA,
-                    longitudeDelta: LONGITUDE_DELTA,
-                  }}
-                  title={localized.t("selected location")}
-                >
-                  <Image
-                    source={require("../../assets/currentLocationPin.png")}
-                    style={styles.markerIcon}
-                  />
-                </Marker>
-              
+              {/* <Text style = {{textAlign:"center",fontSize:h2dp(3),fontWeight:"300",marginTop:h2dp(0.5)}}>Today</Text> */}
+
+              <Marker
+                pinColor="#FC5A56"
+                coordinate={{
+                  latitude: latitude ? latitude : 0,
+                  longitude: lng ? lng : 0,
+                  latitudeDelta: LATITUDE_DELTA,
+                  longitudeDelta: LONGITUDE_DELTA,
+                }}
+                title={localized.t("SELECTED_LOCATION")}
+              >
+                <Image
+                  source={require("../../assets/currentLocationPin.png")}
+                  style={styles.markerIcon}
+                />
+              </Marker>
 
               {events?.map((marker: any) => {
                 const coordinates = {
@@ -232,7 +225,10 @@ const FindFoodHomeScreen = ({ route }: any) => {
                 alignItems: "center",
               }}
             >
-              <TouchableOpacity style={[styles.touchableView]} onPress = {()=>navigation.navigate("CalendarScreen")}>
+              <TouchableOpacity
+                style={[styles.touchableView]}
+                onPress={() => navigation.navigate("CalendarScreen")}
+              >
                 <View
                   style={[styles.containerView, { marginBottom: w2dp(2.8) }]}
                 >
@@ -248,7 +244,7 @@ const FindFoodHomeScreen = ({ route }: any) => {
                       fontWeight: "500",
                     }}
                   >
-                    {localized.t("Food Events Calendar")}
+                    {localized.t("FOOD_EVENTS_CALENDAR")}
                   </Text>
                 </View>
               </TouchableOpacity>
@@ -271,7 +267,7 @@ const FindFoodHomeScreen = ({ route }: any) => {
                       fontWeight: "500",
                     }}
                   >
-                    {localized.t("Vegan Recipes")}
+                    {localized.t("VEGAN_RECIPES")}
                   </Text>
                 </View>
               </TouchableOpacity>
@@ -291,7 +287,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flex: 1,
     height: h2dp("100%"),
-    marginTop: h2dp(3)
+    marginTop: h2dp(3),
   },
   background: {
     flex: 1,
@@ -385,21 +381,16 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   recipeIcon: {
-    // width: ,
-    // height: 100,
     marginLeft: 5,
   },
   containerView: {
     height: "21%",
     borderRadius: 15,
-    // marginTop: h2dp(4),
     width: w2dp(90),
-    // backgroundColor: "white",
     display: "flex",
     flexDirection: "row",
     justifyContent: "flex-start",
     alignItems: "center",
-    // borderWidth:1
   },
   touchableView: {
     height: "27%",
@@ -411,7 +402,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-start",
     alignItems: "center",
-    // borderWidth:1
   },
 });
 

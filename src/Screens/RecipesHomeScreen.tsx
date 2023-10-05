@@ -84,41 +84,44 @@ const RecipesHomeScreen = () => {
                 onPress={() => navigation.goBack()}
               />
               <View style={styles.item}>
-                {/* <Text style={styles.itemText}>{localized.t("Find Food")}</Text> */}
-                <Text style={styles.itemText}>{localized.t("Recipes")}</Text>
+                <Text style={styles.itemText}>{localized.t("RECIPES")}</Text>
               </View>
               <BurgerIcon />
             </View>
-            <ScrollView keyboardShouldPersistTaps="always">
-              <View style={[styles.centeredView]}>
-                {recipesCategory.map((recipe: any) => (
-                  <View
-                    key={recipe.id}
-                    style={{
-                      marginBottom: h2dp(3),
-                      position: "relative",
-                    }}
-                  >
-                    <Image
-                      // source={require("../../assets/images/lunchPicture.png")}
-                      source={{ uri: recipe?.categoryImage }}
-                      style={styles.imageStyle}
-                    />
-                    <View style={styles.title}>
-                      <TouchableOpacity
-                        onPress={() =>
-                          navigation.navigate("CategoryScreen", {
-                            categoryId: recipe?.id,
-                            recipeName: recipe?.name,
-                          })
-                        }
-                      >
-                        <Text style={styles.textStyle}>{recipe?.name}</Text>
-                      </TouchableOpacity>
+            <ScrollView
+              keyboardShouldPersistTaps="always"
+              showsVerticalScrollIndicator={false}
+            >
+              <TouchableOpacity activeOpacity={1}>
+                <View style={[styles.centeredView]}>
+                  {recipesCategory.map((recipe: any) => (
+                    <View
+                      key={recipe.id}
+                      style={{
+                        marginBottom: h2dp(3),
+                        position: "relative",
+                      }}
+                    >
+                      <Image
+                        source={{ uri: recipe?.categoryImage }}
+                        style={styles.imageStyle}
+                      />
+                      <View style={styles.title}>
+                        <TouchableOpacity
+                          onPress={() =>
+                            navigation.navigate("CategoryScreen", {
+                              categoryId: recipe?.id,
+                              recipeName: recipe?.name,
+                            })
+                          }
+                        >
+                          <Text style={styles.textStyle}>{recipe?.name}</Text>
+                        </TouchableOpacity>
+                      </View>
                     </View>
-                  </View>
-                ))}
-              </View>
+                  ))}
+                </View>
+              </TouchableOpacity>
             </ScrollView>
           </SafeAreaView>
         </LinearGradient>

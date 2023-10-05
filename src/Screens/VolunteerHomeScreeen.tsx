@@ -1,31 +1,26 @@
 import { Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { CommonActions, useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useEffect, useState } from "react";
 import {
   Image,
   Keyboard,
-  Platform,
   SafeAreaView,
   ScrollView,
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  View,
+  View
 } from "react-native";
 import {
-  heightPercentageToDP as h2dp,
-  widthPercentageToDP as w2dp,
+  heightPercentageToDP as h2dp
 } from "react-native-responsive-screen";
 import { useDispatch, useSelector } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
 import { styles } from "../Components/Styles";
-import { getLocation } from "../Components/getCurrentLocation";
-import { VeganRecipesCategories } from "../redux/actions/veganRecipes";
-import { VeganRecipesCategory } from "../redux/actions/veganRecipesCategory";
 import { localized } from "../locales/localization";
-import { myDonations } from "../redux/actions/myDonations";
+import { VeganRecipesCategory } from "../redux/actions/veganRecipesCategory";
 
 const VolunteerHomeScreen = () => {
   const [langOpen, setlangOpen] = useState(false);
@@ -42,8 +37,6 @@ const VolunteerHomeScreen = () => {
   const allEvents = useSelector(
     (state: any) => state?.allEvents?.data?.foodEvents
   );
-  // const eve = allEvents?.map((event: any) => event);
-  // console.log("allEvents", allEvents);
 
   const fetchRecipesCategories = async () => {
     const response = await dispatch(VeganRecipesCategory(1 as any) as any);
@@ -53,29 +46,6 @@ const VolunteerHomeScreen = () => {
   useEffect(() => {
     fetchRecipesCategories();
   }, []);
-
-  const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
-  };
-
-  const handleMenuItemPress = (item: any) => {
-    setMenuOpen(false);
-    if (isAuthenticated) {
-      navigation.navigate("HomeScreen");
-    } else {
-      navigation.navigate("SignupScreen");
-    }
-  };
-  const findFoodMenuItemPress = (item: any) => {
-    getLocation().then((location: any) => {
-      if (location) {
-        navigation?.navigate("MapScreen", {
-          location: location,
-        });
-      }
-    });
-    setMenuOpen(false);
-  };
 
   const handlePressOutside = () => {
     setlangOpen(false);
@@ -102,8 +72,7 @@ const VolunteerHomeScreen = () => {
                       onPress={() => navigation.goBack()}
                     />
                     <View style={styles.item}>
-                      {/* <Text style={styles.itemText}>{localized.t("Find Food")}</Text> */}
-                      <Text style={styles.itemText}>{localized.t("Home")}</Text>
+                      <Text style={styles.itemText}>{localized.t("HOME")}</Text>
                     </View>
                     <BurgerIcon />
                   </View>
@@ -124,7 +93,7 @@ const VolunteerHomeScreen = () => {
                     >
                       <View style={styles.title}>
                         <Text style={styles.textStyle}>
-                          {localized.t("Volunteer/Donate")}
+                          {localized.t("VOLUNTEER/DONATE")}
                         </Text>
                       </View>
                     </TouchableOpacity>
@@ -144,7 +113,7 @@ const VolunteerHomeScreen = () => {
                     >
                       <View style={styles.title}>
                         <Text style={styles.textStyle}>
-                          {localized.t("Volunteer to Drive")}
+                          {localized.t("VOLUNTEER_TO_DRIVE")}
                         </Text>
                       </View>
                     </TouchableOpacity>
@@ -152,7 +121,7 @@ const VolunteerHomeScreen = () => {
                   {allEvents && allEvents?.length && (
                     <View>
                       <Text style={[styles.subHeading]}>
-                        {localized.t("Events")}
+                        {localized.t("EVENTS")}
                       </Text>
                     </View>
                   )}
@@ -164,12 +133,10 @@ const VolunteerHomeScreen = () => {
                   >
                     <TouchableOpacity activeOpacity={1}>
                       <View style={styles.horizonatalView}>
-                        {allEvents?.map((event: any) => (
+                        {allEvents?.slice(0,1)?.map((event: any) => (
                           <View
                             key={event?.id}
                             style={{
-                              // marginRight: w2dp(4),
-                              // justifyContent: "center"
                               position: "relative",
                             }}
                           >
@@ -198,9 +165,6 @@ const VolunteerHomeScreen = () => {
                                         event?.requiredVolunteers,
                                       additionalInfo: event?.additionalInfo,
                                     },
-                                    //     }
-                                    //   );
-                                    // }
                                   }
                                 )
                               }
@@ -219,25 +183,22 @@ const VolunteerHomeScreen = () => {
                   {recipeData && (
                     <View>
                       <Text style={styles.subHeading}>
-                        {localized.t("Vegan Recipes")}
+                        {localized.t("VEGAN_RECIPES")}
                       </Text>
                     </View>
                   )}
-
                   <ScrollView
                     keyboardShouldPersistTaps="handled"
                     horizontal={true}
                     showsHorizontalScrollIndicator={false}
-                    // style={{ marginBottom: h2dp(3) }}
                   >
                     <TouchableOpacity activeOpacity={1}>
                       <View style={styles.horizonatalView}>
                         {recipeData &&
-                          recipeData?.map((recipe: any) => (
+                          recipeData?.slice(1,2)?.map((recipe: any) => (
                             <View
                               key={recipe?.id}
                               style={{
-                                // marginLeft: w2dp(7),
                                 position: "relative",
                               }}
                             >
@@ -273,21 +234,20 @@ const VolunteerHomeScreen = () => {
                     </TouchableOpacity>
                   </ScrollView>
                   <TouchableOpacity>
-                    <View style={{ marginVertical: h2dp(4) }}>
+                    <View style={{ marginTop: h2dp(4) }}>
                       <Image
                         source={require("../../assets/images/map.png")}
                         style={styles.mapImage}
                       />
                     </View>
                   </TouchableOpacity>
-                  <View style={{ marginTop: h2dp(4) }}>
+                  <View style={{ marginVertical: h2dp(4) }}>
                     <Text style={styles.mapContent}>15346</Text>
                     <Text style={styles.mapContent}>
-                      {localized.t("Events Scheduled")}
+                      {localized.t("EVENTS_SCHEDULED")}
                     </Text>
                   </View>
                 </View>
-                {/* </View> */}
               </TouchableOpacity>
             </ScrollView>
           </SafeAreaView>

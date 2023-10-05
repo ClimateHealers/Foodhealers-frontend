@@ -13,13 +13,13 @@ import {
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  View
+  View,
 } from "react-native";
 import { Image } from "react-native-elements";
 import MapView, { Marker } from "react-native-maps";
 import {
   heightPercentageToDP as h2dp,
-  widthPercentageToDP as w2dp
+  widthPercentageToDP as w2dp,
 } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
 import SegmentedControlTab from "react-native-segmented-control-tab";
@@ -31,8 +31,17 @@ import { findFood } from "../redux/actions/findFoodaction";
 import { setLanguage } from "../redux/reducers/langReducer";
 
 const WeekScreen = ({ route }: any) => {
-  const { city, postalCode, state, fullAddress, lat, lng, address, currentLatitude, currentLongitude  } =
-    route.params;
+  const {
+    city,
+    postalCode,
+    state,
+    fullAddress,
+    lat,
+    lng,
+    address,
+    currentLatitude,
+    currentLongitude,
+  } = route.params;
   const { width, height } = Dimensions.get("window");
   const navigation: any = useNavigation();
   const ASPECT_RATIO = width / height;
@@ -56,12 +65,11 @@ const WeekScreen = ({ route }: any) => {
   const [selectedLanguage, setSelectedLanguage] = useState(localized.locale);
   const [currentLat, setCurrentlat] = useState(0);
   const [currentLong, setCurrentlong] = useState(0);
-  const [result, setResult] = useState(false)
+  const [result, setResult] = useState(false);
   const mapRef = useRef<any>(null);
   const dispatch = useDispatch();
 
-
-  const languageName = useSelector((state:any) => state.language)
+  const languageName = useSelector((state: any) => state.language);
 
   const startDate = moment(new Date().setHours(0, 0, 0, 0)).utc().unix();
   const endDate = moment(new Date().setHours(23, 59, 59, 0)).utc().unix();
@@ -88,7 +96,6 @@ const WeekScreen = ({ route }: any) => {
     focusMarker();
   }
 
-
   const fetchUserLocation = async () => {
     try {
       const checkingPermission = await Location.hasServicesEnabledAsync();
@@ -98,7 +105,10 @@ const WeekScreen = ({ route }: any) => {
           console.log("Permission to access location was denied");
           return null;
         }
-        let location = Platform.OS === "ios" ? await Location.getLastKnownPositionAsync({}) : await Location.getCurrentPositionAsync({});
+        let location =
+          Platform.OS === "ios"
+            ? await Location.getLastKnownPositionAsync({})
+            : await Location.getCurrentPositionAsync({});
         if (location) {
           return location;
         }
@@ -111,11 +121,11 @@ const WeekScreen = ({ route }: any) => {
       return null;
     }
   };
-  
+
   const focusCurrentLocation = async () => {
     const locationResult = await fetchUserLocation();
     let latitudeToUse, longitudeToUse;
-  
+
     if (locationResult) {
       // setResult(true)
       latitudeToUse = locationResult.coords.latitude;
@@ -124,10 +134,10 @@ const WeekScreen = ({ route }: any) => {
       latitudeToUse = currentLatitude;
       longitudeToUse = currentLongitude;
     }
-  
+
     setCurrentlat(latitudeToUse);
     setCurrentlong(longitudeToUse);
-  
+
     const CurrentLocationPayload = {
       lat: latitudeToUse,
       lng: longitudeToUse,
@@ -143,7 +153,9 @@ const WeekScreen = ({ route }: any) => {
       findFood(CurrentLocationPayload as any) as any
     );
     const foodEvents = response?.payload?.results?.foodEvents;
-    const verifiedFoodEvents = foodEvents?.filter((event: any) => event.status === "approved");
+    const verifiedFoodEvents = foodEvents?.filter(
+      (event: any) => event.status === "approved"
+    );
     setEvents(verifiedFoodEvents);
 
     if (mapRef.current) {
@@ -255,7 +267,7 @@ const WeekScreen = ({ route }: any) => {
 
   const changeLanguage = (itemValue: any, index: any) => {
     const selectedLanguage = lang[index].value;
-    dispatch(setLanguage(selectedLanguage))
+    dispatch(setLanguage(selectedLanguage));
     localized.locale = selectedLanguage;
     setSelectedLanguage(selectedLanguage);
   };
@@ -290,17 +302,17 @@ const WeekScreen = ({ route }: any) => {
                   data={lang && lang.map((dd) => dd.label)}
                   onSelect={changeLanguage}
                   // defaultButtonText={"EN"}
-                  defaultButtonText={ selectedLanguage.toUpperCase()}
-              buttonTextAfterSelection={(itemValue, index) => {
-                return languageName.toUpperCase();
-              }}
+                  defaultButtonText={selectedLanguage.toUpperCase()}
+                  buttonTextAfterSelection={(itemValue, index) => {
+                    return languageName.toUpperCase();
+                  }}
                   rowTextForSelection={(item, index) => {
                     return item;
                   }}
                 />
               </View>
               <View style={styles.item}>
-                <Text style={styles.itemText}>{localized.t("Find Food")}</Text>
+                <Text style={styles.itemText}>{localized.t("FIND_FOOD")}</Text>
               </View>
               <View style={styles.item}>
                 <BurgerIcon />
@@ -330,7 +342,9 @@ const WeekScreen = ({ route }: any) => {
             </View>
             <View style={{ marginTop: h2dp(1) }}>
               <Text style={styles.boldText}>
-                <Text style={styles.cardText}>{localized.t("You are seeing event for")} </Text>
+                <Text style={styles.cardText}>
+                  {localized.t("YOU_ARE_SEEING_EVENT_FOR")}{" "}
+                </Text>
                 {fullAddress}
               </Text>
               <TouchableOpacity onPress={focusCurrentLocation}>
@@ -344,7 +358,7 @@ const WeekScreen = ({ route }: any) => {
                     fontWeight: "300",
                   }}
                 >
-                  {localized.t("Click here to see events in your current location")}
+                  {localized.t("CLICK_HERE_TO_SEE_EVENT_IN_YOUR_LOCATION")}
                 </Text>
               </TouchableOpacity>
             </View>
@@ -371,7 +385,7 @@ const WeekScreen = ({ route }: any) => {
                       latitudeDelta: LATITUDE_DELTA,
                       longitudeDelta: LONGITUDE_DELTA,
                     }}
-                    title={"selected location"}
+                    title={localized.t("SELECTED_LOCATION")}
                   >
                     <Image
                       source={require("../../assets/currentLocationPin.png")}

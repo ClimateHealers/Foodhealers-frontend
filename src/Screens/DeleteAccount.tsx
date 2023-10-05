@@ -1,18 +1,13 @@
 import { CommonActions, useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useState } from "react";
-import {
-    ScrollView,
-    StyleSheet,
-    TouchableOpacity,
-    View
-} from "react-native";
+import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 
 import { AntDesign } from "@expo/vector-icons";
 import { Modal, Text } from "react-native-paper";
 import {
-    heightPercentageToDP as hp2dp,
-    widthPercentageToDP as wp2dp
+  heightPercentageToDP as hp2dp,
+  widthPercentageToDP as wp2dp,
 } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { systemWeights } from "react-native-typography";
@@ -32,9 +27,9 @@ const DeleteAccount = () => {
     const res = await dispatch(deleteUser({}) as any);
 
     if (res?.payload?.success) {
-      removeAuthData()
-      await dispatch(logOut({}) as any)
-    setShowModal(true);
+      removeAuthData();
+      await dispatch(logOut({}) as any);
+      setShowModal(true);
     }
   };
   // const logout = async () => {
@@ -49,8 +44,7 @@ const DeleteAccount = () => {
   //   );
   // };
 
-  const navigateToLoginScreen=()=>{
-
+  const navigateToLoginScreen = () => {
     setShowModal(false);
     // await removeAuthData()
     navigation.dispatch(
@@ -59,7 +53,7 @@ const DeleteAccount = () => {
         routes: [{ name: "LoginScreen" }],
       })
     );
-  }
+  };
 
   return (
     <LinearGradient
@@ -87,10 +81,11 @@ const DeleteAccount = () => {
                 color: "white",
               }}
             >
-              {localized.t("Attention!")}
+              {localized.t("ATTENTION")}
             </Text>
             <Text style={{ fontSize: 18, color: "white" }}>
-              {localized.t("Deleting your account will remove all of your information from our database records")} {localized.t("This cannot be undone")}
+              {localized.t("DELETE_YOUR_ACCOUNT_WILL_REMOVE_DATABASE")}{" "}
+              {localized.t("THIS_CANNOT_BE_UNDONE")}
             </Text>
           </View>
           <View style={{ marginVertical: hp2dp("8%") }}>
@@ -104,9 +99,10 @@ const DeleteAccount = () => {
                 onPress={deleteAccount}
               >
                 <View style={{ flexDirection: "row" }}>
-                  <View
-                  >
-                    <Text style={styles.googletext}>{localized.t("Delete Account")}</Text>
+                  <View>
+                    <Text style={styles.googletext}>
+                      {localized.t("DELETE_ACCOUNT")}
+                    </Text>
                   </View>
                 </View>
               </TouchableOpacity>
@@ -115,8 +111,7 @@ const DeleteAccount = () => {
                 onPress={() => navigation.goBack()}
               >
                 <View style={{ flexDirection: "row" }}>
-                  <View
-                  >
+                  <View>
                     <Text
                       style={{
                         ...systemWeights.semibold,
@@ -124,7 +119,7 @@ const DeleteAccount = () => {
                         fontSize: 18,
                       }}
                     >
-                      {localized.t("Keep Account")}
+                      {localized.t("KEEP_ACCOUNT")}
                     </Text>
                   </View>
                 </View>
@@ -147,7 +142,8 @@ const DeleteAccount = () => {
                 </View>
                 <View>
                   <Text style={{ fontSize: 18, color: "black" }}>
-                    {localized.t("We received your request to delete your account")} {localized.t("To complete your deletion, please check your email and confirm the deletion request")}
+                    {localized.t("WE_RECEIVED__YOUR_REQUEST_TO_DELETE")}{" "}
+                    {localized.t("TO_COMPLETE_YOUR_DELETION")}
                   </Text>
                 </View>
                 <View style={{ alignItems: "center", marginTop: hp2dp("2%") }}>

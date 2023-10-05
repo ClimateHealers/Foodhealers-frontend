@@ -1,5 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { CommonActions, useNavigation } from "@react-navigation/native";
 import Constants from "expo-constants";
 import { LinearGradient } from "expo-linear-gradient";
 import { Formik } from "formik";
@@ -60,7 +60,7 @@ const AddVolunteerToEvent = ({ route }: any) => {
   const [selectedEndDate, setSelectedEndDate] = useState<Date | any>(
     moment().add(1, "hour")
   );
-  
+
   const userDetails = useSelector((state: any) => state.auth);
   const { data } = userDetails;
   const eventDateTime = moment(selectedDate).utc().unix();
@@ -95,14 +95,12 @@ const AddVolunteerToEvent = ({ route }: any) => {
       setSelectedEndDate(date);
     }
     setShowDatePicker(false);
-    console.log("datepicker false", showDatePicker);
   };
 
   const handleEndDateChange = (endDate: any) => {
-    console.log("checking selected end date", endDate);
     if (moment(endDate).isBefore(moment(selectedDate).add(1, "hour"))) {
       Alert.alert(
-        "Alert",
+        `${localized.t("ALERT")}`,
         `You can't select a time before ${moment(selectedDate)
           .add(1, "hour")
           .format("MMM DD, YYYY hh:mm A")}`
@@ -192,7 +190,6 @@ const AddVolunteerToEvent = ({ route }: any) => {
                 }) => {
                   setLoading(true);
                   try {
-                    console.log("Submit");
                     setResponse({
                       loading: true,
                       message: "",
@@ -229,11 +226,21 @@ const AddVolunteerToEvent = ({ route }: any) => {
                           {
                             text: "OK",
                             onPress: () =>
-                              navigation.navigate("VolunteerThankYouScreen", {
-                                id: id,
-                                itemTypeId: itemTypeId,
-                                title: title,
-                              }),
+                              navigation.dispatch(
+                                CommonActions.reset({
+                                  index: 0,
+                                  routes: [
+                                    {
+                                      name: "VolunteerThankYouScreen",
+                                      params: {
+                                        id: id,
+                                        itemTypeId: itemTypeId,
+                                        title: title,
+                                      },
+                                    },
+                                  ],
+                                })
+                              ),
                           },
                         ],
                         { cancelable: false }
@@ -241,7 +248,7 @@ const AddVolunteerToEvent = ({ route }: any) => {
                     } else {
                       setLoading(false);
                       Alert.alert(
-                        "Alert",
+                        `${localized.t("ALERT")}`,
                         `${res?.payload}`,
                         [
                           {
@@ -283,15 +290,17 @@ const AddVolunteerToEvent = ({ route }: any) => {
                       onChangeText={handleChange("name")}
                       onBlur={handleBlur("name")}
                       value={values?.name}
-                      // placeholder={localized.t("Email")}
-                      // placeholder={itemTypeId == 1 ? "Food Item" : "Supplies List"}
-                      placeholder={data?.user?.name ? data?.user?.name : `${localized.t("Volunteer Name")}`}
+                      placeholder={
+                        data?.user?.name
+                          ? data?.user?.name
+                          : `${localized.t("VOLUNTEER_NAME")}`
+                      }
                       placeholderTextColor={"black"}
                       style={styles.textInput}
                     />
                     <Text style={styles.inputError}>{errors?.name}</Text>
                     <GooglePlacesAutocomplete
-                      placeholder={localized.t("Address")}
+                      placeholder={localized.t("ADDRESS")}
                       fetchDetails={true}
                       keepResultsAfterBlur={true}
                       listViewDisplayed="auto"
@@ -377,7 +386,7 @@ const AddVolunteerToEvent = ({ route }: any) => {
                           onChangeText={handleChange("city")}
                           onBlur={handleBlur("city")}
                           value={values?.city}
-                          placeholder={localized.t("City")}
+                          placeholder={localized.t("CITY")}
                           placeholderTextColor={"black"}
                           style={[
                             styles.textInput,
@@ -396,7 +405,7 @@ const AddVolunteerToEvent = ({ route }: any) => {
                           onChangeText={handleChange("state")}
                           onBlur={handleBlur("state")}
                           value={values?.state}
-                          placeholder={localized.t("State")}
+                          placeholder={localized.t("STATE")}
                           placeholderTextColor={"black"}
                           style={[
                             styles.textInput,
@@ -412,7 +421,7 @@ const AddVolunteerToEvent = ({ route }: any) => {
                         onBlur={handleBlur("zipCode")}
                         value={values?.zipCode}
                         keyboardType="numeric"
-                        placeholder={localized.t("Zip Code")}
+                        placeholder={localized.t("ZIP_CODE")}
                         placeholderTextColor={"black"}
                         style={[styles.textInput]}
                       />
@@ -439,7 +448,7 @@ const AddVolunteerToEvent = ({ route }: any) => {
                                 marginLeft: 15,
                               }}
                             >
-                              {localized.t("Start Date")}
+                              {localized.t("START_DATE")}
                             </Text>
                             <Text
                               style={{
@@ -490,7 +499,7 @@ const AddVolunteerToEvent = ({ route }: any) => {
                                 marginLeft: 15,
                               }}
                             >
-                              {localized.t("Start Time")}
+                              {localized.t("START_TIME")}
                             </Text>
                             <Text
                               style={{
@@ -529,7 +538,7 @@ const AddVolunteerToEvent = ({ route }: any) => {
                                 marginLeft: 15,
                               }}
                             >
-                              {localized.t("End Date")}
+                              {localized.t("END_DATE")}
                             </Text>
                             <Text
                               style={{
@@ -582,7 +591,7 @@ const AddVolunteerToEvent = ({ route }: any) => {
                                 marginLeft: 15,
                               }}
                             >
-                              {localized.t("End Time")}
+                              {localized.t("END_TIME")}
                             </Text>
                             <Text
                               style={{
@@ -608,11 +617,10 @@ const AddVolunteerToEvent = ({ route }: any) => {
                       <PhoneInput
                         ref={phoneInput}
                         defaultCode={"US"}
-                        placeholder={localized.t("Phone Number")}
+                        placeholder={localized.t("PHONE_NUMBER")}
                         onChangeText={(text) => {
                           const callingCode =
                             phoneInput.current?.getCallingCode();
-                          console.log("text", callingCode, text);
                           setFieldValue("phoneNumber", `${callingCode}${text}`);
                         }}
                         containerStyle={[
@@ -640,7 +648,7 @@ const AddVolunteerToEvent = ({ route }: any) => {
                       }}
                     >
                       <PrimaryButton
-                        title={localized.t("Submit")}
+                        title={localized.t("SUBMIT")}
                         buttonStyle={styles.buttonStyles}
                         titleStyle={styles.titleStyle}
                         onPress={handleSubmit}

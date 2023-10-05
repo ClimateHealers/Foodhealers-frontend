@@ -31,8 +31,6 @@ import { localized } from "../locales/localization";
 
 const SingleEventDetails = ({ route }: any) => {
   const { eventDetails } = route.params;
-
-  console.log("Event Details", eventDetails);
   const navigation: any = useNavigation();
 
   const [langOpen, setlangOpen] = useState(false);
@@ -99,8 +97,7 @@ const SingleEventDetails = ({ route }: any) => {
   const onShare = async () => {
     try {
       const result = await Share.share({
-        // message: `${eventDetails?.additionalInfo}`,
-        message: `${localized.t("Coming soon!")}`,
+        message: `${localized.t("COMING_SOON")}`,
       });
       if (result.action === Share.sharedAction) {
         if (result.activityType) {
@@ -167,7 +164,7 @@ const SingleEventDetails = ({ route }: any) => {
                     }}
                   >
                     <Text style={styles.boldText}>
-                      {localized.t("From")}:
+                      {localized.t("FROM")}:
                       <Text style={styles.cardText}>
                         {" "}
                         {moment(eventDetails?.eventStartDate).format(
@@ -187,7 +184,7 @@ const SingleEventDetails = ({ route }: any) => {
                   </View>
                   <View style={{ marginBottom: 20, paddingHorizontal: 10 }}>
                     <Text style={styles.boldText}>
-                    {localized.t("To")}:{" "}
+                      {localized.t("TO")}:{" "}
                       <Text style={styles.cardText}>
                         {moment(eventDetails?.eventEndDate).format(
                           "ddd, MMM D"
@@ -206,7 +203,7 @@ const SingleEventDetails = ({ route }: any) => {
                   </View>
                   <View style={{ marginBottom: 20, paddingHorizontal: 10 }}>
                     <Text style={styles.boldText}>
-                    {localized.t("Location")}:{" "}
+                      {localized.t("LOCATION")}:{" "}
                       <Text style={styles.cardText}>
                         {eventDetails.address}
                       </Text>
@@ -227,7 +224,7 @@ const SingleEventDetails = ({ route }: any) => {
                     }}
                   >
                     <Text style={styles.boldText}>
-                    {localized.t("What")}:{" "}
+                      {localized.t("WHAT")}:{" "}
                       <Text style={styles.cardText}>
                         {eventDetails?.additionalInfo}
                       </Text>
@@ -248,7 +245,7 @@ const SingleEventDetails = ({ route }: any) => {
                     }}
                   >
                     <Text style={styles.boldText}>
-                    {localized.t("Volunteer's Required")}:{" "}
+                      {localized.t("VOLUNTEERS_REQUIRED")}:{" "}
                       <Text style={styles.cardText}>
                         {eventDetails?.requiredVolunteers}
                       </Text>
@@ -265,74 +262,48 @@ const SingleEventDetails = ({ route }: any) => {
                 </View>
               </View>
               <View>
-                {/* {eventDetails?.itemTypeId === 3 ? (
-                  <View
-                    style={{
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                  >
-                    <PrimaryButton
-                      title="Volunteer"
-                      // title={"Get directions"}
-                      onPress={() =>
-                        navigation.navigate("AddVolunteerToEventScreen", {
-                          id: eventDetails.id,
-                          title: eventDetails.title,
-                          itemTypeId: eventDetails.itemTypeId,
-                        })
-                      }
-                      buttonStyle={styles.buttonStyles}
-                      titleStyle={styles.titleStyle}
-                    />
-                  </View>
-                ) : ( */}
-                  <View
-                    style={{
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                  >
-                    <PrimaryButton
-                      disabled={expired}
-                      title={expired ? `${localized.t("Event Expired")}` : `${localized.t("Volunteer")}`}
-                      onPress={() =>
-                        navigation.navigate("AddVolunteerToEventScreen", {
-                          id: eventDetails.id,
-                          title: "Volunteer at an event",
-                          itemTypeId: 3,
-                        })
-                      }
-                      buttonStyle={styles.buttonStyles}
-                      titleStyle={styles.titleStyle}
-                    />
-                    {!expired && (
-                      <View>
-                        {/* <PrimaryButton
-                          disabled={expired}
-                          title="Get directions"
-                          onPress={navigationHandler}
-                          buttonStyle={styles.buttonStyles}
-                          titleStyle={styles.titleStyle}
-                        /> */}
-                        <TouchableOpacity onPress={onShare}>
-                          <Text
-                            style={{
-                              color: "white",
-                              fontSize: 20,
-                              marginTop: w2dp(5),
-                              textDecorationLine: "underline",
-                              alignSelf: "center",
-                            }}
-                          >
-                            {localized.t("Share")}
-                          </Text>
-                        </TouchableOpacity>
-                      </View>
-                    )}
-                  </View>
+                <View
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <PrimaryButton
+                    disabled={expired}
+                    title={
+                      expired
+                        ? `${localized.t("EVENT_EXPIRED")}`
+                        : `${localized.t("VOLUNTEER")}`
+                    }
+                    onPress={() =>
+                      navigation.navigate("AddVolunteerToEventScreen", {
+                        id: eventDetails.id,
+                        title: "Volunteer at an event",
+                        itemTypeId: 3,
+                      })
+                    }
+                    buttonStyle={styles.buttonStyles}
+                    titleStyle={styles.titleStyle}
+                  />
+                  {!expired && (
+                    <View>
+                      <TouchableOpacity onPress={onShare}>
+                        <Text
+                          style={{
+                            color: "white",
+                            fontSize: 20,
+                            marginTop: w2dp(5),
+                            textDecorationLine: "underline",
+                            alignSelf: "center",
+                          }}
+                        >
+                          {localized.t("SHARE")}
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
+                  )}
+                </View>
                 {/* )} */}
               </View>
             </View>

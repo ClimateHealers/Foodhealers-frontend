@@ -25,6 +25,7 @@ import { VeganRecipesCategory } from "../redux/actions/veganRecipesCategory";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
 import { styles } from "../Components/Styles";
 import BurgerIcon from "../Components/BurgerIcon";
+import { localized } from "../locales/localization";
 const CategoryScreen = ({ route }: any) => {
   const { categoryId, recipeName } = route.params;
 
@@ -85,7 +86,6 @@ const CategoryScreen = ({ route }: any) => {
     setMenuOpen(false);
   };
 
-
   const handleSearchTextChange = (text: any) => {
     setSearchText(text);
     setTextChange(true);
@@ -102,9 +102,9 @@ const CategoryScreen = ({ route }: any) => {
           style={styles.background}
         >
           <SafeAreaView style={styles.containerVolunteer}>
-            <FoodhealersHeader/>
+            <FoodhealersHeader />
             <View style={styles.rootVolunteerHome}>
-            <Ionicons
+              <Ionicons
                 name="chevron-back"
                 size={32}
                 color="white"
@@ -112,13 +112,20 @@ const CategoryScreen = ({ route }: any) => {
               />
               <View style={styles.dropdownContainer}></View>
               <ScrollView showsVerticalScrollIndicator={false}>
-              <View style={[styles.item, {alignItems: "center"}]}>
-                <Text style={styles.itemText}>{recipeName}</Text>
-              </View>
+                <View style={[styles.item, { alignItems: "center" }]}>
+                  <Text style={styles.itemText}>{recipeName}</Text>
+                </View>
               </ScrollView>
-              <BurgerIcon/>
+              <BurgerIcon />
             </View>
-            <View style={styles.inputContainer}>
+            <View
+              style={[
+                styles.inputContainer,
+                {
+                  marginBottom: h2dp(3),
+                },
+              ]}
+            >
               <Ionicons
                 name="search"
                 size={20}
@@ -126,114 +133,136 @@ const CategoryScreen = ({ route }: any) => {
                 style={styles.icon}
               />
               <TextInput
-                style={{flex: 1,
-                  paddingVertical: 10,
-                  color: "#000",}}
+                style={{ flex: 1, paddingVertical: 10, color: "#000" }}
                 placeholder="Search"
                 placeholderTextColor="#000"
                 value={searchText}
                 onChangeText={handleSearchTextChange}
               />
             </View>
-            <ScrollView keyboardShouldPersistTaps="always">
-              <View style={[styles.centeredView]}>
-                {textChange
-                  ? filteredData?.map((recipe: any) => (
-                      <TouchableOpacity
-                        style={[styles.touchableView]}
-                        key={recipe?.id}
-                        onPress={() =>
-                            navigation.navigate("SingleRecipeScreen", {
-                              recipeData: {
-                                recipeImage: recipe?.foodImage,
-                                recipeIngredient: recipe?.ingredients,
-                                recipeName: recipe?.foodName,
-                                recipeInstructions: recipe?.cookingInstructions,
-                              },
-                            })
-                          }
-                      >
-                        <View style={styles.cardContainer}>
+            <ScrollView
+              keyboardShouldPersistTaps="always"
+              showsVerticalScrollIndicator={false}
+            >
+              <TouchableOpacity activeOpacity={1}>
+                <View style={[styles.centeredView]}>
+                  {textChange
+                    ? filteredData?.map((recipe: any) => (
+                        <View
+                          key={recipe?.id}
+                          style={{
+                            marginBottom: h2dp(3),
+                            position: "relative",
+                          }}
+                        >
+                          {/* <View style={styles.cardContainer}> */}
                           <Image
                             source={{ uri: recipe?.foodImage }}
-                            style={styles.imageStyle}
+                            style={[styles.imageStyle,{
+                              height: h2dp(20)
+                            }]}
                           />
-                          <View style={styles.heading}>
-                            <Text
-                              style={{
-                                fontSize: h2dp(1.7),
-                                fontWeight: "600",
-                                marginBottom: h2dp(3),
-                                marginTop: h2dp(1),
-                                width: h2dp(10),
-                              }}
+                          <View style={styles.title}>
+                            <TouchableOpacity
+                              onPress={() =>
+                                navigation.navigate("SingleRecipeScreen", {
+                                  recipeData: {
+                                    recipeImage: recipe?.foodImage,
+                                    recipeIngredient: recipe?.ingredients,
+                                    recipeName: recipe?.foodName,
+                                    recipeInstructions:
+                                      recipe?.cookingInstructions,
+                                  },
+                                })
+                              }
                             >
-                              {recipe?.foodName}
-                            </Text>
-                            <View style={styles.timerIcon}>
-                              <Ionicons
-                                name="ios-time-outline"
-                                size={20}
-                                color="#8A8686"
-                              />
-                              <Text style={{ marginLeft: 4, color: "#8A8686" }}>
-                              {recipe?.preparationTime === "preparation time not specified" ? "Not specified" :recipe?.preparationTime}
+                              <Text style={styles.textStyle}>
+                                {recipe?.foodName}
                               </Text>
-                            </View>
+                              <View style={styles.timerIcon}>
+                                <Ionicons
+                                  name="ios-time-outline"
+                                  size={20}
+                                  color="#8A8686"
+                                />
+                                <Text
+                                  style={{ marginLeft: 4, color: "#8A8686" }}
+                                >
+                                  {recipe?.preparationTime ===
+                                  "preparation time not specified"
+                                    ? `${localized.t("NOT_SPECIFIED")}`
+                                    : recipe?.preparationTime}
+                                </Text>
+                              </View>
+                            </TouchableOpacity>
                           </View>
+                          {/* </View> */}
                         </View>
-                      </TouchableOpacity>
-                    ))
-                  : data?.map((recipe: any) => (
-                      <TouchableOpacity
-                        style={[styles.touchableView]}
-                        key={recipe?.id}
-                        onPress={() =>
-                            navigation.navigate("SingleRecipeScreen", {
-                              recipeData: {
-                                recipeImage: recipe?.foodImage,
-                                recipeIngredient: recipe?.ingredients,
-                                recipeName: recipe?.foodName,
-                                recipeInstructions: recipe?.cookingInstructions,
-                                cookingTime : recipe?.preparationTime,
-                                recipeSource : recipe?.recipeSource,
-                                recipeCredits: recipe?.recipeCredits
-                              },
-                            })
-                          }
-                      >
-                        <View style={styles.cardContainer}>
+                      ))
+                    : data?.map((recipe: any) => (
+                        <View
+                          style={{
+                            marginBottom: h2dp(3),
+                            position: "relative",
+                          }}
+                          key={recipe?.id}
+                        >
+                          {/* <View style={styles.cardContainer}> */}
                           <Image
                             source={{ uri: recipe?.foodImage }}
-                            style={styles.imageStyle}
+                            style={[styles.imageStyle,{
+                              height: h2dp(20)
+                            }]}
                           />
-                          <View style={styles.heading}>
-                            <Text
-                              style={{
-                                fontSize: h2dp(1.7),
-                                fontWeight: "600",
-                                marginBottom: h2dp(3),
-                                marginTop: h2dp(1),
-                                width: h2dp(18),
-                              }}
+                          <View style={styles.title}>
+                            <TouchableOpacity
+                              onPress={() =>
+                                navigation.navigate("SingleRecipeScreen", {
+                                  recipeData: {
+                                    recipeImage: recipe?.foodImage,
+                                    recipeIngredient: recipe?.ingredients,
+                                    recipeName: recipe?.foodName,
+                                    recipeInstructions:
+                                      recipe?.cookingInstructions,
+                                    cookingTime: recipe?.preparationTime,
+                                    recipeSource: recipe?.recipeSource,
+                                    recipeCredits: recipe?.recipeCredits,
+                                  },
+                                })
+                              }
                             >
-                              {recipe?.foodName}
-                            </Text>
-                            <View style={styles.timerIcon}>
-                              <Ionicons
-                                name="ios-time-outline"
-                                size={20}
-                                color="#8A8686"
-                              />
-                              <Text style={{ marginLeft: 4, color: "#8A8686" }}>
-                              {recipe?.preparationTime === "preparation time not specified" ? "Not specified" :recipe?.preparationTime}
+                              <Text style={styles.textStyle}>
+                                {recipe?.foodName}
                               </Text>
-                            </View>
+                              <View
+                                style={{
+                                  display: "flex",
+                                  flexDirection: "row",
+                                  alignItems: "center",
+                                  justifyContent: "center",
+                                }}
+                              >
+                                <Ionicons
+                                  name="ios-time-outline"
+                                  size={20}
+                                  color="#8A8686"
+                                />
+                                <Text
+                                  style={{ marginLeft: 4, color: "#8A8686" }}
+                                >
+                                  {recipe?.preparationTime ===
+                                  "preparation time not specified"
+                                    ? `${localized.t("NOT_SPECIFIED")}`
+                                    : recipe?.preparationTime}
+                                </Text>
+                              </View>
+                            </TouchableOpacity>
                           </View>
                         </View>
-                      </TouchableOpacity>
-                    ))}
-              </View>
+                        // </View>
+                      ))}
+                </View>
+              </TouchableOpacity>
             </ScrollView>
           </SafeAreaView>
         </LinearGradient>

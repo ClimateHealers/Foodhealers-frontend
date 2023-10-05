@@ -32,8 +32,6 @@ const HomeScreen = ({ route }: any) => {
 
   const dispatch = useDispatch();
 
-  console.log("checking userdetails from login API", userDetails);
-
   const [loc, setLoc] = useState(false);
   const [langOpen, setlangOpen] = useState(false);
   const [donationData, setDonationData] = useState("");
@@ -67,7 +65,6 @@ const HomeScreen = ({ route }: any) => {
       try {
         const response = await axios.get("http://ipinfo.io/json");
         const { loc } = response.data;
-        console.log("cheking location from IP address", loc);
         const [latitude, longitude] = loc
           .split(",")
           .map((coord: any) => parseFloat(coord));
@@ -118,11 +115,11 @@ const HomeScreen = ({ route }: any) => {
       navigation.navigate("EventsHomeScreen");
     } else {
       Alert.alert(
-        `Registration Required !`,
+        `${localized.t("REGISTRATION_REQUIRED")}`,
         "Only a registered user can Post an Event. Please login.",
         [
           {
-            text: "Login",
+            text: `${localized.t("LOGIN")}`,
             onPress: () => {
               navigation.navigate("LoginScreen");
             },
@@ -185,19 +182,19 @@ const HomeScreen = ({ route }: any) => {
 
           <View style={styles.headerContainer}>
             <PrimaryButton
-              title={localized.t("Find Food")}
+              title={localized.t("FIND_FOOD")}
               onPress={navigateToMapScreen}
               buttonStyle={myTheme.Button.buttonStyle}
               titleStyle={styles.titleStyle}
             />
             <PrimaryButton
-              title={localized.t("Post Event")}
+              title={localized.t("POST_EVENT")}
               buttonStyle={styles.postEventButton}
               onPress={postEvent}
               titleStyle={styles.titleStyle}
             />
             <PrimaryButton
-              title={localized.t("Volunteer")}
+              title={localized.t("VOLUNTEER")}
               buttonStyle={[
                 styles.postEventButton,
                 { backgroundColor: "#5FBB3F" },
@@ -210,12 +207,16 @@ const HomeScreen = ({ route }: any) => {
                     navigation.navigate("IntroSlider");
                   }
                 } else {
-                  Alert.alert("Alert!", "Please login", [
-                    {
-                      text: "Login",
-                      onPress: () => navigation.navigate("LoginScreen"),
-                    },
-                  ]);
+                  Alert.alert(
+                    `${localized.t("ALERT")}`,
+                    `${localized.t("PLEASE_LOGIN")}`,
+                    [
+                      {
+                        text: `${localized.t("LOGIN")}`,
+                        onPress: () => navigation.navigate("LoginScreen"),
+                      },
+                    ]
+                  );
                 }
               }}
               titleStyle={styles.titleStyle}
@@ -231,7 +232,7 @@ const HomeScreen = ({ route }: any) => {
                   fontFamily: "OpenSans-Regular",
                 }}
               >
-                {localized.t("Already have an account?")}
+                {localized.t("ALREADY_HAVE_AN_ACCOUNT")}
               </Text>
             )}
 
@@ -244,7 +245,7 @@ const HomeScreen = ({ route }: any) => {
                   marginBottom: h2dp(6),
                 }}
               >
-                {localized.t("Welcome")}{" "}
+                {localized.t("WELCOME")}{" "}
                 {data?.user?.name ? data?.user?.name : ""}
               </Text>
             ) : (
@@ -260,7 +261,7 @@ const HomeScreen = ({ route }: any) => {
                     marginBottom: h2dp(6),
                   }}
                 >
-                  {localized.t("Sign in")}
+                  {localized.t("SIGN_IN")}
                 </Text>
               </TouchableOpacity>
             )}

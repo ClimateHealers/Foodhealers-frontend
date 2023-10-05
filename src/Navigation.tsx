@@ -150,7 +150,7 @@ const Navigation = () => {
             component={AllEventScreen}
             options={({ navigation, route }) => ({
               title: "",
-              gestureEnabled: route.params?.fromEventPhotosScreen
+              gestureEnabled: route?.params?.fromEventPhotosScreen
                 ? false
                 : true,
               header: () => null,

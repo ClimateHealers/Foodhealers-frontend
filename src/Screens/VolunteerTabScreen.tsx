@@ -74,7 +74,7 @@ const VolunteerTabScreen = () => {
                 marginTop: h2dp(0.5),
               }}
             >
-              {localized.t("Approved")}
+              {localized.t("APPROVED")}
             </Text>
           </View>
         ) : status === "pending" ? (
@@ -96,7 +96,7 @@ const VolunteerTabScreen = () => {
                 marginTop: h2dp(0.5),
               }}
             >
-              {localized.t("Pending")}
+              {localized.t("PENDING")}
             </Text>
           </View>
         ) : (
@@ -115,7 +115,7 @@ const VolunteerTabScreen = () => {
                 marginTop: h2dp(0.5),
               }}
             >
-              {localized.t("Rejected")}
+              {localized.t("REJECTED")}
             </Text>
           </View>
         )}
@@ -157,7 +157,7 @@ const VolunteerTabScreen = () => {
           </Text>
         </ScrollView>
         <Button
-          title={"Details"}
+          title={localized.t("DETAILS")}
           onPress={() =>
             navigation.navigate("VolunteerSingleEventDetails", {
               eventDetails: {

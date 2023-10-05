@@ -247,10 +247,6 @@ export const styles = StyleSheet.create({
   horizonatalView: {
     display: "flex",
     flexDirection: "row",
-    // marginHorizontalAlignment: "4%",
-    // justifyContent: "center",
-    // alignItems: "flex-end",
-    // marginTop: h2dp(2),
   },
   headerContainer: {
     display: "flex",
@@ -438,5 +434,14 @@ export const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "flex-start",
     marginLeft: w2dp(4),
+  },
+  ingredient: {
+    marginBottom: 4,
+    color: "white",
+    marginLeft: h2dp(2),
+    fontSize: h2dp(2),
+  },
+  underlineTextStyle: {
+    textDecorationLine: "underline",
   },
 });

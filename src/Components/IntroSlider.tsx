@@ -13,17 +13,17 @@ const slides = [
   {
     key: 1,
     title: "Welcome to My App",
-    text: "Volunteer at an event, donate food, or become a driver",
+    text: "VOLUNTEER_AT_AN_EVENT_DONATEE_FOOD",
     image: require("../../assets/images/volunteerscollecting.png"),
   },
   {
     key: 2,
-    text: "Keep track of your donation history",
+    text: "KEEP_TRACK_OF_YOUR_DONATION_HISTORY",
     image: require("../../assets/images/onlineTaxes.png"),
   },
   {
     key: 3,
-    text: "Easily share your volunteer successes with your social network",
+    text: "EASILY_SHARE_YOUR_VOLUNTEER_SUCCESSESS_WITH_YOUR_SOCIAL_NETWORK",
     image: require("../../assets/images/shareAdvertising.png"),
   },
 ];
