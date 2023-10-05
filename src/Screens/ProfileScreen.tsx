@@ -132,7 +132,7 @@ const ProfileScreen = () => {
         )}
         <View style={styles.row}>
           <View style={styles.item}>
-            <Text style={styles.itemText}>{localized.t("Acoount")}</Text>
+            <Text style={styles.itemText}>{localized.t("Account")}</Text>
           </View>
           <TouchableOpacity
           onPress={() => {
