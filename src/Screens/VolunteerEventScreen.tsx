@@ -49,8 +49,6 @@ const VolunteerEventScreen = ({ route }: any) => {
     setEventData(requiredVolunteers);
   };
 
-  console.log("EventData", eventData);
-
   const navigation: any = useNavigation();
 
   const [langOpen, setlangOpen] = useState(false);
@@ -105,70 +103,6 @@ const VolunteerEventScreen = ({ route }: any) => {
     eventPhoto,
   }: any) => (
     <View style={styles.cardContainer}>
-      {/* {status === "approved" ? (
-        <View>
-          <AntDesign
-            name="checkcircleo"
-            size={24}
-            color="green"
-            style={{
-              marginLeft: h2dp(2.5),
-              marginTop: h2dp(1.5),
-            }}
-          />
-          <Text
-            style={{
-              marginLeft: h2dp(1.5),
-              fontSize: 11,
-              color: "green",
-              marginTop: h2dp(0.5),
-            }}
-          >
-            {localized.t("Approved")}
-          </Text>
-        </View>
-      ) : status === "pending" ? (
-        <View>
-          <FontAwesome
-            name="clock-o"
-            size={24}
-            color="#f2db0a"
-            style={{
-              marginLeft: h2dp(2.3),
-              marginTop: h2dp(1.5),
-            }}
-          />
-          <Text
-            style={{
-              marginLeft: h2dp(1.5),
-              fontSize: 11,
-              color: "#f2db0a",
-              marginTop: h2dp(0.5),
-            }}
-          >
-            {localized.t("Pending")}
-          </Text>
-        </View>
-      ) : (
-        <View>
-          <Feather
-            name="x-circle"
-            size={24}
-            color="red"
-            style={{ marginLeft: h2dp(2.3), marginTop: h2dp(1.5) }}
-          />
-          <Text
-            style={{
-              marginLeft: h2dp(1.5),
-              fontSize: 11,
-              color: "red",
-              marginTop: h2dp(0.5),
-            }}
-          >
-            {localized.t("Rejected")}
-          </Text>
-        </View>
-      )} */}
 
       <ScrollView showsVerticalScrollIndicator={false}>
         <Text
@@ -180,17 +114,14 @@ const VolunteerEventScreen = ({ route }: any) => {
             paddingTop: h2dp(0.5),
           }}
         >
-          {/* {moment(eventTimings).format("MMM DD, YYYY  ddd, hh:mm A")} */}
           {eventTimings}
         </Text>
         <Text
           style={{
             marginLeft: w2dp(3),
-            // width: w2dp(52),
             fontWeight: "500",
             fontSize: 16,
             lineHeight: 30,
-            // paddingTop: h2dp(0.5),
           }}
         >
           {name}
@@ -198,7 +129,6 @@ const VolunteerEventScreen = ({ route }: any) => {
         <Text
           style={{
             marginLeft: w2dp(3),
-            // width: w2dp(47),
             fontWeight: "300",
             fontSize: 16,
             lineHeight: 20,
@@ -209,7 +139,7 @@ const VolunteerEventScreen = ({ route }: any) => {
         </Text>
       </ScrollView>
       <Button
-        title={localized.t("Details")}
+        title={localized.t("DETAILS")}
         onPress={() =>
           navigation.navigate("SingleEventDetails", {
             eventDetails: {
@@ -272,8 +202,8 @@ const VolunteerEventScreen = ({ route }: any) => {
                 <View style={styles.item}>
                   <Text style={styles.itemText}>
                     {eventData?.length > 0
-                      ? `${localized.t("Post an Event")}`
-                      : `${localized.t("Events")}`}
+                      ? `${localized.t("POST_AN_EVENT")}`
+                      : `${localized.t("EVENTS")}`}
                   </Text>
                 </View>
                 <BurgerIcon />
@@ -282,10 +212,10 @@ const VolunteerEventScreen = ({ route }: any) => {
                 <View>
                   <View style={styles.itemFilter}>
                     <Text style={styles.itemFilterText}>
-                      {localized.t("Events")}
+                      {localized.t("EVENTS")}
                     </Text>
                     <Text style={styles.itemFilterText}>
-                      {localized.t("Filter")}
+                      {localized.t("FILTER")}
                     </Text>
                   </View>
                   <FlatList
@@ -321,7 +251,7 @@ const VolunteerEventScreen = ({ route }: any) => {
                       onPress={() => navigation.navigate("PostEvent")}
                     >
                       <Text style={styles.textStyle}>
-                        {localized.t("Post an Event")}
+                        {localized.t("POST_AN_EVENT")}
                       </Text>
                     </TouchableOpacity>
                   </View>

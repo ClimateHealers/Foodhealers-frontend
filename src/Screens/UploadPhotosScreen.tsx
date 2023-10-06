@@ -41,8 +41,6 @@ import BurgerIcon from "../Components/BurgerIcon";
 
 const UploadPhotosScreen = ({ route }: any) => {
   const { eventFormData } = route.params;
-
-  console.log("checking data from post event form", eventFormData);
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const [loc, setLoc] = useState(false);
   const [selectedImage, setSelectedImage] = useState<any | []>([]);
@@ -100,7 +98,6 @@ const UploadPhotosScreen = ({ route }: any) => {
       });
 
       if (!result.canceled) {
-        console.log("checking image from library", result.assets);
         const multipleImages = result.assets.map((image) => image.uri);
         const singlePhoto = result.assets[0].uri;
 
@@ -112,11 +109,11 @@ const UploadPhotosScreen = ({ route }: any) => {
       }
     } else if (!res.granted) {
       Alert.alert(
-        `${localized.t("Media Library Access")}`,
-        `${localized.t("FoodHealers app needs PhotoLibrary permission to let you update your profile picture, and create/modify events with appropriate images for community.You can enable it anytime from settings.")}`,
+        `${localized.t("MEDIA_LIBRARY_ACCESS")}`,
+        `${localized.t("FOODHEALERS_APP_NEEDS_PHOTOLIBRARY.")}`,
         [
           {
-            text: "Ok",
+            text: `${localized.t("OK")}`,
             // onPress: () => {
             //   Platform?.OS === "ios"
             //     ? Linking.openURL("app-settings:root=Photos")
@@ -163,7 +160,9 @@ const UploadPhotosScreen = ({ route }: any) => {
                   onPress={() => navigation.goBack()}
                 />
                 <View style={styles.item}>
-                  <Text style={styles.itemText}>{localized.t("Post an Event")}</Text>
+                  <Text style={styles.itemText}>
+                    {localized.t("POST_AN_EVENT")}
+                  </Text>
                 </View>
                 <BurgerIcon />
               </View>
@@ -191,7 +190,7 @@ const UploadPhotosScreen = ({ route }: any) => {
                 </TouchableOpacity>
 
                 <Text style={{ fontSize: 20, marginTop: 10 }}>
-                  {localized.t("Upload event photo")}
+                  {localized.t("UPLOAD_EVENT_PHOTO")}
                 </Text>
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                   <Text
@@ -201,7 +200,7 @@ const UploadPhotosScreen = ({ route }: any) => {
                       textDecorationLine: "underline",
                     }}
                   >
-                    {localized.t("Back")}
+                    {localized.t("BACK")}
                   </Text>
                 </TouchableOpacity>
               </View>

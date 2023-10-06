@@ -21,18 +21,9 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { getLocation } from "../Components/getCurrentLocation";
 import { localized } from "../locales/localization";
-// import ViolationFlatlist from "./components/ViolationFlatlist";
-// import { elogLogger } from "../util/helper/logger";
 
 export default function NotificationScreen() {
   const [menuOpen, setMenuOpen] = useState(false);
-
-  //   const getNotifications = useSelector(
-  //     (state) => state.profileReducer.notificationList,
-  //   );
-
-  //   elogLogger.info('total notifications', getNotifications)
-
   const navigation: any = useNavigation();
 
   return (
@@ -46,16 +37,13 @@ export default function NotificationScreen() {
             name="chevron-back"
             size={32}
             color="white"
-            style={{ marginRight: w2dp(15), marginTop: h2dp(3), }}
+            style={{ marginRight: w2dp(15), marginTop: h2dp(3) }}
             onPress={() => navigation.goBack()}
           />
           <Text style={styles.itemText}>{"Notifications"}</Text>
         </View>
         <View style={styles.bgimage}>
           {
-            //   getNotifications.success ? (
-            //     <ViolationFlatlist data={getNotifications?.data} />
-            //   ) :
             <View style={styles.textContainer}>
               <Text
                 style={{
@@ -63,7 +51,7 @@ export default function NotificationScreen() {
                   color: "white",
                 }}
               >
-                `${localized.t("Coming soon!")}`!
+                `${localized.t("COMING_SOON")}`!
               </Text>
             </View>
           }

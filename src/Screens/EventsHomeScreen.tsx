@@ -65,8 +65,7 @@ const EventsHomeScreen = () => {
                   onPress={() => navigation.goBack()}
                 />
                 <View style={styles.item}>
-                  {/* <Text style={styles.itemText}>{localized.t("Find Food")}</Text> */}
-                  <Text style={styles.itemText}>{localized.t("Events")}</Text>
+                  <Text style={styles.itemText}>{localized.t("EVENTS")}</Text>
                 </View>
                 <BurgerIcon />
               </View>
@@ -79,7 +78,9 @@ const EventsHomeScreen = () => {
                   <TouchableOpacity
                     onPress={() => navigation.navigate("PostEvent")}
                   >
-                    <Text style={styles.textStyle}>{localized.t("Post an Event")}</Text>
+                    <Text style={styles.textStyle}>
+                      {localized.t("POST_AN_EVENT")}
+                    </Text>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -92,7 +93,9 @@ const EventsHomeScreen = () => {
                   <TouchableOpacity
                     onPress={() => navigation.navigate("AllEventScreen")}
                   >
-                    <Text style={styles.textStyle}>{localized.t("See All Events")}</Text>
+                    <Text style={styles.textStyle}>
+                      {localized.t("SEE_ALL_EVENTS")}
+                    </Text>
                   </TouchableOpacity>
                 </View>
               </View>

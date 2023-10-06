@@ -93,18 +93,6 @@ export default function App() {
     });
   };
   
-  
-  // useEffect(() => {
-  //   const getExpoPushToken = async () => {
-  //     const token = await Notifications.getExpoPushTokenAsync({
-  //       projectId : Constants?.manifest?.extra?.eas?.projectID
-  //     });
-  //     console.log("tokennnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn",token);
-  //     // sendPushNotification(token);
-  //   };
-  //   getExpoPushToken();
-  // }, []);
-  
 
   const netInfo = useNetInfo();
   useEffect(() => {

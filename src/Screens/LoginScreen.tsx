@@ -135,7 +135,7 @@ const LoginScreen = () => {
                       lineHeight: 27.24,
                     }}
                   >
-                    {localized.t("Home")}Home
+                    {localized.t("HOME")}
                   </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -149,7 +149,7 @@ const LoginScreen = () => {
                       lineHeight: 27.24,
                     }}
                   >
-                    {localized.t("Find Food")}
+                    {localized.t("FIND_FOOD")}
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -225,11 +225,11 @@ const LoginScreen = () => {
                       dispatch(login(data) as any).then((res: any) => {
                         if (!res?.payload?.success) {
                           Alert.alert(
-                            `${localized.t("Account does not exist")}`,
-                            `${localized.t("Please Sign up")}`,
+                            `${localized.t("ACCOUNT_DOES_NOT_EXIST")}`,
+                            `${localized.t("PLEASE_SIGN_UP")}`,
                             [
                               {
-                                text: `${localized.t("Sign up")}`,
+                                text: `${localized.t("SIGN_UP")}`,
                                 onPress: () => {
                                   navigation.navigate("SignupScreen");
                                 },
@@ -254,11 +254,11 @@ const LoginScreen = () => {
                       const errorMessage = error.message;
                       errorMessage
                         ? Alert.alert(
-                            "Invalid Credentials",
-                            "Incorrect email or password entered, please check your credentials and try again.",
+                            `${localized.t("INVALID_CREDENTIALS")}`,
+                            `${localized.t("INCORRECT_EMAIL_OR_PASSWORD")}`,
                             [
                               {
-                                text: `${localized.t("Ok")}`,
+                                text: `${localized.t("OK")}`,
                                 style: "cancel",
                               },
                             ],
@@ -281,7 +281,7 @@ const LoginScreen = () => {
                       onChangeText={handleChange("email")}
                       onBlur={handleBlur("email")}
                       value={values.email.toLocaleLowerCase()}
-                      placeholder={localized.t("Email")}
+                      placeholder={localized.t("EMAIL")}
                       placeholderTextColor={"black"}
                       style={styles.textInput}
                     />
@@ -292,7 +292,7 @@ const LoginScreen = () => {
                         onChangeText={handleChange("password")}
                         onBlur={handleBlur("password")}
                         value={values.password}
-                        placeholder={localized.t("Password")}
+                        placeholder={localized.t("PASSWORD")}
                         placeholderTextColor={"black"}
                         style={styles.textInput}
                       />
@@ -318,7 +318,7 @@ const LoginScreen = () => {
                             textDecorationLine: "underline",
                           }}
                         >
-                          {localized.t("Forgot password")}?
+                          {localized.t("FORGOT_PASSWORD")}?
                         </Text>
                       </TouchableOpacity>
                     </View>
@@ -331,7 +331,7 @@ const LoginScreen = () => {
                       }}
                     >
                       <PrimaryButton
-                        title={localized.t("Sign in")}
+                        title={localized.t("SIGN_IN")}
                         buttonStyle={styles.buttonStyles}
                         titleStyle={styles.titleStyle}
                         onPress={handleSubmit}
@@ -354,7 +354,7 @@ const LoginScreen = () => {
                           marginTop: 10,
                         }}
                       >
-                        {localized.t("Not a user")}?
+                        {localized.t("NOT_AN_USER")}
                       </Text>
                       <TouchableOpacity
                         onPress={() => navigation.navigate("SignupScreen")}
@@ -369,7 +369,7 @@ const LoginScreen = () => {
                             marginTop: 10,
                           }}
                         >
-                          {`${" "}${localized.t("Sign up")}`}
+                          {`${" "}${localized.t("SIGN_UP")}`}
                         </Text>
                       </TouchableOpacity>
                     </View>

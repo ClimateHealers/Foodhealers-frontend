@@ -82,10 +82,6 @@ const PostEvent = () => {
   const eventDateTime = moment(selectedDate).utc().unix();
 
   const eventEndDateTime = moment(selectedEndDate).utc().unix();
-
-  console.log("checking evenntDate Time", eventDateTime);
-  console.log("checking eventEndDateTime Time", eventEndDateTime);
-  //
   const handlePressOutside = () => {
     setlangOpen(false);
     Keyboard.dismiss();
@@ -97,7 +93,6 @@ const PostEvent = () => {
   );
 
   const handleDateChange = (date: any) => {
-    console.log("checkgin selected date", date);
     setSelectedDate(date);
     if (selectedDate > selectedEndDate) {
       setSelectedEndDate(selectedDate);
@@ -116,10 +111,9 @@ const PostEvent = () => {
   };
 
   const handleEndDateChange = (endDate: any) => {
-    console.log("checking selected end date", endDate);
     if (moment(endDate).isBefore(moment(selectedDate).add(1, "hour"))) {
       Alert.alert(
-        "Alert",
+        `${localized.t("ALERT")}`,
         `You can't select a time before ${moment(selectedDate)
           .add(1, "hour")
           .format("MMM DD, YYYY hh:mm A")}`
@@ -169,17 +163,6 @@ const PostEvent = () => {
 
     setMenuOpen(false);
   };
-  // const logout = async (item: any) => {
-  //   // persistor.purge()
-  //   await dispatch(logOut({}) as any);
-  //   await removeAuthData();
-  //   navigation.dispatch(
-  //     CommonActions.reset({
-  //       index: 0,
-  //       routes: [{ name: "LoginScreen" }],
-  //     })
-  //   );
-  // };
 
   useEffect(() => {
     setSelectedEndDate(moment(selectedDate).add(1, "hour"));
@@ -205,7 +188,7 @@ const PostEvent = () => {
                 />
                 <View style={styles.item}>
                   <Text style={styles.itemText}>
-                    {localized.t("Post an Event")}
+                    {localized.t("POST_AN_EVENT")}
                   </Text>
                 </View>
                 <BurgerIcon />
@@ -278,15 +261,14 @@ const PostEvent = () => {
                       onChangeText={handleChange("eventName")}
                       onBlur={handleBlur("eventName")}
                       value={values.eventName}
-                      // placeholder={localized.t("Email")}
-                      placeholder={localized.t("Event name")}
+                      placeholder={localized.t("EVENT_NAME")}
                       placeholderTextColor={"black"}
                       style={styles.textInput}
                     />
                     <Text style={styles.inputError}>{errors.eventName}</Text>
 
                     <GooglePlacesAutocomplete
-                      placeholder={localized.t("Address")}
+                      placeholder={localized.t("ADDRESS")}
                       fetchDetails={true}
                       keepResultsAfterBlur={true}
                       listViewDisplayed="auto"
@@ -364,18 +346,16 @@ const PostEvent = () => {
                               style={{
                                 color: "black",
                                 fontSize: 13,
-                                // width: 200,
                                 marginBottom: 5,
                                 marginLeft: 15,
                               }}
                             >
-                              {localized.t("Start Date")}
+                              {localized.t("START_DATE")}
                             </Text>
                             <Text
                               style={{
                                 color: "black",
                                 fontSize: 13,
-                                // width: 200,
                                 marginBottom: 5,
                                 marginLeft: 15,
                               }}
@@ -410,7 +390,6 @@ const PostEvent = () => {
                             { backgroundColor: "#deddd9" },
                           ]}
                         >
-                          {/* <IconButton icon="calendar" size={20} /> */}
                           <View>
                             <Text
                               style={{
@@ -421,7 +400,7 @@ const PostEvent = () => {
                                 marginLeft: 15,
                               }}
                             >
-                              {localized.t("Start Time")}
+                              {localized.t("START_TIME")}
                             </Text>
                             <Text
                               style={{
@@ -455,18 +434,16 @@ const PostEvent = () => {
                               style={{
                                 color: "black",
                                 fontSize: 13,
-                                // width: 200,
                                 marginBottom: 5,
                                 marginLeft: 15,
                               }}
                             >
-                              {localized.t("End Date")}
+                              {localized.t("END_DATE")}
                             </Text>
                             <Text
                               style={{
                                 color: "black",
                                 fontSize: 13,
-                                // width: 200,
                                 marginBottom: 5,
                                 marginLeft: 15,
                               }}
@@ -503,7 +480,6 @@ const PostEvent = () => {
                             { backgroundColor: "#deddd9" },
                           ]}
                         >
-                          {/* <IconButton icon="calendar" size={20} /> */}
                           <View>
                             <Text
                               style={{
@@ -514,7 +490,7 @@ const PostEvent = () => {
                                 marginLeft: 15,
                               }}
                             >
-                              {localized.t("End Time")}
+                              {localized.t("END_TIME")}
                             </Text>
                             <Text
                               style={{
@@ -536,9 +512,7 @@ const PostEvent = () => {
                       onChangeText={handleChange("served")}
                       onBlur={handleBlur("served")}
                       value={values?.served}
-                      // placeholder={localized.t("Password")}
-                      // multiline={true}
-                      placeholder={localized.t("What's being served")}
+                      placeholder={localized.t("WHATS_BEING_SERVED")}
                       placeholderTextColor={"black"}
                       style={styles.textArea}
                       id={"served"}
@@ -550,7 +524,7 @@ const PostEvent = () => {
                       value={values?.volunteers}
                       keyboardType="numeric"
                       placeholder={localized.t(
-                        "Numbers of volunteers required"
+                        "NUMBERS_OF_VOLUNTEERS_REQUIRED"
                       )}
                       placeholderTextColor={"black"}
                       style={styles.textArea}
@@ -565,8 +539,7 @@ const PostEvent = () => {
                       }}
                     >
                       <PrimaryButton
-                        // title={localized.t("Sign in")}
-                        title={localized.t("Submit")}
+                        title={localized.t("SUBMIT")}
                         buttonStyle={styles.buttonStyles}
                         titleStyle={styles.titleStyle}
                         onPress={handleSubmit}

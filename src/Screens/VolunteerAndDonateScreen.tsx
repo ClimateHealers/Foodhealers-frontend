@@ -6,7 +6,7 @@ import {
   StyleSheet,
   Text,
   TouchableWithoutFeedback,
-  View
+  View,
 } from "react-native";
 import {
   heightPercentageToDP as h2dp,
@@ -75,8 +75,8 @@ const VolunteerAndDonateScreen = ({ route }: any) => {
   });
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
-    { key: "first", title: `${localized.t("Donations")}` },
-    { key: "second", title: `${localized.t("Volunteers")}` },
+    { key: "first", title: `${localized.t("DONATIONS")}` },
+    { key: "second", title: `${localized.t("VOLUNTEERS")}` },
   ]);
 
   return (
@@ -90,16 +90,18 @@ const VolunteerAndDonateScreen = ({ route }: any) => {
           <SafeAreaView>
             <View>
               <View style={styles.row}>
-              <View style={styles.item}>
-                <Ionicons
-                  name="chevron-back"
-                  size={32}
-                  color="white"
-                  onPress={() => navigation.goBack()}
-                />
+                <View style={styles.item}>
+                  <Ionicons
+                    name="chevron-back"
+                    size={32}
+                    color="white"
+                    onPress={() => navigation.goBack()}
+                  />
                 </View>
                 <View style={styles.item}>
-                  <Text style={[styles.itemText,{marginTop:h2dp(-0.5)}]}>{localized.t("Volunteer")}</Text>
+                  <Text style={[styles.itemText, { marginTop: h2dp(-0.5) }]}>
+                    {localized.t("VOLUNTEER")}
+                  </Text>
                 </View>
                 <BurgerIcon />
               </View>

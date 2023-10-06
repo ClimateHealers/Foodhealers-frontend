@@ -68,16 +68,16 @@ const BurgerIcon = () => {
           }}
         >
           <TouchableOpacity onPress={() => handleMenuItemPress("Home")}>
-            <Text style={styles.burgerText}>{localized.t("Home")}</Text>
+            <Text style={styles.burgerText}>{localized.t("HOME")}</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => findFoodMenuItemPress("Find Food")}>
-            <Text style={styles.burgerText}>{localized.t("Find Food")}</Text>
+            <Text style={styles.burgerText}>{localized.t("FIND_FOOD")}</Text>
           </TouchableOpacity>
           {isAuthenticated && (
             <TouchableOpacity
               onPress={() => navigation.navigate("ProfileScreen")}
             >
-              <Text style={styles.burgerText}>{localized.t("Account")}</Text>
+              <Text style={styles.burgerText}>{localized.t("ACCOUNT")}</Text>
             </TouchableOpacity>
           )}
         </View>

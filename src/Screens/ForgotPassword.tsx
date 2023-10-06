@@ -16,7 +16,6 @@ import {
   Alert,
 } from "react-native";
 
-
 import * as yup from "yup";
 import { auth } from "../firebase/firebaseConfig";
 import { localized } from "../locales/localization";
@@ -25,8 +24,8 @@ import Spinner from "react-native-loading-spinner-overlay/lib";
 const forgotPasswordValidationSchema = yup.object().shape({
   email: yup
     .string()
-    .email("Please enter valid email")
-    .required("Email is required"),
+    .email(`${localized.t("PLEASE_ENTER_YOUR_EMAIL")}`)
+    .required(`${localized.t("EMAIL_IS_REQUIRED")}`),
 });
 
 function ForgotPassword() {
@@ -56,9 +55,7 @@ function ForgotPassword() {
               display: "flex",
               flexDirection: "column",
               justifyContent: "space-around",
-              // borderWidth: 1,
               height: 400,
-              // alignItems:"center"
             }}
           >
             <View
@@ -71,11 +68,14 @@ function ForgotPassword() {
                 style={{ marginLeft: 1 }}
                 onPress={() => navigation.goBack()}
               />
-              <Text style={styles.header}> {localized.t("Forgot Password")} </Text>
+              <Text style={styles.header}>
+                {" "}
+                {localized.t("FORGOT_PASSWORD")}{" "}
+              </Text>
             </View>
             <View style={styles.container2}>
               <Text style={styles.lineText}>
-                {localized.t("Enter your email and we will send you a reset link!")}
+                {localized.t("ENTER_YOUR_EMAIL")}
               </Text>
 
               <Formik
@@ -104,9 +104,12 @@ function ForgotPassword() {
                     Alert.alert(
                       "Reset Link sent successfully",
                       "We have successfully sent the reset link to the registered email.",
-                      [{ text: "OK",
-                      onPress: () => navigation.navigate("LoginScreen"),
-                    }],
+                      [
+                        {
+                          text: `${localized.t("OK")}`,
+                          onPress: () => navigation.navigate("LoginScreen"),
+                        },
+                      ],
                       { cancelable: false }
                     );
                   } catch (err: any) {
@@ -119,9 +122,7 @@ function ForgotPassword() {
                     Alert.alert(
                       "Email not found",
                       `${err.message}`,
-                      [{ text: "OK",
-                      
-                    }],
+                      [{ text: `${localized.t("OK")}` }],
                       { cancelable: false }
                     );
                   }
@@ -141,7 +142,7 @@ function ForgotPassword() {
                     <>
                       <TextInput
                         style={styles.textInput}
-                        placeholder="Email"
+                        placeholder={localized.t("EMAIL")}
                         placeholderTextColor="white"
                         onChangeText={(values) => {
                           setFieldValue("email", values);
@@ -157,7 +158,6 @@ function ForgotPassword() {
                       )}
                       <Spinner
                         visible={loading}
-                        // textContent="Posting event"
                         cancelable={false}
                         textStyle={{
                           color: "white",
@@ -171,7 +171,9 @@ function ForgotPassword() {
                           !isValid && styles.regBtnDisabled,
                         ]}
                       >
-                        <Text style={styles.regText}>{localized.t("Send Reset Link")}</Text>
+                        <Text style={styles.regText}>
+                          {localized.t("SEND_RESET_LINK")}
+                        </Text>
                       </TouchableOpacity>
                     </>
                   );
@@ -192,7 +194,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     borderWidth: 1,
     borderColor: "white",
-    color: "white"
+    color: "white",
   },
   scrollViewContainer: {
     padding: 16,

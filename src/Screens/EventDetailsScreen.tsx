@@ -69,8 +69,7 @@ const EventDetailsScreen = ({ route }: any) => {
   const onShare = async () => {
     try {
       const result = await Share.share({
-        // message: `${eventDetails?.additionalInfo}`,
-        message: `${localized.t("Coming soon!")}`,
+        message: `${localized.t("COMING_SOON")}`,
       });
       if (result.action === Share.sharedAction) {
         if (result.activityType) {
@@ -103,7 +102,7 @@ const EventDetailsScreen = ({ route }: any) => {
                 />
                 <View style={styles.item}>
                   <Text style={styles.itemText}>
-                    {localized.t("Find Food")}
+                    {localized.t("FIND_FOOD")}
                   </Text>
                 </View>
                 <BurgerIcon />
@@ -119,10 +118,8 @@ const EventDetailsScreen = ({ route }: any) => {
               >
                 <View>
                   <Image
-                    // source={require("../../assets/images/hostingEvent.png")}
                     source={{ uri: eventDetails?.eventPhoto }}
                     style={{
-                      // tintColor:"blue",
                       width: "100%",
                       height: 200,
                       borderTopLeftRadius: 10,
@@ -139,7 +136,7 @@ const EventDetailsScreen = ({ route }: any) => {
                     }}
                   >
                     <Text style={styles.boldText}>
-                      {localized.t("From")}:{" "}
+                      {localized.t("FROM")}:{" "}
                       <Text style={styles.cardText}>
                         {moment(eventDetails?.eventStartDate).format(
                           "ddd, MMM D"
@@ -158,7 +155,7 @@ const EventDetailsScreen = ({ route }: any) => {
                   </View>
                   <View style={{ marginBottom: 20, paddingHorizontal: 10 }}>
                     <Text style={styles.boldText}>
-                      {localized.t("To")}:{" "}
+                      {localized.t("TO")}:{" "}
                       <Text style={styles.cardText}>
                         {moment(eventDetails?.eventEndDate).format(
                           "ddd, MMM D"
@@ -177,7 +174,7 @@ const EventDetailsScreen = ({ route }: any) => {
                   </View>
                   <View style={{ marginBottom: 20, paddingHorizontal: 10 }}>
                     <Text style={styles.boldText}>
-                      {localized.t("Location")}:{" "}
+                      {localized.t("LOCATION")}:{" "}
                       <Text style={styles.cardText}>
                         {eventDetails.address?.fullAddress}
                       </Text>
@@ -193,7 +190,7 @@ const EventDetailsScreen = ({ route }: any) => {
                   </View>
                   <View style={{ marginBottom: 10, paddingHorizontal: 10 }}>
                     <Text style={styles.boldText}>
-                      {localized.t("What")}:{" "}
+                      {localized.t("WHAT")}:{" "}
                       <Text style={styles.cardText}>
                         {eventDetails?.additionalInfo}
                       </Text>
@@ -209,7 +206,7 @@ const EventDetailsScreen = ({ route }: any) => {
                   </View>
                   <View style={{ marginBottom: 10, paddingHorizontal: 10 }}>
                     <Text style={styles.boldText}>
-                      {localized.t("Volunteer's Required")}:{" "}
+                      {localized.t("VOLUNTEERS_REQUIRED")}:{" "}
                       <Text style={styles.cardText}>
                         {eventDetails?.volunteers}
                       </Text>
@@ -234,7 +231,11 @@ const EventDetailsScreen = ({ route }: any) => {
               >
                 <PrimaryButton
                   disabled={expired}
-                  title={expired ? `${localized.t("Event Expired")}` : `${localized.t("Get directions")}`}
+                  title={
+                    expired
+                      ? `${localized.t("EVENT_EXPIRED")}`
+                      : `${localized.t("GET_DIRECTIONS")}`
+                  }
                   onPress={navigationHandler}
                   buttonStyle={styles.buttonStyles}
                   titleStyle={styles.titleStyle}
@@ -250,7 +251,7 @@ const EventDetailsScreen = ({ route }: any) => {
                         textDecorationLine: "underline",
                       }}
                     >
-                      {localized.t("Share")}
+                      {localized.t("SHARE")}
                     </Text>
                   </TouchableOpacity>
                 )}

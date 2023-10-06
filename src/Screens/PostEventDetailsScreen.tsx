@@ -24,7 +24,6 @@ const PostEventDetailsScreen = ({ route }: any) => {
   const { eventDetails, eventPhotos } = route.params;
   const navigation: any = useNavigation();
 
-  console.log("checkign event details", eventDetails);
   const [langOpen, setlangOpen] = useState(false);
   const [lang, setLang] = useState([
     { id: 1, label: "French", value: "fr" },
@@ -73,7 +72,7 @@ const PostEventDetailsScreen = ({ route }: any) => {
 
   const formattedDate = dateObj.toLocaleDateString("en-US", options);
 
-  const epochEndDate = eventDetails?.eventEndDateTime; //eventEndDateTime
+  const epochEndDate = eventDetails?.eventEndDateTime;
   const endDateObj = new Date(epochEndDate * 1000);
 
   const formattedEndDate = dateObj.toLocaleDateString("en-US", options);
@@ -98,7 +97,9 @@ const PostEventDetailsScreen = ({ route }: any) => {
             <SafeAreaView>
               <View style={styles.row}>
                 <View style={styles.item}>
-                  <Text style={styles.itemText}>{localized.t("Post an Event")}</Text>
+                  <Text style={styles.itemText}>
+                    {localized.t("POST_AN_EVENT")}
+                  </Text>
                 </View>
                 <View style={styles.item}>
                   <MaterialCommunityIcons
@@ -133,7 +134,7 @@ const PostEventDetailsScreen = ({ route }: any) => {
                             lineHeight: 27.24,
                           }}
                         >
-                          {localized.t("Home")}
+                          {localized.t("HOME")}
                         </Text>
                       </TouchableOpacity>
                       <TouchableOpacity
@@ -147,7 +148,7 @@ const PostEventDetailsScreen = ({ route }: any) => {
                             lineHeight: 27.24,
                           }}
                         >
-                          {localized.t("Find Food")}
+                          {localized.t("FIND_FOOD")}
                         </Text>
                       </TouchableOpacity>
                     </View>
@@ -171,7 +172,7 @@ const PostEventDetailsScreen = ({ route }: any) => {
                   <View style={styles.cardTextConainer}>
                     <View style={{ marginBottom: 30, paddingHorizontal: 10 }}>
                       <Text style={styles.boldText}>
-                      {localized.t("Date")}:{" "}
+                        {localized.t("DATE")}:{" "}
                         <Text style={styles.cardText}>
                           {formattedDate} - {formattedEndDate}
                         </Text>
@@ -186,7 +187,7 @@ const PostEventDetailsScreen = ({ route }: any) => {
                     </View>
                     <View style={{ marginBottom: 20, paddingHorizontal: 10 }}>
                       <Text style={styles.boldText}>
-                      {localized.t("Time")}:{" "}
+                        {localized.t("TIME")}:{" "}
                         <Text style={styles.cardText}>
                           {formattedTime}- {formattedEndTime}
                         </Text>
@@ -203,7 +204,7 @@ const PostEventDetailsScreen = ({ route }: any) => {
                     </View>
                     <View style={{ marginBottom: 30, paddingHorizontal: 10 }}>
                       <Text style={styles.boldText}>
-                      {localized.t("Location")}:{" "}
+                        {localized.t("LOCATION")}:{" "}
                         <Text style={styles.cardText}>
                           {eventDetails?.address}
                         </Text>
@@ -219,7 +220,7 @@ const PostEventDetailsScreen = ({ route }: any) => {
                     </View>
                     <View style={{ marginBottom: 20, paddingHorizontal: 10 }}>
                       <Text style={styles.boldText}>
-                      {localized.t("What")}:{" "}
+                        {localized.t("WHAT")}:{" "}
                         <Text style={styles.cardText}>
                           {eventDetails?.served}
                         </Text>
@@ -246,8 +247,7 @@ const PostEventDetailsScreen = ({ route }: any) => {
                 }}
               >
                 <PrimaryButton
-                  title={localized.t("See All Events")}
-                  // title={localized.t("Sign in")}
+                  title={localized.t("SEE_ALL_EVENTS")}
                   buttonStyle={styles.buttonStyles}
                   titleStyle={styles.titleStyle}
                   onPress={() => navigation.navigate("AllEventScreen")}
@@ -302,8 +302,6 @@ const styles = StyleSheet.create({
     color: "black",
     borderRadius: 5,
     width: 190,
-    // marginTop: 20,
-    // marginLeft: 85,
   },
   titleStyle: {
     color: "white",

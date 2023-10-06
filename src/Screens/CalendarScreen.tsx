@@ -1,29 +1,25 @@
-import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
+import moment from "moment";
 import React, { useState } from "react";
 import {
   Keyboard,
-  Platform,
   ScrollView,
   StatusBar,
-  StyleSheet,
   Text,
-  TouchableOpacity,
   TouchableWithoutFeedback,
-  View,
+  View
 } from "react-native";
 import { Calendar } from "react-native-calendars";
 import { heightPercentageToDP as h2dp } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useDispatch, useSelector } from "react-redux";
-import { getLocation } from "../Components/getCurrentLocation";
-import moment from "moment";
-import { calendarEvent } from "../redux/actions/calendarEventAction";
-import { styles } from "../Components/Styles";
-import FoodhealersHeader from "../Components/FoodhealersHeader";
+import { useDispatch } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
+import FoodhealersHeader from "../Components/FoodhealersHeader";
+import { styles } from "../Components/Styles";
 import { localized } from "../locales/localization";
+import { calendarEvent } from "../redux/actions/calendarEventAction";
 
 const CalendarScreen = ({ route }: any) => {
   const navigation: any = useNavigation();
@@ -35,35 +31,8 @@ const CalendarScreen = ({ route }: any) => {
 
   const selectedDate = new Date(date);
 
-  const isAuthenticated = useSelector(
-    (state: any) => state?.auth?.data?.isAuthenticated
-  );
-
   const handlePressOutside = () => {
     Keyboard.dismiss();
-    setMenuOpen(false);
-  };
-
-  const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
-  };
-
-  const handleMenuItemPress = (item: any) => {
-    setMenuOpen(false);
-    if (isAuthenticated) {
-      navigation.navigate("HomeScreen");
-    } else {
-      navigation.navigate("SignupScreen");
-    }
-  };
-  const findFoodMenuItemPress = (item: any) => {
-    getLocation().then((location: any) => {
-      if (location) {
-        navigation?.navigate("MapScreen", {
-          location: location,
-        });
-      }
-    });
     setMenuOpen(false);
   };
 
@@ -86,19 +55,24 @@ const CalendarScreen = ({ route }: any) => {
                   onPress={() => navigation.goBack()}
                 />
                 <View style={styles.item}>
-                  {/* <Text style={styles.itemText}>{localized.t("Find Food")}</Text> */}
-                  <Text style={styles.itemText}>{localized.t("My Calendar")}</Text>
+                  <Text style={styles.itemText}>
+                    {localized.t("MY_CALENDAR")}
+                  </Text>
                 </View>
-                  <BurgerIcon />
+                <BurgerIcon />
               </View>
-              <View style={styles.calendarView}>
+              <View style={[styles.calendarView,{
+                marginTop:h2dp(7)
+              }]}>
                 <Calendar
                   enableSwipeMonths={true}
                   headerStyle={{
                     backgroundColor: "white",
+                    marginTop: h2dp(3)
                   }}
                   style={{
                     borderRadius: 10,
+                    height:h2dp(38)
                   }}
                   markedDates={{
                     [date]: {
@@ -112,7 +86,7 @@ const CalendarScreen = ({ route }: any) => {
                     try {
                       setDate(day.dateString);
 
-                      const selectedDate = new Date(day.dateString); // Parse the selected date
+                      const selectedDate = new Date(day.dateString);
 
                       const startDate = moment(selectedDate)
                         .startOf("day")

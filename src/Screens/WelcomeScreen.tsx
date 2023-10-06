@@ -9,24 +9,24 @@ import {
 } from "react-native";
 import { localized } from "../locales/localization";
 
-
 const WelcomeScreen = () => {
-  
   return (
     <View style={styles.container}>
-      <StatusBar backgroundColor="black" hidden = {true}  />
+      <StatusBar backgroundColor="black" hidden={true} />
       <ImageBackground
         source={require("../../assets/welcomeBackground.jpg")}
         style={styles.backgroundImage}
       >
         <View style={styles.logoContainer}>
-           <Image
-           source={require("../../assets/climateHealersLogo.png")}
-           style={styles.logo}
-           />
-          </View>
+          <Image
+            source={require("../../assets/climateHealersLogo.png")}
+            style={styles.logo}
+          />
+        </View>
         <View style={styles.headerContainer}>
-          <Text style={styles.Headers}>{localized.t("Healthy Food should be Free")}</Text>
+          <Text style={styles.Headers}>
+            {localized.t("HEALTHY_FOOD_SHOULD_BE_FREE")}
+          </Text>
         </View>
       </ImageBackground>
     </View>
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  
+
   title: {
     fontSize: 32,
     fontWeight: "bold",
@@ -68,32 +68,25 @@ const styles = StyleSheet.create({
     width: 350,
     height: 220,
     borderRadius: 10,
-    marginBottom:130,
+    marginBottom: 130,
   },
   logoContainer: {
     position: "absolute",
     top: "12%",
     left: "7%",
-    // width: "100%",
     width: "100%",
   },
   logo: {
-    // flex: 1,
-    // width: 130,
-    // height: 120,
     width: 65,
-    height:60,
-    // resizeMode: "cover",
-    // justifyContent: "center",
-    // alignItems: "center",
+    height: 60,
   },
-  
+
   Headers: {
     width: 350,
     fontSize: 55,
     color: "white",
     textAlign: "center",
-    fontFamily : "Poppins-Regular"
+    fontFamily: "Poppins-Regular",
   },
 });
 

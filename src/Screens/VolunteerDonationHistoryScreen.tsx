@@ -9,7 +9,7 @@ import {
   ScrollView,
   Text,
   TouchableWithoutFeedback,
-  View
+  View,
 } from "react-native";
 import {
   heightPercentageToDP as h2dp,
@@ -26,7 +26,6 @@ import { myDonations } from "../redux/actions/myDonations";
 
 const VolunteerDonationHistoryScreen = ({ route }: any) => {
   const { itemTypeId, title } = route?.params;
-  console.log("params", route?.params);
   const [donationData, setDonationData] = useState<[]>([]);
   useEffect(() => {
     fetchingDonationData();
@@ -34,7 +33,6 @@ const VolunteerDonationHistoryScreen = ({ route }: any) => {
   const dispatch = useDispatch();
   const fetchingDonationData = async () => {
     const response = await dispatch(myDonations({} as any) as any);
-    console.log("jjhsfjjsj", response);
     if (itemTypeId === 1) {
       const filteredDonationData = response?.payload?.donationList.filter(
         (event: any) => event?.donationType === "Food"
@@ -110,7 +108,7 @@ const VolunteerDonationHistoryScreen = ({ route }: any) => {
               marginTop: h2dp(0.5),
             }}
           >
-            {localized.t("Approved")}
+            {localized.t("APPROVED")}
           </Text>
         </View>
       ) : status === "pending" ? (
@@ -132,7 +130,7 @@ const VolunteerDonationHistoryScreen = ({ route }: any) => {
               marginTop: h2dp(0.5),
             }}
           >
-            {localized.t("Pending")}
+            {localized.t("PENDING")}
           </Text>
         </View>
       ) : (
@@ -151,7 +149,7 @@ const VolunteerDonationHistoryScreen = ({ route }: any) => {
               marginTop: h2dp(0.5),
             }}
           >
-            {localized.t("Rejected")}
+            {localized.t("REJECTED")}
           </Text>
         </View>
       )}
@@ -201,15 +199,14 @@ const VolunteerDonationHistoryScreen = ({ route }: any) => {
 
   return (
     <TouchableWithoutFeedback onPress={handlePressOutside}>
-      
-        <LinearGradient
-          colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
-          style={styles.background}
-        >
-          <SafeAreaView>
-            <ScrollView keyboardShouldPersistTaps="handled">
+      <LinearGradient
+        colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
+        style={styles.background}
+      >
+        <SafeAreaView>
+          <ScrollView keyboardShouldPersistTaps="handled">
             <View style={styles.container}>
-            <FoodhealersHeader />
+              <FoodhealersHeader />
               <View style={styles.root}>
                 <Ionicons
                   name="chevron-back"
@@ -219,9 +216,9 @@ const VolunteerDonationHistoryScreen = ({ route }: any) => {
                   onPress={() => navigation.goBack()}
                 />
                 <View style={styles.item}>
-                <Text style={styles.itemText}>{title} History</Text>
+                  <Text style={styles.itemText}>{title} History</Text>
                 </View>
-                  <BurgerIcon />
+                <BurgerIcon />
               </View>
               <View>
                 <View style={styles.itemFilter}>
@@ -234,7 +231,7 @@ const VolunteerDonationHistoryScreen = ({ route }: any) => {
                     renderItem={({ item }: any) => (
                       <Item
                         status={item?.status}
-                        id= {item.id}
+                        id={item.id}
                         foodItem={`${item?.foodItem}  (${item?.quantity})`}
                         delivery={item?.delivery?.pickupAddress?.fullAddress}
                         createdAt={item?.createdAt}
@@ -243,10 +240,10 @@ const VolunteerDonationHistoryScreen = ({ route }: any) => {
                   />
                 </ScrollView>
               </View>
-              </View>
-            </ScrollView>
-          </SafeAreaView>
-        </LinearGradient>
+            </View>
+          </ScrollView>
+        </SafeAreaView>
+      </LinearGradient>
     </TouchableWithoutFeedback>
   );
 };

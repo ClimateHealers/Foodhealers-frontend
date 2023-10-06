@@ -45,7 +45,9 @@ const AllVolunteersScreen = ({ route }: any) => {
           <View style={{ width: w2dp(90), alignSelf: "center" }}>
             <TextInput
               placeholder={
-                item?.volunteer?.name ? item?.volunteer?.name : `${localized.t("Volunteer Name")}`
+                item?.volunteer?.name
+                  ? item?.volunteer?.name
+                  : `${localized.t("VOLUNTEER_NAME")}`
               }
               placeholderTextColor={"black"}
               style={[styles.textInput, { marginBottom: h2dp(2) }]}
@@ -55,7 +57,7 @@ const AllVolunteersScreen = ({ route }: any) => {
               placeholder={
                 item?.volunteer?.address?.fullAddress
                   ? item?.volunteer?.address?.fullAddress
-                  : `${localized.t("Address")}`
+                  : `${localized.t("ADDRESS")}`
               }
               placeholderTextColor={"black"}
               style={[styles.textInput, { marginBottom: h2dp(2) }]}
@@ -70,24 +72,21 @@ const AllVolunteersScreen = ({ route }: any) => {
                 marginBottom: h2dp(2),
               }}
             >
-              {/* <View style={[styles.dateTimePickerContainer, ,]}> */}
               <TextInput
                 placeholder={
                   item?.volunteer?.address?.city
                     ? item?.volunteer?.address?.city
-                    : `${localized.t("City")}`
+                    : `${localized.t("CITY")}`
                 }
                 placeholderTextColor={"black"}
                 style={[styles.textInput, { width: w2dp(43) }]}
                 editable={false}
               />
-              {/* </View>
-          <View style={[styles.dateTimePickerContainer, ,]}> */}
               <TextInput
                 placeholder={
                   item?.volunteer?.address?.state
                     ? item?.volunteer?.address?.state
-                    : `${localized.t("State")}`
+                    : `${localized.t("STATE")}`
                 }
                 placeholderTextColor={"black"}
                 style={[styles.textInput, { width: w2dp(43) }]}
@@ -100,7 +99,7 @@ const AllVolunteersScreen = ({ route }: any) => {
                 placeholder={
                   item?.volunteer?.address?.postalCode
                     ? item?.volunteer?.address?.postalCode
-                    : `${localized.t("Zip Code")}`
+                    : `${localized.t("ZIP_CODE")}`
                 }
                 placeholderTextColor={"black"}
                 editable={false}
@@ -116,7 +115,6 @@ const AllVolunteersScreen = ({ route }: any) => {
                 marginBottom: h2dp(2),
               }}
             >
-              {/* <View style={styles.dateTimePickerContainer}> */}
               <View
                 style={[
                   styles.textInput,
@@ -130,12 +128,11 @@ const AllVolunteersScreen = ({ route }: any) => {
                   style={{
                     color: "black",
                     fontSize: 13,
-                    // width: w2dp(43),
                     marginBottom: 5,
                     marginLeft: 15,
                   }}
                 >
-                  {localized.t("Start Date")}
+                  {localized.t("START_DATE")}
                 </Text>
                 <Text
                   style={{
@@ -148,8 +145,6 @@ const AllVolunteersScreen = ({ route }: any) => {
                   {moment(item?.fromDate).format("MMM, DD, YYYY")}
                 </Text>
               </View>
-              {/* </View>
-          <View style={[styles.dateTimePickerContainer]}> */}
               <View
                 style={[
                   styles.textInput,
@@ -168,13 +163,12 @@ const AllVolunteersScreen = ({ route }: any) => {
                     marginLeft: 15,
                   }}
                 >
-                  {localized.t("Start Time")}
+                  {localized.t("START_TIME")}
                 </Text>
                 <Text
                   style={{
                     color: "black",
                     fontSize: 13,
-                    // width: 200,
                     marginBottom: 5,
                     marginLeft: 15,
                   }}
@@ -193,7 +187,6 @@ const AllVolunteersScreen = ({ route }: any) => {
                 marginBottom: h2dp(2),
               }}
             >
-              {/* <View style={styles.dateTimePickerContainer}> */}
               <View
                 style={[
                   styles.textInput,
@@ -212,13 +205,12 @@ const AllVolunteersScreen = ({ route }: any) => {
                     marginLeft: 15,
                   }}
                 >
-                  {localized.t("End Date")}
+                  {localized.t("END_DATE")}
                 </Text>
                 <Text
                   style={{
                     color: "black",
                     fontSize: 13,
-                    // width: 200,
                     marginBottom: 5,
                     marginLeft: 15,
                   }}
@@ -226,8 +218,6 @@ const AllVolunteersScreen = ({ route }: any) => {
                   {moment(item?.toDate).format("MMM DD, YYYY")}
                 </Text>
               </View>
-              {/* </View>
-          <View style={[styles.dateTimePickerContainer, ,]}> */}
               <View
                 style={[
                   styles.textInput,
@@ -246,13 +236,12 @@ const AllVolunteersScreen = ({ route }: any) => {
                     marginLeft: 15,
                   }}
                 >
-                  {localized.t("End Time")}
+                  {localized.t("END_TIME")}
                 </Text>
                 <Text
                   style={{
                     color: "black",
                     fontSize: 13,
-                    // width: 200,
                     marginBottom: 5,
                     marginLeft: 15,
                   }}
@@ -269,12 +258,10 @@ const AllVolunteersScreen = ({ route }: any) => {
               }}
             >
               <TextInput
-                // ref={phoneInput}
-                // defaultCode={"US"}
                 placeholder={
                   item?.volunteer?.phoneNumber
                     ? item?.volunteer?.phoneNumber
-                    : `${localized.t("Phone Number")} : N/A`
+                    : `${localized.t("PHONE_NUMBER")} : N/A`
                 }
                 style={[
                   styles.textInput,
@@ -313,7 +300,7 @@ const AllVolunteersScreen = ({ route }: any) => {
                   onPress={() => navigation.goBack()}
                 />
                 <View style={styles.item}>
-                  <Text style={styles.itemText}>{localized.t(title)}</Text>
+                  <Text style={styles.itemText}>{title}</Text>
                 </View>
                 <BurgerIcon />
               </View>

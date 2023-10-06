@@ -18,7 +18,6 @@ export default function App(): JSX.Element {
     if (cameraRef.current) {
       try {
         const photo = await cameraRef.current.takePictureAsync();
-        console.log("Photo:", photo);
       } catch (error) {
         console.log("Error taking picture:", error);
       }
@@ -29,14 +28,14 @@ export default function App(): JSX.Element {
     return <View />;
   }
   if (hasPermission === false) {
-    return <Text>{localized.t("No access to camera")}</Text>;
+    return <Text>{localized.t("NO_ACCESS_TO_CAMERA")}</Text>;
   }
   return (
     <View style={styles.container}>
       <Camera style={styles.camera} ref={cameraRef}>
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.button} onPress={handleTakePicture}>
-            <Text style={styles.buttonText}>{localized.t("Take Picture")}</Text>
+            <Text style={styles.buttonText}>{localized.t("TAKE_PICTURE")}</Text>
           </TouchableOpacity>
         </View>
       </Camera>

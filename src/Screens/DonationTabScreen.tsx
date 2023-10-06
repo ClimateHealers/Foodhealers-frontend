@@ -89,7 +89,7 @@ const DonationTabScreen = () => {
                 marginTop: h2dp(0.5),
               }}
             >
-              {localized.t("Approved")}
+              {localized.t("APPROVED")}
             </Text>
           </View>
         ) : status === "pending" ? (
@@ -111,7 +111,7 @@ const DonationTabScreen = () => {
                 marginTop: h2dp(0.5),
               }}
             >
-              {localized.t("Pending")}
+              {localized.t("PENDING")}
             </Text>
           </View>
         ) : (
@@ -130,7 +130,7 @@ const DonationTabScreen = () => {
                 marginTop: h2dp(0.5),
               }}
             >
-              {localized.t("Rejected")}
+              {localized.t("REJECTED")}
             </Text>
           </View>
         )}
@@ -172,23 +172,6 @@ const DonationTabScreen = () => {
             {delivery}
           </Text>
         </ScrollView>
-        {/* <Button
-        title={"Details"}
-        onPress={() => navigation.navigate("SingleEventDetails")}
-        buttonStyle={{
-          marginRight: w2dp(5),
-          backgroundColor: "white",
-          borderWidth: 1,
-          borderColor: "red",
-          borderRadius: 5,
-          paddingHorizontal: 8,
-          paddingVertical: 5,
-        }}
-        titleStyle={{
-          color: "black",
-          fontWeight: "300",
-        }}
-      /> */}
       </View>
     </TouchableOpacity>
   );
@@ -198,7 +181,10 @@ const DonationTabScreen = () => {
       <View style={{ flex: 1 }}>
         <View style={styles.toggle}>
           <SegmentedControlTab
-            values={[`${localized.t("My Donations")}`, `${localized.t("All Donations")}`]}
+            values={[
+              `${localized.t("MY_DONATIONS")}`,
+              `${localized.t("ALL_DONATIONS")}`,
+            ]}
             selectedIndex={selectedIndex}
             tabsContainerStyle={{
               width: w2dp(50),
@@ -255,7 +241,6 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "center",
     marginBottom: h2dp(1),
-    // marginLeft: 15,
   },
   tabStyle: {
     borderColor: "#EDC258",

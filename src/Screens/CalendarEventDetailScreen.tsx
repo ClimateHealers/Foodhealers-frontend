@@ -106,7 +106,7 @@ const CalendarEventDetailScreen = ({ route }: any) => {
                 />
                 <View style={styles.item}>
                   <Text style={styles.itemText}>
-                    {localized.t("Find Food")}
+                    {localized.t("FIND_FOOD")}
                   </Text>
                 </View>
                 <BurgerIcon />
@@ -140,7 +140,7 @@ const CalendarEventDetailScreen = ({ route }: any) => {
                     }}
                   >
                     <Text style={styles.boldText}>
-                      {localized.t("From")}:{" "}
+                      {localized.t("FROM")}:{" "}
                       <Text style={styles.cardText}>
                         {moment(eventDetails?.eventStartDate).format(
                           "ddd, MMM D"
@@ -159,7 +159,7 @@ const CalendarEventDetailScreen = ({ route }: any) => {
                   </View>
                   <View style={{ marginBottom: 20, paddingHorizontal: 10 }}>
                     <Text style={styles.boldText}>
-                      {localized.t("To")}:{" "}
+                      {localized.t("TO")}:{" "}
                       <Text style={styles.cardText}>
                         {moment(eventDetails?.eventEndDate).format(
                           "ddd, MMM D"
@@ -178,7 +178,7 @@ const CalendarEventDetailScreen = ({ route }: any) => {
                   </View>
                   <View style={{ marginBottom: 20, paddingHorizontal: 10 }}>
                     <Text style={styles.boldText}>
-                      {localized.t("Location")}:{" "}
+                      {localized.t("LOCATION")}:{" "}
                       <Text style={styles.cardText}>
                         {eventDetails?.address?.fullAddress}
                       </Text>
@@ -194,7 +194,7 @@ const CalendarEventDetailScreen = ({ route }: any) => {
                   </View>
                   <View style={{ marginBottom: 10, paddingHorizontal: 10 }}>
                     <Text style={styles.boldText}>
-                      {localized.t("What")}:{" "}
+                      {localized.t("WHAT")}:{" "}
                       <Text style={styles.cardText}>
                         {eventDetails?.additionalInfo}
                       </Text>
@@ -222,8 +222,8 @@ const CalendarEventDetailScreen = ({ route }: any) => {
                 disabled={expired}
                 title={
                   expired
-                    ? `${localized.t("Event Expired")}`
-                    : `${localized.t("Get directions")}`
+                    ? `${localized.t("EVENT_EXPIRED")}`
+                    : `${localized.t("GET_DIRECTIONS")}`
                 }
                 onPress={navigationHandler}
                 buttonStyle={styles.buttonStyles}
@@ -240,7 +240,7 @@ const CalendarEventDetailScreen = ({ route }: any) => {
                       textDecorationLine: "underline",
                     }}
                   >
-                    {localized.t("Share")}
+                    {localized.t("SHARE")}
                   </Text>
                 </TouchableOpacity>
               )}

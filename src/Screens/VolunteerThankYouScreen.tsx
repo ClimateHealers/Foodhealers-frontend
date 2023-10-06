@@ -71,9 +71,7 @@ const VolunteerThankYouScreen = ({ route }: any) => {
                   onPress={() => navigation.goBack()}
                 />
                 <View style={styles.item}>
-                  <Text style={styles.itemText}>
-                    {title}
-                  </Text>
+                  <Text style={styles.itemText}>{title}</Text>
                 </View>
                 <BurgerIcon />
               </View>
@@ -94,7 +92,7 @@ const VolunteerThankYouScreen = ({ route }: any) => {
                       marginTop: h2dp(3),
                     }}
                   >
-                    {localized.t("Confirmed")}
+                    {localized.t("CONFIRMED")}
                   </Text>
                   <Text
                     style={{
@@ -103,7 +101,7 @@ const VolunteerThankYouScreen = ({ route }: any) => {
                       fontWeight: "400",
                     }}
                   >
-                    {localized.t("Thank you !")} {data?.user?.name}
+                    {localized.t("THANK_YOU")} {data?.user?.name}
                   </Text>
                 </View>
                 <View style={styles.description}>
@@ -122,7 +120,7 @@ const VolunteerThankYouScreen = ({ route }: any) => {
                           textAlign: "center",
                         }}
                       >
-                        {localized.t("Thank You for being event volunteer")}
+                        {localized.t("THANK_YOU_FOR_BEING_EVENT_VOLUNTEER")}
                       </Text>
                     ) : (
                       <Text
@@ -132,12 +130,12 @@ const VolunteerThankYouScreen = ({ route }: any) => {
                           textAlign: "center",
                         }}
                       >
-                        {localized.t("A Food Healer team member will be in touch")}
+                        {localized.t("A_FOODHEALER_TEAM_MEMBER_IN_TOUCH")}
                       </Text>
                     )}
                   </Text>
                   <PrimaryButton
-                    title={"Home"}
+                    title={localized.t("HOME")}
                     onPress={() => navigation.navigate("VolunteerHomeScreen")}
                     buttonStyle={styles.buttonMainStyles}
                     titleStyle={styles.titleMainStyle}
@@ -147,7 +145,7 @@ const VolunteerThankYouScreen = ({ route }: any) => {
               <View>
                 {itemTypeId === 1 ? (
                   <PrimaryButton
-                    title={localized.t("Add another donation")}
+                    title={localized.t("ADD_ANOTHER_DONATION")}
                     onPress={() =>
                       navigation.navigate("AddDonationsScreen", {
                         itemTypeId: itemTypeId,
@@ -160,7 +158,7 @@ const VolunteerThankYouScreen = ({ route }: any) => {
                   />
                 ) : itemTypeId === 2 ? (
                   <PrimaryButton
-                    title={localized.t("Add another supplies")}
+                    title={localized.t("ADD_ANOTHER_SUPPLIES")}
                     onPress={() =>
                       navigation.navigate("AddDonationsScreen", {
                         itemTypeId: itemTypeId,
@@ -173,14 +171,14 @@ const VolunteerThankYouScreen = ({ route }: any) => {
                   />
                 ) : (
                   <PrimaryButton
-                    title={localized.t("Volunteer another event")}
-                    onPress={() =>
+                    title={localized.t("VOLUNTEER_ANOTHER_EVENT")}
+                    onPress={() => {
                       navigation.navigate("VolunteerEventScreen", {
-                        // itemTypeId: itemTypeId,
-                        // id: id,
-                        // title: title,
-                      })
-                    }
+                        itemTypeId: itemTypeId,
+                        id: id,
+                        title: title,
+                      });
+                    }}
                     buttonStyle={styles.buttonStyles}
                     titleStyle={styles.titleMainStyle}
                   />
@@ -189,7 +187,7 @@ const VolunteerThankYouScreen = ({ route }: any) => {
               <View>
                 {itemTypeId === 3 ? (
                   <PrimaryButton
-                    title={localized.t("History")}
+                    title={localized.t("HISTORY")}
                     onPress={() =>
                       navigation.navigate("VolunteerEventHistoryScreen", {
                         itemTypeId: itemTypeId,
@@ -202,7 +200,7 @@ const VolunteerThankYouScreen = ({ route }: any) => {
                   />
                 ) : (
                   <PrimaryButton
-                    title={localized.t("History")}
+                    title={localized.t("HISTORY")}
                     onPress={() =>
                       navigation.navigate("VolunteerDonationHistoryScreen", {
                         itemTypeId: itemTypeId,
