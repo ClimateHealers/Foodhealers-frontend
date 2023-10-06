@@ -24,6 +24,7 @@ import { myTheme } from "../myTheme";
 import { setLanguage } from "../redux/reducers/langReducer";
 import { myDonations } from "../redux/actions/myDonations";
 import { volunteerHistory } from "../redux/actions/volunteerHistoryAction";
+import { Dimensions } from "react-native";
 
 const HomeScreen = ({ route }: any) => {
   const userDetails = useSelector((state: any) => state.auth);
@@ -50,6 +51,10 @@ const HomeScreen = ({ route }: any) => {
     { id: 8, label: "Spanish", value: "es" },
   ]);
 
+  const windowWidth = Dimensions.get("window").width;
+  const windowHeight = Dimensions.get("window").height;
+
+  console.log("windowHeightwindowHeightwindowHeight", windowHeight);
   const handlePressOutside = () => {
     setlangOpen(false);
   };
@@ -180,7 +185,7 @@ const HomeScreen = ({ route }: any) => {
 
           <View style={{ flex: 1 }}>{appLoader(loc == true)}</View>
 
-          <View style={styles.headerContainer}>
+          <View style={[styles.headerContainer, { top: windowHeight - 340 }]}>
             <PrimaryButton
               title={localized.t("FIND_FOOD")}
               onPress={navigateToMapScreen}
@@ -283,7 +288,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     width: "100%",
-    top: h2dp(70),
+    // height: "100%",
+    // top:(windowHeight-50),
+    // bottom: h2dp(55),
+    position: "absolute",
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
   },
@@ -350,7 +358,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   dropdown1BtnStyle: {
-    marginTop: 15,
+    marginTop: Platform.OS === "ios" ? h2dp(4.5) : h2dp(5),
     width: "30%",
     height: 50,
     backgroundColor: "#FFF",
