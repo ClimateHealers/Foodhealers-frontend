@@ -186,6 +186,7 @@
     "THAN_YOU_FOR_DONATION":"感谢您的捐赠！",
     "WH_HAVE_SUCCESSFULLY_ADDED_YOUR_DONATION":"我们已成功添加了您的捐赠。",
     "DONATION_NOT_ADDED":"捐赠未添加。",
-    "PLEASE_ENTER_THE_FULL_ADDRESS":"请输入完整地址。"
+    "PLEASE_ENTER_THE_FULL_ADDRESS":"请输入完整地址。",
+    "ALL_DAYS": "所有天"
   }
 }

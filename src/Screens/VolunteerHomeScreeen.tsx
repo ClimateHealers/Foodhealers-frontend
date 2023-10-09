@@ -10,11 +10,9 @@ import {
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  View
+  View,
 } from "react-native";
-import {
-  heightPercentageToDP as h2dp
-} from "react-native-responsive-screen";
+import { heightPercentageToDP as h2dp } from "react-native-responsive-screen";
 import { useDispatch, useSelector } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
@@ -22,12 +20,17 @@ import { styles } from "../Components/Styles";
 import { localized } from "../locales/localization";
 import { VeganRecipesCategory } from "../redux/actions/veganRecipesCategory";
 
-const VolunteerHomeScreen = () => {
+const VolunteerHomeScreen = ({ route }: any) => {
+  const { latitude, longitude } = route.params;
   const [recipeData, setRecipeData] = useState<[]>([]);
-
+  const [events, setEvents] = useState<[]>([]);
   const navigation: any = useNavigation();
   const dispatch = useDispatch();
-
+  const fetchingEventsData = async () => {
+    const response = await dispatch(allEvents({} as any) as any);
+    const data = response?.payload?.foodEvents;
+    setEvents(data);
+  };
   const allEvents = useSelector(
     (state: any) => state?.allEvents?.data?.foodEvents
   );
@@ -45,6 +48,7 @@ const VolunteerHomeScreen = () => {
   const handlePressOutside = () => {
     Keyboard.dismiss();
   };
+  
   return (
     <>
       <TouchableWithoutFeedback onPress={handlePressOutside}>
@@ -101,8 +105,7 @@ const VolunteerHomeScreen = () => {
                       source={require("../../assets/images/volunteerToDrive.png")}
                       style={styles.imageStyle}
                     />
-                    <TouchableOpacity
-                    >
+                    <TouchableOpacity>
                       <View style={styles.title}>
                         <Text style={styles.textStyle}>
                           {localized.t("VOLUNTEER_TO_DRIVE")}
@@ -125,7 +128,7 @@ const VolunteerHomeScreen = () => {
                   >
                     <TouchableOpacity activeOpacity={1}>
                       <View style={styles.horizonatalView}>
-                        {allEvents?.slice(0,1)?.map((event: any) => (
+                        {allEvents?.slice(0, 1)?.map((event: any) => (
                           <View
                             key={event?.id}
                             style={{
@@ -140,25 +143,17 @@ const VolunteerHomeScreen = () => {
                               onPress={() =>
                                 // getLocation().then((location: any) => {
                                 //   if (location) {
-                                navigation?.navigate(
-                                  "VolunteerSingleEventDetails",
-                                  {
-                                    eventDetails: {
-                                      id: event?.id,
-                                      map: true,
-                                      name: event?.name,
-                                      address: event?.address?.fullAddress,
-                                      eventStartDate: event?.eventStartDate,
-                                      eventEndDate: event?.eventEndDate,
-                                      lat: event?.address?.lat,
-                                      long: event?.address?.lng,
-                                      eventPhoto: event?.eventPhoto,
-                                      requiredVolunteers:
-                                        event?.requiredVolunteers,
-                                      additionalInfo: event?.additionalInfo,
-                                    },
-                                  }
-                                )
+                                navigation?.navigate("WeekScreen", {
+                                  currentlatitude: latitude,
+                                  currentlongitude: longitude,
+                                  city: event?.address?.city,
+                                  state: event?.address?.state,
+                                  fullAddress: event?.address?.fullAddress,
+                                  postalCode: event?.address?.postalCode,
+                                  lat: event?.address?.lat,
+                                  lng: event?.address?.lng,
+                                  address: event?.address,
+                                })
                               }
                             >
                               <View style={styles.title}>
@@ -187,7 +182,7 @@ const VolunteerHomeScreen = () => {
                     <TouchableOpacity activeOpacity={1}>
                       <View style={styles.horizonatalView}>
                         {recipeData &&
-                          recipeData?.slice(1,2)?.map((recipe: any) => (
+                          recipeData?.slice(1, 2)?.map((recipe: any) => (
                             <View
                               key={recipe?.id}
                               style={{
@@ -201,7 +196,7 @@ const VolunteerHomeScreen = () => {
                               <View style={styles.title}>
                                 <TouchableOpacity
                                   onPress={() =>
-                                    navigation.navigate("SingleRecipeScreen", {
+                                    navigation.navigate("RecipesHomeScreen", {
                                       recipeData: {
                                         recipeImage: recipe?.foodImage,
                                         recipeIngredient: recipe?.ingredients,

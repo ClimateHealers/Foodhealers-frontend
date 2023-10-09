@@ -258,7 +258,6 @@ const MapScreen = ({ route }: any) => {
                     findFood(findFoodData as any) as any
                   );
                   const foodEvents = response?.payload?.results?.foodEvents;
-                  console.log("foodevents", foodEvents);
                   const verifiedFoodEvents = foodEvents?.filter(
                     (event: any) => event.status === "approved"
                   );
@@ -273,7 +272,7 @@ const MapScreen = ({ route }: any) => {
                 textInputProps={{ placeholderTextColor: "#000000" }}
                 listUnderlayColor="blue"
                 query={{
-                  key: API_KEY, //client
+                  key: API_KEY,
                   language: "en",
                 }}
                 styles={{

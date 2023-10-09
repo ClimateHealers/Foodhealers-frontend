@@ -53,8 +53,6 @@ const HomeScreen = ({ route }: any) => {
 
   const windowWidth = Dimensions.get("window").width;
   const windowHeight = Dimensions.get("window").height;
-
-  console.log("windowHeightwindowHeightwindowHeight", windowHeight);
   const handlePressOutside = () => {
     setlangOpen(false);
   };
@@ -207,9 +205,15 @@ const HomeScreen = ({ route }: any) => {
               onPress={() => {
                 if (data.isAuthenticated) {
                   if (volunteerData.length > 0 || donationData.length > 0) {
-                    navigation.navigate("VolunteerHomeScreen");
+                    navigation.navigate("VolunteerHomeScreen", {
+                      latitude: lat,
+                      longitude: long,
+                    });
                   } else {
-                    navigation.navigate("IntroSlider");
+                    navigation.navigate("IntroSlider", {
+                      latitude: lat,
+                      longitude: long,
+                    });
                   }
                 } else {
                   Alert.alert(

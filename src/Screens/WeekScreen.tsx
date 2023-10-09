@@ -231,7 +231,6 @@ const WeekScreen = ({ route }: any) => {
         eventStartDate: startDate ? startDate : 0,
         eventEndDate: endDate ? endDate : 0,
       };
-      console.log("checking one day data", oneDayData);
       const response = await dispatch(findFood(oneDayData as any) as any);
       const foodEvents = response?.payload?.results?.foodEvents;
       const verifiedFoodEvents = foodEvents?.filter(
@@ -321,7 +320,7 @@ const WeekScreen = ({ route }: any) => {
 
             <View style={styles.toggle}>
               <SegmentedControlTab
-                values={["Today", "All Days"]}
+                values={[`${localized.t("TODAY")}`, `${localized.t("ALL_DAYS")}`]}
                 selectedIndex={selectedIndex}
                 tabsContainerStyle={{
                   width: 200,

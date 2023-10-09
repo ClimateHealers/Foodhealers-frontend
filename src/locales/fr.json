@@ -186,6 +186,7 @@
     "THAN_YOU_FOR_DONATION":"Merci pour votre don !",
     "WH_HAVE_SUCCESSFULLY_ADDED_YOUR_DONATION":"Nous avons ajouté votre don avec succès.",
     "DONATION_NOT_ADDED":"Le don n'a pas été ajouté.",
-    "PLEASE_ENTER_THE_FULL_ADDRESS":"Veuillez saisir l'adresse complète."
+    "PLEASE_ENTER_THE_FULL_ADDRESS":"Veuillez saisir l'adresse complète.",
+    "ALL_DAYS": "Tous les jours"
   }
 }

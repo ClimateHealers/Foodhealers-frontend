@@ -185,6 +185,7 @@
     "DONATION_ADDED_SUCCESSFULLY_THAN_YOU_FOR_DONATION":"दान सफलतापूर्वक जोड़ा गया है, आपके दान के लिए धन्यवाद!",
     "WH_HAVE_SUCCESSFULLY_ADDED_YOUR_DONATION":"हमने आपके दान को सफलतापूर्वक जोड़ दिया है।",
     "DONATION_NOT_ADDED":"दान नहीं जोड़ा गया है।",
-    "PLEASE_ENTER_THE_FULL_ADDRESS":"कृपया पूरा पता दर्ज करें।"
+    "PLEASE_ENTER_THE_FULL_ADDRESS":"कृपया पूरा पता दर्ज करें।",
+    "ALL_DAYS": "सभी दिन"
   }
 }

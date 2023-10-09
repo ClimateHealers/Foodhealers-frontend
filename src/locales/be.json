@@ -186,6 +186,7 @@
     "THAN_YOU_FOR_DONATION":"আপনার দানের জন্য ধন্যবাদ!",
     "WH_HAVE_SUCCESSFULLY_ADDED_YOUR_DONATION":"আমরা আপনার দানটি সফলভাবে যোগ করেছি।",
     "DONATION_NOT_ADDED":"দান যোগ করা হয়নি।",
-    "PLEASE_ENTER_THE_FULL_ADDRESS":"দয়া করে পূর্ণ ঠিকানা লিখুন।"
+    "PLEASE_ENTER_THE_FULL_ADDRESS":"দয়া করে পূর্ণ ঠিকানা লিখুন।",
+    "ALL_DAYS": "সমস্ত দিন"
   }
 }
