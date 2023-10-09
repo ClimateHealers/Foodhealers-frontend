@@ -308,7 +308,7 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-start",
     alignItems: "center",
-    marginBottom: h2dp(1),
+    // marginBottom: h2dp(1),
     marginLeft: w2dp(1),
   },
   tabStyle: {

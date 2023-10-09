@@ -121,7 +121,7 @@ const HomeScreen = ({ route }: any) => {
     } else {
       Alert.alert(
         `${localized.t("REGISTRATION_REQUIRED")}`,
-        "Only a registered user can Post an Event. Please login.",
+        `${localized.t("ONLY_A_REGISTERED")}`,
         [
           {
             text: `${localized.t("LOGIN")}`,
@@ -131,7 +131,7 @@ const HomeScreen = ({ route }: any) => {
             style: "default",
           },
           {
-            text: "Cancel",
+            text: `${localized.t("CANCEL")}`,
             onPress: () => {},
             style: "default",
           },
@@ -213,14 +213,25 @@ const HomeScreen = ({ route }: any) => {
                   }
                 } else {
                   Alert.alert(
-                    `${localized.t("ALERT")}`,
-                    `${localized.t("PLEASE_LOGIN")}`,
+                    `${localized.t("REGISTRATION_REQUIRED")}`,
+                    `${localized.t("ONLY_A_REGISTERED")}`,
                     [
                       {
                         text: `${localized.t("LOGIN")}`,
-                        onPress: () => navigation.navigate("LoginScreen"),
+                        onPress: () => {
+                          navigation.navigate("LoginScreen");
+                        },
+                        style: "default",
                       },
-                    ]
+                      {
+                        text: `${localized.t("CANCEL")}`,
+                        onPress: () => {},
+                        style: "default",
+                      },
+                    ],
+                    {
+                      cancelable: true,
+                    }
                   );
                 }
               }}

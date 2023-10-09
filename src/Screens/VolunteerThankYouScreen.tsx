@@ -171,7 +171,7 @@ const VolunteerThankYouScreen = ({ route }: any) => {
                   />
                 ) : (
                   <PrimaryButton
-                    title={localized.t("VOLUNTEER_ANOTHER_EVENT")}
+                    title={localized.t("VOLUNTEER_AT_EVENT")}
                     onPress={() => {
                       navigation.navigate("VolunteerEventScreen", {
                         itemTypeId: itemTypeId,

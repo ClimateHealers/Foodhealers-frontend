@@ -225,7 +225,7 @@ const PostEvent = () => {
                   postalCode,
                 }) => {
                   if (!city) {
-                    alert("Please enter the full address.");
+                    alert(`${localized.t("PLEASE_ENTER_THE_FULL_ADDRESS")}`);
                     return;
                   }
 

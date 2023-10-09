@@ -1,4 +1,4 @@
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import moment from "moment";
@@ -13,8 +13,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import { Image } from "react-native-elements";
-import { Button } from "react-native-elements";
+import { Button, Image } from "react-native-elements";
 import {
   heightPercentageToDP as h2dp,
   widthPercentageToDP as w2dp,
@@ -24,70 +23,47 @@ import { useDispatch } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
 import { styles } from "../Components/Styles";
-import { getLocation } from "../Components/getCurrentLocation";
 import { localized } from "../locales/localization";
 import { allEvents } from "../redux/actions/allEvents";
 
 const VolunteerEventScreen = ({ route }: any) => {
-  //   const { eventDetails } = route.params;
   const { itemTypeId, title } = route?.params;
-  const [eventData, setEventData] = useState<[]>([]);
-  useEffect(() => {
-    fetchingEventsData();
-  }, []);
+  const [eventData, setEventData]: any[] = useState<[]>([]);
   const dispatch = useDispatch();
   const fetchingEventsData = async () => {
     const response = await dispatch(allEvents({} as any) as any);
     const data = response?.payload?.foodEvents;
+    setEventData(data);
+  };
 
-    const requiredVolunteers = data?.filter(
-      (event: any) => event.requiredVolunteers > 0
-    );
-    const verifiedFoodEvents = requiredVolunteers?.filter(
-      (event: any) => event.active === true
-    );
-    setEventData(requiredVolunteers);
+  useEffect(() => {
+    fetchingEventsData();
+    sortByDate();
+  }, []);
+
+  const [order, setOrder] = useState<"ASC" | "DESC">("ASC");
+  const sortByDate = () => {
+    const postListFiltered = [...eventData].sort((a: any, b: any) => {
+      const dateA = new Date(a.eventStartDate);
+      const dateB = new Date(b.eventStartDate);
+
+      if (order === "ASC") {
+        return dateA?.valueOf() - dateB?.valueOf();
+      } else {
+        return dateB?.valueOf() - dateA?.valueOf();
+      }
+    });
+    setEventData(postListFiltered);
+    const newOrder = order === "ASC" ? "DESC" : "ASC";
+    setOrder(newOrder);
   };
 
   const navigation: any = useNavigation();
 
-  const [langOpen, setlangOpen] = useState(false);
-  const [lang, setLang] = useState([
-    { id: 1, label: "French", value: "fr" },
-    { id: 2, label: "Hindi", value: "hi" },
-    { id: 3, label: "Bengali", value: "be" },
-    { id: 4, label: "Chinese", value: "ch" },
-    { id: 5, label: "Mandarin", value: "ma" },
-    { id: 6, label: "Punjabi", value: "pu" },
-    { id: 7, label: "English", value: "en" },
-    { id: 8, label: "Spanish", value: "es" },
-  ]);
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [selectedLanguage, setSelectedLanguage] = useState(localized.locale);
-
-  const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
-  };
-
   const handlePressOutside = () => {
-    setlangOpen(false);
     Keyboard.dismiss();
   };
-  const handleMenuItemPress = (item: any) => {
-    setMenuOpen(false);
-    navigation.navigate("HomeScreen");
-  };
-  const findFoodMenuItemPress = (item: any) => {
-    getLocation().then((res) => {
-      if (res) {
-        navigation?.navigate("MapScreen", {
-          latitude: res?.latitude,
-          longitude: res?.longitude,
-        });
-      }
-    });
-    setMenuOpen(false);
-  };
+
   const Item = ({
     status,
     address,
@@ -102,84 +78,80 @@ const VolunteerEventScreen = ({ route }: any) => {
     long,
     eventPhoto,
   }: any) => (
-    <View style={styles.cardContainer}>
-
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <Text
-          style={{
+    <TouchableOpacity activeOpacity={1}>
+      <View style={styles.cardContainer}>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <Text
+            style={{
+              marginLeft: w2dp(3),
+              // width: w2dp(46),
+              fontSize: 16,
+              lineHeight: 30,
+              paddingTop: h2dp(0.5),
+            }}
+          >
+            {eventTimings}
+          </Text>
+          <Text
+            style={{
+              marginLeft: w2dp(3),
+              fontWeight: "500",
+              fontSize: 16,
+              lineHeight: 30,
+            }}
+          >
+            {name}
+          </Text>
+          <Text
+            style={{
+              marginLeft: w2dp(3),
+              fontWeight: "300",
+              fontSize: 16,
+              lineHeight: 20,
+              paddingBottom: h2dp(1),
+            }}
+          >
+            {address}
+          </Text>
+        </ScrollView>
+        <Button
+          title={localized.t("DETAILS")}
+          onPress={() =>
+            navigation.navigate("SingleEventDetails", {
+              eventDetails: {
+                additionalInfo: additionalInfo,
+                itemTypeId: itemTypeId,
+                title: title,
+                id: id,
+                name: name,
+                address: address,
+                eventStartDate: eventStartDate,
+                eventEndDate: eventEndDate,
+                lat: lat,
+                long: long,
+                eventPhoto: eventPhoto,
+                requiredVolunteers: requiredVolunteers,
+              },
+            })
+          }
+          buttonStyle={{
             marginLeft: w2dp(3),
-            // width: w2dp(46),
-            fontSize: 16,
-            lineHeight: 30,
-            paddingTop: h2dp(0.5),
+            marginRight: w2dp(5),
+            backgroundColor: "white",
+            borderWidth: 1,
+            borderColor: "red",
+            borderRadius: 5,
+            paddingHorizontal: 8,
+            paddingVertical: 5,
           }}
-        >
-          {eventTimings}
-        </Text>
-        <Text
-          style={{
-            marginLeft: w2dp(3),
-            fontWeight: "500",
-            fontSize: 16,
-            lineHeight: 30,
-          }}
-        >
-          {name}
-        </Text>
-        <Text
-          style={{
-            marginLeft: w2dp(3),
+          titleStyle={{
+            color: "black",
             fontWeight: "300",
-            fontSize: 16,
-            lineHeight: 20,
-            paddingBottom: h2dp(1),
           }}
-        >
-          {address}
-        </Text>
-      </ScrollView>
-      <Button
-        title={localized.t("DETAILS")}
-        onPress={() =>
-          navigation.navigate("SingleEventDetails", {
-            eventDetails: {
-              additionalInfo: additionalInfo,
-              itemTypeId: itemTypeId,
-              title: title,
-              id: id,
-              name: name,
-              address: address,
-              eventStartDate: eventStartDate,
-              eventEndDate: eventEndDate,
-              lat: lat,
-              long: long,
-              eventPhoto: eventPhoto,
-              requiredVolunteers: requiredVolunteers,
-            },
-          })
-        }
-        buttonStyle={{
-          marginRight: w2dp(5),
-          backgroundColor: "white",
-          borderWidth: 1,
-          borderColor: "red",
-          borderRadius: 5,
-          paddingHorizontal: 8,
-          paddingVertical: 5,
-        }}
-        titleStyle={{
-          color: "black",
-          fontWeight: "300",
-        }}
-      />
-    </View>
+        />
+      </View>
+    </TouchableOpacity>
   );
-
-  const changeLanguage = (itemValue: any, index: any) => {
-    const selectedLanguage = lang[index].value;
-    localized.locale = selectedLanguage;
-    setSelectedLanguage(selectedLanguage);
-  };
 
   return (
     <TouchableWithoutFeedback onPress={handlePressOutside}>
@@ -188,77 +160,96 @@ const VolunteerEventScreen = ({ route }: any) => {
         style={styles.background}
       >
         <SafeAreaView>
-          <ScrollView keyboardShouldPersistTaps="handled">
-            <StatusBar animated={true} backgroundColor="auto" />
-            <View style={styles.container}>
-              <FoodhealersHeader />
-              <View style={styles.root}>
-                <Ionicons
-                  name="chevron-back"
-                  size={32}
-                  color="white"
-                  onPress={() => navigation.goBack()}
-                />
-                <View style={styles.item}>
-                  <Text style={styles.itemText}>
-                    {eventData?.length > 0
-                      ? `${localized.t("POST_AN_EVENT")}`
-                      : `${localized.t("EVENTS")}`}
-                  </Text>
-                </View>
-                <BurgerIcon />
-              </View>
-              {eventData?.length > 0 ? (
-                <View>
-                  <View style={styles.itemFilter}>
-                    <Text style={styles.itemFilterText}>
-                      {localized.t("EVENTS")}
-                    </Text>
-                    <Text style={styles.itemFilterText}>
-                      {localized.t("FILTER")}
+          <TouchableOpacity activeOpacity={1}>
+            <ScrollView keyboardShouldPersistTaps="handled">
+              <StatusBar animated={true} backgroundColor="auto" />
+              <View style={styles.container}>
+                <FoodhealersHeader />
+                <View style={styles.root}>
+                  <Ionicons
+                    name="chevron-back"
+                    size={32}
+                    color="white"
+                    onPress={() => navigation.goBack()}
+                  />
+                  <View style={styles.item}>
+                    <Text style={styles.itemText}>
+                      {eventData?.length > 0
+                        ? `${localized.t("EVENTS")}`
+                        : `${localized.t("POST_AN_EVENT")}`}
                     </Text>
                   </View>
-                  <FlatList
-                    data={eventData}
-                    renderItem={({ item }: any) => (
-                      <Item
-                        name={item?.name}
-                        eventTimings={`${moment(item?.eventStartDate).format(
-                          "DD,  ddd, hh:mm A"
-                        )}`}
-                        address={item?.address?.streetAddress}
-                        additionalInfo={item?.additionalInfo}
-                        lat={item?.address?.lat}
-                        long={item?.address?.lng}
-                        eventStartDate={item?.eventStartDate}
-                        eventEndDate={item?.eventEndDate}
-                        id={item?.id}
-                        status={item?.status}
-                        eventPhoto={item?.eventPhoto}
-                        requiredVolunteers={item?.requiredVolunteers}
-                      />
-                    )}
-                  />
+                  <BurgerIcon />
                 </View>
-              ) : (
-                <View style={{ marginTop: h2dp(3), alignItems: "center" }}>
-                  <Image
-                    source={require("../../assets/images/shutterShock.png")}
-                    style={styles.imageStyle}
-                  />
-                  <View style={styles.title}>
-                    <TouchableOpacity
-                      onPress={() => navigation.navigate("PostEvent")}
-                    >
-                      <Text style={styles.textStyle}>
-                        {localized.t("POST_AN_EVENT")}
+                {eventData?.length > 0 ? (
+                  <View>
+                    <View style={styles.itemFilter}>
+                      <Text style={styles.itemFilterText}>
+                        {localized.t("EVENTS")}
                       </Text>
-                    </TouchableOpacity>
+                      <TouchableOpacity
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                        onPress={sortByDate}
+                      >
+                        <Text style={styles.itemFilterText}>
+                          {localized.t("FILTER")}
+                        </Text>
+                        <MaterialIcons
+                          name="filter-list-alt"
+                          style={styles.itemFilterText}
+                        />
+                      </TouchableOpacity>
+                    </View>
+                    <FlatList
+                      data={eventData}
+                      renderItem={({ item }: any) => (
+                        <Item
+                          name={item?.name}
+                          eventTimings={`${moment(item?.eventStartDate).format(
+                            "DD,  ddd, hh:mm A"
+                          )}`}
+                          address={item?.address?.streetAddress}
+                          additionalInfo={item?.additionalInfo}
+                          lat={item?.address?.lat}
+                          long={item?.address?.lng}
+                          eventStartDate={item?.eventStartDate}
+                          eventEndDate={item?.eventEndDate}
+                          id={item?.id}
+                          status={item?.status}
+                          eventPhoto={item?.eventPhoto}
+                          requiredVolunteers={item?.requiredVolunteers}
+                        />
+                      )}
+                      keyExtractor={(item): any => {
+                        item?.id;
+                      }}
+                    />
                   </View>
-                </View>
-              )}
-            </View>
-          </ScrollView>
+                ) : (
+                  <View style={{ marginTop: h2dp(3), alignItems: "center" }}>
+                    <Image
+                      source={require("../../assets/images/shutterShock.png")}
+                      style={styles.imageStyle}
+                    />
+                    <View style={styles.title}>
+                      <TouchableOpacity
+                        onPress={() => navigation.navigate("PostEvent")}
+                      >
+                        <Text style={styles.textStyle}>
+                          {localized.t("POST_AN_EVENT")}
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                )}
+              </View>
+            </ScrollView>
+          </TouchableOpacity>
         </SafeAreaView>
       </LinearGradient>
     </TouchableWithoutFeedback>

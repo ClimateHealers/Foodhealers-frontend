@@ -130,11 +130,11 @@ const MapScreen = ({ route }: any) => {
 
   const navigateToEvent = (event: any, eventName: any) => {
     Alert.alert(
-      `Navigate to ${eventName} event`,
-      "Do you want to navigate to Google maps ?",
+      `${localized.t("NAVIGATE_TO")} ${eventName} ${localized.t("EVENT")}`,
+      `${localized.t("DO_YOU_WANT_TO_NAVIGATE_TO_GOOGLE_MAPS")}`,
       [
         {
-          text: "Navigate",
+          text: `${localized.t("NAVIGATE")}`,
           onPress: () => {
             const url = `https://www.google.com/maps/dir/?api=1&origin=${lat},${long}&destination=${event?.latitude},${event?.longitude}`;
             Linking.openURL(url);
@@ -142,7 +142,7 @@ const MapScreen = ({ route }: any) => {
           style: "default",
         },
         {
-          text: "Cancel",
+          text: `${localized.t("CANCEL")}`,
           onPress: () => {},
           style: "default",
         },
@@ -283,7 +283,7 @@ const MapScreen = ({ route }: any) => {
                     marginTop: 12,
                     width: "100%",
                     // marginLeft: 15,
-                    marginBottom: 1,
+                    // marginBottom: 1,
                   },
                   description: {
                     color: "black",
@@ -291,8 +291,8 @@ const MapScreen = ({ route }: any) => {
                     width: "80%",
                   },
                   listView: {
-                    width: "92%",
-                    marginLeft: 15,
+                    width: "100%",
+                    // marginLeft: 15,
                     borderRadius: 3,
                     zIndex: 100,
                   },

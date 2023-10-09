@@ -1,8 +1,21 @@
-import { AntDesign, Feather, FontAwesome, Ionicons } from "@expo/vector-icons";
+import {
+  AntDesign,
+  Feather,
+  FontAwesome,
+  Ionicons,
+  MaterialIcons,
+} from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useEffect, useState } from "react";
-import { FlatList, SafeAreaView, ScrollView, Text, View } from "react-native";
+import {
+  FlatList,
+  SafeAreaView,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { Button } from "react-native-elements";
 import {
   heightPercentageToDP as h2dp,
@@ -20,26 +33,44 @@ import { localized } from "../locales/localization";
 
 const AllEventScreen = () => {
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const [eventData, setEventData] = useState<[]>([]);
+  const [eventData, setEventData]: any = useState<[]>([]);
 
   const dispatch = useDispatch();
 
   const navigation: any = useNavigation();
   const fetchingEventData = async () => {
-    const response = await dispatch(myEvents({}) as any);
+    const response = await dispatch(myEvents({} as any) as any);
     setEventData(response?.payload?.foodEvents);
   };
 
   useEffect(() => {
     fetchingEventData();
+    sortByDate();
   }, []);
+
+  const [order, setOrder] = useState<"ASC" | "DESC">("ASC");
+  const sortByDate = () => {
+    const postListFiltered = [...eventData].sort((a: any, b: any) => {
+      const dateA = new Date(a?.eventStartDate);
+      const dateB = new Date(b?.eventStartDate);
+
+      if (order === "ASC") {
+        return dateA?.valueOf() - dateB?.valueOf();
+      } else {
+        return dateB?.valueOf() - dateA?.valueOf();
+      }
+    });
+    setEventData(postListFiltered);
+    const newOrder = order === "ASC" ? "DESC" : "ASC";
+    setOrder(newOrder);
+  };
 
   const handleSingleIndexSelect = async (index: any) => {
     setSelectedIndex(index);
     if (index === 0) {
       fetchingEventData();
     } else if (index === 1) {
-      const res = await dispatch(allEvents({}) as any);
+      const res = await dispatch(allEvents({} as any) as any);
       const foodEvents = res?.payload?.foodEvents;
       const verifiedFoodEvents = foodEvents?.filter(
         (event: any) => event.status === "approved"
@@ -65,130 +96,133 @@ const AllEventScreen = () => {
     name,
     requiredVolunteers,
   }: any) => (
-    <View style={styles.cardContainer}>
-      {status === "approved" ? (
-        <View>
-          <AntDesign
-            name="checkcircleo"
-            size={24}
-            color="green"
-            style={{
-              marginLeft: h2dp(2.5),
-              marginTop: h2dp(1.5),
-            }}
-          />
+    <TouchableOpacity activeOpacity={1}>
+      <View style={styles.cardContainer}>
+        {status === "approved" ? (
+          <View>
+            <AntDesign
+              name="checkcircleo"
+              size={24}
+              color="green"
+              style={{
+                marginLeft: h2dp(2.5),
+                marginTop: h2dp(1.5),
+              }}
+            />
+            <Text
+              style={{
+                marginLeft: h2dp(1.5),
+                fontSize: 11,
+                color: "green",
+                marginTop: h2dp(0.5),
+              }}
+            >
+              {localized.t("APPROVED")}
+            </Text>
+          </View>
+        ) : status === "pending" ? (
+          <View>
+            <FontAwesome
+              name="clock-o"
+              size={24}
+              color="#f2db0a"
+              style={{
+                marginLeft: h2dp(2.3),
+                marginTop: h2dp(1.5),
+              }}
+            />
+            <Text
+              style={{
+                marginLeft: h2dp(1.5),
+                fontSize: 11,
+                color: "#f2db0a",
+                marginTop: h2dp(0.5),
+              }}
+            >
+              {localized.t("PENDING")}
+            </Text>
+          </View>
+        ) : (
+          <View>
+            <Feather
+              name="x-circle"
+              size={24}
+              color="red"
+              style={{ marginLeft: h2dp(2.3), marginTop: h2dp(1.5) }}
+            />
+            <Text
+              style={{
+                marginLeft: h2dp(1.5),
+                fontSize: 11,
+                color: "red",
+                marginTop: h2dp(0.5),
+              }}
+            >
+              {localized.t("REJECTED")}
+            </Text>
+          </View>
+        )}
+        <ScrollView showsVerticalScrollIndicator={false}>
           <Text
             style={{
-              marginLeft: h2dp(1.5),
-              fontSize: 11,
-              color: "green",
-              marginTop: h2dp(0.5),
+              marginLeft: w2dp(5),
+              width: w2dp(52),
+              fontWeight: "500",
+              fontSize: 16,
+              lineHeight: 30,
+              paddingTop: h2dp(1),
             }}
           >
-            {localized.t("APPROVED")}
+            {name}
           </Text>
-        </View>
-      ) : status === "pending" ? (
-        <View>
-          <FontAwesome
-            name="clock-o"
-            size={24}
-            color="#f2db0a"
-            style={{
-              marginLeft: h2dp(2.3),
-              marginTop: h2dp(1.5),
-            }}
-          />
           <Text
             style={{
-              marginLeft: h2dp(1.5),
-              fontSize: 11,
-              color: "#f2db0a",
-              marginTop: h2dp(0.5),
+              marginLeft: w2dp(5),
+              width: w2dp(47),
+              fontWeight: "200",
+              fontSize: 16,
+              lineHeight: 20,
+              paddingBottom: h2dp(1),
             }}
           >
-            {localized.t("PENDING")}
+            {address}
           </Text>
-        </View>
-      ) : (
-        <View>
-          <Feather
-            name="x-circle"
-            size={24}
-            color="red"
-            style={{ marginLeft: h2dp(2.3), marginTop: h2dp(1.5) }}
-          />
-          <Text
-            style={{
-              marginLeft: h2dp(1.5),
-              fontSize: 11,
-              color: "red",
-              marginTop: h2dp(0.5),
-            }}
-          >
-            {localized.t("REJECTED")}
-          </Text>
-        </View>
-      )}
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <Text
-          style={{
-            marginLeft: w2dp(5),
-            width: w2dp(52),
-            fontWeight: "500",
-            fontSize: 16,
-            lineHeight: 30,
-            paddingTop: h2dp(1),
+        </ScrollView>
+        <Button
+          title={localized.t("DETAILS")}
+          onPress={() =>
+            navigation.navigate("SingleEventDetails", {
+              eventDetails: {
+                id: id,
+                name: name,
+                additionalInfo: additionalInfo,
+                address: address,
+                eventStartDate: eventStartDate,
+                eventEndDate: eventEndDate,
+                lat: lat,
+                long: long,
+                eventPhoto: eventPhoto,
+                requiredVolunteers: requiredVolunteers,
+              },
+            })
+          }
+          buttonStyle={{
+            marginLeft: w2dp(3),
+            marginRight: w2dp(5),
+            backgroundColor: "white",
+            borderWidth: 1,
+            borderColor: "red",
+            borderRadius: 5,
+            paddingHorizontal: 8,
+            paddingVertical: 5,
           }}
-        >
-          {name}
-        </Text>
-        <Text
-          style={{
-            marginLeft: w2dp(5),
-            width: w2dp(47),
-            fontWeight: "200",
-            fontSize: 16,
-            lineHeight: 20,
-            paddingBottom: h2dp(1),
+          titleStyle={{
+            color: "black",
+            fontWeight: "300",
           }}
-        >
-          {address}
-        </Text>
-      </ScrollView>
-      <Button
-        title={localized.t("DETAILS")}
-        onPress={() =>
-          navigation.navigate("SingleEventDetails", {
-            eventDetails: {
-              id: id,
-              name: name,
-              additionalInfo: additionalInfo,
-              address: address,
-              eventStartDate: eventStartDate,
-              eventEndDate: eventEndDate,
-              lat: lat,
-              long: long,
-              eventPhoto: eventPhoto,
-              requiredVolunteers: requiredVolunteers,
-            },
-          })
-        }
-        buttonStyle={{
-          marginRight: w2dp(5),
-          backgroundColor: "white",
-          borderWidth: 1,
-          borderColor: "red",
-          borderRadius: 5,
-          paddingHorizontal: 8,
-          paddingVertical: 5,
-        }}
-        titleStyle={{
-          color: "black",
-          fontWeight: "300",
-        }}
-      />
-    </View>
+        />
+      </View>
+    </TouchableOpacity>
   );
 
   return (
@@ -237,6 +271,28 @@ const AllEventScreen = () => {
                   activeTabTextStyle={{ color: "black" }}
                   onTabPress={handleSingleIndexSelect}
                 />
+              </View>
+              <View style={styles.itemFilter}>
+                <Text style={styles.itemFilterText}>
+                  {localized.t("EVENTS")}
+                </Text>
+                <TouchableOpacity
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                  onPress={sortByDate}
+                >
+                  <Text style={styles.itemFilterText}>
+                    {localized.t("FILTER")}
+                  </Text>
+                  <MaterialIcons
+                    name="filter-list-alt"
+                    style={styles.itemFilterText}
+                  />
+                </TouchableOpacity>
               </View>
               <View style={{ flex: 1 }}>
                 <FlatList

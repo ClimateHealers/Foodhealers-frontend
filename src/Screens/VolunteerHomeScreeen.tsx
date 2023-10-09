@@ -23,20 +23,15 @@ import { localized } from "../locales/localization";
 import { VeganRecipesCategory } from "../redux/actions/veganRecipesCategory";
 
 const VolunteerHomeScreen = () => {
-  const [langOpen, setlangOpen] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
   const [recipeData, setRecipeData] = useState<[]>([]);
 
   const navigation: any = useNavigation();
   const dispatch = useDispatch();
 
-  const isAuthenticated = useSelector(
-    (state: any) => state?.auth?.data?.isAuthenticated
-  );
-
   const allEvents = useSelector(
     (state: any) => state?.allEvents?.data?.foodEvents
   );
+  const eventsScheduled = allEvents?.length;
 
   const fetchRecipesCategories = async () => {
     const response = await dispatch(VeganRecipesCategory(1 as any) as any);
@@ -48,9 +43,7 @@ const VolunteerHomeScreen = () => {
   }, []);
 
   const handlePressOutside = () => {
-    setlangOpen(false);
     Keyboard.dismiss();
-    setMenuOpen(false);
   };
   return (
     <>
@@ -109,7 +102,6 @@ const VolunteerHomeScreen = () => {
                       style={styles.imageStyle}
                     />
                     <TouchableOpacity
-                    // onPress={() => navigation.navigate("CategoryScreen")}
                     >
                       <View style={styles.title}>
                         <Text style={styles.textStyle}>
@@ -241,8 +233,8 @@ const VolunteerHomeScreen = () => {
                       />
                     </View>
                   </TouchableOpacity>
-                  <View style={{ marginVertical: h2dp(4) }}>
-                    <Text style={styles.mapContent}>15346</Text>
+                  <View style={{ marginVertical: h2dp(3) }}>
+                    <Text style={styles.mapContent}>{eventsScheduled}</Text>
                     <Text style={styles.mapContent}>
                       {localized.t("EVENTS_SCHEDULED")}
                     </Text>

@@ -167,17 +167,17 @@ const AddDonationsScreen = ({ route }: any) => {
                       setLoading(false);
                       setResponse({
                         loading: false,
-                        message: "Donation added successfully",
+                        message: `${localized.t("DONATION_ADDED_SUCCESSFULLY")}`,
                         error: false,
                       });
                       setLoading(false);
                       // resetForm({values: initialValues})
                       Alert.alert(
-                        "Thank you for your donation!",
-                        "We have successfully added your donation.",
+                        `${localized.t("THAN_YOU_FOR_DONATION")}`,
+                        `${localized.t("WH_HAVE_SUCCESSFULLY_ADDED_YOUR_DONATION")}`,
                         [
                           {
-                            text: "OK",
+                            text: `${localized.t("OK")}`,
                             onPress: () =>
                               navigation.dispatch(
                                 CommonActions.reset({
@@ -209,9 +209,9 @@ const AddDonationsScreen = ({ route }: any) => {
                       error: true,
                     });
                     Alert.alert(
-                      "Donation not added",
+                      `${localized.t("DONATION_NOT_ADDED")}`,
                       `${err.message}`,
-                      [{ text: "OK" }],
+                      [{ text: `${localized.t("OK")}`}],
                       { cancelable: false }
                     );
                   }

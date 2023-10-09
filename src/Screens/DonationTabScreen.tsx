@@ -1,4 +1,12 @@
-import { AntDesign, Feather, FontAwesome } from "@expo/vector-icons";
+import {
+  AntDesign,
+  Entypo,
+  Feather,
+  FontAwesome,
+  Ionicons,
+  MaterialCommunityIcons,
+  MaterialIcons,
+} from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import {
@@ -20,11 +28,12 @@ import { allDonations } from "../redux/actions/allDonations";
 import { myDonations } from "../redux/actions/myDonations";
 import moment from "moment";
 import { localized } from "../locales/localization";
+import { styles } from "../Components/Styles";
 
 const DonationTabScreen = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const [donationData, setDonationData] = useState<[]>([]);
+  const [donationData, setDonationData]: any[] = useState<[]>([]);
   const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
@@ -38,13 +47,30 @@ const DonationTabScreen = () => {
 
   const fetchingallDonationData = async () => {
     const response = await dispatch(allDonations({} as any) as any);
-    // setDonationData(response?.payload?.AllDonations);
   };
 
   useEffect(() => {
     fetchingDonationData();
     fetchingallDonationData();
+    sortByDate();
   }, []);
+
+  const [order, setOrder] = useState<"ASC" | "DESC">("ASC");
+  const sortByDate = () => {
+    const postListFiltered = [...donationData].sort((a: any, b: any) => {
+      const dateA = new Date(a?.createdAt);
+      const dateB = new Date(b?.createdAt);
+
+      if (order === "ASC") {
+        return dateA?.valueOf() - dateB?.valueOf();
+      } else {
+        return dateB?.valueOf() - dateA?.valueOf();
+      }
+    });
+    setDonationData(postListFiltered);
+    const newOrder = order === "ASC" ? "DESC" : "ASC";
+    setOrder(newOrder);
+  };
 
   const handleSingleIndexSelect = async (index: any) => {
     setSelectedIndex(index);
@@ -56,7 +82,7 @@ const DonationTabScreen = () => {
       const verifiedDonations = donationsAll?.filter(
         (event: any) => event?.status === "approved"
       );
-      setDonationData(donationsAll);
+      setDonationData(verifiedDonations);
     }
   };
 
@@ -65,6 +91,7 @@ const DonationTabScreen = () => {
     status,
     delivery,
     createdAt,
+    donationType,
     donatedBy,
     quantity,
   }: any) => (
@@ -72,6 +99,27 @@ const DonationTabScreen = () => {
       <View style={styles.cardContainer}>
         {status === "approved" ? (
           <View>
+            {donationType === "Supplies" ? (
+              <MaterialCommunityIcons
+                name="truck-outline"
+                size={24}
+                color="black"
+                style={{
+                  marginLeft: h2dp(2.3),
+                  marginTop: h2dp(-2),
+                }}
+              />
+            ) : (
+              <Entypo
+                name="bowl"
+                size={24}
+                color="black"
+                style={{
+                  marginLeft: h2dp(2.5),
+                  marginTop: h2dp(-2),
+                }}
+              />
+            )}
             <AntDesign
               name="checkcircleo"
               size={24}
@@ -94,6 +142,27 @@ const DonationTabScreen = () => {
           </View>
         ) : status === "pending" ? (
           <View>
+            {donationType === "Supplies" ? (
+              <MaterialCommunityIcons
+                name="truck-outline"
+                size={24}
+                color="black"
+                style={{
+                  marginLeft: h2dp(2.3),
+                  marginTop: h2dp(-2),
+                }}
+              />
+            ) : (
+              <Entypo
+                name="bowl"
+                size={24}
+                color="black"
+                style={{
+                  marginLeft: h2dp(2.5),
+                  marginTop: h2dp(-2),
+                }}
+              />
+            )}
             <FontAwesome
               name="clock-o"
               size={24}
@@ -116,6 +185,36 @@ const DonationTabScreen = () => {
           </View>
         ) : (
           <View>
+            {donationType === "Supplies" ? (
+              <MaterialCommunityIcons
+                name="truck-outline"
+                size={24}
+                color="black"
+                style={{
+                  marginLeft: h2dp(2.3),
+                  marginTop: h2dp(1.5),
+                }}
+              />
+            ) : (
+              <Entypo
+                name="bowl"
+                size={24}
+                color="black"
+                style={{
+                  marginLeft: h2dp(2.5),
+                  marginTop: h2dp(1.5),
+                }}
+              />
+            )}
+            <FontAwesome
+              name="clock-o"
+              size={24}
+              color="#f2db0a"
+              style={{
+                marginLeft: h2dp(2.3),
+                marginTop: h2dp(1.5),
+              }}
+            />
             <Feather
               name="x-circle"
               size={24}
@@ -203,11 +302,30 @@ const DonationTabScreen = () => {
             onTabPress={handleSingleIndexSelect}
           />
         </View>
+        <View style={styles.itemFilter}>
+          <Text style={styles.itemFilterText}>{localized.t("EVENTS")}</Text>
+          <TouchableOpacity
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+            onPress={sortByDate}
+          >
+            <Text style={styles.itemFilterText}>{localized.t("FILTER")}</Text>
+            <MaterialIcons
+              name="filter-list-alt"
+              style={styles.itemFilterText}
+            />
+          </TouchableOpacity>
+        </View>
         <View style={{ flex: 1 }}>
           <FlatList
             data={donationData}
             renderItem={({ item }: any) => (
               <Item
+                donationType={item?.donationType}
                 status={item?.status}
                 foodItem={`${item?.foodItem}  (${item?.quantity})`}
                 delivery={item?.delivery?.pickupAddress?.fullAddress}
@@ -222,29 +340,5 @@ const DonationTabScreen = () => {
     </>
   );
 };
-
-const styles = StyleSheet.create({
-  cardContainer: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginVertical: h2dp(1),
-    backgroundColor: "white",
-    marginHorizontal: w2dp(1),
-    // height: h2dp(13),
-    borderRadius: 5,
-  },
-  toggle: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "flex-start",
-    alignItems: "center",
-    marginBottom: h2dp(1),
-  },
-  tabStyle: {
-    borderColor: "#EDC258",
-  },
-});
 
 export default DonationTabScreen;

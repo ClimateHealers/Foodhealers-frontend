@@ -1,4 +1,4 @@
-import { AntDesign, Feather, FontAwesome } from "@expo/vector-icons";
+import { AntDesign, Feather, FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
@@ -22,7 +22,7 @@ import { localized } from "../locales/localization";
 const VolunteerTabScreen = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const [eventData, setEventData] = useState<[]>([]);
+  const [eventData, setEventData]: any = useState<[]>([]);
   const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
@@ -31,7 +31,26 @@ const VolunteerTabScreen = () => {
 
   useEffect(() => {
     fetchingEventsData();
+    sortByDate();
   }, []);
+
+
+  const [order, setOrder] = useState<"ASC" | "DESC">("ASC");
+  const sortByDate = () => {
+    const postListFiltered = [...eventData].sort((a: any, b: any) => {
+      const dateA = new Date(a?.eventStartDate);
+      const dateB = new Date(b?.eventStartDate);
+
+      if (order === "ASC") {
+        return dateA?.valueOf() - dateB?.valueOf();
+      } else {
+        return dateB?.valueOf() - dateA?.valueOf();
+      }
+    });
+    setEventData(postListFiltered);
+    const newOrder = order === "ASC" ? "DESC" : "ASC";
+    setOrder(newOrder);
+  };
 
   const fetchingEventsData = async () => {
     const response = await dispatch(allEvents({} as any) as any);
@@ -175,6 +194,7 @@ const VolunteerTabScreen = () => {
             })
           }
           buttonStyle={{
+            marginLeft: w2dp(3),
             marginRight: w2dp(5),
             backgroundColor: "white",
             borderWidth: 1,
@@ -194,7 +214,25 @@ const VolunteerTabScreen = () => {
 
   return (
     <>
-      <View style={{ flex: 1, marginTop: h2dp(1.5) }}>
+      <View style={{ flex: 1 }}>
+      <View style={styles.itemFilter}>
+          <Text style={styles.itemFilterText}>{localized.t("EVENTS")}</Text>
+          <TouchableOpacity
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+            onPress={sortByDate}
+          >
+            <Text style={styles.itemFilterText}>{localized.t("FILTER")}</Text>
+            <MaterialIcons
+              name="filter-list-alt"
+              style={styles.itemFilterText}
+            />
+          </TouchableOpacity>
+        </View>
         <ScrollView style={{ flex: 1 }}>
           <FlatList
             data={eventData}
