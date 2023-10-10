@@ -1,7 +1,11 @@
 import { Ionicons } from "@expo/vector-icons";
-import { CommonActions, useNavigation } from "@react-navigation/native";
+import {
+  CommonActions,
+  useFocusEffect,
+  useNavigation,
+} from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Alert,
   Image,
@@ -20,6 +24,7 @@ import FoodhealersHeader from "../Components/FoodhealersHeader";
 import { styles } from "../Components/Styles";
 import { localized } from "../locales/localization";
 import { VeganRecipesCategory } from "../redux/actions/veganRecipesCategory";
+import { allEvents } from "../redux/actions/allEvents";
 
 const VolunteerHomeScreen = ({ route }: any) => {
   const { latitude, longitude } = route.params;
@@ -27,29 +32,29 @@ const VolunteerHomeScreen = ({ route }: any) => {
   const [events, setEvents] = useState<[]>([]);
   const navigation: any = useNavigation();
   const dispatch = useDispatch();
-  const fetchingEventsData = async () => {
-    const response = await dispatch(allEvents({} as any) as any);
-    const data = response?.payload?.foodEvents;
-    setEvents(data);
-  };
-  const allEvents = useSelector(
-    (state: any) => state?.allEvents?.data?.foodEvents
-  );
-  const eventsScheduled = allEvents?.length;
+  const eventsScheduled = events?.length;
 
   const fetchRecipesCategories = async () => {
     const response = await dispatch(VeganRecipesCategory(1 as any) as any);
     setRecipeData(response?.payload?.results?.recipeList);
   };
 
-  useEffect(() => {
-    fetchRecipesCategories();
-    fetchingEventsData();
-  }, []);
+  const fetchingEventsData = async () => {
+    const response = await dispatch(allEvents({} as any) as any);
+    const data = response?.payload?.foodEvents;
+    setEvents(data);
+  };
 
   const handlePressOutside = () => {
     Keyboard.dismiss();
   };
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchRecipesCategories();
+      fetchingEventsData();
+    }, [])
+  );
 
   return (
     <>
@@ -136,7 +141,7 @@ const VolunteerHomeScreen = ({ route }: any) => {
                       </View>
                     </TouchableOpacity>
                   </View>
-                  {allEvents && allEvents?.length && (
+                  {events && (
                     <View>
                       <Text style={[styles.subHeading]}>
                         {localized.t("EVENTS")}
@@ -151,7 +156,7 @@ const VolunteerHomeScreen = ({ route }: any) => {
                   >
                     <TouchableOpacity activeOpacity={1}>
                       <View style={styles.horizonatalView}>
-                        {allEvents?.slice(0, 1)?.map((event: any) => (
+                        {events?.slice(0, 1)?.map((event: any) => (
                           <View
                             key={event?.id}
                             style={{

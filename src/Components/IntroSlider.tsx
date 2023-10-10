@@ -30,7 +30,6 @@ const slides = [
 
 const IntroSlider = ({ route }: any) => {
   const {latitude, longitude} = route.params;
-  console.log("jhfjhsjhd", latitude, longitude);
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
 
   const sliderRef: any = useRef(null);

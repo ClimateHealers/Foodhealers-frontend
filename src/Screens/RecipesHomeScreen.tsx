@@ -1,7 +1,7 @@
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Image,
   Keyboard,
@@ -18,22 +18,31 @@ import {
   heightPercentageToDP as h2dp,
   widthPercentageToDP as w2dp,
 } from "react-native-responsive-screen";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getLocation } from "../Components/getCurrentLocation";
 import { styles } from "../Components/Styles";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
 import BurgerIcon from "../Components/BurgerIcon";
 import { localized } from "../locales/localization";
+import { VeganRecipesCategory } from "../redux/actions/veganRecipesCategory";
 
 const RecipesHomeScreen = () => {
   const [langOpen, setlangOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [recipesCategory, setRecipeData] = useState([]);
+
+  const dispatch = useDispatch();
 
   const navigation: any = useNavigation();
 
-  const recipesCategory = useSelector(
-    (state: any) => state?.recipesCategory?.data?.categoriesList
-  );
+  const fetchRecipesCategories = async () => {
+    const response = await dispatch(VeganRecipesCategory(1 as any) as any);
+    setRecipeData(response?.payload?.results?.recipeList);
+  };
+
+  useEffect(() => {
+    fetchRecipesCategories();
+  }, []);
 
   const isAuthenticated = useSelector(
     (state: any) => state?.auth?.data?.isAuthenticated
@@ -94,32 +103,35 @@ const RecipesHomeScreen = () => {
             >
               <TouchableOpacity activeOpacity={1}>
                 <View style={[styles.centeredView]}>
-                  {recipesCategory.map((recipe: any) => (
-                    <View
-                      key={recipe.id}
-                      style={{
-                        marginBottom: h2dp(3),
-                        position: "relative",
-                      }}
-                    >
-                      <Image
-                        source={{ uri: recipe?.categoryImage }}
-                        style={styles.imageStyle}
-                      />
-                      <View style={styles.title}>
-                        <TouchableOpacity
-                          onPress={() =>
-                            navigation.navigate("CategoryScreen", {
-                              categoryId: recipe?.id,
-                              recipeName: recipe?.name,
-                            })
-                          }
-                        >
-                          <Text style={styles.textStyle}>{recipe?.name}</Text>
-                        </TouchableOpacity>
+                  {recipesCategory?.map((receipeName: any) => {
+                    const recipe = receipeName?.category[0];
+                    return (
+                      <View
+                        key={recipe.id}
+                        style={{
+                          marginBottom: h2dp(3),
+                          position: "relative",
+                        }}
+                      >
+                        <Image
+                          source={{ uri: recipe?.categoryImage }}
+                          style={styles.imageStyle}
+                        />
+                        <View style={styles.title}>
+                          <TouchableOpacity
+                            onPress={() =>
+                              navigation.navigate("CategoryScreen", {
+                                categoryId: recipe?.id,
+                                recipeName: recipe?.name,
+                              })
+                            }
+                          >
+                            <Text style={styles.textStyle}>{recipe?.name}</Text>
+                          </TouchableOpacity>
+                        </View>
                       </View>
-                    </View>
-                  ))}
+                    );
+                  })}
                 </View>
               </TouchableOpacity>
             </ScrollView>

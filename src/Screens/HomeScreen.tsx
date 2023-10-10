@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
+  Dimensions,
   Modal,
   Platform,
   StatusBar,
@@ -21,10 +22,9 @@ import BackgroundImg from "../Components/BackGroundImage";
 import PrimaryButton from "../Components/PrimaryButton";
 import { localized } from "../locales/localization";
 import { myTheme } from "../myTheme";
-import { setLanguage } from "../redux/reducers/langReducer";
 import { myDonations } from "../redux/actions/myDonations";
 import { volunteerHistory } from "../redux/actions/volunteerHistoryAction";
-import { Dimensions } from "react-native";
+import { setLanguage } from "../redux/reducers/langReducer";
 
 const HomeScreen = ({ route }: any) => {
   const userDetails = useSelector((state: any) => state.auth);
@@ -67,7 +67,7 @@ const HomeScreen = ({ route }: any) => {
     const getUserLocation = async () => {
       try {
         const response = await axios.get("http://ipinfo.io/json");
-        const { loc } = response.data;
+        const { loc } = response?.data;
         const [latitude, longitude] = loc
           .split(",")
           .map((coord: any) => parseFloat(coord));
@@ -203,7 +203,7 @@ const HomeScreen = ({ route }: any) => {
               ]}
               onPress={() => {
                 if (data.isAuthenticated) {
-                  if (volunteerData.length > 0 || donationData.length > 0) {
+                  if (volunteerData?.length > 0 || donationData?.length > 0) {
                     navigation.navigate("VolunteerHomeScreen", {
                       latitude: lat,
                       longitude: long,
