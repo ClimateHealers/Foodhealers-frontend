@@ -68,7 +68,7 @@ const AddVolunteerToEvent = ({ route }: any) => {
   );
   const [selectedTime, setSelectedTime] = useState<Date | any>(new Date());
   const [selectedEndDate, setSelectedEndDate] = useState<Date | any>(
-    moment().add(1, "hour")
+    moment(eventStartDate)
   );
 
   const userDetails = useSelector((state: any) => state.auth);
@@ -100,18 +100,6 @@ const AddVolunteerToEvent = ({ route }: any) => {
   const handleDateChange = (date: any) => {
     setSelectedDate(date);
     if (selectedDate > selectedEndDate) {
-      if (moment(date).isAfter(moment(eventEndDate))) {
-        Alert.alert(
-          `${localized.t("ALERT")}`,
-          `${localized.t("YOU_CANT_SELECT_A_TIME_BEFORE")} ${moment(
-            eventEndDate
-          )
-            .subtract(2, "hour")
-            .format("MMM DD, YYYY hh:mm A")}`
-        );
-      } else {
-        setSelectedEndDate(date);
-      }
       setSelectedEndDate(selectedDate);
     } else {
       setSelectedEndDate(date);
@@ -120,12 +108,12 @@ const AddVolunteerToEvent = ({ route }: any) => {
   };
 
   const handleEndDateChange = (endDate: any) => {
-    if (moment(endDate).isAfter(moment(eventEndDate))) {
+    if (moment(endDate).isBefore(moment(eventEndDate))) {
       Alert.alert(
         `${localized.t("ALERT")}`,
-        `${localized.t("YOU_CANT_SELECT_A_TIME_BEFORE")} ${moment(
-          eventEndDate
-        ).format("MMM DD, YYYY hh:mm A")}`
+        `${localized.t("YOU_CANT_SELECT_A_TIME_BEFORE")} ${moment(eventEndDate)
+          .add(1, "hour")
+          .format("MMM DD, YYYY hh:mm A")}`
       );
     } else {
       setSelectedEndDate(endDate);
@@ -328,7 +316,11 @@ const AddVolunteerToEvent = ({ route }: any) => {
                     />
                     <Text style={styles.inputError}>{errors?.name}</Text>
                     <GooglePlacesAutocomplete
-                      placeholder={data?.user?.address?.streetAddress}
+                      placeholder={
+                        data?.user?.address?.streetAddress
+                          ? data?.user?.address?.streetAddress
+                          : `${localized.t("ADDRESS")}`
+                      }
                       fetchDetails={true}
                       keepResultsAfterBlur={true}
                       listViewDisplayed="auto"
@@ -491,7 +483,8 @@ const AddVolunteerToEvent = ({ route }: any) => {
                           {showDatePicker && (
                             <DateTimePickerModal
                               isVisible={showDatePicker}
-                              minimumDate={new Date()}
+                              minimumDate={new Date(selectedDate)}
+                              maximumDate={new Date(eventEndDate)}
                               date={
                                 selectedDate
                                   ? new Date(selectedDate)
@@ -531,7 +524,6 @@ const AddVolunteerToEvent = ({ route }: any) => {
                               style={{
                                 color: "black",
                                 fontSize: 13,
-                                // width: 200,
                                 marginBottom: 5,
                                 marginLeft: 15,
                               }}
@@ -582,6 +574,7 @@ const AddVolunteerToEvent = ({ route }: any) => {
                               minimumDate={
                                 new Date(moment(selectedDate).add(1, "hour"))
                               }
+                              maximumDate={new Date(eventEndDate)}
                               is24Hour={true}
                               date={
                                 selectedEndDate
@@ -636,7 +629,6 @@ const AddVolunteerToEvent = ({ route }: any) => {
                     >
                       <PhoneInput
                         ref={phoneInput}
-                        defaultCode={"US"}
                         placeholder={localized.t("PHONE_NUMBER")}
                         onChangeText={(text) => {
                           const callingCode =

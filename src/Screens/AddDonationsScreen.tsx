@@ -37,7 +37,7 @@ const AddDonationsScreen = ({ route }: any) => {
   const [loading, setLoading] = useState(false);
   const [langOpen, setlangOpen] = useState(false);
   const [showDatePicker, setShowDatePicker] = useState(false);
-  const [countryPhoneCode, setCountryPhoneCode] = useState("");
+  const [countryPhoneCode, setCountryPhoneCode] = useState<string>("");
   const phoneCode = countryPhoneCode.toString();
   const [response, setResponse] = useState({
     loading: false,
@@ -482,7 +482,6 @@ const AddDonationsScreen = ({ route }: any) => {
                     >
                       <PhoneInput
                         ref={phoneInput}
-                        defaultCode={"US"}
                         placeholder={localized.t("PHONE_NUMBER")}
                         onChangeText={(text) => {
                           const callingCode =
