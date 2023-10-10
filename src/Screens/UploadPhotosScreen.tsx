@@ -74,8 +74,7 @@ const UploadPhotosScreen = ({ route }: any) => {
     setMenuOpen(false);
   };
   const logout = async (item: any) => {
-    // persistor.purge()
-    await dispatch(logOut({}) as any);
+    await dispatch(logOut({} as any) as any);
     await removeAuthData();
     navigation.dispatch(
       CommonActions.reset({
@@ -114,13 +113,6 @@ const UploadPhotosScreen = ({ route }: any) => {
         [
           {
             text: `${localized.t("OK")}`,
-            // onPress: () => {
-            //   Platform?.OS === "ios"
-            //     ? Linking.openURL("app-settings:root=Photos")
-            //     : Linking.sendIntent(
-            //         "android.settings.LOCATION_SOURCE_SETTINGS"
-            //       );
-            // },
           },
         ],
         { cancelable: true }

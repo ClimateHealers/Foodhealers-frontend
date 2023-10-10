@@ -48,7 +48,6 @@ const Dropdown = () => {
               rowTextStyle={styles.dropdown1RowTxtStyle}
               data={lang && lang.map((dd) => dd.label)}
               onSelect={changeLanguage}
-              // defaultButtonText={"EN"}
               defaultButtonText={selectedLanguage}
               buttonTextAfterSelection={(itemValue, index) => {
                 return lang[index].value.toUpperCase();

@@ -63,7 +63,6 @@ const SignupScreen = () => {
         token?.data.indexOf("]")
       );
       setExpoPushToken(token?.data);
-      // sendPushNotification(token);
     };
     getExpoPushToken();
   }, []);
@@ -171,7 +170,6 @@ const SignupScreen = () => {
                 rowTextStyle={styles.dropdown1RowTxtStyle}
                 data={lang && lang.map((dd) => dd.label)}
                 onSelect={changeLanguage}
-                // defaultButtonText={"EN"}
                 defaultButtonText={languageName.toUpperCase()}
                 buttonTextAfterSelection={(itemValue, index) => {
                   return languageName.toUpperCase();

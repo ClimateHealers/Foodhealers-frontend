@@ -84,7 +84,6 @@ const VolunteerEventScreen = ({ route }: any) => {
           <Text
             style={{
               marginLeft: w2dp(3),
-              // width: w2dp(46),
               fontSize: 16,
               lineHeight: 30,
               paddingTop: h2dp(0.5),

@@ -170,7 +170,6 @@ const HomeScreen = ({ route }: any) => {
               rowTextStyle={styles.dropdown1RowTxtStyle}
               data={lang && lang.map((dd) => dd.label)}
               onSelect={changeLanguage}
-              // defaultButtonText={"EN"}
               defaultButtonText={selectedLanguage.toUpperCase()}
               buttonTextAfterSelection={(itemValue, index) => {
                 return languageName.toUpperCase();
@@ -303,9 +302,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     width: "100%",
-    // height: "100%",
-    // top:(windowHeight-50),
-    // bottom: h2dp(55),
     position: "absolute",
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,

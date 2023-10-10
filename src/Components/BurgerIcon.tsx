@@ -39,11 +39,6 @@ const BurgerIcon = () => {
   };
   return (
     <>
-      {/* <TouchableWithoutFeedback
-        onPress={() => {
-          setMenuOpen(!menuOpen);
-        }}
-      > */}
       <MaterialCommunityIcons
         name="menu"
         size={40}
@@ -82,7 +77,6 @@ const BurgerIcon = () => {
           )}
         </View>
       )}
-      {/* </TouchableWithoutFeedback> */}
     </>
   );
 };

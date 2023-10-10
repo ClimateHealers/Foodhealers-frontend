@@ -200,7 +200,6 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   container2: {
-    // marginTop: 100,
   },
   header: {
     fontSize: 25,

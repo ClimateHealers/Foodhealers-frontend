@@ -85,11 +85,9 @@ const styles = StyleSheet.create({
   cardDate: {
     marginTop: 3,
     ...systemWeights.regular,
-    // color: "black",
   },
   buttonContent: {
     paddingTop: 2,
-    // color: "#696868",
     fontSize: 12,
   },
 });

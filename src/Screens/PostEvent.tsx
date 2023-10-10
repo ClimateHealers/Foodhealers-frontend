@@ -262,7 +262,7 @@ const PostEvent = () => {
                       listViewDisplayed="auto"
                       textInputProps={{ placeholderTextColor: "#000000" }}
                       query={{
-                        key: API_KEY, //sachin
+                        key: API_KEY,
                         language: "en",
                       }}
                       enablePoweredByContainer={false}
@@ -394,7 +394,6 @@ const PostEvent = () => {
                               style={{
                                 color: "black",
                                 fontSize: 13,
-                                // width: 200,
                                 marginBottom: 5,
                                 marginLeft: 15,
                               }}
@@ -484,7 +483,6 @@ const PostEvent = () => {
                               style={{
                                 color: "black",
                                 fontSize: 13,
-                                // width: 200,
                                 marginBottom: 5,
                                 marginLeft: 15,
                               }}

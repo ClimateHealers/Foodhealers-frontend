@@ -72,7 +72,6 @@ const CalendarEventDetailScreen = ({ route }: any) => {
   const onShare = async () => {
     try {
       const result = await Share.share({
-        // message: `${eventDetails?.additionalInfo}`,
         message: `Coming soon!`,
       });
       if (result.action === Share.sharedAction) {

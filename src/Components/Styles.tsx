@@ -7,13 +7,11 @@ import {
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // alignItems: "center",
     marginHorizontal: w2dp(4),
     marginTop: h2dp(2),
   },
   subcontainer: {
     flex: 1,
-    // alignItems: "center",
     marginHorizontal: w2dp(4),
     zIndex: 0,
   },
@@ -57,15 +55,12 @@ export const styles = StyleSheet.create({
     marginVertical: h2dp(1),
     backgroundColor: "white",
     marginHorizontal: w2dp(1),
-    // height: h2dp(13),
     borderRadius: 5,
   },
   itemFilterText: {
     fontSize: 16,
     color: "white",
     marginTop: h2dp(1),
-    // justifyContent: "center",
-    // textAlign: "center",
   },
   modalView: {
     margin: 20,
@@ -138,9 +133,7 @@ export const styles = StyleSheet.create({
   },
   item: {
     height: h2dp(10),
-    justifyContent: "center",
-    // width: w2dp(30),
-    // paddingHorizontal: w2dp(20),
+    justifyContent: "center"
   },
   itemText: {
     fontSize: 25,
@@ -191,9 +184,7 @@ export const styles = StyleSheet.create({
     lineHeight: 35,
   },
   foodhealersHeader: {
-    // backgroundColor: "white",
     borderRadius: 10,
-    // height: h2dp(2),
     width: "100%",
   },
   row: {
@@ -204,7 +195,6 @@ export const styles = StyleSheet.create({
     zIndex: 9999,
   },
   subHeading: {
-    // marginLeft: w2dp(7),
     marginBottom: h2dp(1.3),
     fontSize: h2dp(2),
     color: "white",
@@ -223,14 +213,12 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
     marginTop: h2dp(1),
     width: w2dp(85),
-    // height: h2dp(15),
     alignSelf: "center",
   },
   title: {
     backgroundColor: "white",
     opacity: 0.9,
     width: w2dp(85),
-    // height: "20%",
     position: "absolute",
     bottom: 0,
     borderBottomRightRadius: 10,
@@ -308,7 +296,6 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-start",
     alignItems: "center",
-    // marginBottom: h2dp(1),
     marginLeft: w2dp(1),
   },
   tabStyle: {
@@ -360,7 +347,6 @@ export const styles = StyleSheet.create({
   },
   dropdown1BtnStyle: {
     marginTop: 15,
-    // marginLeft: 45,
     width: "70%",
     height: 50,
     backgroundColor: "#FFF",
@@ -388,7 +374,6 @@ export const styles = StyleSheet.create({
     width: w2dp(85),
     alignSelf: "center",
     marginTop: h2dp(1),
-    // borderWidth:13,
     borderRadius: 10,
   },
   tabLabel: {

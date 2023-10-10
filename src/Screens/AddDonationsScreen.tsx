@@ -171,7 +171,6 @@ const AddDonationsScreen = ({ route }: any) => {
                         error: false,
                       });
                       setLoading(false);
-                      // resetForm({values: initialValues})
                       Alert.alert(
                         `${localized.t("THAN_YOU_FOR_DONATION")}`,
                         `${localized.t("WH_HAVE_SUCCESSFULLY_ADDED_YOUR_DONATION")}`,
@@ -482,7 +481,6 @@ const AddDonationsScreen = ({ route }: any) => {
                       <PhoneInput
                         ref={phoneInput}
                         defaultCode={"US"}
-                        // initialCountry={countryPhoneCode}
                         placeholder={localized.t("PHONE_NUMBER")}
                         onChangeText={(text) => {
                           const callingCode =

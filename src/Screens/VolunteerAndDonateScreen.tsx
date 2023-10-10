@@ -20,7 +20,6 @@ import { getLocation } from "../Components/getCurrentLocation";
 import { localized } from "../locales/localization";
 import DonationTabScreen from "./DonationTabScreen";
 import VolunteerTabScreen from "./VolunteerTabScreen";
-// import { styles } from "../Components/Styles";
 import { Ionicons } from "@expo/vector-icons";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
 
@@ -123,7 +122,6 @@ const VolunteerAndDonateScreen = ({ route }: any) => {
           </SafeAreaView>
         </View>
       </LinearGradient>
-      {/* </View> */}
     </TouchableWithoutFeedback>
   );
 };
@@ -147,7 +145,6 @@ const styles = StyleSheet.create({
     zIndex: 9999,
   },
   item: {
-    // width: "30%",
     height: h2dp(10),
     justifyContent: "center",
     alignItems: "center",

@@ -155,7 +155,6 @@ const CategoryScreen = ({ route }: any) => {
                             position: "relative",
                           }}
                         >
-                          {/* <View style={styles.cardContainer}> */}
                           <Image
                             source={{ uri: recipe?.foodImage }}
                             style={[styles.imageStyle,{
@@ -196,7 +195,6 @@ const CategoryScreen = ({ route }: any) => {
                               </View>
                             </TouchableOpacity>
                           </View>
-                          {/* </View> */}
                         </View>
                       ))
                     : data?.map((recipe: any) => (
@@ -207,7 +205,6 @@ const CategoryScreen = ({ route }: any) => {
                           }}
                           key={recipe?.id}
                         >
-                          {/* <View style={styles.cardContainer}> */}
                           <Image
                             source={{ uri: recipe?.foodImage }}
                             style={[styles.imageStyle,{
@@ -259,7 +256,6 @@ const CategoryScreen = ({ route }: any) => {
                             </TouchableOpacity>
                           </View>
                         </View>
-                        // </View>
                       ))}
                 </View>
               </TouchableOpacity>

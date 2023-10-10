@@ -48,7 +48,7 @@ const VolunteerHomeScreen = ({ route }: any) => {
   const handlePressOutside = () => {
     Keyboard.dismiss();
   };
-  
+
   return (
     <>
       <TouchableWithoutFeedback onPress={handlePressOutside}>
@@ -141,8 +141,6 @@ const VolunteerHomeScreen = ({ route }: any) => {
                             />
                             <TouchableOpacity
                               onPress={() =>
-                                // getLocation().then((location: any) => {
-                                //   if (location) {
                                 navigation?.navigate("WeekScreen", {
                                   currentlatitude: latitude,
                                   currentlongitude: longitude,

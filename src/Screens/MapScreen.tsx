@@ -102,7 +102,6 @@ const MapScreen = ({ route }: any) => {
 
   const clickHandler = () => {
     navigation.navigate("FindFoodHomeScreen", {
-      // location: location,
       currentlat: latitude,
       currentlong: longitude,
       city: city,
@@ -183,7 +182,6 @@ const MapScreen = ({ route }: any) => {
                     rowTextStyle={styles.dropdown1RowTxtStyle}
                     data={lang && lang.map((dd) => dd.label)}
                     onSelect={changeLanguage}
-                    // defaultButtonText={"EN"}
                     defaultButtonText={selectedLanguage.toUpperCase()}
                     buttonTextAfterSelection={(itemValue, index) => {
                       return languageName.toUpperCase();
@@ -281,8 +279,6 @@ const MapScreen = ({ route }: any) => {
                     borderRadius: 3,
                     marginTop: 12,
                     width: "100%",
-                    // marginLeft: 15,
-                    // marginBottom: 1,
                   },
                   description: {
                     color: "black",
@@ -291,7 +287,6 @@ const MapScreen = ({ route }: any) => {
                   },
                   listView: {
                     width: "100%",
-                    // marginLeft: 15,
                     borderRadius: 3,
                     zIndex: 100,
                   },
@@ -358,7 +353,6 @@ const MapScreen = ({ route }: any) => {
                         key={marker?.id}
                         pinColor="#00693D"
                         coordinate={coordinates}
-                        // onPress={() => navigateToEvent(coordinates, marker?.name)}
                       >
                         <View>
                           <Text

@@ -70,7 +70,6 @@ const LoginScreen = () => {
         token?.data.indexOf("]")
       );
       setExpoPushToken(token?.data);
-      // sendPushNotification(token);
     };
     getExpoPushToken();
   }, []);
@@ -173,7 +172,6 @@ const LoginScreen = () => {
                 rowTextStyle={styles.dropdown1RowTxtStyle}
                 data={lang && lang.map((dd) => dd.label)}
                 onSelect={changeLanguage}
-                // defaultButtonText={"EN"}
                 defaultButtonText={languageName.toUpperCase()}
                 buttonTextAfterSelection={(itemValue, index) => {
                   return languageName.toUpperCase();
@@ -210,7 +208,6 @@ const LoginScreen = () => {
                   setLoading(true);
                   signInWithEmailAndPassword(auth, email, password)
                     .then((userCredential) => {
-                      // Signed in
                       const user = userCredential.user;
                       setLoading(false);
                       console.log("user signed in successfully");

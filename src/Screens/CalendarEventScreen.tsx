@@ -204,8 +204,6 @@ const styles = StyleSheet.create({
     zIndex: 9999,
   },
   item: {
-    // width: "35%",
-    // marginTop: 25,
     height: 100,
     justifyContent: "center",
     alignItems: "center",
@@ -282,7 +280,6 @@ const styles = StyleSheet.create({
     width: "80%",
     alignSelf: "center",
     marginTop: h2dp(10),
-    // borderWidth:13,
     borderRadius: 10,
   },
   subHeader: {
@@ -295,7 +292,6 @@ const styles = StyleSheet.create({
   eventsContainer: {
     display: "flex",
     flexDirection: "row",
-    // justifyContent: "flex-start",
     marginBottom: h2dp(2),
   },
   eventCon: {
@@ -315,12 +311,7 @@ const styles = StyleSheet.create({
   },
   date: {
     color: "white",
-    // // alignSelf: "center",
-    // marginTop:h2dp(2)
-    // backgroundColor: "white",
     height: h2dp(7),
-    // width: w2dp(60),
-    // marginTop: h2dp(2),
     marginLeft: w2dp(5),
     borderRadius: 5,
   },
@@ -332,9 +323,7 @@ const styles = StyleSheet.create({
   eventName: {
     display: "flex",
     justifyContent: "flex-start",
-    // borderWidth:3,
     width: w2dp(80),
-    // height: "100%",
   },
 });
 

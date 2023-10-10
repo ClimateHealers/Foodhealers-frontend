@@ -34,7 +34,6 @@ export const signupSchema = Yup.object().shape({
     .required(`${localized.t("CONFIRM_PASSWORD_IS_REQUIRED")}`),
 });
 
-//   login form
 export const loginSchema = Yup.object().shape({
   email: Yup.string()
     .email(`${localized.t("PLEASE_ENTER_YOUR_EMAIL")}`)
@@ -57,8 +56,6 @@ export const loginSchema = Yup.object().shape({
     )
     .required(`${localized.t("PASSWORD_IS_REQUIRED")}`),
 });
-
-//post event form
 
 export const postEventSchema = Yup.object().shape({
   eventName: Yup.string()
@@ -83,14 +80,11 @@ export const postEventSchema = Yup.object().shape({
   ),
 });
 
-//post event form
-
 export const AddDonations = Yup.object().shape({
   foodItem: Yup.string()
     .required(`${localized.t("NAME_IS_REQUIRED")}`)
     .matches(/\w*[a-z]\w*/, `${localized.t("ONLY_ALPHABETS_ARE_ALLOWED")}`),
   quantity: Yup.string().required(`${localized.t("THIS_FIELD_IS_REQUIRED")}`),
-  // .matches(/^[a-zA-Z0-9]+$/, 'Only alphanumeric CHARACTERS are allowed'),
   address: Yup.string()
     .required(`${localized.t("ADDRESS_IS_REQUIRED")}`)
     .matches(/\w*[a-z]\w*/, `${localized.t("ONLY_ALPHABETS_ARE_ALLOWED")}`),
@@ -121,18 +115,10 @@ export const AddDonations = Yup.object().shape({
     ),
 });
 
-//addVolunteerATAnEvent
-
 export const addVolunteer = Yup.object().shape({
   name: Yup.string()
     .required(`${localized.t("VOLUNTEER_NAME_IS_REQUIRED")}`)
     .matches(/\w*[a-z]\w*/, `${localized.t("ONLY_ALPHABETS_ARE_ALLOWED")}`),
-  // volunteerFullAddress: Yup.string()
-  // .required("Address is required")
-  //   // .matches(/\w*[a-z]\w*/, "Only alphabets are allowed"),
-  // address: Yup.string()
-  //   .required(`${localized.t("Address is required")}`)
-  //   .matches(/\w*[a-z]\w*/, `${localized.t("ONLY_ALPHABETS_ARE_ALLOWED")}`),
   phoneNumber: Yup.string()
     .required(`${localized.t("THIS_FIELD_IS_REQUIRED")}`)
     .matches(/^[0-9]+$/, {

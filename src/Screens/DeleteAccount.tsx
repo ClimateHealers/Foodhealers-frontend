@@ -32,21 +32,9 @@ const DeleteAccount = () => {
       setShowModal(true);
     }
   };
-  // const logout = async () => {
-  //   // persistor.purge()
-  //   await dispatch(logOut({}) as any);
-  //   await removeAuthData();
-  //   navigation.dispatch(
-  //     CommonActions.reset({
-  //       index: 0,
-  //       routes: [{ name: "LoginScreen" }],
-  //     })
-  //   );
-  // };
 
   const navigateToLoginScreen = () => {
     setShowModal(false);
-    // await removeAuthData()
     navigation.dispatch(
       CommonActions.reset({
         index: 0,
@@ -149,7 +137,6 @@ const DeleteAccount = () => {
                 <View style={{ alignItems: "center", marginTop: hp2dp("2%") }}>
                   <TouchableOpacity
                     onPress={
-                      // setShowModal(false);
                       navigateToLoginScreen
                     }
                   >

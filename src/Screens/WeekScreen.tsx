@@ -305,7 +305,6 @@ const WeekScreen = ({ route }: any) => {
                     rowTextStyle={styles.dropdown1RowTxtStyle}
                     data={lang && lang.map((dd) => dd.label)}
                     onSelect={changeLanguage}
-                    // defaultButtonText={"EN"}
                     defaultButtonText={selectedLanguage.toUpperCase()}
                     buttonTextAfterSelection={(itemValue, index) => {
                       return languageName.toUpperCase();
@@ -371,7 +370,6 @@ const WeekScreen = ({ route }: any) => {
                 <TouchableOpacity onPress={focusCurrentLocation}>
                   <Text
                     style={{
-                      // marginLeft: w2dp(5),
                       color: "orange",
                       textDecorationLine: "underline",
                       marginTop: h2dp(1),
@@ -393,12 +391,6 @@ const WeekScreen = ({ route }: any) => {
                     height: "65%",
                     marginHorizontal: w2dp(-4),
                   }}
-                  // initialRegion={{
-                  //   latitude:  currentLatitude,
-                  //   longitude:  currentLongitude,
-                  //   latitudeDelta: LATITUDE_DELTA,
-                  //   longitudeDelta: LONGITUDE_DELTA,
-                  // }}
                   showsUserLocation={true}
                 >
                   {address ? (

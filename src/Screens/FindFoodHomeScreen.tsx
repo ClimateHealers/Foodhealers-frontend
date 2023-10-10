@@ -198,7 +198,6 @@ const FindFoodHomeScreen = ({ route }: any) => {
                         key={marker?.id}
                         pinColor="#00693D"
                         coordinate={coordinates}
-                        // onPress={() => navigateToEvent(marker)}
                         style={{ borderRadius: 20 }}
                       >
                         <View>

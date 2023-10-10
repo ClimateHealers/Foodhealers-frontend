@@ -142,7 +142,6 @@ const VolunteerTabScreen = () => {
           <Text
             style={{
               marginLeft: w2dp(3),
-              // width: w2dp(46),
               fontSize: 16,
               lineHeight: 30,
               paddingTop: h2dp(0.5),
@@ -153,7 +152,6 @@ const VolunteerTabScreen = () => {
           <Text
             style={{
               marginLeft: w2dp(3),
-              // width: w2dp(52),
               fontWeight: "500",
               fontSize: 16,
               lineHeight: 30,
@@ -165,7 +163,6 @@ const VolunteerTabScreen = () => {
           <Text
             style={{
               marginLeft: w2dp(3),
-              // width: w2dp(47),
               fontWeight: "200",
               fontSize: 16,
               lineHeight: 20,

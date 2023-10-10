@@ -443,7 +443,6 @@ const AddVolunteerToEvent = ({ route }: any) => {
                               style={{
                                 color: "black",
                                 fontSize: 13,
-                                // width: 200,
                                 marginBottom: 5,
                                 marginLeft: 15,
                               }}
@@ -454,7 +453,6 @@ const AddVolunteerToEvent = ({ route }: any) => {
                               style={{
                                 color: "black",
                                 fontSize: 13,
-                                // width: 200,
                                 marginBottom: 5,
                                 marginLeft: 15,
                               }}
@@ -533,7 +531,6 @@ const AddVolunteerToEvent = ({ route }: any) => {
                               style={{
                                 color: "black",
                                 fontSize: 13,
-                                // width: 200,
                                 marginBottom: 5,
                                 marginLeft: 15,
                               }}
@@ -544,7 +541,6 @@ const AddVolunteerToEvent = ({ route }: any) => {
                               style={{
                                 color: "black",
                                 fontSize: 13,
-                                // width: 200,
                                 marginBottom: 5,
                                 marginLeft: 15,
                               }}
@@ -573,7 +569,6 @@ const AddVolunteerToEvent = ({ route }: any) => {
                       </TouchableOpacity>
                       <TouchableOpacity
                         disabled={true}
-                        // onPress={() => setShowEndTimePicker(true)}
                       >
                         <View
                           style={[
@@ -597,7 +592,6 @@ const AddVolunteerToEvent = ({ route }: any) => {
                               style={{
                                 color: "black",
                                 fontSize: 13,
-                                // width: 200,
                                 marginBottom: 5,
                                 marginLeft: 15,
                               }}
