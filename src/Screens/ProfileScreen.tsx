@@ -64,7 +64,7 @@ const ProfileScreen = () => {
     setMenuOpen(false);
   };
   const logout = async () => {
-    await dispatch(logOut({}) as any);
+    await dispatch(logOut({} as any) as any);
     await removeAuthData();
     navigation.dispatch(
       CommonActions.reset({
@@ -144,7 +144,6 @@ const ProfileScreen = () => {
               style={styles.circleAvatar}
             >
               <Badge style={styles.notificatioAvatarLogo}>
-                {/* {notificationList?.data ? notificationList?.data?.length : 0} */}
                 0
               </Badge>
 
@@ -486,7 +485,6 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     width: Platform?.OS == "ios" ? wp2dp("17%") : wp2dp("10.5%"),
     height: hp2dp("5%"),
-    // backgroundColor: "white",
     alignItems: "center",
     justifyContent: "center",
     zIndex: 1,

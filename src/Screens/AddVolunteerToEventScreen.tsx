@@ -101,7 +101,7 @@ const AddVolunteerToEvent = ({ route }: any) => {
     if (moment(endDate).isBefore(moment(selectedDate).add(1, "hour"))) {
       Alert.alert(
         `${localized.t("ALERT")}`,
-        `You can't select a time before ${moment(selectedDate)
+        `${localized.t("YOU_CANT_SELECT_A_TIME_BEFORE")} ${moment(selectedDate)
           .add(1, "hour")
           .format("MMM DD, YYYY hh:mm A")}`
       );
@@ -215,16 +215,16 @@ const AddVolunteerToEvent = ({ route }: any) => {
                       setLoading(false);
                       setResponse({
                         loading: false,
-                        message: "Volunteer registerd successfully",
+                        message: `${localized.t("VOLUNTEER_REGISTERED_SUCCESSFULLY")}`,
                         error: false,
                       });
                       setLoading(false);
                       Alert.alert(
-                        "Thank you for your support!",
-                        "You have been successfully added to volunteer in this event.",
+                        `${localized.t("THANK_YOU_FOR_YOUR_SUPPORT")}`,
+                        `${localized.t("YOU_HAVE_BEEN_SUCCESSFULLY_ADDED_TO_VOLUNTEER")}`,
                         [
                           {
-                            text: "OK",
+                            text: `${localized.t("OK")}`,
                             onPress: () =>
                               navigation.dispatch(
                                 CommonActions.reset({
@@ -252,7 +252,7 @@ const AddVolunteerToEvent = ({ route }: any) => {
                         `${res?.payload}`,
                         [
                           {
-                            text: "ok",
+                            text: `${localized.t("OK")}`,
                             style: "cancel",
                           },
                         ],
@@ -267,9 +267,9 @@ const AddVolunteerToEvent = ({ route }: any) => {
                       error: true,
                     });
                     Alert.alert(
-                      "Volunteer not added",
+                      `${localized.t("VOLUNTEER_NOT_ADDED")}`,
                       `${err.message}`,
-                      [{ text: "OK" }],
+                      [{ text: `${localized.t("OK")}`}],
                       { cancelable: false }
                     );
                   }
@@ -443,7 +443,6 @@ const AddVolunteerToEvent = ({ route }: any) => {
                               style={{
                                 color: "black",
                                 fontSize: 13,
-                                // width: 200,
                                 marginBottom: 5,
                                 marginLeft: 15,
                               }}
@@ -454,7 +453,6 @@ const AddVolunteerToEvent = ({ route }: any) => {
                               style={{
                                 color: "black",
                                 fontSize: 13,
-                                // width: 200,
                                 marginBottom: 5,
                                 marginLeft: 15,
                               }}
@@ -533,7 +531,6 @@ const AddVolunteerToEvent = ({ route }: any) => {
                               style={{
                                 color: "black",
                                 fontSize: 13,
-                                // width: 200,
                                 marginBottom: 5,
                                 marginLeft: 15,
                               }}
@@ -544,7 +541,6 @@ const AddVolunteerToEvent = ({ route }: any) => {
                               style={{
                                 color: "black",
                                 fontSize: 13,
-                                // width: 200,
                                 marginBottom: 5,
                                 marginLeft: 15,
                               }}
@@ -573,7 +569,6 @@ const AddVolunteerToEvent = ({ route }: any) => {
                       </TouchableOpacity>
                       <TouchableOpacity
                         disabled={true}
-                        // onPress={() => setShowEndTimePicker(true)}
                       >
                         <View
                           style={[
@@ -597,7 +592,6 @@ const AddVolunteerToEvent = ({ route }: any) => {
                               style={{
                                 color: "black",
                                 fontSize: 13,
-                                // width: 200,
                                 marginBottom: 5,
                                 marginLeft: 15,
                               }}

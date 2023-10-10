@@ -170,7 +170,25 @@
     "THIS_FIELD_IS_REQUIRED":"ਇਹ ਖੇਤਰ ਲੋੜਦਾ ਹੈ",
     "VOLUNTEER_NAME_IS_REQUIRED":"ਸੇਵਾਦਾਰ ਦਾ ਨਾਮ ਲੋੜ ਹੈ",
     "ADDRESS_IS_REQUIRED":"ਐਡਰੈੱਸ ਦੀ ਲੋੜ ਹੈ",
-    "THIS_FIELD_MUST_BE_AT_LEAST":"ਇਸ ਖੇਤਰ ਵਿੱਚ ਘਟਨਾਵਾਂ ਤੋਂ ਕਮ ਹੋਣੀ ਚਾਹੀਦੀ ਹੈ,"
-
+    "THIS_FIELD_MUST_BE_AT_LEAST":"ਇਸ ਖੇਤਰ ਵਿੱਚ ਘਟਨਾਵਾਂ ਤੋਂ ਕਮ ਹੋਣੀ ਚਾਹੀਦੀ ਹੈ,",
+    "DONATION_HISTORY": "ਦਾਨ ਦਾ ਇਤਿਹਾਸ",
+    "CANCEL": "ਰੱਦ ਕਰੋ",
+    "NAVIGATE": "ਨੈਵੀਗੇਟ",
+    "DO_YOU_WANT_TO_NAVIGATE_TO_GOOGLE_MAPS": "ਕੀ ਤੁਸੀਂ ਗੂਗਲ ਮੈਪਸ 'ਤੇ ਨੈਵੀਗੇਟ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ?",
+    "NAVIGATE_TO": "ਨੈਵੀਗੇਟ ਕਰੋ",
+    "EVENT": "ਇਵੇਂਟ",
+    "VOLUNTEER_REGISTERED_SUCCESSFULLY": "ਸੇਵਾਦਾਰ ਸਫਲਤਾਪੂਰਵਕ ਰਜਿਸਟਰ ਹੋਇਆ.",
+    "THANK_YOU_FOR_YOUR_SUPPORT":"ਤੁਹਾਡੇ ਸਹਿਯੋਗ ਲਈ ਧੰਨਵਾਦ!",
+    "YOU_HAVE_BEEN_SUCCESSFULLY_ADDED_TO_VOLUNTEER":"ਤੁਸੀਂ ਇਸ ਈਵੈਂਟ ਵਿੱਚ ਸੇਵਾਦਾਰ ਵਜੋਂ ਸਫਲਤਾਪੂਰਵਕ ਸ਼ਾਮਿਲ ਹੋ ਗਏ ਹੋ।",
+    "VOLUNTEER_NOT_ADDED":"ਸੇਵਾਦਾਰ ਨਹੀਂ ਜੋੜਿਆ ਗਿਆ।",
+    "YOU_CANT_SELECT_A_TIME_BEFORE":"ਤੁਸੀਂ ਇਸ ਤੋਂ ਪਹਿਲਾਂ ਕੋਈ ਸਮਾਂ ਚੁਣ ਨਹੀਂ ਸਕਦੇ",
+    "DONATION_ADDED_SUCCESSFULLY_THAN_YOU_FOR_DONATION":"ਦਾਨ ਸਫਲਤਾਪੂਰਵਕ ਜੋੜਿਆ ਗਿਆ ਹੈ, ਤੁਹਾਡੇ ਡੋਨੇਸ਼ਨ ਲਈ ਧੰਨਵਾਦ!",
+    "WH_HAVE_SUCCESSFULLY_ADDED_YOUR_DONATION":" ਅਸੀਂ ਤੁਹਾਡੇ ਡੋਨੇਸ਼ਨ ਨੂੰ ਸਫਲਤਾਪੂਰਵਕ ਜੋੜ ਲਿਆ ਹੈ।",
+    "DONATION_NOT_ADDED":"ਡੋਨੇਸ਼ਨ ਨਹੀਂ ਜੋੜਿਆ ਗਿਆ ਹੈ।",
+    "PLEASE_ENTER_THE_FULL_ADDRESS":"ਕਿਰਪਾ ਕਰਕੇ ਪੂਰਾ ਪਤਾ ਦਰਜ ਕਰੋ।",
+    "ALL_DAYS": "ਸਭ ਦਿਨ",
+    "RESET_LINK_SENT_SUCCESSFULLY": "ਰੀਸੈੱਟ ਲਿੰਕ ਸਫਲਤਾਪੂਰਵਕ ਭੇਜਿਆ ਗਿਆ ਹੈ",
+    "WE_HAVE_SUCCESSFULLY_SENT_THE_RESET_LINK_TO_THE_REGISTERED_EMAIL":"ਅਸੀਂ ਸਫਲਤਾਪੂਰਵਕ ਰਜਿਸਟਰ ਹੋਏ ਈਮੇਲ 'ਤੇ ਰੀਸੈੱਟ ਲਿੰਕ ਭੇਜਿਆ ਹੈ।",
+    "EMAIL_NOT_FOUND":"ਈਮੇਲ ਨਹੀਂ ਲੱਭਿਆ ਗਿਆ।"
   }
 }

@@ -98,7 +98,6 @@ const VolunteerDonateScreen = ({ route }: any) => {
                   style={{
                     color: "white",
                     fontSize: h2dp(3),
-                    // marginLeft: w2dp(5),
                     textAlign: "center",
                   }}
                 >

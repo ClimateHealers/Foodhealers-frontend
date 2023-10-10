@@ -304,7 +304,6 @@ const SingleEventDetails = ({ route }: any) => {
                     </View>
                   )}
                 </View>
-                {/* )} */}
               </View>
             </View>
           </ScrollView>

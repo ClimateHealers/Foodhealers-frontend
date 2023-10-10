@@ -4,7 +4,6 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function LinkingDemo() {
   const handleOpenURL = (event: { url: string }) => {
-    // Handle deep linking URL here
     console.log(event.url);
   };
 
@@ -12,20 +11,16 @@ export default function LinkingDemo() {
     const supported = await Linking.canOpenURL("foodhealers://some/path");
 
     if (supported) {
-      // Use deep linking to navigate to another screen in your app
       await Linking.openURL("foodhealers://some/path");
     } else {
-      // Use regular linking to navigate to a website or external app
       await Linking.openURL(url);
       // await Linking.openURL('https://www.apple.com');
     }
   };
 
   useEffect(() => {
-    // Add event listener for deep linking
     const subs = Linking.addEventListener("url", handleOpenURL);
 
-    // Remove event listener when component unmounts
     return () => subs.remove();
   }, []);
 

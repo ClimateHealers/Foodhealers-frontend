@@ -60,11 +60,9 @@ const EventPhotosScreen = ({ route }: any) => {
       }
     });
     setMenuOpen(false);
-    // navigation.navigate("MapScreen");
   };
   const logout = async (item: any) => {
-    // persistor.purge()
-    await dispatch(logOut({}) as any);
+    await dispatch(logOut({} as any) as any);
     await removeAuthData();
     navigation.dispatch(
       CommonActions.reset({
@@ -90,7 +88,6 @@ const EventPhotosScreen = ({ route }: any) => {
   formData.append("eventEndDate", eventFormData?.eventEndDateTime);
   formData.append("additionalInfo", eventFormData?.served);
   formData.append("requiredVolunteers", eventFormData?.volunteers);
-  // formData.append("files",photo)
   formData.append("files", {
     uri: singlePhoto,
     type: "image/jpeg",

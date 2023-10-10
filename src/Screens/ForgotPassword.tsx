@@ -102,8 +102,8 @@ function ForgotPassword() {
                     });
                     setLoading(false);
                     Alert.alert(
-                      "Reset Link sent successfully",
-                      "We have successfully sent the reset link to the registered email.",
+                      `${localized.t("RESET_LINK_SENT_SUCCESSFULLY")}`,
+                      `${localized.t("WE_HAVE_SUCCESSFULLY_SENT_THE_RESET_LINK_TO_THE_REGISTERED_EMAIL")}`,
                       [
                         {
                           text: `${localized.t("OK")}`,
@@ -120,7 +120,7 @@ function ForgotPassword() {
                       error: true,
                     });
                     Alert.alert(
-                      "Email not found",
+                      `${localized.t("EMAIL_NOT_FOUND")}`,
                       `${err.message}`,
                       [{ text: `${localized.t("OK")}` }],
                       { cancelable: false }
@@ -200,7 +200,6 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   container2: {
-    // marginTop: 100,
   },
   header: {
     fontSize: 25,

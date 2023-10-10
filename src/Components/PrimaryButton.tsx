@@ -16,7 +16,6 @@ const PrimaryButton = ({ onPress, title, buttonStyle, titleStyle, disabled }: an
 
 const styles = StyleSheet.create({
   buttonStyles: {
-    // backgroundColor: "#5FBB3F",
     color: "black",
     borderRadius: 5,
     width: 190,

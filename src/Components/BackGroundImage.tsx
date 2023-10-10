@@ -9,7 +9,6 @@ const BackgroundImg = () => {
     <View>
       <ImageBackground
         source={require("../../assets/homeImage2.jpg")}
-        // resizeMode="stretch"
         style={styles.img}
       ></ImageBackground>
     </View>

@@ -170,6 +170,26 @@
     "THIS_FIELD_IS_REQUIRED":"This field is required",
     "VOLUNTEER_NAME_IS_REQUIRED":"Volunteer Name is required",
     "ADDRESS_IS_REQUIRED":"Address is required",
-    "THIS_FIELD_MUST_BE_AT_LEAST":"This field must be at least"
+    "THIS_FIELD_MUST_BE_AT_LEAST":"This field must be at least",
+    "DONATION_HISTORY": "Donation History",
+    "CANCEL": "Cancel",
+    "NAVIGATE": "Navigate",
+    "DO_YOU_WANT_TO_NAVIGATE_TO_GOOGLE_MAPS": "Do you want to navigate to Google maps ?",
+    "NAVIGATE_TO": "Navigate to",
+    "EVENT": "event",
+    "VOLUNTEER_REGISTERED_SUCCESSFULLY": "Volunteer registerd successfully",
+    "THANK_YOU_FOR_YOUR_SUPPORT":"Thank you for your support!",
+    "YOU_HAVE_BEEN_SUCCESSFULLY_ADDED_TO_VOLUNTEER":"You have been successfully added to volunteer in this event.",
+    "VOLUNTEER_NOT_ADDED":"Volunteer not added.",
+    "YOU_CANT_SELECT_A_TIME_BEFORE":"You can't select a time before",
+    "DONATION_ADDED_SUCCESSFULLY":"Donation added successfully.",
+    "THAN_YOU_FOR_DONATION":"Thank you for your donation!",
+    "WH_HAVE_SUCCESSFULLY_ADDED_YOUR_DONATION":"We have successfully added your donation.",
+    "DONATION_NOT_ADDED":"Donation not added",
+    "PLEASE_ENTER_THE_FULL_ADDRESS":"Please enter the full address.",
+    "ALL_DAYS": "All Days",
+    "RESET_LINK_SENT_SUCCESSFULLY": "Reset link sent successfully.",
+    "WE_HAVE_SUCCESSFULLY_SENT_THE_RESET_LINK_TO_THE_REGISTERED_EMAIL":"We have successfully sent the reset link to the registered email.",
+    "EMAIL_NOT_FOUND":"Email not found"
   }
 }

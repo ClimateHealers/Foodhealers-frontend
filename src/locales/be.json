@@ -170,6 +170,26 @@
     "THIS_FIELD_IS_REQUIRED":"এই ক্ষেত্রটি প্রয়োজন",
     "VOLUNTEER_NAME_IS_REQUIRED":"সেবাদার নাম প্রয়োজন",
     "ADDRESS_IS_REQUIRED":"ঠিকানা প্রয়োজন",
-    "THIS_FIELD_MUST_BE_AT_LEAST":"এই ক্ষেত্রটি কমপক্ষে"
+    "THIS_FIELD_MUST_BE_AT_LEAST":"এই ক্ষেত্রটি কমপক্ষে",
+    "DONATION_HISTORY": "দানের ইতিহাস",
+    "CANCEL": "বাতিল",
+    "NAVIGATE": "নেভিগেট",
+    "DO_YOU_WANT_TO_NAVIGATE_TO_GOOGLE_MAPS": "আপনি গুগল ম্যাপসে নেভিগেট করতে চান?",
+    "NAVIGATE_TO": "নেভিগেট করুন",
+    "EVENT": "ইভেন্ট",
+    "VOLUNTEER_REGISTERED_SUCCESSFULLY": "স্বেচ্ছাসেবক সফলভাবে নিবন্ধিত হয়েছে",
+    "THANK_YOU_FOR_YOUR_SUPPORT":"আপনার সাহায্যের জন্য ধন্যবাদ!",
+    "YOU_HAVE_BEEN_SUCCESSFULLY_ADDED_TO_VOLUNTEER":"আপনি এই ইভেন্টে স্বেচ্ছাসেবক হিসেবে সফলভাবে যোগ করা হয়েছে।",
+    "VOLUNTEER_NOT_ADDED":"স্বেচ্ছাসেবক যোগ করা হয়নি।",
+    "YOU_CANT_SELECT_A_TIME_BEFORE":"আপনি একটি সময় নির্বাচন করতে পারবেন না",
+    "DONATION_ADDED_SUCCESSFULLY":"দান সফলভাবে যোগ করা হয়েছে",
+    "THAN_YOU_FOR_DONATION":"আপনার দানের জন্য ধন্যবাদ!",
+    "WH_HAVE_SUCCESSFULLY_ADDED_YOUR_DONATION":"আমরা আপনার দানটি সফলভাবে যোগ করেছি।",
+    "DONATION_NOT_ADDED":"দান যোগ করা হয়নি।",
+    "PLEASE_ENTER_THE_FULL_ADDRESS":"দয়া করে পূর্ণ ঠিকানা লিখুন।",
+    "ALL_DAYS": "সমস্ত দিন",
+    "RESET_LINK_SENT_SUCCESSFULLY": "রিসেট লিঙ্কটি সফলভাবে পাঠানো হয়েছে",
+    "WE_HAVE_SUCCESSFULLY_SENT_THE_RESET_LINK_TO_THE_REGISTERED_EMAIL":"আমরা সফলভাবে নিবন্ধিত ইমেইলে রিসেট লিঙ্কটি প্রেরণ করেছি।",
+    "EMAIL_NOT_FOUND":"ইমেইল পাওয়া যায়নি।"
   }
 }

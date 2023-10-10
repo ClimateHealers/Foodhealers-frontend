@@ -1,4 +1,10 @@
-import { AntDesign, Feather, FontAwesome, Ionicons } from "@expo/vector-icons";
+import {
+  AntDesign,
+  Feather,
+  FontAwesome,
+  Ionicons,
+  MaterialIcons,
+} from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import moment from "moment";
@@ -8,6 +14,7 @@ import {
   Keyboard,
   ScrollView,
   Text,
+  TouchableOpacity,
   TouchableWithoutFeedback,
   View,
 } from "react-native";
@@ -26,10 +33,28 @@ import { fetchVolunteerAtEvent } from "../redux/actions/volunteerAction";
 
 const VolunteerEventHistoryScreen = ({ route }: any) => {
   const { itemTypeId, title } = route?.params;
-  const [volunteerData, setVolunteerData] = useState<[]>([]);
+  const [volunteerData, setVolunteerData]: any = useState<[]>([]);
   useEffect(() => {
     fetchingVolunteerEventData();
+    sortByDate();
   }, []);
+
+  const [order, setOrder] = useState<"ASC" | "DESC">("ASC");
+  const sortByDate = () => {
+    const postListFiltered = [...volunteerData].sort((a: any, b: any) => {
+      const dateA = new Date(a?.fromDate);
+      const dateB = new Date(b?.fromDate);
+
+      if (order === "ASC") {
+        return dateA?.valueOf() - dateB?.valueOf();
+      } else {
+        return dateB?.valueOf() - dateA?.valueOf();
+      }
+    });
+    setVolunteerData(postListFiltered);
+    const newOrder = order === "ASC" ? "DESC" : "ASC";
+    setOrder(newOrder);
+  };
 
   const dispatch = useDispatch();
 
@@ -40,151 +65,114 @@ const VolunteerEventHistoryScreen = ({ route }: any) => {
 
   const navigation: any = useNavigation();
 
-  const [langOpen, setlangOpen] = useState(false);
-  const [lang, setLang] = useState([
-    { id: 1, label: "French", value: "fr" },
-    { id: 2, label: "Hindi", value: "hi" },
-    { id: 3, label: "Bengali", value: "be" },
-    { id: 4, label: "Chinese", value: "ch" },
-    { id: 5, label: "Mandarin", value: "ma" },
-    { id: 6, label: "Punjabi", value: "pu" },
-    { id: 7, label: "English", value: "en" },
-    { id: 8, label: "Spanish", value: "es" },
-  ]);
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [selectedLanguage, setSelectedLanguage] = useState(localized.locale);
-
-  const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
-  };
-
   const handlePressOutside = () => {
-    setlangOpen(false);
     Keyboard.dismiss();
   };
-  const handleMenuItemPress = (item: any) => {
-    setMenuOpen(false);
-    navigation.navigate("HomeScreen");
-  };
-  const findFoodMenuItemPress = (item: any) => {
-    getLocation().then((res) => {
-      if (res) {
-        navigation?.navigate("MapScreen", {
-          latitude: res?.latitude,
-          longitude: res?.longitude,
-        });
-      }
-    });
-    setMenuOpen(false);
-  };
+
   const Item = ({ status, fromDate, name, address, id }: any) => (
-    <View style={styles.cardContainer}>
-      {status === "approved" ? (
-        <View>
-          <AntDesign
-            name="checkcircleo"
-            size={24}
-            color="green"
-            style={{
-              marginLeft: h2dp(2.5),
-              marginTop: h2dp(1.5),
-            }}
-          />
-          <Text
-            style={{
-              marginLeft: h2dp(1.5),
-              fontSize: 11,
-              color: "green",
-              marginTop: h2dp(0.5),
-            }}
-          >
-            {localized.t("APPROVED")}
-          </Text>
-        </View>
-      ) : status === "pending" ? (
-        <View>
-          <FontAwesome
-            name="clock-o"
-            size={24}
-            color="#f2db0a"
-            style={{
-              marginLeft: h2dp(2.3),
-              marginTop: h2dp(1.5),
-            }}
-          />
-          <Text
-            style={{
-              marginLeft: h2dp(1.5),
-              fontSize: 11,
-              color: "#f2db0a",
-              marginTop: h2dp(0.5),
-            }}
-          >
-            {localized.t("PENDING")}
-          </Text>
-        </View>
-      ) : (
-        <View>
-          <Feather
-            name="x-circle"
-            size={24}
-            color="red"
-            style={{ marginLeft: h2dp(2.3), marginTop: h2dp(1.5) }}
-          />
-          <Text
-            style={{
-              marginLeft: h2dp(1.5),
-              fontSize: 11,
-              color: "red",
-              marginTop: h2dp(0.5),
-            }}
-          >
-            {localized.t("REJECTED")}
-          </Text>
-        </View>
-      )}
+    <TouchableOpacity activeOpacity={1}>
+      <View style={styles.cardContainer}>
+        {status === "approved" ? (
+          <View>
+            <AntDesign
+              name="checkcircleo"
+              size={24}
+              color="green"
+              style={{
+                marginLeft: h2dp(2.5),
+                marginTop: h2dp(1.5),
+              }}
+            />
+            <Text
+              style={{
+                marginLeft: h2dp(1.5),
+                fontSize: 11,
+                color: "green",
+                marginTop: h2dp(0.5),
+              }}
+            >
+              {localized.t("APPROVED")}
+            </Text>
+          </View>
+        ) : status === "pending" ? (
+          <View>
+            <FontAwesome
+              name="clock-o"
+              size={24}
+              color="#f2db0a"
+              style={{
+                marginLeft: h2dp(2.3),
+                marginTop: h2dp(1.5),
+              }}
+            />
+            <Text
+              style={{
+                marginLeft: h2dp(1.5),
+                fontSize: 11,
+                color: "#f2db0a",
+                marginTop: h2dp(0.5),
+              }}
+            >
+              {localized.t("PENDING")}
+            </Text>
+          </View>
+        ) : (
+          <View>
+            <Feather
+              name="x-circle"
+              size={24}
+              color="red"
+              style={{ marginLeft: h2dp(2.3), marginTop: h2dp(1.5) }}
+            />
+            <Text
+              style={{
+                marginLeft: h2dp(1.5),
+                fontSize: 11,
+                color: "red",
+                marginTop: h2dp(0.5),
+              }}
+            >
+              {localized.t("REJECTED")}
+            </Text>
+          </View>
+        )}
 
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <Text
-          style={{
-            marginLeft: w2dp(3),
-            fontSize: 16,
-            lineHeight: 30,
-            paddingTop: h2dp(0.5),
-          }}
-        >
-          {moment(fromDate).format("MMM DD, YYYY  ddd, hh:mm A")}
-        </Text>
-        <Text
-          style={{
-            marginLeft: w2dp(3),
-            fontWeight: "500",
-            fontSize: 16,
-            lineHeight: 30,
-          }}
-        >
-          {name}
-        </Text>
-        <Text
-          style={{
-            marginLeft: w2dp(3),
-            fontWeight: "300",
-            fontSize: 16,
-            lineHeight: 20,
-            paddingBottom: h2dp(1),
-          }}
-        >
-          {address}
-        </Text>
-      </ScrollView>
-    </View>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <Text
+            style={{
+              marginLeft: w2dp(3),
+              fontSize: 16,
+              lineHeight: 30,
+              paddingTop: h2dp(0.5),
+            }}
+          >
+            {moment(fromDate).format("MMM DD, YYYY  ddd, hh:mm A")}
+          </Text>
+          <Text
+            style={{
+              marginLeft: w2dp(3),
+              fontWeight: "500",
+              fontSize: 16,
+              lineHeight: 30,
+            }}
+          >
+            {name}
+          </Text>
+          <Text
+            style={{
+              marginLeft: w2dp(3),
+              fontWeight: "300",
+              fontSize: 16,
+              lineHeight: 20,
+              paddingBottom: h2dp(1),
+            }}
+          >
+            {address}
+          </Text>
+        </ScrollView>
+      </View>
+    </TouchableOpacity>
   );
-
-  const changeLanguage = (itemValue: any, index: any) => {
-    const selectedLanguage = lang[index].value;
-    localized.locale = selectedLanguage;
-    setSelectedLanguage(selectedLanguage);
-  };
 
   return (
     <TouchableWithoutFeedback onPress={handlePressOutside}>
@@ -205,7 +193,7 @@ const VolunteerEventHistoryScreen = ({ route }: any) => {
                 />
                 <View style={styles.item}>
                   <Text style={styles.itemText}>
-                    {localized.t("EVENT_HISTORY")}
+                    {localized.t("VOLUNTEER")} {localized.t("EVENT_HISTORY")}
                   </Text>
                 </View>
                 <BurgerIcon />
@@ -215,9 +203,23 @@ const VolunteerEventHistoryScreen = ({ route }: any) => {
                   <Text style={styles.itemFilterText}>
                     {localized.t("ALL_HISTORY")}
                   </Text>
-                  <Text style={styles.itemFilterText}>
-                    {localized.t("FILTER")}
-                  </Text>
+                  <TouchableOpacity
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                    onPress={sortByDate}
+                  >
+                    <Text style={styles.itemFilterText}>
+                      {localized.t("FILTER")}
+                    </Text>
+                    <MaterialIcons
+                      name="filter-list-alt"
+                      style={styles.itemFilterText}
+                    />
+                  </TouchableOpacity>
                 </View>
                 <ScrollView style={{ flex: 1 }}>
                   <FlatList

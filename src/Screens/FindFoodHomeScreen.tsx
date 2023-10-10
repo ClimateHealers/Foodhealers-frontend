@@ -136,7 +136,6 @@ const FindFoodHomeScreen = ({ route }: any) => {
           <SafeAreaView style={styles.container}>
             <FoodhealersHeader />
             <View style={styles.row}>
-              {/* <View style={styles.dropdownContainer}></View> */}
               <Ionicons
                 name="chevron-back"
                 size={32}
@@ -148,75 +147,81 @@ const FindFoodHomeScreen = ({ route }: any) => {
               </View>
               <BurgerIcon />
             </View>
-            <MapView
+            <TouchableOpacity
+              style={[styles.touchableView]}
               onPress={clickHandler}
-              ref={mapRef}
-              provider={"google"}
-              style={{
-                position: "relative",
-                alignSelf: "center",
-                height: Platform.OS === "ios" ? "18%" : "18%",
-                width: Platform.OS === "ios" ? "100%" : "100%",
-                borderRadius: 15,
-              }}
-              initialRegion={{
-                latitude: currentlat,
-                longitude: currentlong,
-                latitudeDelta: LATITUDE_DELTA,
-                longitudeDelta: LONGITUDE_DELTA,
-              }}
-              showsUserLocation={true}
             >
-              {/* <Text style = {{textAlign:"center",fontSize:h2dp(3),fontWeight:"300",marginTop:h2dp(0.5)}}>Today</Text> */}
-
-              <Marker
-                pinColor="#FC5A56"
-                coordinate={{
-                  latitude: latitude ? latitude : 0,
-                  longitude: lng ? lng : 0,
-                  latitudeDelta: LATITUDE_DELTA,
-                  longitudeDelta: LONGITUDE_DELTA,
-                }}
-                title={localized.t("SELECTED_LOCATION")}
+              <View
+                style={[styles.mapcontainerView]}
               >
-                <Image
-                  source={require("../../assets/currentLocationPin.png")}
-                  style={styles.markerIcon}
-                />
-              </Marker>
-
-              {events?.map((marker: any) => {
-                const coordinates = {
-                  latitude: marker?.address?.lat,
-                  longitude: marker?.address?.lng,
-                };
-                return (
+                <MapView
+                  ref={mapRef}
+                  provider={"google"}
+                  style={{
+                    position: "relative",
+                    alignSelf: "center",
+                    height: Platform.OS === "ios" ? "100%" : "100%",
+                    width: Platform.OS === "ios" ? "100%" : "100%",
+                    borderRadius: 15,
+                  }}
+                  initialRegion={{
+                    latitude: currentlat,
+                    longitude: currentlong,
+                    latitudeDelta: LATITUDE_DELTA,
+                    longitudeDelta: LONGITUDE_DELTA,
+                  }}
+                  showsUserLocation={true}
+                >
                   <Marker
-                    key={marker?.id}
-                    pinColor="#00693D"
-                    coordinate={coordinates}
-                    // onPress={() => navigateToEvent(marker)}
+                    pinColor="#FC5A56"
+                    coordinate={{
+                      latitude: latitude ? latitude : 0,
+                      longitude: lng ? lng : 0,
+                      latitudeDelta: LATITUDE_DELTA,
+                      longitudeDelta: LONGITUDE_DELTA,
+                    }}
+                    title={localized.t("SELECTED_LOCATION")}
                   >
-                    <View>
-                      <Text
-                        style={{
-                          color: "#FC5A56",
-                          fontSize: 15,
-                          opacity: 0.8,
-                          fontWeight: "500",
-                        }}
-                      >
-                        {marker?.name}
-                      </Text>
-                      <Image
-                        source={require("../../assets/eventLocationPin.png")}
-                        style={styles.markerIcon}
-                      />
-                    </View>
+                    <Image
+                      source={require("../../assets/currentLocationPin.png")}
+                      style={styles.markerIcon}
+                    />
                   </Marker>
-                );
-              })}
-            </MapView>
+
+                  {events?.map((marker: any) => {
+                    const coordinates = {
+                      latitude: marker?.address?.lat,
+                      longitude: marker?.address?.lng,
+                    };
+                    return (
+                      <Marker
+                        key={marker?.id}
+                        pinColor="#00693D"
+                        coordinate={coordinates}
+                        style={{ borderRadius: 20 }}
+                      >
+                        <View>
+                          <Text
+                            style={{
+                              color: "#FC5A56",
+                              fontSize: 15,
+                              opacity: 0.8,
+                              fontWeight: "500",
+                            }}
+                          >
+                            {marker?.name}
+                          </Text>
+                          <Image
+                            source={require("../../assets/eventLocationPin.png")}
+                            style={styles.markerIcon}
+                          />
+                        </View>
+                      </Marker>
+                    );
+                  })}
+                </MapView>
+              </View>
+            </TouchableOpacity>
 
             <View
               style={{
@@ -301,10 +306,8 @@ const styles = StyleSheet.create({
     zIndex: 9999,
   },
   item: {
-    // width: "30%",
     height: 100,
     justifyContent: "center",
-    // alignItems: "center",
   },
   dropdownContainer: {
     marginTop: 15,
@@ -317,9 +320,6 @@ const styles = StyleSheet.create({
   itemText: {
     fontSize: 25,
     color: "white",
-  },
-  mapContainer: {
-    borderWidth: 1,
   },
   dropdown1BtnStyle: {
     marginTop: 15,
@@ -392,8 +392,18 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "center",
   },
+  mapcontainerView: {
+    height: "100%",
+    borderRadius: 15,
+    width: w2dp(90),
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    alignItems: "center",
+    overflow: 'hidden' 
+  },
   touchableView: {
-    height: "27%",
+    height: h2dp(17),
     borderRadius: 15,
     marginTop: h2dp(4),
     width: w2dp(90),

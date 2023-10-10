@@ -53,8 +53,6 @@ const HomeScreen = ({ route }: any) => {
 
   const windowWidth = Dimensions.get("window").width;
   const windowHeight = Dimensions.get("window").height;
-
-  console.log("windowHeightwindowHeightwindowHeight", windowHeight);
   const handlePressOutside = () => {
     setlangOpen(false);
   };
@@ -121,7 +119,7 @@ const HomeScreen = ({ route }: any) => {
     } else {
       Alert.alert(
         `${localized.t("REGISTRATION_REQUIRED")}`,
-        "Only a registered user can Post an Event. Please login.",
+        `${localized.t("ONLY_A_REGISTERED")}`,
         [
           {
             text: `${localized.t("LOGIN")}`,
@@ -131,7 +129,7 @@ const HomeScreen = ({ route }: any) => {
             style: "default",
           },
           {
-            text: "Cancel",
+            text: `${localized.t("CANCEL")}`,
             onPress: () => {},
             style: "default",
           },
@@ -172,7 +170,6 @@ const HomeScreen = ({ route }: any) => {
               rowTextStyle={styles.dropdown1RowTxtStyle}
               data={lang && lang.map((dd) => dd.label)}
               onSelect={changeLanguage}
-              // defaultButtonText={"EN"}
               defaultButtonText={selectedLanguage.toUpperCase()}
               buttonTextAfterSelection={(itemValue, index) => {
                 return languageName.toUpperCase();
@@ -207,20 +204,37 @@ const HomeScreen = ({ route }: any) => {
               onPress={() => {
                 if (data.isAuthenticated) {
                   if (volunteerData.length > 0 || donationData.length > 0) {
-                    navigation.navigate("VolunteerHomeScreen");
+                    navigation.navigate("VolunteerHomeScreen", {
+                      latitude: lat,
+                      longitude: long,
+                    });
                   } else {
-                    navigation.navigate("IntroSlider");
+                    navigation.navigate("IntroSlider", {
+                      latitude: lat,
+                      longitude: long,
+                    });
                   }
                 } else {
                   Alert.alert(
-                    `${localized.t("ALERT")}`,
-                    `${localized.t("PLEASE_LOGIN")}`,
+                    `${localized.t("REGISTRATION_REQUIRED")}`,
+                    `${localized.t("ONLY_A_REGISTERED")}`,
                     [
                       {
                         text: `${localized.t("LOGIN")}`,
-                        onPress: () => navigation.navigate("LoginScreen"),
+                        onPress: () => {
+                          navigation.navigate("LoginScreen");
+                        },
+                        style: "default",
                       },
-                    ]
+                      {
+                        text: `${localized.t("CANCEL")}`,
+                        onPress: () => {},
+                        style: "default",
+                      },
+                    ],
+                    {
+                      cancelable: true,
+                    }
                   );
                 }
               }}
@@ -288,9 +302,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     width: "100%",
-    // height: "100%",
-    // top:(windowHeight-50),
-    // bottom: h2dp(55),
     position: "absolute",
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,

@@ -92,7 +92,6 @@ const AllVolunteersScreen = ({ route }: any) => {
                 style={[styles.textInput, { width: w2dp(43) }]}
                 editable={false}
               />
-              {/* </View> */}
             </View>
             <View>
               <TextInput
@@ -176,7 +175,6 @@ const AllVolunteersScreen = ({ route }: any) => {
                   {moment(item?.fromDate).format("hh:mm A")}
                 </Text>
               </View>
-              {/* </View> */}
             </View>
             <View
               style={{
@@ -249,7 +247,6 @@ const AllVolunteersScreen = ({ route }: any) => {
                   {moment(item?.toDate).format("hh:mm A")}
                 </Text>
               </View>
-              {/* </View> */}
             </View>
             <View
               style={{

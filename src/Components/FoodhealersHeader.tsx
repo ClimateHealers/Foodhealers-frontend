@@ -5,7 +5,6 @@ import { styles } from "./Styles";
 const FoodhealersHeader = () => {
   return (
     <View style={styles.foodhealersHeader}>
-      {/* <Text style={styles.foodhearlerText}>foodhealers.org</Text> */}
     </View>
   );
 };

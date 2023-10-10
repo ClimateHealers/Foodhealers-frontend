@@ -102,7 +102,6 @@ const MapScreen = ({ route }: any) => {
 
   const clickHandler = () => {
     navigation.navigate("FindFoodHomeScreen", {
-      // location: location,
       currentlat: latitude,
       currentlong: longitude,
       city: city,
@@ -130,11 +129,11 @@ const MapScreen = ({ route }: any) => {
 
   const navigateToEvent = (event: any, eventName: any) => {
     Alert.alert(
-      `Navigate to ${eventName} event`,
-      "Do you want to navigate to Google maps ?",
+      `${localized.t("NAVIGATE_TO")} ${eventName} ${localized.t("EVENT")}`,
+      `${localized.t("DO_YOU_WANT_TO_NAVIGATE_TO_GOOGLE_MAPS")}`,
       [
         {
-          text: "Navigate",
+          text: `${localized.t("NAVIGATE")}`,
           onPress: () => {
             const url = `https://www.google.com/maps/dir/?api=1&origin=${lat},${long}&destination=${event?.latitude},${event?.longitude}`;
             Linking.openURL(url);
@@ -142,7 +141,7 @@ const MapScreen = ({ route }: any) => {
           style: "default",
         },
         {
-          text: "Cancel",
+          text: `${localized.t("CANCEL")}`,
           onPress: () => {},
           style: "default",
         },
@@ -183,7 +182,6 @@ const MapScreen = ({ route }: any) => {
                     rowTextStyle={styles.dropdown1RowTxtStyle}
                     data={lang && lang.map((dd) => dd.label)}
                     onSelect={changeLanguage}
-                    // defaultButtonText={"EN"}
                     defaultButtonText={selectedLanguage.toUpperCase()}
                     buttonTextAfterSelection={(itemValue, index) => {
                       return languageName.toUpperCase();
@@ -258,7 +256,6 @@ const MapScreen = ({ route }: any) => {
                     findFood(findFoodData as any) as any
                   );
                   const foodEvents = response?.payload?.results?.foodEvents;
-                  console.log("foodevents", foodEvents);
                   const verifiedFoodEvents = foodEvents?.filter(
                     (event: any) => event.status === "approved"
                   );
@@ -273,7 +270,7 @@ const MapScreen = ({ route }: any) => {
                 textInputProps={{ placeholderTextColor: "#000000" }}
                 listUnderlayColor="blue"
                 query={{
-                  key: API_KEY, //client
+                  key: API_KEY,
                   language: "en",
                 }}
                 styles={{
@@ -282,8 +279,6 @@ const MapScreen = ({ route }: any) => {
                     borderRadius: 3,
                     marginTop: 12,
                     width: "100%",
-                    // marginLeft: 15,
-                    marginBottom: 1,
                   },
                   description: {
                     color: "black",
@@ -291,8 +286,7 @@ const MapScreen = ({ route }: any) => {
                     width: "80%",
                   },
                   listView: {
-                    width: "92%",
-                    marginLeft: 15,
+                    width: "100%",
                     borderRadius: 3,
                     zIndex: 100,
                   },
@@ -313,7 +307,9 @@ const MapScreen = ({ route }: any) => {
                 }}
               />
 
-              <View style={styles.mapContainer}>
+              <View style={[styles.mapContainer, {
+                marginHorizontal: w2dp(-4),
+              }]}>
                 <MapView
                   ref={mapRef}
                   provider={"google"}
@@ -357,7 +353,6 @@ const MapScreen = ({ route }: any) => {
                         key={marker?.id}
                         pinColor="#00693D"
                         coordinate={coordinates}
-                        // onPress={() => navigateToEvent(coordinates, marker?.name)}
                       >
                         <View>
                           <Text

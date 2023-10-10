@@ -28,7 +28,8 @@ const slides = [
   },
 ];
 
-const IntroSlider = () => {
+const IntroSlider = ({ route }: any) => {
+  const [latitude, longitude] = route.params;
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
 
   const sliderRef: any = useRef(null);
@@ -83,7 +84,10 @@ const IntroSlider = () => {
         title={localized.t("DONE")}
         color="#5FBB3F"
         onPress={() => {
-          navigation.navigate("VolunteerHomeScreen");
+          navigation.navigate("VolunteerHomeScreen", {
+            latitude: latitude,
+            longitude: longitude,
+          });
         }}
       />
     </View>
@@ -93,7 +97,12 @@ const IntroSlider = () => {
     <View>
       <Button
         title={localized.t("SKIP")}
-        onPress={() => navigation.navigate("VolunteerHomeScreen")}
+        onPress={() =>
+          navigation.navigate("VolunteerHomeScreen", {
+            latitude: latitude,
+            longitude: longitude,
+          })
+        }
         color="#080d07"
       />
     </View>
@@ -121,7 +130,12 @@ const IntroSlider = () => {
         ref={sliderRef}
         data={slides}
         renderItem={renderItem}
-        onDone={() => navigation.navigate("VolunteerHomeScreen")}
+        onDone={() =>
+          navigation.navigate("VolunteerHomeScreen", {
+            latitude: latitude,
+            longitude: longitude,
+          })
+        }
         dotStyle={{ backgroundColor: "#CDDE85" }}
         activeDotStyle={{ backgroundColor: "#00693D" }}
         showSkipButton
