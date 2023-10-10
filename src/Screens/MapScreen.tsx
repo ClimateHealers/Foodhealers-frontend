@@ -202,11 +202,6 @@ const MapScreen = ({ route }: any) => {
               <GooglePlacesAutocomplete
                 placeholder={localized.t("ADDRESS_OR_NEAREST_CROSS_STREETS")}
                 onPress={async (data, details) => {
-                  console.log(
-                    "checking data from input...postal_code",
-                    details
-                  );
-
                   setAddress(details);
                   setLat(details?.geometry?.location?.lat);
                   setLong(details?.geometry?.location?.lng);

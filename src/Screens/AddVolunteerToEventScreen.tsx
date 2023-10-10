@@ -73,7 +73,6 @@ const AddVolunteerToEvent = ({ route }: any) => {
 
   const userDetails = useSelector((state: any) => state.auth);
   const { data } = userDetails;
-  console.log("vndknvfdn", data);
   const eventDateTime = moment(selectedDate).utc().unix();
   const eventEndDateTime = moment(selectedEndDate).utc().unix();
   const [minmumEndDate, setMinmumEndDate] = useState<Date | any>(
@@ -193,8 +192,8 @@ const AddVolunteerToEvent = ({ route }: any) => {
                 initialValues={{
                   name: data?.user?.name,
                   phoneNumber: data?.user?.phoneNumber,
-                  lat: data?.user?.lat,
-                  long: data?.user?.lng,
+                  lat: data?.user?.address?.lat,
+                  long: data?.user?.address?.lng,
                   volunteerFullAddress: data?.user?.address?.fullAddress,
                   city: data?.user?.address?.city,
                   state: data?.user?.address?.state,
