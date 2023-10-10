@@ -44,6 +44,7 @@ const VolunteerHomeScreen = ({ route }: any) => {
 
   useEffect(() => {
     fetchRecipesCategories();
+    fetchingEventsData();
   }, []);
 
   const handlePressOutside = () => {
