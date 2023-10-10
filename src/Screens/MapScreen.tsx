@@ -312,7 +312,9 @@ const MapScreen = ({ route }: any) => {
                 }}
               />
 
-              <View style={styles.mapContainer}>
+              <View style={[styles.mapContainer, {
+                marginHorizontal: w2dp(-4),
+              }]}>
                 <MapView
                   ref={mapRef}
                   provider={"google"}

@@ -1,5 +1,5 @@
-import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
-import { CommonActions, useNavigation } from "@react-navigation/native";
+import { Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 import Constants from "expo-constants";
 import { LinearGradient } from "expo-linear-gradient";
 import { Formik } from "formik";
@@ -10,20 +10,14 @@ import {
   Alert,
   Keyboard,
   Modal,
-  Platform,
   ScrollView,
   StatusBar,
-  StyleSheet,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  View,
+  View
 } from "react-native";
 
-import { GOOGLE_API_KEY } from "@env";
 
-import DateTimePicker, {
-  DateTimePickerEvent,
-} from "@react-native-community/datetimepicker";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { Text, TextInput } from "react-native-paper";
 import PrimaryButton from "../Components/PrimaryButton";
@@ -31,18 +25,12 @@ import { postEventSchema } from "../Components/validation";
 import { localized } from "../locales/localization";
 
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-import {
-  heightPercentageToDP as h2dp,
-  widthPercentageToDP as w2dp,
-} from "react-native-responsive-screen";
-import { useDispatch, useSelector } from "react-redux";
-import { getLocation } from "../Components/getCurrentLocation";
-import { logOut } from "../redux/reducers/authreducers";
-import { removeAuthData } from "../redux/actions/authAction";
-import { styles } from "../Components/Styles";
 import { SafeAreaView } from "react-native-safe-area-context";
-import FoodhealersHeader from "../Components/FoodhealersHeader";
+import { useDispatch, useSelector } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
+import FoodhealersHeader from "../Components/FoodhealersHeader";
+import { styles } from "../Components/Styles";
+import { getLocation } from "../Components/getCurrentLocation";
 
 const PostEvent = () => {
   const [loading, setLoading] = useState(false);
@@ -114,7 +102,7 @@ const PostEvent = () => {
     if (moment(endDate).isBefore(moment(selectedDate).add(1, "hour"))) {
       Alert.alert(
         `${localized.t("ALERT")}`,
-        `You can't select a time before ${moment(selectedDate)
+        `${localized.t("YOU_CANT_SELECT_A_TIME_BEFORE")} ${moment(selectedDate)
           .add(1, "hour")
           .format("MMM DD, YYYY hh:mm A")}`
       );
@@ -555,129 +543,5 @@ const PostEvent = () => {
     </TouchableWithoutFeedback>
   );
 };
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     padding: 16,
-//     justifyContent: "flex-start",
-//   },
-//   root: {
-//     display: "flex",
-//     marginBottom: 50,
-//     flexDirection: "column",
-//     flex: 1,
-//     marginVertical: 16,
-//     marginHorizontal: w2dp("4%"),
-//   },
-//   centeredView: {
-//     flex: 1,
-//     justifyContent: "center",
-//     alignItems: "center",
-//   },
-//   modalView: {
-//     margin: 20,
-//     backgroundColor: "white",
-//     borderRadius: 20,
-//     padding: 35,
-//     alignItems: "center",
-//     shadowColor: "#000",
-//     shadowOffset: {
-//       width: 0,
-//       height: 2,
-//     },
-//     shadowOpacity: 0.25,
-//     shadowRadius: 4,
-//     elevation: 5,
-//   },
-//   background: {
-//     flex: 1,
-//     resizeMode: "cover",
-//   },
-//   buttonStyles: {
-//     backgroundColor: "#FC5A56",
-//     color: "black",
-//     borderRadius: 5,
-//     width: 190,
-//     marginTop: Platform.OS === "ios" ? h2dp(5) : h2dp(5),
-//   },
-//   titleStyle: {
-//     color: "white",
-//     fontSize: 26,
-//     fontWeight: "400",
-//     lineHeight: 35,
-//     fontFamily: "OpenSans-Regular",
-//   },
-//   dropdownContainer: {
-//     display: "flex",
-//     flexDirection: "row",
-//     justifyContent: "flex-end",
-//     alignItems: "center",
-//     marginTop: 30,
-//     borderColor: "red",
-//   },
-//   inputError: {
-//     color: "red",
-//     marginBottom: 10,
-//   },
-
-//   textInput: {
-//     height: 50,
-//     borderRadius: 3,
-//     backgroundColor: "#FFFFFF",
-//   },
-//   textArea: {
-//     height: 50,
-//     borderRadius: 3,
-//     backgroundColor: "#FFFFFF",
-//   },
-
-//   DateStyle: {
-//     height: 45,
-//     backgroundColor: "#FFFFFF",
-//   },
-
-//   item: {
-//     marginRight: 55,
-//     height: 100,
-//     justifyContent: "center",
-//   },
-//   itemText: {
-//     fontSize: 25,
-//     color: "white",
-//   },
-//   datePickerStyle: {
-//     width: 345,
-//     height: 45,
-//     marginBottom: 20,
-//     borderColor: "white",
-//     backgroundColor: "#FFFFFF",
-//   },
-//   input: {
-//     borderWidth: 1,
-//     borderColor: "gray",
-//     borderRadius: 4,
-//     marginBottom: 12,
-//     padding: 8,
-//   },
-//   inputView: {
-//     justifyContent: "flex-start",
-//     borderColor: "#000000",
-//     borderWidth: 1,
-//     width: "100%",
-//     height: 50,
-//     marginTop: 12,
-//     borderRadius: 6,
-//     backgroundColor: "white",
-//   },
-//   dateTimePickerContainer: {
-//     backgroundColor: "white",
-//     borderRadius: 3,
-//     paddingVertical: 5,
-//     marginBottom: 25,
-//     height: 50,
-//     width: w2dp(45),
-//   },
-// });
 
 export default PostEvent;

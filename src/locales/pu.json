@@ -186,6 +186,9 @@
     "WH_HAVE_SUCCESSFULLY_ADDED_YOUR_DONATION":" ਅਸੀਂ ਤੁਹਾਡੇ ਡੋਨੇਸ਼ਨ ਨੂੰ ਸਫਲਤਾਪੂਰਵਕ ਜੋੜ ਲਿਆ ਹੈ।",
     "DONATION_NOT_ADDED":"ਡੋਨੇਸ਼ਨ ਨਹੀਂ ਜੋੜਿਆ ਗਿਆ ਹੈ।",
     "PLEASE_ENTER_THE_FULL_ADDRESS":"ਕਿਰਪਾ ਕਰਕੇ ਪੂਰਾ ਪਤਾ ਦਰਜ ਕਰੋ।",
-    "ALL_DAYS": "ਸਭ ਦਿਨ"
+    "ALL_DAYS": "ਸਭ ਦਿਨ",
+    "RESET_LINK_SENT_SUCCESSFULLY": "ਰੀਸੈੱਟ ਲਿੰਕ ਸਫਲਤਾਪੂਰਵਕ ਭੇਜਿਆ ਗਿਆ ਹੈ",
+    "WE_HAVE_SUCCESSFULLY_SENT_THE_RESET_LINK_TO_THE_REGISTERED_EMAIL":"ਅਸੀਂ ਸਫਲਤਾਪੂਰਵਕ ਰਜਿਸਟਰ ਹੋਏ ਈਮੇਲ 'ਤੇ ਰੀਸੈੱਟ ਲਿੰਕ ਭੇਜਿਆ ਹੈ।",
+    "EMAIL_NOT_FOUND":"ਈਮੇਲ ਨਹੀਂ ਲੱਭਿਆ ਗਿਆ।"
   }
 }

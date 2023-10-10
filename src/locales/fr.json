@@ -187,6 +187,9 @@
     "WH_HAVE_SUCCESSFULLY_ADDED_YOUR_DONATION":"Nous avons ajouté votre don avec succès.",
     "DONATION_NOT_ADDED":"Le don n'a pas été ajouté.",
     "PLEASE_ENTER_THE_FULL_ADDRESS":"Veuillez saisir l'adresse complète.",
-    "ALL_DAYS": "Tous les jours"
+    "ALL_DAYS": "Tous les jours",
+    "RESET_LINK_SENT_SUCCESSFULLY": "Lien de réinitialisation envoyé avec succès",
+    "WE_HAVE_SUCCESSFULLY_SENT_THE_RESET_LINK_TO_THE_REGISTERED_EMAIL":"Nous avons envoyé avec succès le lien de réinitialisation à l'e-mail enregistré.",
+    "EMAIL_NOT_FOUND":"E-mail non trouvé."
   }
 }

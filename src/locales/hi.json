@@ -186,6 +186,9 @@
     "WH_HAVE_SUCCESSFULLY_ADDED_YOUR_DONATION":"हमने आपके दान को सफलतापूर्वक जोड़ दिया है।",
     "DONATION_NOT_ADDED":"दान नहीं जोड़ा गया है।",
     "PLEASE_ENTER_THE_FULL_ADDRESS":"कृपया पूरा पता दर्ज करें।",
-    "ALL_DAYS": "सभी दिन"
+    "ALL_DAYS": "सभी दिन",
+    "RESET_LINK_SENT_SUCCESSFULLY": "रीसेट लिंक सफलतापूर्वक भेजा गया है",
+    "WE_HAVE_SUCCESSFULLY_SENT_THE_RESET_LINK_TO_THE_REGISTERED_EMAIL":"हमने सफलतापूर्वक पंजीकृत ईमेल पर रीसेट लिंक भेजा है।",
+    "EMAIL_NOT_FOUND":"ईमेल नहीं मिला।"
   }
 }

@@ -186,6 +186,9 @@
     "WH_HAVE_SUCCESSFULLY_ADDED_YOUR_DONATION":"我们已成功添加了您的捐赠。",
     "DONATION_NOT_ADDED":"捐赠未添加。",
     "PLEASE_ENTER_THE_FULL_ADDRESS":"请输入完整地址。",
-    "ALL_DAYS": "所有天"
+    "ALL_DAYS": "所有天",
+    "RESET_LINK_SENT_SUCCESSFULLY": "重置链接已成功发送",
+    "WE_HAVE_SUCCESSFULLY_SENT_THE_RESET_LINK_TO_THE_REGISTERED_EMAIL":"我们已成功将重置链接发送到注册的电子邮件。",
+    "EMAIL_NOT_FOUND":"未找到电子邮件。"
   }
 }

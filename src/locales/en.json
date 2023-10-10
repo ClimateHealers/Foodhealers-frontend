@@ -187,6 +187,9 @@
     "WH_HAVE_SUCCESSFULLY_ADDED_YOUR_DONATION":"We have successfully added your donation.",
     "DONATION_NOT_ADDED":"Donation not added",
     "PLEASE_ENTER_THE_FULL_ADDRESS":"Please enter the full address.",
-    "ALL_DAYS": "All Days"
+    "ALL_DAYS": "All Days",
+    "RESET_LINK_SENT_SUCCESSFULLY": "Reset link sent successfully.",
+    "WE_HAVE_SUCCESSFULLY_SENT_THE_RESET_LINK_TO_THE_REGISTERED_EMAIL":"We have successfully sent the reset link to the registered email.",
+    "EMAIL_NOT_FOUND":"Email not found"
   }
 }
