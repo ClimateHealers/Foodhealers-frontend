@@ -23,7 +23,7 @@ import { getLocation } from "../Components/getCurrentLocation";
 import { localized } from "../locales/localization";
 
 const VolunteerThankYouScreen = ({ route }: any) => {
-  const { id, itemTypeId, title } = route?.params;
+  const { id, itemTypeId, title, latitude, longitude } = route?.params;
   const userDetails = useSelector((state: any) => state.auth);
   const navigation: any = useNavigation();
   const { data } = userDetails;
@@ -136,7 +136,10 @@ const VolunteerThankYouScreen = ({ route }: any) => {
                   </Text>
                   <PrimaryButton
                     title={localized.t("HOME")}
-                    onPress={() => navigation.navigate("VolunteerHomeScreen")}
+                    onPress={() => navigation.navigate("VolunteerHomeScreen", {
+                      latitude: latitude,
+                      longitude: longitude,
+                    })}
                     buttonStyle={styles.buttonMainStyles}
                     titleStyle={styles.titleMainStyle}
                   />

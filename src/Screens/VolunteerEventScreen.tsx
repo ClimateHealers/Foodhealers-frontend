@@ -27,7 +27,7 @@ import { localized } from "../locales/localization";
 import { allEvents } from "../redux/actions/allEvents";
 
 const VolunteerEventScreen = ({ route }: any) => {
-  const { itemTypeId, title } = route?.params;
+  const { itemTypeId, title, latitude, longitude } = route?.params;
   const [eventData, setEventData]: any[] = useState<[]>([]);
   const dispatch = useDispatch();
   const fetchingEventsData = async () => {
@@ -130,6 +130,8 @@ const VolunteerEventScreen = ({ route }: any) => {
                 long: long,
                 eventPhoto: eventPhoto,
                 requiredVolunteers: requiredVolunteers,
+                latitude: latitude,
+                longitude: longitude,
               },
             })
           }

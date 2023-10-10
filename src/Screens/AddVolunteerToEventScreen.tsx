@@ -33,7 +33,15 @@ import { styles } from "../Components/Styles";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
 
 const AddVolunteerToEvent = ({ route }: any) => {
-  const { id, title, itemTypeId } = route?.params;
+  const {
+    id,
+    title,
+    itemTypeId,
+    latitude,
+    longitude,
+    eventStartDate,
+    eventEndDate,
+  } = route?.params;
   const [loading, setLoading] = useState(false);
   const [langOpen, setlangOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -55,7 +63,9 @@ const AddVolunteerToEvent = ({ route }: any) => {
     error: false,
     message: "",
   });
-  const [selectedDate, setSelectedDate] = useState<Date | any>(new Date());
+  const [selectedDate, setSelectedDate] = useState<Date | any>(
+    new Date(eventStartDate)
+  );
   const [selectedTime, setSelectedTime] = useState<Date | any>(new Date());
   const [selectedEndDate, setSelectedEndDate] = useState<Date | any>(
     moment().add(1, "hour")
@@ -63,6 +73,7 @@ const AddVolunteerToEvent = ({ route }: any) => {
 
   const userDetails = useSelector((state: any) => state.auth);
   const { data } = userDetails;
+  console.log("vndknvfdn", data);
   const eventDateTime = moment(selectedDate).utc().unix();
   const eventEndDateTime = moment(selectedEndDate).utc().unix();
   const [minmumEndDate, setMinmumEndDate] = useState<Date | any>(
@@ -90,6 +101,18 @@ const AddVolunteerToEvent = ({ route }: any) => {
   const handleDateChange = (date: any) => {
     setSelectedDate(date);
     if (selectedDate > selectedEndDate) {
+      if (moment(date).isAfter(moment(eventEndDate))) {
+        Alert.alert(
+          `${localized.t("ALERT")}`,
+          `${localized.t("YOU_CANT_SELECT_A_TIME_BEFORE")} ${moment(
+            eventEndDate
+          )
+            .subtract(2, "hour")
+            .format("MMM DD, YYYY hh:mm A")}`
+        );
+      } else {
+        setSelectedEndDate(date);
+      }
       setSelectedEndDate(selectedDate);
     } else {
       setSelectedEndDate(date);
@@ -98,12 +121,12 @@ const AddVolunteerToEvent = ({ route }: any) => {
   };
 
   const handleEndDateChange = (endDate: any) => {
-    if (moment(endDate).isBefore(moment(selectedDate).add(1, "hour"))) {
+    if (moment(endDate).isAfter(moment(eventEndDate))) {
       Alert.alert(
         `${localized.t("ALERT")}`,
-        `${localized.t("YOU_CANT_SELECT_A_TIME_BEFORE")} ${moment(selectedDate)
-          .add(1, "hour")
-          .format("MMM DD, YYYY hh:mm A")}`
+        `${localized.t("YOU_CANT_SELECT_A_TIME_BEFORE")} ${moment(
+          eventEndDate
+        ).format("MMM DD, YYYY hh:mm A")}`
       );
     } else {
       setSelectedEndDate(endDate);
@@ -132,8 +155,8 @@ const AddVolunteerToEvent = ({ route }: any) => {
   };
 
   useEffect(() => {
-    setSelectedEndDate(moment(selectedDate).add(1, "hour"));
-    setMinmumEndDate(moment(new Date(selectedTime)).add(1, "hour"));
+    setSelectedEndDate(moment(eventEndDate));
+    setMinmumEndDate(moment(new Date(eventStartDate)).add(1, "hour"));
   }, [selectedDate]);
   return (
     <TouchableWithoutFeedback onPress={handlePressOutside}>
@@ -169,14 +192,14 @@ const AddVolunteerToEvent = ({ route }: any) => {
                 validationSchema={addVolunteer}
                 initialValues={{
                   name: data?.user?.name,
-                  phoneNumber: "",
-                  lat: 0,
-                  long: 0,
-                  volunteerFullAddress: "",
-                  city: "",
-                  state: "",
-                  postalCode: "",
-                  zipCode: "",
+                  phoneNumber: data?.user?.phoneNumber,
+                  lat: data?.user?.lat,
+                  long: data?.user?.lng,
+                  volunteerFullAddress: data?.user?.address?.fullAddress,
+                  city: data?.user?.address?.city,
+                  state: data?.user?.address?.state,
+                  postalCode: data?.user?.address?.postalCode,
+                  zipCode: data?.user?.address?.postalCode,
                 }}
                 onSubmit={async ({
                   name,
@@ -215,13 +238,17 @@ const AddVolunteerToEvent = ({ route }: any) => {
                       setLoading(false);
                       setResponse({
                         loading: false,
-                        message: `${localized.t("VOLUNTEER_REGISTERED_SUCCESSFULLY")}`,
+                        message: `${localized.t(
+                          "VOLUNTEER_REGISTERED_SUCCESSFULLY"
+                        )}`,
                         error: false,
                       });
                       setLoading(false);
                       Alert.alert(
                         `${localized.t("THANK_YOU_FOR_YOUR_SUPPORT")}`,
-                        `${localized.t("YOU_HAVE_BEEN_SUCCESSFULLY_ADDED_TO_VOLUNTEER")}`,
+                        `${localized.t(
+                          "YOU_HAVE_BEEN_SUCCESSFULLY_ADDED_TO_VOLUNTEER"
+                        )}`,
                         [
                           {
                             text: `${localized.t("OK")}`,
@@ -236,6 +263,8 @@ const AddVolunteerToEvent = ({ route }: any) => {
                                         id: id,
                                         itemTypeId: itemTypeId,
                                         title: title,
+                                        logitude: longitude,
+                                        latitude: latitude,
                                       },
                                     },
                                   ],
@@ -269,7 +298,7 @@ const AddVolunteerToEvent = ({ route }: any) => {
                     Alert.alert(
                       `${localized.t("VOLUNTEER_NOT_ADDED")}`,
                       `${err.message}`,
-                      [{ text: `${localized.t("OK")}`}],
+                      [{ text: `${localized.t("OK")}` }],
                       { cancelable: false }
                     );
                   }
@@ -300,7 +329,7 @@ const AddVolunteerToEvent = ({ route }: any) => {
                     />
                     <Text style={styles.inputError}>{errors?.name}</Text>
                     <GooglePlacesAutocomplete
-                      placeholder={localized.t("ADDRESS")}
+                      placeholder={data?.user?.address?.streetAddress}
                       fetchDetails={true}
                       keepResultsAfterBlur={true}
                       listViewDisplayed="auto"
@@ -567,9 +596,7 @@ const AddVolunteerToEvent = ({ route }: any) => {
                           )}
                         </View>
                       </TouchableOpacity>
-                      <TouchableOpacity
-                        disabled={true}
-                      >
+                      <TouchableOpacity disabled={true}>
                         <View
                           style={[
                             styles.dateTimePickerContainer,

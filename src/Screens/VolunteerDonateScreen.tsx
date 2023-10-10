@@ -10,11 +10,9 @@ import {
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  View
+  View,
 } from "react-native";
-import {
-  heightPercentageToDP as h2dp
-} from "react-native-responsive-screen";
+import { heightPercentageToDP as h2dp } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Carousel, { Pagination } from "react-native-snap-carousel";
 import BurgerIcon from "../Components/BurgerIcon";
@@ -24,6 +22,7 @@ import { styles } from "../Components/Styles";
 import { localized } from "../locales/localization";
 
 const VolunteerDonateScreen = ({ route }: any) => {
+  const { latitude, longitude } = route.params;
   const navigation: any = useNavigation();
 
   const [langOpen, setlangOpen] = useState(false);
@@ -115,6 +114,8 @@ const VolunteerDonateScreen = ({ route }: any) => {
                   navigation.navigate(item?.navigation, {
                     itemTypeId: item?.itemTypeId,
                     title: item?.title,
+                    latitude: latitude,
+                    longitude: longitude,
                   })
                 }
                 buttonStyle={styles.buttonStyles}
