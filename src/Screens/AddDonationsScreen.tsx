@@ -33,7 +33,7 @@ import FoodhealersHeader from "../Components/FoodhealersHeader";
 import { localized } from "../locales/localization";
 
 const AddDonationsScreen = ({ route }: any) => {
-  const { itemTypeId, title } = route?.params;
+  const { itemTypeId, title, latitude, longitude } = route?.params;
   const [loading, setLoading] = useState(false);
   const [langOpen, setlangOpen] = useState(false);
   const [showDatePicker, setShowDatePicker] = useState(false);
@@ -187,6 +187,8 @@ const AddDonationsScreen = ({ route }: any) => {
                                       params: {
                                         itemTypeId: itemTypeId,
                                         title: title,
+                                        latitude: latitude,
+                                        longitude: longitude,
                                       },
                                     },
                                   ],

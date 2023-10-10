@@ -3,6 +3,7 @@ import { CommonActions, useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useEffect, useState } from "react";
 import {
+  Alert,
   Image,
   Keyboard,
   SafeAreaView,
@@ -43,6 +44,7 @@ const VolunteerHomeScreen = ({ route }: any) => {
 
   useEffect(() => {
     fetchRecipesCategories();
+    fetchingEventsData();
   }, []);
 
   const handlePressOutside = () => {
@@ -85,7 +87,10 @@ const VolunteerHomeScreen = ({ route }: any) => {
                     />
                     <TouchableOpacity
                       onPress={() =>
-                        navigation.navigate("VolunteerDonateScreen")
+                        navigation.navigate("VolunteerDonateScreen", {
+                          latitude: latitude,
+                          longitude: longitude,
+                        })
                       }
                     >
                       <View style={styles.title}>
@@ -105,7 +110,25 @@ const VolunteerHomeScreen = ({ route }: any) => {
                       source={require("../../assets/images/volunteerToDrive.png")}
                       style={styles.imageStyle}
                     />
-                    <TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => {
+                        true &&
+                          Alert.alert(
+                            `${localized.t("ALERT")}`,
+                            `${localized.t("COMING_SOON")}`,
+                            [
+                              {
+                                text: `${localized.t("OK")}`,
+                                onPress: () => {},
+                                style: "default",
+                              },
+                            ],
+                            {
+                              cancelable: true,
+                            }
+                          );
+                      }}
+                    >
                       <View style={styles.title}>
                         <Text style={styles.textStyle}>
                           {localized.t("VOLUNTEER_TO_DRIVE")}

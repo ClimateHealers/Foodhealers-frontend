@@ -47,7 +47,6 @@ const PostEventDetailsScreen = ({ route }: any) => {
     Keyboard.dismiss();
   };
   const handleMenuItemPress = (item: any) => {
-    console.log(`Selected menu item: ${item}`);
     setMenuOpen(false);
     navigation.navigate("HomeScreen");
   };

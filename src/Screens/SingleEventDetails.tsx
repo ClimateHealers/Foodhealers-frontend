@@ -281,6 +281,10 @@ const SingleEventDetails = ({ route }: any) => {
                         id: eventDetails.id,
                         title: "Volunteer at an event",
                         itemTypeId: 3,
+                        longitude: eventDetails.longitude,
+                        latitude: eventDetails.latitude,
+                        eventStartDate: eventDetails?.eventStartDate,
+                        eventEndDate: eventDetails?.eventEndDate,
                       })
                     }
                     buttonStyle={styles.buttonStyles}
