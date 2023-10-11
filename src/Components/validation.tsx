@@ -139,3 +139,37 @@ export const addVolunteer = Yup.object().shape({
         )}`
     ),
 });
+
+export const addDriver = Yup.object().shape({
+  name: Yup.string()
+    .required(`${localized.t("VOLUNTEER_NAME_IS_REQUIRED")}`)
+    .matches(/\w*[a-z]\w*/, `${localized.t("ONLY_ALPHABETS_ARE_ALLOWED")}`),
+  email: Yup.string()
+    .email(`${localized.t("PLEASE_ENTER_YOUR_EMAIL")}`)
+    .required(`${localized.t("EMAIL_IS_REQUIRED")}`),
+  // volunteerFullAddress: Yup.string()
+  // .required("Address is required")
+  //   // .matches(/\w*[a-z]\w*/, "Only alphabets are allowed"),
+  // address: Yup.string()
+  //   .required(`${localized.t("Address is required")}`)
+  //   .matches(/\w*[a-z]\w*/, `${localized.t("ONLY_ALPHABETS_ARE_ALLOWED")}`),
+  phoneNumber: Yup.string()
+    .required(`${localized.t("THIS_FIELD_IS_REQUIRED")}`)
+    .matches(/^[0-9]+$/, {
+      message: `${localized.t("Only numbers are allowed")}`,
+      excludeEmptyString: true,
+    }),
+  zipCode: Yup.string()
+    .required(`${localized.t("THIS_FIELD_IS_REQUIRED")}`)
+    .matches(/^[0-9]+$/, {
+      message: `${localized.t("Only numbers are allowed")}`,
+      excludeEmptyString: true,
+    })
+    .min(
+      6,
+      ({ min }) =>
+        `${localized.t("THIS_FIELD_MUST_BE_AT_LEAST")} ${min} ${localized.t(
+          "CHARACTERS"
+        )}`
+    ),
+});

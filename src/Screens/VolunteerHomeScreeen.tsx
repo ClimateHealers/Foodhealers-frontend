@@ -116,23 +116,7 @@ const VolunteerHomeScreen = ({ route }: any) => {
                       style={styles.imageStyle}
                     />
                     <TouchableOpacity
-                      onPress={() => {
-                        true &&
-                          Alert.alert(
-                            `${localized.t("ALERT")}`,
-                            `${localized.t("COMING_SOON")}`,
-                            [
-                              {
-                                text: `${localized.t("OK")}`,
-                                onPress: () => {},
-                                style: "default",
-                              },
-                            ],
-                            {
-                              cancelable: true,
-                            }
-                          );
-                      }}
+                      onPress={() => navigation.navigate("AddVehicleScreen")}
                     >
                       <View style={styles.title}>
                         <Text style={styles.textStyle}>

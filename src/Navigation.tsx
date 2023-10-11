@@ -41,6 +41,9 @@ import WeekScreen from "./Screens/WeekScreen";
 import WelcomeScreen from "./Screens/WelcomeScreen";
 import VolunteerSingleEventDetails from "./Screens/VolunteerSingleEventDetails";
 import AllVolunteersScreen from "./Screens/AllVolunteersScreen";
+import BecomaADriverScreen from "./Screens/BecomeADriverScreen";
+import AddDriverScreen from "./Screens/AddDriverScreen";
+import AddVehicleScreen from "./Screens/AddVehicleScreen";
 
 const Navigation = () => {
   const Stack = createNativeStackNavigator();
@@ -254,6 +257,21 @@ const Navigation = () => {
           <Stack.Screen
             name="AllVolunteersScreen"
             component={AllVolunteersScreen}
+            options={{ title: "", header: () => null }}
+          />
+          <Stack.Screen
+            name="BecomaADriverScreen"
+            component={BecomaADriverScreen}
+            options={{ title: "", header: () => null }}
+          />
+          <Stack.Screen
+            name="AddDriverScreen"
+            component={AddDriverScreen}
+            options={{ title: "", header: () => null }}
+          />
+          <Stack.Screen
+            name="AddVehicleScreen"
+            component={AddVehicleScreen}
             options={{ title: "", header: () => null }}
           />
         </Stack.Navigator>

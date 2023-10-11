@@ -27,7 +27,7 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     width: "100%",
     zIndex: 1,
-    marginBottom:h2dp(1),
+    marginBottom: h2dp(1),
   },
   leftalign: {
     textAlign: "left",
@@ -38,7 +38,7 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     width: w2dp(85),
     zIndex: 1,
-    marginBottom:h2dp(1),
+    marginBottom: h2dp(1),
   },
   centeredView: {
     flex: 1,
@@ -87,6 +87,14 @@ export const styles = StyleSheet.create({
     borderRadius: 5,
     alignSelf: "center",
     width: w2dp(70),
+    marginTop: h2dp(5),
+  },
+  nextButtonStyles: {
+    backgroundColor: "#FC5A56",
+    color: "black",
+    borderRadius: 5,
+    alignSelf: "center",
+    width: w2dp(50),
     marginTop: h2dp(5),
   },
   titleStyle: {
@@ -138,6 +146,10 @@ export const styles = StyleSheet.create({
   itemText: {
     fontSize: 25,
     color: "white",
+  },
+  itemTextDriver: {
+    fontSize: 25,
+    color: "black",
   },
   datePickerStyle: {
     width: 345,

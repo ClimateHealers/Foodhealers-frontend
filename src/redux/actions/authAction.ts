@@ -13,6 +13,9 @@ interface SignupData {
 interface LoginData {
   tokenId: string;
 }
+interface UpdateProfile {
+  tokenId: string;
+}
 interface DeleteUser {
   tokenId: string;
 }
@@ -73,6 +76,25 @@ export const login = createAsyncThunk<LoginData, LoginData>(
           dispatch(setAuthToken(parsedToken));
         }
       });
+      return result?.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
+
+export const updateProfile = createAsyncThunk<UpdateProfile, UpdateProfile>(
+  "auth/updateProfile",
+  async (userData: UpdateProfile, { rejectWithValue, getState }: any) => {
+    try {
+      const token = getState()?.auth?.data?.token;
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Token ${token}`,
+        },
+      };
+      const result = await API.put("v1/api/volunteer-profile/", userData, config);
       return result?.data;
     } catch (error: any) {
       return rejectWithValue(error.response.data.message);
