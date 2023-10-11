@@ -317,22 +317,35 @@ const DonationTabScreen = () => {
             />
           </TouchableOpacity>
         </View>
-        <View style={{ flex: 1 }}>
-          <FlatList
-            data={donationData}
-            renderItem={({ item }: any) => (
-              <Item
-                donationType={item?.donationType}
-                status={item?.status}
-                foodItem={`${item?.foodItem}  (${item?.quantity})`}
-                delivery={item?.delivery?.pickupAddress?.fullAddress}
-                createdAt={item?.createdAt}
-                donatedBy={item?.donatedBy?.name}
-              />
-            )}
-            keyExtractor={(item: any) => item?.id}
-          />
-        </View>
+        {donationData?.length > 0 ? (
+          <View style={{ flex: 1 }}>
+            <FlatList
+              data={donationData}
+              renderItem={({ item }: any) => (
+                <Item
+                  donationType={item?.donationType}
+                  status={item?.status}
+                  foodItem={`${item?.foodItem}  (${item?.quantity})`}
+                  delivery={item?.delivery?.pickupAddress?.fullAddress}
+                  createdAt={item?.createdAt}
+                  donatedBy={item?.donatedBy?.name}
+                />
+              )}
+              keyExtractor={(item: any) => item?.id}
+            />
+          </View>
+        ) : (
+          <View
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              marginTop: h2dp(25),
+            }}
+          >
+            <Text style={styles.itemText}>{localized.t("NOTHING_TO_SHOW")}</Text>
+          </View>
+        )}
       </View>
     </>
   );

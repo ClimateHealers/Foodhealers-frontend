@@ -191,6 +191,7 @@
     "RESET_LINK_SENT_SUCCESSFULLY": "Enlace de restablecimiento enviado con éxito",
     "WE_HAVE_SUCCESSFULLY_SENT_THE_RESET_LINK_TO_THE_REGISTERED_EMAIL":"Hemos enviado con éxito el enlace de restablecimiento al correo electrónico registrado.",
     "EMAIL_NOT_FOUND":"Correo electrónico no encontrado.",
-    "PASSWORDS_DO_NOT_MATCH": "Las contraseñas no coinciden"
+    "PASSWORDS_DO_NOT_MATCH": "Las contraseñas no coinciden",
+    "NOTHING_TO_SHOW":"Nada que mostrar"
   }
 }

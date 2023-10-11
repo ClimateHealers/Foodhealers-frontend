@@ -190,6 +190,7 @@
     "RESET_LINK_SENT_SUCCESSFULLY": "रीसेट लिंक सफलतापूर्वक भेजा गया है",
     "WE_HAVE_SUCCESSFULLY_SENT_THE_RESET_LINK_TO_THE_REGISTERED_EMAIL":"हमने सफलतापूर्वक पंजीकृत ईमेल पर रीसेट लिंक भेजा है।",
     "EMAIL_NOT_FOUND":"ईमेल नहीं मिला।",
-    "PASSWORDS_DO_NOT_MATCH": "पासवर्ड मेल नहीं खाते"
+    "PASSWORDS_DO_NOT_MATCH": "पासवर्ड मेल नहीं खाते",
+    "NOTHING_TO_SHOW":"दिखाने के लिए कुछ नहीं"
   }
 }
