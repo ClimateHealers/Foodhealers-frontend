@@ -25,6 +25,7 @@ import FoodhealersHeader from "../Components/FoodhealersHeader";
 import BurgerIcon from "../Components/BurgerIcon";
 import { localized } from "../locales/localization";
 import { VeganRecipesCategory } from "../redux/actions/veganRecipesCategory";
+import { VeganRecipesCategories } from "../redux/actions/veganRecipes";
 
 const RecipesHomeScreen = () => {
   const [langOpen, setlangOpen] = useState(false);
@@ -36,8 +37,8 @@ const RecipesHomeScreen = () => {
   const navigation: any = useNavigation();
 
   const fetchRecipesCategories = async () => {
-    const response = await dispatch(VeganRecipesCategory(1 as any) as any);
-    setRecipeData(response?.payload?.results?.recipeList);
+    const response = await dispatch(VeganRecipesCategories() as any);
+    setRecipeData(response?.payload?.categoriesList);
   };
 
   useEffect(() => {
@@ -103,35 +104,32 @@ const RecipesHomeScreen = () => {
             >
               <TouchableOpacity activeOpacity={1}>
                 <View style={[styles.centeredView]}>
-                  {recipesCategory?.map((receipeName: any) => {
-                    const recipe = receipeName?.category[0];
-                    return (
-                      <View
-                        key={recipe.id}
-                        style={{
-                          marginBottom: h2dp(3),
-                          position: "relative",
-                        }}
-                      >
-                        <Image
-                          source={{ uri: recipe?.categoryImage }}
-                          style={styles.imageStyle}
-                        />
-                        <View style={styles.title}>
-                          <TouchableOpacity
-                            onPress={() =>
-                              navigation.navigate("CategoryScreen", {
-                                categoryId: recipe?.id,
-                                recipeName: recipe?.name,
-                              })
-                            }
-                          >
-                            <Text style={styles.textStyle}>{recipe?.name}</Text>
-                          </TouchableOpacity>
-                        </View>
+                  {recipesCategory.map((recipe: any) => (
+                    <View
+                      key={recipe.id}
+                      style={{
+                        marginBottom: h2dp(3),
+                        position: "relative",
+                      }}
+                    >
+                      <Image
+                        source={{ uri: recipe?.categoryImage }}
+                        style={styles.imageStyle}
+                      />
+                      <View style={styles.title}>
+                        <TouchableOpacity
+                          onPress={() =>
+                            navigation.navigate("CategoryScreen", {
+                              categoryId: recipe?.id,
+                              recipeName: recipe?.name,
+                            })
+                          }
+                        >
+                          <Text style={styles.textStyle}>{recipe?.name}</Text>
+                        </TouchableOpacity>
                       </View>
-                    );
-                  })}
+                    </View>
+                  ))}
                 </View>
               </TouchableOpacity>
             </ScrollView>

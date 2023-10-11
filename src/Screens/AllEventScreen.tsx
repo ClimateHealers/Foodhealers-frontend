@@ -240,7 +240,7 @@ const AllEventScreen = () => {
                   name="chevron-back"
                   size={32}
                   color="white"
-                  onPress={() => navigation.goBack()}
+                  onPress={() => navigation.navigate("EventsHomeScreen")}
                 />
                 <View style={styles.item}>
                   <Text style={styles.itemText}>

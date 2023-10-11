@@ -190,6 +190,7 @@
     "ALL_DAYS": "All Days",
     "RESET_LINK_SENT_SUCCESSFULLY": "Reset link sent successfully.",
     "WE_HAVE_SUCCESSFULLY_SENT_THE_RESET_LINK_TO_THE_REGISTERED_EMAIL":"We have successfully sent the reset link to the registered email.",
-    "EMAIL_NOT_FOUND":"Email not found"
+    "EMAIL_NOT_FOUND":"Email not found",
+    "PASSWORDS_DO_NOT_MATCH": "Passwords do not match"
   }
 }

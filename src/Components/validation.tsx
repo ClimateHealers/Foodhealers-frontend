@@ -7,7 +7,7 @@ export const signupSchema = Yup.object().shape({
     .trim()
     .matches(
       /^[\w'\-,.][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{2,15}$/,
-      "NAME_MUST_BE_15"
+      `${localized.t("NAME_MUST_BE_15")}`
     ),
   email: Yup.string()
     .email(`${localized.t("PLEASE_ENTER_YOUR_EMAIL")}`)
@@ -30,7 +30,7 @@ export const signupSchema = Yup.object().shape({
     )
     .required(`${localized.t("PASSWORD_IS_REQUIRED")}`),
   confirmPassword: Yup.string()
-    .oneOf([Yup.ref("password")], `${localized.t("Passwords do not match")}`)
+    .oneOf([Yup.ref("password")], `${localized.t("PASSWORDS_DO_NOT_MATCH")}`)
     .required(`${localized.t("CONFIRM_PASSWORD_IS_REQUIRED")}`),
 });
 

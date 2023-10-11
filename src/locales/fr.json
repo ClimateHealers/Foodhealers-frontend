@@ -190,6 +190,7 @@
     "ALL_DAYS": "Tous les jours",
     "RESET_LINK_SENT_SUCCESSFULLY": "Lien de réinitialisation envoyé avec succès",
     "WE_HAVE_SUCCESSFULLY_SENT_THE_RESET_LINK_TO_THE_REGISTERED_EMAIL":"Nous avons envoyé avec succès le lien de réinitialisation à l'e-mail enregistré.",
-    "EMAIL_NOT_FOUND":"E-mail non trouvé."
+    "EMAIL_NOT_FOUND":"E-mail non trouvé.",
+    "PASSWORDS_DO_NOT_MATCH": "Les mots de passe ne correspondent pas"
   }
 }

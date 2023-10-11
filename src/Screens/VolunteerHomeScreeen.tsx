@@ -73,7 +73,7 @@ const VolunteerHomeScreen = ({ route }: any) => {
                       name="chevron-back"
                       size={32}
                       color="white"
-                      onPress={() => navigation.goBack()}
+                      onPress={() => navigation.navigate("HomeScreen")}
                     />
                     <View style={styles.item}>
                       <Text style={styles.itemText}>{localized.t("HOME")}</Text>

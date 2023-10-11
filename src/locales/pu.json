@@ -189,6 +189,7 @@
     "ALL_DAYS": "ਸਭ ਦਿਨ",
     "RESET_LINK_SENT_SUCCESSFULLY": "ਰੀਸੈੱਟ ਲਿੰਕ ਸਫਲਤਾਪੂਰਵਕ ਭੇਜਿਆ ਗਿਆ ਹੈ",
     "WE_HAVE_SUCCESSFULLY_SENT_THE_RESET_LINK_TO_THE_REGISTERED_EMAIL":"ਅਸੀਂ ਸਫਲਤਾਪੂਰਵਕ ਰਜਿਸਟਰ ਹੋਏ ਈਮੇਲ 'ਤੇ ਰੀਸੈੱਟ ਲਿੰਕ ਭੇਜਿਆ ਹੈ।",
-    "EMAIL_NOT_FOUND":"ਈਮੇਲ ਨਹੀਂ ਲੱਭਿਆ ਗਿਆ।"
+    "EMAIL_NOT_FOUND":"ਈਮੇਲ ਨਹੀਂ ਲੱਭਿਆ ਗਿਆ।",
+    "PASSWORDS_DO_NOT_MATCH": "ਪਾਸਵਰਡ ਮੈਚ ਨਹੀਂ ਕਰਦੇ"
   }
 }

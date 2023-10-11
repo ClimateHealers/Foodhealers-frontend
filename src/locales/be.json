@@ -190,6 +190,7 @@
     "ALL_DAYS": "সমস্ত দিন",
     "RESET_LINK_SENT_SUCCESSFULLY": "রিসেট লিঙ্কটি সফলভাবে পাঠানো হয়েছে",
     "WE_HAVE_SUCCESSFULLY_SENT_THE_RESET_LINK_TO_THE_REGISTERED_EMAIL":"আমরা সফলভাবে নিবন্ধিত ইমেইলে রিসেট লিঙ্কটি প্রেরণ করেছি।",
-    "EMAIL_NOT_FOUND":"ইমেইল পাওয়া যায়নি।"
+    "EMAIL_NOT_FOUND":"ইমেইল পাওয়া যায়নি।",
+    "PASSWORDS_DO_NOT_MATCH": "পাসওয়ার্ড মেলে না"
   }
 }
