@@ -240,7 +240,7 @@ const AllEventScreen = () => {
                   name="chevron-back"
                   size={32}
                   color="white"
-                  onPress={() => navigation.goBack()}
+                  onPress={() => navigation.navigate("EventsHomeScreen")}
                 />
                 <View style={styles.item}>
                   <Text style={styles.itemText}>
@@ -294,7 +294,7 @@ const AllEventScreen = () => {
                   />
                 </TouchableOpacity>
               </View>
-              <View style={{ flex: 1 }}>
+              {eventData?.length > 0 ? (<View style={{ flex: 1 }}>
                 <FlatList
                   data={eventData}
                   renderItem={({ item }: any) => (
@@ -315,7 +315,17 @@ const AllEventScreen = () => {
                   )}
                   keyExtractor={(item: any) => item?.id}
                 />
-              </View>
+              </View>) : (
+                <View style={{
+                  display: 'flex',
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginTop: h2dp(25)
+                }}>
+                  <Text style={styles.itemText}>{localized.t("NOTHING_TO_SHOW")}</Text>
+                </View>
+              ) }
+              
             </View>
           </ScrollView>
         </SafeAreaView>

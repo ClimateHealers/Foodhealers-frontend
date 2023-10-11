@@ -1,4 +1,9 @@
-import { AntDesign, Feather, FontAwesome, MaterialIcons } from "@expo/vector-icons";
+import {
+  AntDesign,
+  Feather,
+  FontAwesome,
+  MaterialIcons,
+} from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
@@ -33,7 +38,6 @@ const VolunteerTabScreen = () => {
     fetchingEventsData();
     sortByDate();
   }, []);
-
 
   const [order, setOrder] = useState<"ASC" | "DESC">("ASC");
   const sortByDate = () => {
@@ -212,7 +216,7 @@ const VolunteerTabScreen = () => {
   return (
     <>
       <View style={{ flex: 1 }}>
-      <View style={styles.itemFilter}>
+        <View style={styles.itemFilter}>
           <Text style={styles.itemFilterText}>{localized.t("EVENTS")}</Text>
           <TouchableOpacity
             style={{
@@ -230,30 +234,45 @@ const VolunteerTabScreen = () => {
             />
           </TouchableOpacity>
         </View>
-        <ScrollView style={{ flex: 1 }}>
-          <FlatList
-            data={eventData}
-            renderItem={({ item }: any) => (
-              <Item
-                name={item?.name}
-                eventTimings={`${moment(item?.eventStartDate).format(
-                  "DD,  ddd, hh:mm A"
-                )}`}
-                address={item?.address?.streetAddress}
-                additionalInfo={item?.additionalInfo}
-                lat={item?.address?.lat}
-                long={item?.address?.lng}
-                eventStartDate={item?.eventStartDate}
-                eventEndDate={item?.eventEndDate}
-                id={item?.id}
-                status={item?.status}
-                eventPhoto={item?.eventPhoto}
-                requiredVolunteers={item?.requiredVolunteers}
-              />
-            )}
-            keyExtractor={(item: any) => item?.id}
-          />
-        </ScrollView>
+        {eventData?.length > 0 ? (
+          <ScrollView style={{ flex: 1 }}>
+            <FlatList
+              data={eventData}
+              renderItem={({ item }: any) => (
+                <Item
+                  name={item?.name}
+                  eventTimings={`${moment(item?.eventStartDate).format(
+                    "DD,  ddd, hh:mm A"
+                  )}`}
+                  address={item?.address?.streetAddress}
+                  additionalInfo={item?.additionalInfo}
+                  lat={item?.address?.lat}
+                  long={item?.address?.lng}
+                  eventStartDate={item?.eventStartDate}
+                  eventEndDate={item?.eventEndDate}
+                  id={item?.id}
+                  status={item?.status}
+                  eventPhoto={item?.eventPhoto}
+                  requiredVolunteers={item?.requiredVolunteers}
+                />
+              )}
+              keyExtractor={(item: any) => item?.id}
+            />
+          </ScrollView>
+        ) : (
+          <View
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              marginTop: h2dp(25),
+            }}
+          >
+            <Text style={styles.itemText}>
+              {localized.t("NOTHING_TO_SHOW")}
+            </Text>
+          </View>
+        )}
       </View>
     </>
   );

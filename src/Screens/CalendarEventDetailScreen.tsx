@@ -29,7 +29,7 @@ import { styles } from "../Components/Styles";
 import { localized } from "../locales/localization";
 
 const CalendarEventDetailScreen = ({ route }: any) => {
-  const { eventDetails } = route.params;
+  const { eventDetails, latitude, longitude } = route.params;
   const navigation: any = useNavigation();
 
   const [langOpen, setlangOpen] = useState(false);
@@ -135,7 +135,7 @@ const CalendarEventDetailScreen = ({ route }: any) => {
                   <View
                     style={{
                       marginBottom: h2dp(2),
-                      paddingHorizontal: w2dp(1),
+                      paddingHorizontal: 10,
                     }}
                   >
                     <Text style={styles.boldText}>
@@ -225,6 +225,23 @@ const CalendarEventDetailScreen = ({ route }: any) => {
                     : `${localized.t("GET_DIRECTIONS")}`
                 }
                 onPress={navigationHandler}
+                buttonStyle={styles.buttonStyles}
+                titleStyle={styles.titleStyle}
+              />
+
+              <PrimaryButton
+                title={`${localized.t("VOLUNTEER")}`}
+                onPress={() =>
+                  navigation.navigate("AddVolunteerToEventScreen", {
+                    id: eventDetails.id,
+                    title: "Volunteer at an event",
+                    itemTypeId: 3,
+                    longitude: longitude,
+                    latitude: latitude,
+                    eventStartDate: eventDetails?.eventStartDate,
+                    eventEndDate: eventDetails?.eventEndDate,
+                  })
+                }
                 buttonStyle={styles.buttonStyles}
                 titleStyle={styles.titleStyle}
               />

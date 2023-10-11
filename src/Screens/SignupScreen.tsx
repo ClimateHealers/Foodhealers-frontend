@@ -146,7 +146,7 @@ const SignupScreen = () => {
                       lineHeight: 27.24,
                     }}
                   >
-                    {localized.t("HOME")}Find Food
+                    {localized.t("FIND_FOOD")}
                   </Text>
                 </TouchableOpacity>
               </View>

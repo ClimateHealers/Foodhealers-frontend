@@ -190,6 +190,8 @@
     "ALL_DAYS": "所有天",
     "RESET_LINK_SENT_SUCCESSFULLY": "重置链接已成功发送",
     "WE_HAVE_SUCCESSFULLY_SENT_THE_RESET_LINK_TO_THE_REGISTERED_EMAIL":"我们已成功将重置链接发送到注册的电子邮件。",
-    "EMAIL_NOT_FOUND":"未找到电子邮件。"
+    "EMAIL_NOT_FOUND":"未找到电子邮件。",
+    "PASSWORDS_DO_NOT_MATCH": "密码不匹配",
+    "NOTHING_TO_SHOW":"暂无显示"
   }
 }
