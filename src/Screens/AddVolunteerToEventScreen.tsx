@@ -68,9 +68,10 @@ const AddVolunteerToEvent = ({ route }: any) => {
   );
   const [selectedTime, setSelectedTime] = useState<Date | any>(new Date());
   const [selectedEndDate, setSelectedEndDate] = useState<Date | any>(
-    moment(eventStartDate)
+    moment().add(1, "hour")
   );
 
+  const minDate = moment(selectedDate).utc().unix() - moment(selectedTime).utc().unix() > 0 ? eventStartDate : selectedTime;
   const userDetails = useSelector((state: any) => state.auth);
   const { data } = userDetails;
   const eventDateTime = moment(selectedDate).utc().unix();
@@ -108,11 +109,10 @@ const AddVolunteerToEvent = ({ route }: any) => {
   };
 
   const handleEndDateChange = (endDate: any) => {
-    if (moment(endDate).isBefore(moment(eventEndDate))) {
+    if (moment(endDate).isBefore(moment(selectedDate))) {
       Alert.alert(
         `${localized.t("ALERT")}`,
-        `${localized.t("YOU_CANT_SELECT_A_TIME_BEFORE")} ${moment(eventEndDate)
-          .add(1, "hour")
+        `${localized.t("YOU_CANT_SELECT_A_TIME_BEFORE")} ${moment(selectedDate)
           .format("MMM DD, YYYY hh:mm A")}`
       );
     } else {
@@ -483,7 +483,7 @@ const AddVolunteerToEvent = ({ route }: any) => {
                           {showDatePicker && (
                             <DateTimePickerModal
                               isVisible={showDatePicker}
-                              minimumDate={new Date(selectedDate)}
+                              minimumDate={new Date(minDate)}
                               maximumDate={new Date(eventEndDate)}
                               date={
                                 selectedDate
