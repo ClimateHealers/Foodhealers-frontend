@@ -112,6 +112,7 @@ const SingleEventDetails = ({ route }: any) => {
   };
 
   const expired = moment(eventDetails?.eventEndDate).isBefore(moment());
+  const volunteersRequired = eventDetails?.requiredVolunteers;
   return (
     <TouchableWithoutFeedback onPress={handlePressOutside}>
       <LinearGradient
@@ -270,7 +271,7 @@ const SingleEventDetails = ({ route }: any) => {
                   }}
                 >
                   <PrimaryButton
-                    disabled={expired}
+                    disabled={expired || !volunteersRequired}
                     title={
                       expired
                         ? `${localized.t("EVENT_EXPIRED")}`

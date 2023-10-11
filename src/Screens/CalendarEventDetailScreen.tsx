@@ -86,6 +86,8 @@ const CalendarEventDetailScreen = ({ route }: any) => {
   };
 
   const expired = moment(eventDetails?.eventEndDate).isBefore(moment());
+  const volunteersRequired = eventDetails?.requiredVolunteers;
+
   return (
     <TouchableWithoutFeedback onPress={handlePressOutside}>
       <LinearGradient
@@ -230,6 +232,7 @@ const CalendarEventDetailScreen = ({ route }: any) => {
               />
 
               <PrimaryButton
+                disabled={!volunteersRequired}
                 title={`${localized.t("VOLUNTEER")}`}
                 onPress={() =>
                   navigation.navigate("AddVolunteerToEventScreen", {
