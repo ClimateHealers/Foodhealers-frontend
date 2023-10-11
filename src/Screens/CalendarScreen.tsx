@@ -22,6 +22,7 @@ import { localized } from "../locales/localization";
 import { calendarEvent } from "../redux/actions/calendarEventAction";
 
 const CalendarScreen = ({ route }: any) => {
+  const { latitude, longitude } = route?.params;
   const navigation: any = useNavigation();
 
   const [menuOpen, setMenuOpen] = useState(false);
@@ -110,6 +111,8 @@ const CalendarScreen = ({ route }: any) => {
                         navigation.navigate("CalendarEventScreen", {
                           selectedDate: day.dateString,
                           singleDayEvent: response.payload.foodEvents,
+                          latitude: latitude,
+                          longitude: longitude,
                         });
                       } else {
                       }

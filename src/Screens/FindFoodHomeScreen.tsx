@@ -151,9 +151,7 @@ const FindFoodHomeScreen = ({ route }: any) => {
               style={[styles.touchableView]}
               onPress={clickHandler}
             >
-              <View
-                style={[styles.mapcontainerView]}
-              >
+              <View style={[styles.mapcontainerView]}>
                 <MapView
                   ref={mapRef}
                   provider={"google"}
@@ -232,7 +230,12 @@ const FindFoodHomeScreen = ({ route }: any) => {
             >
               <TouchableOpacity
                 style={[styles.touchableView]}
-                onPress={() => navigation.navigate("CalendarScreen")}
+                onPress={() =>
+                  navigation.navigate("CalendarScreen", {
+                    latitude: latitude,
+                    longitude: lng,
+                  })
+                }
               >
                 <View
                   style={[styles.containerView, { marginBottom: w2dp(2.8) }]}
@@ -400,7 +403,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-start",
     alignItems: "center",
-    overflow: 'hidden' 
+    overflow: "hidden",
   },
   touchableView: {
     height: h2dp(17),

@@ -29,6 +29,7 @@ import BurgerIcon from "../Components/BurgerIcon";
 import { localized } from "../locales/localization";
 
 const CalendarEventScreen = ({ route }: any) => {
+  const { latitude, longitude } = route?.params;
   const navigation: any = useNavigation();
 
   const { selectedDate, singleDayEvent } = route.params;
@@ -167,6 +168,8 @@ const CalendarEventScreen = ({ route }: any) => {
                       onPress={() =>
                         navigation.navigate("CalendarEventDetailScreen", {
                           eventDetails: event,
+                          latitude: latitude,
+                          longitude: longitude,
                         })
                       }
                     >
