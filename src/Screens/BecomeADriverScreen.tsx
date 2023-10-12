@@ -23,7 +23,7 @@ import { styles } from "../Components/Styles";
 import { getLocation } from "../Components/getCurrentLocation";
 import { localized } from "../locales/localization";
 
-const BecomaADriverScreen = ({ route }: any) => {
+const BecomeADriverScreen = ({ route }: any) => {
   const userDetails = useSelector((state: any) => state.auth);
   const navigation: any = useNavigation();
   const { data } = userDetails;
@@ -106,4 +106,4 @@ const BecomaADriverScreen = ({ route }: any) => {
   );
 };
 
-export default BecomaADriverScreen;
+export default BecomeADriverScreen;

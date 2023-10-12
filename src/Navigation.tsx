@@ -45,6 +45,7 @@ import BecomaADriverScreen from "./Screens/BecomeADriverScreen";
 import AddDriverScreen from "./Screens/AddDriverScreen";
 import AddVehicleScreen from "./Screens/AddVehicleScreen";
 import DriverProfilePhoto from "./Screens/DriverProfilePhoto";
+import BecomeADriverScreen from "./Screens/BecomeADriverScreen";
 
 const Navigation = () => {
   const Stack = createNativeStackNavigator();
@@ -261,8 +262,8 @@ const Navigation = () => {
             options={{ title: "", header: () => null }}
           />
           <Stack.Screen
-            name="BecomaADriverScreen"
-            component={BecomaADriverScreen}
+            name="BecomeADriverScreen"
+            component={BecomeADriverScreen}
             options={{ title: "", header: () => null }}
           />
           <Stack.Screen

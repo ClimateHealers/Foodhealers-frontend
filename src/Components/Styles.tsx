@@ -82,7 +82,7 @@ export const styles = StyleSheet.create({
     resizeMode: "cover",
   },
   buttonStyles: {
-    backgroundColor: "#FC5A56",
+    backgroundColor: "#B01D19",
     color: "black",
     borderRadius: 5,
     alignSelf: "center",

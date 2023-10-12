@@ -38,9 +38,10 @@ import { logOut } from "../redux/reducers/authreducers";
 import { styles } from "../Components/Styles";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
 import BurgerIcon from "../Components/BurgerIcon";
+import PrimaryButton from "../Components/PrimaryButton";
 
 const DriverProfilePhoto = ({ route }: any) => {
-  const { eventFormData } = route.params;
+  // const { eventFormData } = route.params;
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const [loc, setLoc] = useState(false);
   const [selectedImage, setSelectedImage] = useState<any | []>([]);
@@ -101,7 +102,7 @@ const DriverProfilePhoto = ({ route }: any) => {
         const singlePhoto = result.assets[0].uri;
 
         navigation.navigate("EventPhotosScreen", {
-          eventFormData: eventFormData,
+          // eventFormData: eventFormData,
           eventPhotos: multipleImages,
           singlePhoto: singlePhoto,
         });
@@ -159,32 +160,58 @@ const DriverProfilePhoto = ({ route }: any) => {
                 <BurgerIcon />
               </View>
               <View
-                style={[
-                  styles.card,
-                  {
-                    height: h2dp(40),
-                    borderRadius: h2dp(1),
-                    alignItems: "center",
-                  },
-                ]}
+                style={{
+                  height: h2dp(20),
+                  width:h2dp(20),
+                  borderRadius: h2dp(50),
+                  alignItems: "center",
+                  backgroundColor: "white"
+                }}
               >
                 <TouchableOpacity
                   style={{
-                    backgroundColor: "#FC5A56",
+                    // backgroundColor: "#FC5A56",
                     paddingVertical: h2dp(1),
                     paddingHorizontal: w2dp(5),
+                    justifyContent: "center",
                     marginBottom: h2dp(1),
-                    marginTop: h2dp(12),
+                    // marginTop: h2dp(12),
                   }}
                   onPress={openImagePickerAsync}
                 >
-                  <AntDesign name="upload" size={24} color="black" />
+                  <AntDesign name="user" size={56} color="#B01D19" />
                 </TouchableOpacity>
 
-                <Text style={{ fontSize: 20, marginTop: 10 }}>
-                  {localized.t("UPLOAD_EVENT_PHOTO")}
+                
+              </View>
+              <Text style={{ fontSize: 26, marginTop: h2dp(3) }}>
+                  A photo of you
                 </Text>
-                <TouchableOpacity onPress={() => navigation.goBack()}>
+              <PrimaryButton
+                title="Take Photo"
+                // onPress={() =>
+                //   navigation.navigate("AddDonationsScreen", {
+                //     itemTypeId: itemTypeId,
+                //     id: id,
+                //     title: title,
+                //   })
+                // }
+                buttonStyle={styles.buttonStyles}
+                titleStyle={styles.titleMainStyle}
+              />
+              <PrimaryButton
+                title="Choose from camera roll"
+                // onPress={() =>
+                //   navigation.navigate("VolunteerEventHistoryScreen", {
+                //     itemTypeId: itemTypeId,
+                //     title: title,
+                //     id: id,
+                //   })
+                // }
+                buttonStyle={styles.buttonHistoryStyles}
+                titleStyle={styles.titleMainStyle}
+              />
+              {/* <TouchableOpacity onPress={() => navigation.goBack()}>
                   <Text
                     style={{
                       fontSize: 20,
@@ -194,8 +221,7 @@ const DriverProfilePhoto = ({ route }: any) => {
                   >
                     {localized.t("BACK")}
                   </Text>
-                </TouchableOpacity>
-              </View>
+                </TouchableOpacity> */}
             </View>
           </ScrollView>
         </SafeAreaView>
