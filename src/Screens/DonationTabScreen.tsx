@@ -192,7 +192,7 @@ const DonationTabScreen = () => {
                 color="black"
                 style={{
                   marginLeft: h2dp(2.3),
-                  marginTop: h2dp(1.5),
+                  marginTop: h2dp(-2),
                 }}
               />
             ) : (
@@ -202,7 +202,7 @@ const DonationTabScreen = () => {
                 color="black"
                 style={{
                   marginLeft: h2dp(2.5),
-                  marginTop: h2dp(1.5),
+                  marginTop: h2dp(-2),
                 }}
               />
             )}
