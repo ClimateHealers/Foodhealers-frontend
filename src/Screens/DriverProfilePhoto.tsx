@@ -12,6 +12,7 @@ import {
   ActivityIndicator,
   Alert,
   Keyboard,
+  Image,
   Linking,
   Modal,
   Platform,
@@ -101,11 +102,12 @@ const DriverProfilePhoto = ({ route }: any) => {
         const multipleImages = result.assets.map((image) => image.uri);
         const singlePhoto = result.assets[0].uri;
 
-        navigation.navigate("EventPhotosScreen", {
-          // eventFormData: eventFormData,
-          eventPhotos: multipleImages,
-          singlePhoto: singlePhoto,
-        });
+        // navigation.navigate("EventPhotosScreen", {
+        //   // eventFormData: eventFormData,
+        //   eventPhotos: multipleImages,
+        //   singlePhoto: singlePhoto,
+        // });
+        setSelectedImage(singlePhoto);
       }
     } else if (!res.granted) {
       Alert.alert(
@@ -162,16 +164,16 @@ const DriverProfilePhoto = ({ route }: any) => {
               <View
                 style={{
                   height: h2dp(20),
-                  width:h2dp(20),
+                  width: h2dp(20),
                   borderRadius: h2dp(50),
                   alignItems: "center",
-                  backgroundColor: "white"
+                  backgroundColor: "white",
                 }}
               >
                 <TouchableOpacity
                   style={{
                     // backgroundColor: "#FC5A56",
-                    paddingVertical: h2dp(1),
+                    paddingVertical: h2dp(2),
                     paddingHorizontal: w2dp(5),
                     justifyContent: "center",
                     marginBottom: h2dp(1),
@@ -179,14 +181,23 @@ const DriverProfilePhoto = ({ route }: any) => {
                   }}
                   onPress={openImagePickerAsync}
                 >
-                  <AntDesign name="user" size={56} color="#B01D19" />
+                  {selectedImage ? (
+                    <View>
+                      <Image
+                        source={{ uri: selectedImage }}
+                        style={{ width: 100, height: 100 }}
+                      />
+                    </View>
+                  ) : (
+                    <View>
+                      <AntDesign name="user" size={150} color="#B01D19" />
+                    </View>
+                  )}
                 </TouchableOpacity>
-
-                
               </View>
               <Text style={{ fontSize: 26, marginTop: h2dp(3) }}>
-                  A photo of you
-                </Text>
+                A photo of you
+              </Text>
               <PrimaryButton
                 title="Take Photo"
                 // onPress={() =>
@@ -197,17 +208,11 @@ const DriverProfilePhoto = ({ route }: any) => {
                 //   })
                 // }
                 buttonStyle={styles.buttonStyles}
-                titleStyle={styles.titleMainStyle}
+                titleStyle={styles.titleStyle}
               />
               <PrimaryButton
                 title="Choose from camera roll"
-                // onPress={() =>
-                //   navigation.navigate("VolunteerEventHistoryScreen", {
-                //     itemTypeId: itemTypeId,
-                //     title: title,
-                //     id: id,
-                //   })
-                // }
+                onPress={openImagePickerAsync}
                 buttonStyle={styles.buttonHistoryStyles}
                 titleStyle={styles.titleMainStyle}
               />
