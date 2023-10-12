@@ -180,22 +180,22 @@ const AddDriverScreen = ({ route }: any) => {
                         [
                           {
                             text: "OK",
-                            // onPress: () =>
-                            //   navigation.dispatch(
-                            //     CommonActions.reset({
-                            //       index: 0,
-                            //       routes: [
-                            //         {
-                            //           name: "VolunteerThankYouScreen",
-                            //           params: {
-                            //             id: id,
-                            //             itemTypeId: itemTypeId,
-                            //             title: title,
-                            //           },
-                            //         },
-                            //       ],
-                            //     })
-                            //   ),
+                            onPress: () =>
+                              navigation.dispatch(
+                                CommonActions.reset({
+                                  index: 0,
+                                  routes: [
+                                    {
+                                      name: "AddVehicleScreen",
+                                      params: {
+                                        id: id,
+                                        itemTypeId: itemTypeId,
+                                        title: title,
+                                      },
+                                    },
+                                  ],
+                                })
+                              ),
                           },
                         ],
                         { cancelable: false }

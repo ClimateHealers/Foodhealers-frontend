@@ -149,10 +149,11 @@ const AddVehicleScreen = ({ route }: any) => {
                       error: false,
                     });
                     const data = {
-                      carModel: carModel,
-                      carColor: carColor,
-                      licencePlate: licencePlate,
-                      carMake: carMake,
+                      model: carModel,
+                      vehicleColour: carColor,
+                      plateNumber: licencePlate,
+                      make: carMake,
+                      active: true,
                     };
                     const res = await dispatch(
                       addVehicle(data as any) as any
@@ -243,13 +244,13 @@ const AddVehicleScreen = ({ route }: any) => {
                       <View
                         style={[
                           styles.dateTimePickerContainer,
-                          { backgroundColor: "#deddd9" },
+                          { backgroundColor: "white" },
                         ]}
                       >
                         <TextInput
                           onChangeText={handleChange("carMake")}
                           onBlur={handleBlur("carMake")}
-                          value={values.carColor}
+                          value={values.carMake}
                           placeholder={"Car make"}
                           placeholderTextColor={"black"}
                           style={styles.textInput}
@@ -259,7 +260,7 @@ const AddVehicleScreen = ({ route }: any) => {
                       <View
                         style={[
                           styles.dateTimePickerContainer,
-                          { backgroundColor: "#deddd9" },
+                          { backgroundColor: "white" },
                         ]}
                       >
                         <TextInput

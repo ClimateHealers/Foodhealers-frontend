@@ -116,7 +116,7 @@ const VolunteerHomeScreen = ({ route }: any) => {
                       style={styles.imageStyle}
                     />
                     <TouchableOpacity
-                      onPress={() => navigation.navigate("AddVehicleScreen")}
+                      onPress={() => navigation.navigate("BecomeADriverScreen")}
                     >
                       <View style={styles.title}>
                         <Text style={styles.textStyle}>
