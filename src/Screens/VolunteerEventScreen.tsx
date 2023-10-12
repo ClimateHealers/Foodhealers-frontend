@@ -33,12 +33,11 @@ const VolunteerEventScreen = ({ route }: any) => {
   const fetchingEventsData = async () => {
     const response = await dispatch(allEvents({} as any) as any);
     const data = response?.payload?.foodEvents;
-
     const requiredVolunteers = data?.filter(
-      (event: any) => event.requiredVolunteers > 0
+      (event: any) => event?.requiredVolunteers > 0
     );
     const verifiedFoodEvents = requiredVolunteers?.filter(
-      (event: any) => event.active === true
+      (event: any) => event?.active === true
     );
     setEventData(verifiedFoodEvents);
   };

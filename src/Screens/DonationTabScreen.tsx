@@ -192,7 +192,7 @@ const DonationTabScreen = () => {
                 color="black"
                 style={{
                   marginLeft: h2dp(2.3),
-                  marginTop: h2dp(1.5),
+                  marginTop: h2dp(-2),
                 }}
               />
             ) : (
@@ -202,19 +202,10 @@ const DonationTabScreen = () => {
                 color="black"
                 style={{
                   marginLeft: h2dp(2.5),
-                  marginTop: h2dp(1.5),
+                  marginTop: h2dp(-2),
                 }}
               />
             )}
-            <FontAwesome
-              name="clock-o"
-              size={24}
-              color="#f2db0a"
-              style={{
-                marginLeft: h2dp(2.3),
-                marginTop: h2dp(1.5),
-              }}
-            />
             <Feather
               name="x-circle"
               size={24}
