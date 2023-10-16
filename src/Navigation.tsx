@@ -46,6 +46,18 @@ import AddDriverScreen from "./Screens/AddDriverScreen";
 import AddVehicleScreen from "./Screens/AddVehicleScreen";
 import DriverProfilePhoto from "./Screens/DriverProfilePhoto";
 import BecomeADriverScreen from "./Screens/BecomeADriverScreen";
+import DriverPhotoSaveScreen from "./Screens/DriverPhotoSaveScreen";
+import DriverProfileScreen from "./Screens/DriverProfileScreen";
+import SeeExistingDonationScreen from "./Screens/SeeExistingDonationScreen";
+import TeamHomeScreen from "./Screens/TeamHomeScreen";
+import RequestFoodHomeScreen from "./Screens/RequestFoodHomeScreen";
+import AddRequestDonationsScreen from "./Screens/AddRequestDonationsScreen";
+import RequestCreatedScreen from "./Screens/RequestCreatedScreen";
+import RequestHistoryScreen from "./Screens/RequestHistoryScreen";
+import PickupDetailsScreen from "./Screens/PickupDetailsScreen";
+import PickupSelectedDetailsScreen from "./Screens/PickupSelectedDetailsScreen";
+import PickupConfirmScreen from "./Screens/PickupConfirmScreen";
+import DriverRequestScreen from "./Screens/DriverRequestScreen";
 
 const Navigation = () => {
   const Stack = createNativeStackNavigator();
@@ -279,6 +291,66 @@ const Navigation = () => {
           <Stack.Screen
             name="DriverProfilePhoto"
             component={DriverProfilePhoto}
+            options={{ title: "", header: () => null }}
+          />
+          <Stack.Screen
+            name="DriverPhotoSaveScreen"
+            component={DriverPhotoSaveScreen}
+            options={{ title: "", header: () => null }}
+          />
+          <Stack.Screen
+            name="DriverProfileScreen"
+            component={DriverProfileScreen}
+            options={{ title: "", header: () => null }}
+          />
+          <Stack.Screen
+            name="SeeExistingDonationScreen"
+            component={SeeExistingDonationScreen}
+            options={{ title: "", header: () => null }}
+          />
+          <Stack.Screen
+            name="TeamHomeScreen"
+            component={TeamHomeScreen}
+            options={{ title: "", header: () => null }}
+          />
+          <Stack.Screen
+            name="RequestFoodHomeScreen"
+            component={RequestFoodHomeScreen}
+            options={{ title: "", header: () => null }}
+          />
+          <Stack.Screen
+            name="AddRequestDonationsScreen"
+            component={AddRequestDonationsScreen}
+            options={{ title: "", header: () => null }}
+          />
+          <Stack.Screen
+            name="RequestCreatedScreen"
+            component={RequestCreatedScreen}
+            options={{ title: "", header: () => null }}
+          />
+          <Stack.Screen
+            name="RequestHistoryScreen"
+            component={RequestHistoryScreen}
+            options={{ title: "", header: () => null }}
+          />
+          <Stack.Screen
+            name="PickupDetailsScreen"
+            component={PickupDetailsScreen}
+            options={{ title: "", header: () => null }}
+          />
+          <Stack.Screen
+            name="PickupSelectedDetailsScreen"
+            component={PickupSelectedDetailsScreen}
+            options={{ title: "", header: () => null }}
+          />
+          <Stack.Screen
+            name="PickupConfirmScreen"
+            component={PickupConfirmScreen}
+            options={{ title: "", header: () => null }}
+          />
+          <Stack.Screen
+            name="DriverRequestScreen"
+            component={DriverRequestScreen}
             options={{ title: "", header: () => null }}
           />
         </Stack.Navigator>

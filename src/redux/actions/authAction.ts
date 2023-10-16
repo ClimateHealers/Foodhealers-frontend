@@ -20,6 +20,14 @@ interface DeleteUser {
   tokenId: string;
 }
 
+interface updatePhoto {
+  file: [];
+}
+
+interface fetchPhoto {
+  file: [];
+}
+
 export const registerUser = createAsyncThunk<SignupData, SignupData>(
   "auth/register",
   async (userData: SignupData, { rejectWithValue }: any) => {
@@ -98,6 +106,26 @@ export const updateProfile = createAsyncThunk<UpdateProfile, UpdateProfile>(
       return result?.data;
     } catch (error: any) {
       return rejectWithValue(error.response.data.message);
+    }
+  }
+);
+
+export const updatePhoto = createAsyncThunk<updatePhoto, updatePhoto>(
+  "updatePhoto",
+  async (updateProfilePic: updatePhoto, { rejectWithValue, getState }: any) => {
+    try {
+      const token = getState().auth.data.token;
+      const config = {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Token ${token} `,
+        },
+      };
+      const result = await API.post("v1/api/volunteer-profile-photo/", updateProfilePic, config);
+      return result.data;
+    } catch (error: any) {
+      console.log("error",error.response.data.message)
+      return rejectWithValue(error?.response?.data?.message);
     }
   }
 );

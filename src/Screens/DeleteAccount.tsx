@@ -24,11 +24,11 @@ const DeleteAccount = () => {
   const userInfo = useSelector((state: any) => state.auth.data.user);
 
   const deleteAccount = async () => {
-    const res = await dispatch(deleteUser({}) as any);
+    const res = await dispatch(deleteUser({} as any) as any);
 
     if (res?.payload?.success) {
       removeAuthData();
-      await dispatch(logOut({}) as any);
+      await dispatch(logOut({} as any) as any);
       setShowModal(true);
     }
   };
@@ -125,7 +125,7 @@ const DeleteAccount = () => {
                       marginVertical: hp2dp("2%"),
                     }}
                   >
-                    {localized.t("Almost done")}
+                    {localized.t("ALMOST_DONE")}
                   </Text>
                 </View>
                 <View>

@@ -9,6 +9,7 @@ import notificationReducer from "./notificationReducer";
 import veganRecipesReducer from "./veganRecipesReducer";
 import veganRecipesCategoryReducer from "./veganRecipesCategoryReducer";
 import myDonationsReducer from "./myDonationsReducer";
+import fetchVehicle from "./addVehicleReducer";
 
 const rootReducer = combineReducers({
   auth: authreducers,
@@ -19,7 +20,8 @@ const rootReducer = combineReducers({
   language: languageReducer,
   notification:notificationReducer,
   recipesCategory:veganRecipesReducer,
-  veganRecipesCategoryList: veganRecipesCategoryReducer
+  veganRecipesCategoryList: veganRecipesCategoryReducer,
+  fetchVehicle: fetchVehicle
 });
 
 export default rootReducer;

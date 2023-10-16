@@ -1,10 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { login } from "../actions/authAction";
-import { updateProfile } from "../actions/authAction";
 
 const initialState = {
   data: {
-    token :null
+    token: null,
   },
   error: null,
   loading: false,
@@ -19,7 +18,7 @@ const authSlice = createSlice({
     },
     setAuthToken: (state, action) => {
       state.data.token = action.payload;
-    }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -33,18 +32,6 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(login.rejected, (state) => {
-        state.loading = false;
-        state.error = null;
-      }).addCase(updateProfile.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(updateProfile.fulfilled, (state, action) => {
-        state.loading = false;
-        state.data = action.payload;
-        state.error = null;
-      })
-      .addCase(updateProfile.rejected, (state) => {
         state.loading = false;
         state.error = null;
       });

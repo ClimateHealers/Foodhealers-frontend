@@ -52,7 +52,7 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginVertical: h2dp(1),
+    marginBottom: h2dp(2),
     backgroundColor: "white",
     marginHorizontal: w2dp(1),
     borderRadius: 5,

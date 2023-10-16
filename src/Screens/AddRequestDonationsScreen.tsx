@@ -17,40 +17,29 @@ import {
   View,
 } from "react-native";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
-import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { Text, TextInput } from "react-native-paper";
+import PrimaryButton from "../Components/PrimaryButton";
+import { AddDonations, AddRequest } from "../Components/validation";
+
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 import PhoneInput from "react-native-phone-number-input";
 import { heightPercentageToDP as h2dp } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
-import PrimaryButton from "../Components/PrimaryButton";
-import { getLocation } from "../Components/getCurrentLocation";
-import { addDriver, addVolunteer } from "../Components/validation";
-import { localized } from "../locales/localization";
-import { volunteerAtEvent } from "../redux/actions/volunteerAction";
+import { postDonation } from "../redux/actions/myDonations";
 import { styles } from "../Components/Styles";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
-import { updateProfile } from "../redux/actions/authAction";
+import { localized } from "../locales/localization";
+import { postRequest } from "../redux/actions/myRequests";
 
-const AddDriverScreen = ({ route }: any) => {
-  const { id, title, itemTypeId } = route?.params;
+const AddRequestDonationsScreen = ({ route }: any) => {
+  const { itemTypeId, title } = route?.params;
   const [loading, setLoading] = useState(false);
   const [langOpen, setlangOpen] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
   const [showDatePicker, setShowDatePicker] = useState(false);
-  const [showEndDatePicker, setShowEndDatePicker] = useState(false);
-  const [selectedLanguage, setSelectedLanguage] = useState(localized.locale);
-  const [lang, setLang] = useState([
-    { id: 1, label: "Bengali", value: "be" },
-    { id: 2, label: "Chinese", value: "ch" },
-    { id: 3, label: "English", value: "en" },
-    { id: 4, label: "French", value: "fr" },
-    { id: 5, label: "Hindi", value: "hi" },
-    { id: 6, label: "Mandarin", value: "ma" },
-    { id: 7, label: "Punjabi", value: "pu" },
-    { id: 8, label: "Spanish", value: "es" },
-  ]);
+  const [countryPhoneCode, setCountryPhoneCode] = useState<string>("");
+  const phoneCode = countryPhoneCode.toString();
   const [response, setResponse] = useState({
     loading: false,
     error: false,
@@ -61,28 +50,33 @@ const AddDriverScreen = ({ route }: any) => {
   const [selectedEndDate, setSelectedEndDate] = useState<Date | any>(
     moment().add(1, "hour")
   );
-
-  const userDetails = useSelector((state: any) => state.auth);
-  const { data } = userDetails;
-  const eventDateTime = moment(selectedDate).utc().unix();
-  const eventEndDateTime = moment(selectedEndDate).utc().unix();
   const [minmumEndDate, setMinmumEndDate] = useState<Date | any>(
     moment().add(1, "hour")
   );
-  const [selectedEndTime, setSelectedEndTime] = useState<Date | any>(
-    moment(new Date(selectedTime)).add(1, "hour")
-  );
+
   const phoneInput = useRef<PhoneInput>(null);
 
   const dispatch = useDispatch();
 
   const API_KEY = Constants?.manifest?.extra?.googleMapsApiKey;
 
+  const eventDateTime = moment(selectedDate).utc().unix();
+
   const handlePressOutside = () => {
     setlangOpen(false);
     Keyboard.dismiss();
   };
   const navigation: any = useNavigation();
+
+  const handleDateChange = (date: any) => {
+    setSelectedDate(date);
+    if (selectedDate > selectedEndDate) {
+      setSelectedEndDate(selectedDate);
+    } else {
+      setSelectedEndDate(date);
+    }
+    setShowDatePicker(false);
+  };
 
   useEffect(() => {
     setSelectedEndDate(moment(selectedDate).add(1, "hour"));
@@ -91,7 +85,7 @@ const AddDriverScreen = ({ route }: any) => {
   return (
     <TouchableWithoutFeedback onPress={handlePressOutside}>
       <LinearGradient
-        colors={["#6fa200", "#72a400", "#82b200", "#87b500", "#6fa200"]}
+        colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
         style={styles.background}
       >
         <SafeAreaView>
@@ -119,24 +113,25 @@ const AddDriverScreen = ({ route }: any) => {
                 </View>
               </Modal>
               <Formik
-                validationSchema={addDriver}
+                validationSchema={AddRequest}
                 initialValues={{
-                  name: data?.user?.name,
-                  phoneNumber: data?.user?.phoneNumber,
-                  email: data?.user?.email,
-                  lat: data?.user?.address?.lat,
-                  long: data?.user?.address?.lng,
-                  volunteerFullAddress: data?.user?.address?.fullAddress,
-                  city: data?.user?.address?.city,
-                  state: data?.user?.address?.state,
-                  zipCode: data?.user?.address?.postalCode,
+                  foodItem: "",
+                  quantity: "",
+                  phoneNumber: "",
+                  lat: 0,
+                  long: 0,
+                  address: "",
+                  city: "",
+                  state: "",
+                  postalCode: "",
+                  zipCode: "",
                 }}
                 onSubmit={async ({
-                  name,
+                  foodItem,
+                  quantity,
                   lat,
-                  email,
                   long,
-                  volunteerFullAddress,
+                  address,
                   phoneNumber,
                   city,
                   state,
@@ -150,46 +145,51 @@ const AddDriverScreen = ({ route }: any) => {
                       error: false,
                     });
                     const data = {
-                      name: name,
-                      email: email,
+                      itemTypeId: itemTypeId,
+                      itemName: foodItem,
+                      quantity: quantity,
                       phoneNumber: phoneNumber,
-                      availableFromDate: eventDateTime,
-                      availableToDate: eventEndDateTime,
+                      requiredDate: eventDateTime,
                       lat: lat,
                       lng: long,
-                      fullAddress: volunteerFullAddress,
+                      fullAddress: address,
                       city: city,
                       state: state,
                       postalCode: Number(zipCode) ? Number(zipCode) : 0,
                     };
                     const res = await dispatch(
-                      updateProfile(data as any) as any
+                      postRequest(data as any) as any
                     );
                     if (res?.payload?.success == true) {
                       setLoading(false);
                       setResponse({
                         loading: false,
-                        message: `${localized.t(
-                          "DRIVER_REGISTERED_SUCCESSFULLY"
-                        )}`,
+                        message: "Request Added Successfully",
                         error: false,
                       });
                       setLoading(false);
                       Alert.alert(
-                        `${localized.t("DRIVER_REGISTERED_SUCCESSFULLY")}`,
-                        `${localized.t(
-                          "YOU_HAVE_BEEN_SUCCEESSFULLY_ADDED_AS_A_DRIVER"
-                        )}`,
+                        // `${localized.t("THAN_YOU_FOR_DONATION")}`,
+                        `${localized.t("REQUEST_ADDED")}`,
+                        // `${localized.t("WH_HAVE_SUCCESSFULLY_ADDED_YOUR_DONATION")}`,
+                        `${localized.t("WE_HAVE_SUCCESSFULLY_ADDED_YOUR_REQUEST")}`,
                         [
                           {
-                            text: "OK",
+                            text: `${localized.t("OK")}`,
                             onPress: () =>
                               navigation.dispatch(
                                 CommonActions.reset({
                                   index: 0,
                                   routes: [
                                     {
-                                      name: "AddVehicleScreen",
+                                      name: "RequestCreatedScreen",
+                                      params: {
+                                        itemTypeId: itemTypeId,
+                                        title: title,
+                                        address: address,
+                                        eventDateTime: eventDateTime,
+                                        foodItem: foodItem,
+                                      },
                                     },
                                   ],
                                 })
@@ -200,29 +200,19 @@ const AddDriverScreen = ({ route }: any) => {
                       );
                     } else {
                       setLoading(false);
-                      Alert.alert(
-                        `${localized.t("ALERT")}`,
-                        `${res?.payload}`,
-                        [
-                          {
-                            text: `${localized.t("OK")}`,
-                            style: "cancel",
-                          },
-                        ],
-                        { cancelable: true }
-                      );
+                      console.log("Error");
                     }
                   } catch (err: any) {
                     setLoading(false);
                     setResponse({
                       loading: false,
-                      message: err?.message,
+                      message: err.message,
                       error: true,
                     });
                     Alert.alert(
-                      `${localized.t("VOLUNTEER_NOT_ADDED")}`,
+                      `${localized.t("DONATION_NOT_ADDED")}`,
                       `${err.message}`,
-                      [{ text: `${localized.t("OK")}` }],
+                      [{ text: `${localized.t("OK")}`}],
                       { cancelable: false }
                     );
                   }
@@ -240,33 +230,29 @@ const AddDriverScreen = ({ route }: any) => {
                 }) => (
                   <>
                     <TextInput
-                      onChangeText={handleChange("name")}
-                      onBlur={handleBlur("name")}
-                      value={values?.name}
+                      onChangeText={handleChange("foodItem")}
+                      onBlur={handleBlur("foodItem")}
+                      value={values?.foodItem}
                       placeholder={
-                        data?.user?.name
-                          ? data?.user?.name
-                          : `${localized.t("VOLUNTEER_NAME")}`
+                        itemTypeId == 1
+                          ? `${localized.t("FOOD_ITEM")}`
+                          : `${localized.t("SUPPLIES_LIST")}`
                       }
                       placeholderTextColor={"black"}
                       style={styles.textInput}
                     />
-                    <Text style={styles.inputError}>{errors?.name}</Text>
+                    <Text style={styles.inputError}>{errors?.foodItem}</Text>
                     <TextInput
-                      onChangeText={handleChange("email")}
-                      onBlur={handleBlur("email")}
-                      value={values.email.toLocaleLowerCase()}
-                      placeholder={localized.t("EMAIL")}
+                      onChangeText={handleChange("quantity")}
+                      onBlur={handleBlur("quantity")}
+                      value={values?.quantity}
+                      placeholder={localized.t("QUANTITY")}
                       placeholderTextColor={"black"}
                       style={styles.textInput}
                     />
-                    <Text style={styles.inputError}>{errors.email}</Text>
+                    <Text style={styles.inputError}>{errors?.quantity}</Text>
                     <GooglePlacesAutocomplete
-                      placeholder={
-                        data?.user?.address?.streetAddress
-                          ? data?.user?.address?.streetAddress
-                          : `${localized.t("ADDRESS")}`
-                      }
+                      placeholder={localized.t("ADDRESS")}
                       fetchDetails={true}
                       keepResultsAfterBlur={true}
                       listViewDisplayed="auto"
@@ -279,10 +265,7 @@ const AddDriverScreen = ({ route }: any) => {
                       onPress={(data, details) => {
                         setFieldValue("lat", details?.geometry?.location?.lat);
                         setFieldValue("long", details?.geometry?.location?.lng);
-                        setFieldValue(
-                          "volunteerFullAddress",
-                          details?.formatted_address
-                        );
+                        setFieldValue("address", details?.formatted_address);
 
                         const addressComponents =
                           details?.address_components || [];
@@ -298,6 +281,10 @@ const AddDriverScreen = ({ route }: any) => {
                           if (component?.types?.includes("locality")) {
                             const city = component?.long_name;
                             setFieldValue("city", city);
+                          }
+                          if (component?.types?.includes("country")) {
+                            const country = component?.short_name;
+                            setCountryPhoneCode(country);
                           }
 
                           if (component?.types?.includes("postal_code")) {
@@ -331,9 +318,7 @@ const AddDriverScreen = ({ route }: any) => {
                         },
                       }}
                     />
-                    <Text style={styles.inputError}>
-                      {errors?.volunteerFullAddress}
-                    </Text>
+                    <Text style={styles.inputError}>{errors.address}</Text>
                     <View
                       style={{
                         display: "flex",
@@ -392,7 +377,93 @@ const AddDriverScreen = ({ route }: any) => {
                         style={[styles.textInput]}
                       />
                     </View>
+
                     <Text style={styles.inputError}>{errors?.zipCode}</Text>
+                    <View
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <TouchableOpacity onPress={() => setShowDatePicker(true)}>
+                        <View style={styles.dateTimePickerContainer}>
+                          <View>
+                            <Text
+                              style={{
+                                color: "black",
+                                fontSize: 13,
+                                marginBottom: 5,
+                                marginLeft: 15,
+                              }}
+                            >
+                              {localized.t("DATE")}
+                            </Text>
+                            <Text
+                              style={{
+                                color: "black",
+                                fontSize: 13,
+                                marginBottom: 5,
+                                marginLeft: 15,
+                              }}
+                            >
+                              {moment(selectedDate).format("MMM, DD, YYYY")}
+                            </Text>
+                          </View>
+                          {showDatePicker && (
+                            <DateTimePickerModal
+                              isVisible={showDatePicker}
+                              minimumDate={new Date()}
+                              date={
+                                selectedDate
+                                  ? new Date(selectedDate)
+                                  : undefined
+                              }
+                              mode="datetime"
+                              is24Hour={true}
+                              onConfirm={handleDateChange}
+                              onCancel={() => setShowDatePicker(false)}
+                            />
+                          )}
+                        </View>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        disabled={true}
+                        onPress={() => setShowDatePicker(true)}
+                      >
+                        <View
+                          style={[
+                            styles.dateTimePickerContainer,
+                            { backgroundColor: "#deddd9" },
+                          ]}
+                        >
+                          <View>
+                            <Text
+                              style={{
+                                color: "black",
+                                fontSize: 13,
+                                width: 200,
+                                marginBottom: 5,
+                                marginLeft: 15,
+                              }}
+                            >
+                              {localized.t("TIME")}
+                            </Text>
+                            <Text
+                              style={{
+                                color: "black",
+                                fontSize: 13,
+                                marginBottom: 5,
+                                marginLeft: 15,
+                              }}
+                            >
+                              {moment(selectedDate).format("hh:mm A")}
+                            </Text>
+                          </View>
+                        </View>
+                      </TouchableOpacity>
+                    </View>
                     <View
                       style={{
                         display: "flex",
@@ -432,8 +503,8 @@ const AddDriverScreen = ({ route }: any) => {
                       }}
                     >
                       <PrimaryButton
-                        title={localized.t("NEXT")}
-                        buttonStyle={styles.nextButtonStyles}
+                        title={localized.t("SUBMIT")}
+                        buttonStyle={styles.buttonStyles}
                         titleStyle={styles.titleStyle}
                         onPress={handleSubmit}
                       />
@@ -449,4 +520,4 @@ const AddDriverScreen = ({ route }: any) => {
   );
 };
 
-export default AddDriverScreen;
+export default AddRequestDonationsScreen;

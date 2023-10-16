@@ -4,17 +4,19 @@ import API from "../../Utils/APIUtils";
 
 
 
-export interface MyDonations {
+export interface MyRequests {
+  itemTypeId: number,
   token: string;
 }
 
-export interface PostDonation{
+export interface PostRequest{
+  itemTypeId: Number;
   token: string;
 }
 
-export const myDonations = createAsyncThunk<MyDonations, MyDonations>(
-  "myDonations",
-  async (_, thunkAPI: any) => {
+export const myRequests = createAsyncThunk<MyRequests, MyRequests>(
+  "myRequests",
+  async (itemTypeId: MyRequests, thunkAPI: any) => {
     try {
         const token = thunkAPI?.getState()?.auth?.data?.token;
       const config = {
@@ -23,7 +25,7 @@ export const myDonations = createAsyncThunk<MyDonations, MyDonations>(
           Authorization: `Token ${token}`,
         },
       };
-      const result = await API.get("v1/api/donate-food/", config);
+      const result = await API.get(`v1/api/request-food/${itemTypeId?.itemTypeId}/`, config);
       return result?.data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error?.response?.data?.message);
@@ -31,9 +33,9 @@ export const myDonations = createAsyncThunk<MyDonations, MyDonations>(
   }
 );
 
-export const postDonation = createAsyncThunk<PostDonation, PostDonation>(
-  "postDonation",
-  async (PostDonation: PostDonation, { rejectWithValue, getState }: any) => {
+export const postRequest = createAsyncThunk<PostRequest, PostRequest>(
+  "postRequest",
+  async (postRequest: PostRequest,  { rejectWithValue, getState }: any) => {
     try {
       const token = getState()?.auth?.data?.token;
       const config = {
@@ -42,7 +44,7 @@ export const postDonation = createAsyncThunk<PostDonation, PostDonation>(
           Authorization: `Token ${token}`,
         },
       };
-      const result = await API.post("v1/api/donate-food/", PostDonation, config);
+      const result = await API.post(`v1/api/request-food/${postRequest?.itemTypeId}/`, postRequest,config);
       return result.data;
     } catch (error: any) {
       return rejectWithValue(error?.response?.data?.message);

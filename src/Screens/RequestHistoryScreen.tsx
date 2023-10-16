@@ -3,56 +3,45 @@ import {
   Entypo,
   Feather,
   FontAwesome,
+  Ionicons,
   MaterialCommunityIcons,
-  MaterialIcons
+  MaterialIcons,
 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { LinearGradient } from "expo-linear-gradient";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import {
   FlatList,
+  Keyboard,
   ScrollView,
   Text,
   TouchableOpacity,
-  View
+  TouchableWithoutFeedback,
+  View,
 } from "react-native";
 import {
   heightPercentageToDP as h2dp,
   widthPercentageToDP as w2dp,
 } from "react-native-responsive-screen";
-import SegmentedControlTab from "react-native-segmented-control-tab";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch } from "react-redux";
+import BurgerIcon from "../Components/BurgerIcon";
+import FoodhealersHeader from "../Components/FoodhealersHeader";
 import { styles } from "../Components/Styles";
 import { localized } from "../locales/localization";
-import { allDonations } from "../redux/actions/allDonations";
-import { myDonations } from "../redux/actions/myDonations";
+import { myRequests } from "../redux/actions/myRequests";
 
-const DonationTabScreen = () => {
-  const [selectedIndex, setSelectedIndex] = useState(0);
-  const [donationData, setDonationData]: any[] = useState<[]>([]);
-
-  const dispatch = useDispatch();
-
-  const navigation: any = useNavigation();
-
-  const fetchingDonationData = async () => {
-    const response = await dispatch(myDonations({} as any) as any);
-    setDonationData(response?.payload?.donationList);
-  };
-
-  const fetchingallDonationData = async () => {
-    const response = await dispatch(allDonations({} as any) as any);
-  };
-
+const RequestHistoryScreen = ({ route }: any) => {
+  const { itemTypeId, title } = route?.params;
+  const [requestData, setRequestData]: any = useState<[]>([]);
   useEffect(() => {
-    fetchingDonationData();
-    fetchingallDonationData();
-    sortByDate();
+    fetchingRequestData();
   }, []);
 
   const [order, setOrder] = useState<"ASC" | "DESC">("ASC");
   const sortByDate = () => {
-    const postListFiltered = [...donationData].sort((a: any, b: any) => {
+    const postListFiltered = [...requestData].sort((a: any, b: any) => {
       const dateA = new Date(a?.createdAt);
       const dateB = new Date(b?.createdAt);
 
@@ -62,39 +51,41 @@ const DonationTabScreen = () => {
         return dateB?.valueOf() - dateA?.valueOf();
       }
     });
-    setDonationData(postListFiltered);
+    setRequestData(postListFiltered);
     const newOrder = order === "ASC" ? "DESC" : "ASC";
     setOrder(newOrder);
   };
 
-  const handleSingleIndexSelect = async (index: any) => {
-    setSelectedIndex(index);
-    if (index === 0) {
-      fetchingDonationData();
-    } else if (index === 1) {
-      const res = await dispatch(allDonations({} as any) as any);
-      const donationsAll = res?.payload?.AllDonations;
-      const verifiedDonations = donationsAll?.filter(
-        (event: any) => event?.status === "approved"
+  const dispatch = useDispatch();
+  const fetchingRequestData = async () => {
+    const response = await dispatch(myRequests({ itemTypeId } as any) as any);
+    if (itemTypeId === 1) {
+      const filteredrequestData = response?.payload?.requestList.filter(
+        (event: any) => event?.type === "Food"
       );
-      setDonationData(verifiedDonations);
+      setRequestData(filteredrequestData);
+    } else if (itemTypeId === 2) {
+      const filteredrequestData = response?.payload?.requestList.filter(
+        (event: any) => event?.type === "Supplies"
+      );
+      setRequestData(filteredrequestData);
+    } else {
+      setRequestData(response?.payload?.requestList);
     }
   };
 
-  const Item = ({
-    foodItem,
-    status,
-    delivery,
-    createdAt,
-    donationType,
-    donatedBy,
-    quantity,
-  }: any) => (
+  const navigation: any = useNavigation();
+
+  const handlePressOutside = () => {
+    Keyboard.dismiss();
+  };
+
+  const Item = ({ foodItem, status, delivery, requiredDate, type }: any) => (
     <TouchableOpacity activeOpacity={1}>
       <View style={styles.cardContainer}>
         {status === "approved" ? (
           <View>
-            {donationType === "Supplies" ? (
+            {type === "Supplies" ? (
               <MaterialCommunityIcons
                 name="truck-outline"
                 size={24}
@@ -137,7 +128,7 @@ const DonationTabScreen = () => {
           </View>
         ) : status === "pending" ? (
           <View>
-            {donationType === "Supplies" ? (
+            {type === "Supplies" ? (
               <MaterialCommunityIcons
                 name="truck-outline"
                 size={24}
@@ -180,7 +171,7 @@ const DonationTabScreen = () => {
           </View>
         ) : (
           <View>
-            {donationType === "Supplies" ? (
+            {type === "Supplies" ? (
               <MaterialCommunityIcons
                 name="truck-outline"
                 size={24}
@@ -219,6 +210,7 @@ const DonationTabScreen = () => {
             </Text>
           </View>
         )}
+
         <ScrollView showsVerticalScrollIndicator={false}>
           <Text
             style={{
@@ -228,7 +220,7 @@ const DonationTabScreen = () => {
               paddingTop: h2dp(0.5),
             }}
           >
-            {moment(createdAt).format("MMM DD, YYYY  ddd, hh:mm A")}
+            {moment(requiredDate).format("MMM DD, YYYY  ddd, hh:mm A")}
           </Text>
           <Text
             style={{
@@ -244,11 +236,10 @@ const DonationTabScreen = () => {
           <Text
             style={{
               marginLeft: w2dp(3),
-              fontWeight: "200",
+              fontWeight: "300",
               fontSize: 16,
               lineHeight: 20,
               paddingBottom: h2dp(1),
-              marginHorizontal: w2dp(0.5),
             }}
           >
             {delivery}
@@ -259,84 +250,90 @@ const DonationTabScreen = () => {
   );
 
   return (
-    <>
-      <View style={{ flex: 1 }}>
-        <View style={styles.toggle}>
-          <SegmentedControlTab
-            values={[
-              `${localized.t("MY_DONATIONS")}`,
-              `${localized.t("ALL_DONATIONS")}`,
-            ]}
-            selectedIndex={selectedIndex}
-            tabsContainerStyle={{
-              width: w2dp(50),
-              height: h2dp(6),
-              marginTop: h2dp(2),
-            }}
-            tabTextStyle={{
-              color: "black",
-              fontWeight: "400",
-            }}
-            tabStyle={styles.tabStyle}
-            activeTabStyle={{
-              backgroundColor: "#EDC258",
-            }}
-            activeTabTextStyle={{ color: "black" }}
-            onTabPress={handleSingleIndexSelect}
-          />
-        </View>
-        <View style={styles.itemFilter}>
-          <Text style={styles.itemFilterText}>{localized.t("EVENTS")}</Text>
-          <TouchableOpacity
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-            onPress={sortByDate}
-          >
-            <Text style={styles.itemFilterText}>{localized.t("FILTER")}</Text>
-            <MaterialIcons
-              name="filter-list-alt"
-              style={styles.itemFilterText}
-            />
-          </TouchableOpacity>
-        </View>
-        {donationData?.length > 0 ? (
-          <View style={{ flex: 1 }}>
-            <FlatList
-              data={donationData}
-              renderItem={({ item }: any) => (
-                <Item
-                  donationType={item?.donationType}
-                  status={item?.status}
-                  foodItem={`${item?.foodItem}  (${item?.quantity})`}
-                  delivery={item?.delivery?.pickupAddress?.fullAddress}
-                  createdAt={item?.createdAt}
-                  donatedBy={item?.donatedBy?.name}
+    <TouchableWithoutFeedback onPress={handlePressOutside}>
+      <LinearGradient
+        colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
+        style={styles.background}
+      >
+        <SafeAreaView>
+          <ScrollView keyboardShouldPersistTaps="handled">
+            <View style={styles.container}>
+              <FoodhealersHeader />
+              <View style={styles.root}>
+                <Ionicons
+                  name="chevron-back"
+                  size={32}
+                  color="white"
+                  onPress={() => navigation.goBack()}
                 />
-              )}
-              keyExtractor={(item: any) => item?.id}
-            />
-          </View>
-        ) : (
-          <View
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              marginTop: h2dp(25),
-            }}
-          >
-            <Text style={styles.itemText}>
-              {localized.t("NOTHING_TO_SHOW")}
-            </Text>
-          </View>
-        )}
-      </View>
-    </>
+                <View style={styles.item}>
+                  <Text style={styles.itemText}>
+                    {/* {localized.t("DONATION_HISTORY")} */}
+                    {localized.t("REQUESTS_HISTORY")}
+                  </Text>
+                </View>
+                <BurgerIcon />
+              </View>
+              <View>
+                <View style={styles.itemFilter}>
+                  <Text style={styles.itemFilterText}>
+                    {localized.t("ALL_HISTORY")}
+                  </Text>
+                  <TouchableOpacity
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                    onPress={sortByDate}
+                  >
+                    <Text style={styles.itemFilterText}>
+                      {localized.t("FILTER")}
+                    </Text>
+                    <MaterialIcons
+                      name="filter-list-alt"
+                      style={styles.itemFilterText}
+                    />
+                  </TouchableOpacity>
+                </View>
+                {requestData?.length > 0 ? (
+                  <ScrollView style={{ flex: 1 }}>
+                    <FlatList
+                      data={requestData}
+                      renderItem={({ item }: any) => (
+                        <Item
+                          status={item?.status}
+                          type={item?.type}
+                          id={item.id}
+                          foodItem={`${item?.foodItem}  (${item?.quantity})`}
+                          delivery={item?.delivery?.pickupAddress?.fullAddress}
+                          requiredDate={item?.requiredDate}
+                        />
+                      )}
+                    />
+                  </ScrollView>
+                ) : (
+                  <View
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      marginTop: h2dp(25),
+                    }}
+                  >
+                    <Text style={styles.itemText}>
+                      {localized.t("NOTHING_TO_SHOW")}
+                    </Text>
+                  </View>
+                )}
+              </View>
+            </View>
+          </ScrollView>
+        </SafeAreaView>
+      </LinearGradient>
+    </TouchableWithoutFeedback>
   );
 };
 
-export default DonationTabScreen;
+export default RequestHistoryScreen;

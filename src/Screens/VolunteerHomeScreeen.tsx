@@ -1,13 +1,8 @@
 import { Ionicons } from "@expo/vector-icons";
-import {
-  CommonActions,
-  useFocusEffect,
-  useNavigation,
-} from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import {
-  Alert,
   Image,
   Keyboard,
   SafeAreaView,
@@ -23,8 +18,8 @@ import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
 import { styles } from "../Components/Styles";
 import { localized } from "../locales/localization";
-import { VeganRecipesCategory } from "../redux/actions/veganRecipesCategory";
 import { allEvents } from "../redux/actions/allEvents";
+import { VeganRecipesCategory } from "../redux/actions/veganRecipesCategory";
 
 const VolunteerHomeScreen = ({ route }: any) => {
   const { latitude, longitude } = route.params;
@@ -33,6 +28,8 @@ const VolunteerHomeScreen = ({ route }: any) => {
   const navigation: any = useNavigation();
   const dispatch = useDispatch();
   const eventsScheduled = events?.length;
+  const userDetails = useSelector((state: any) => state.auth);
+  const { data } = userDetails;
 
   const fetchRecipesCategories = async () => {
     const response = await dispatch(VeganRecipesCategory(1 as any) as any);
@@ -116,7 +113,11 @@ const VolunteerHomeScreen = ({ route }: any) => {
                       style={styles.imageStyle}
                     />
                     <TouchableOpacity
-                      onPress={() => navigation.navigate("DriverProfilePhoto")}
+                      onPress={() => {
+                        data?.user?.isDriver
+                          ? navigation.navigate("DriverRequestScreen")
+                          : navigation.navigate("BecomeADriverScreen");
+                      }}
                     >
                       <View style={styles.title}>
                         <Text style={styles.textStyle}>
