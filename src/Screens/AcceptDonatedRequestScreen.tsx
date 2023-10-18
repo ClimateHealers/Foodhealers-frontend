@@ -61,12 +61,12 @@ const AcceptDonatedRequestScreen = ({ route }: any) => {
     moment().add(1, "hour")
   );
   const [minmumEndDate, setMinmumEndDate] = useState<Date | any>(
-    moment().add(12, "hour")
+    moment(new Date(requiredDate)).add(12, "hour")
   );
 
   var dropOffDate = new Date(requiredDate);
   dropOffDate.setHours(dropOffDate.getHours() + 12);
-  console.log("jdbfhsbddbmn", dropOffDate, requiredDate)
+  console.log("jdbfhsbddbmn", dropOffDate, requiredDate);
 
   const phoneInput = useRef<PhoneInput>(null);
 
@@ -94,7 +94,7 @@ const AcceptDonatedRequestScreen = ({ route }: any) => {
 
   useEffect(() => {
     setSelectedEndDate(moment(selectedDate).add(1, "hour"));
-    setMinmumEndDate(moment(new Date(selectedTime)).add(12, "hour"));
+    setMinmumEndDate(moment(new Date(requiredDate)).add(12, "hour"));
   }, [selectedDate]);
   return (
     <TouchableWithoutFeedback onPress={handlePressOutside}>
@@ -437,7 +437,7 @@ const AcceptDonatedRequestScreen = ({ route }: any) => {
                           {showDatePicker && (
                             <DateTimePickerModal
                               isVisible={showDatePicker}
-                              minimumDate={new Date()}
+                              minimumDate={new Date(requiredDate)}
                               maximumDate={new Date(minmumEndDate)}
                               date={
                                 selectedDate
