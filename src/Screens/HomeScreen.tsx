@@ -1,11 +1,12 @@
 import { MaterialIcons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
-import axios from "axios";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import * as Location from "expo-location";
 import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
-  Dimensions,
+  ImageBackground,
+  Linking,
   Modal,
   Platform,
   StatusBar,
@@ -18,13 +19,13 @@ import {
 import { heightPercentageToDP as h2dp } from "react-native-responsive-screen";
 import SelectDropdown from "react-native-select-dropdown";
 import { useDispatch, useSelector } from "react-redux";
-import BackgroundImg from "../Components/BackGroundImage";
 import PrimaryButton from "../Components/PrimaryButton";
 import { localized } from "../locales/localization";
 import { myTheme } from "../myTheme";
 import { myDonations } from "../redux/actions/myDonations";
 import { volunteerHistory } from "../redux/actions/volunteerHistoryAction";
 import { setLanguage } from "../redux/reducers/langReducer";
+import axios from "axios";
 
 const HomeScreen = ({ route }: any) => {
   const userDetails = useSelector((state: any) => state.auth);
@@ -51,8 +52,6 @@ const HomeScreen = ({ route }: any) => {
     { id: 8, label: "Spanish", value: "es" },
   ]);
 
-  const windowWidth = Dimensions.get("window").width;
-  const windowHeight = Dimensions.get("window").height;
   const handlePressOutside = () => {
     setlangOpen(false);
   };
@@ -145,12 +144,14 @@ const HomeScreen = ({ route }: any) => {
   return (
     <TouchableWithoutFeedback onPress={handlePressOutside}>
       <View style={styles.container}>
-        <BackgroundImg />
         <StatusBar
           backgroundColor="auto"
           barStyle={Platform.OS === "ios" ? "light-content" : "dark-content"}
         />
-        <View style={{ zIndex: 1 }}>
+        <ImageBackground
+          source={require("../../assets/homeImage21.jpg")}
+          style={styles.backgroundImage}
+        >
           <View style={styles.dropdownContainer}>
             <SelectDropdown
               buttonStyle={styles.dropdown1BtnStyle}
@@ -179,10 +180,8 @@ const HomeScreen = ({ route }: any) => {
               }}
             />
           </View>
-
           <View style={{ flex: 1 }}>{appLoader(loc == true)}</View>
-
-          <View style={[styles.headerContainer, { top: windowHeight - 340 }]}>
+          <View style={styles.headerContainer}>
             <PrimaryButton
               title={localized.t("FIND_FOOD")}
               onPress={navigateToMapScreen}
@@ -261,7 +260,6 @@ const HomeScreen = ({ route }: any) => {
                   color: "white",
                   fontSize: 18,
                   fontFamily: "OpenSans-bold",
-                  marginBottom: h2dp(6),
                 }}
               >
                 {localized.t("WELCOME")}{" "}
@@ -277,7 +275,6 @@ const HomeScreen = ({ route }: any) => {
                     fontSize: 18,
                     textDecorationLine: "underline",
                     fontFamily: "OpenSans-Bold",
-                    marginBottom: h2dp(6),
                   }}
                 >
                   {localized.t("SIGN_IN")}
@@ -285,7 +282,7 @@ const HomeScreen = ({ route }: any) => {
               </TouchableOpacity>
             )}
           </View>
-        </View>
+        </ImageBackground>
       </View>
     </TouchableWithoutFeedback>
   );
@@ -295,14 +292,21 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  backgroundImage: {
+    flex: 1,
+    width: "100%",
+    height: "100%",
+    resizeMode: "cover",
+    justifyContent: "flex-end",
+    alignItems: "center",
+  },
   headerContainer: {
     display: "flex",
     flexDirection: "column",
     backgroundColor: "rgba(0, 0, 0, 0.5)",
     alignItems: "center",
-    justifyContent: "center",
     width: "100%",
-    position: "absolute",
+    height: Platform.OS === "ios" ? h2dp(37) : h2dp(36),
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
   },
@@ -336,7 +340,7 @@ const styles = StyleSheet.create({
   },
   dropdownContainer: {
     position: "absolute",
-    top: "10%",
+    top: Platform.OS === "ios" ? h2dp(10) : h2dp(7),
     left: "10%",
     width: "70%",
   },
@@ -369,7 +373,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   dropdown1BtnStyle: {
-    marginTop: Platform.OS === "ios" ? h2dp(4.5) : h2dp(5),
+    marginTop: 15,
     width: "30%",
     height: 50,
     backgroundColor: "#FFF",

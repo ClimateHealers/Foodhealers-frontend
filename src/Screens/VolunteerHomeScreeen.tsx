@@ -12,7 +12,10 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import { heightPercentageToDP as h2dp } from "react-native-responsive-screen";
+import {
+  heightPercentageToDP as h2dp,
+  widthPercentageToDP as w2dp,
+} from "react-native-responsive-screen";
 import { useDispatch, useSelector } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
@@ -57,10 +60,10 @@ const VolunteerHomeScreen = ({ route }: any) => {
     <>
       <TouchableWithoutFeedback onPress={handlePressOutside}>
         <LinearGradient
-          colors={["#012e17", "#017439", "#009b4d"]}
+          colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
           style={styles.background}
         >
-          <SafeAreaView>
+          {/* <SafeAreaView> */}
             <ScrollView keyboardShouldPersistTaps="handled">
               <TouchableOpacity activeOpacity={1}>
                 <View style={styles.containerVolunteer}>
@@ -87,20 +90,20 @@ const VolunteerHomeScreen = ({ route }: any) => {
                       source={require("../../assets/images/shutterShock.png")}
                       style={styles.imageStyle}
                     />
-                    <TouchableOpacity
-                      onPress={() =>
-                        navigation.navigate("VolunteerDonateScreen", {
-                          latitude: latitude,
-                          longitude: longitude,
-                        })
-                      }
-                    >
-                      <View style={styles.title}>
+                    <View style={styles.title}>
+                      <TouchableOpacity
+                        onPress={() =>
+                          navigation.navigate("VolunteerDonateScreen", {
+                            latitude: latitude,
+                            longitude: longitude,
+                          })
+                        }
+                      >
                         <Text style={styles.textStyle}>
                           {localized.t("VOLUNTEER/DONATE")}
                         </Text>
-                      </View>
-                    </TouchableOpacity>
+                      </TouchableOpacity>
+                    </View>
                   </View>
                   <View
                     style={{
@@ -112,22 +115,27 @@ const VolunteerHomeScreen = ({ route }: any) => {
                       source={require("../../assets/images/volunteerToDrive.png")}
                       style={styles.imageStyle}
                     />
-                    <TouchableOpacity
-                      onPress={() => {
-                        data?.user?.isDriver
-                          ? navigation.navigate("DriverRequestScreen")
-                          : navigation.navigate("BecomeADriverScreen");
-                      }}
-                    >
-                      <View style={styles.title}>
+                    <View style={styles.title}>
+                      <TouchableOpacity
+                        onPress={() => {
+                          data?.user?.isDriver
+                            ? navigation.navigate("DriverRequestScreen")
+                            : navigation.navigate("BecomeADriverScreen");
+                        }}
+                      >
                         <Text style={styles.textStyle}>
                           {localized.t("VOLUNTEER_TO_DRIVE")}
                         </Text>
-                      </View>
-                    </TouchableOpacity>
+                      </TouchableOpacity>
+                    </View>
                   </View>
                   {events && (
-                    <View>
+                    <View
+                      style={{
+                        alignSelf: "flex-start",
+                        marginHorizontal: w2dp(4),
+                      }}
+                    >
                       <Text style={[styles.subHeading]}>
                         {localized.t("EVENTS")}
                       </Text>
@@ -152,34 +160,39 @@ const VolunteerHomeScreen = ({ route }: any) => {
                               source={{ uri: event?.eventPhoto }}
                               style={styles.imageStyle}
                             />
-                            <TouchableOpacity
-                              onPress={() =>
-                                navigation?.navigate("WeekScreen", {
-                                  currentlatitude: latitude,
-                                  currentlongitude: longitude,
-                                  city: event?.address?.city,
-                                  state: event?.address?.state,
-                                  fullAddress: event?.address?.fullAddress,
-                                  postalCode: event?.address?.postalCode,
-                                  lat: event?.address?.lat,
-                                  lng: event?.address?.lng,
-                                  address: event?.address,
-                                })
-                              }
-                            >
-                              <View style={styles.title}>
+                            <View style={styles.title}>
+                              <TouchableOpacity
+                                onPress={() =>
+                                  navigation?.navigate("WeekScreen", {
+                                    currentlatitude: latitude,
+                                    currentlongitude: longitude,
+                                    city: event?.address?.city,
+                                    state: event?.address?.state,
+                                    fullAddress: event?.address?.fullAddress,
+                                    postalCode: event?.address?.postalCode,
+                                    lat: event?.address?.lat,
+                                    lng: event?.address?.lng,
+                                    address: event?.address,
+                                  })
+                                }
+                              >
                                 <Text style={styles.textStyle}>
                                   {event?.address?.city}
                                 </Text>
-                              </View>
-                            </TouchableOpacity>
+                              </TouchableOpacity>
+                            </View>
                           </View>
                         ))}
                       </View>
                     </TouchableOpacity>
                   </ScrollView>
                   {recipeData && (
-                    <View>
+                    <View
+                      style={{
+                        alignSelf: "flex-start",
+                        marginHorizontal: w2dp(4),
+                      }}
+                    >
                       <Text style={styles.subHeading}>
                         {localized.t("VEGAN_RECIPES")}
                       </Text>
@@ -222,7 +235,7 @@ const VolunteerHomeScreen = ({ route }: any) => {
                                   }
                                 >
                                   <Text style={styles.textStyle}>
-                                    {recipe?.foodName}
+                                  {recipe?.foodName?.length > 25 ? `${recipe?.foodName?.slice(0,25)}...` : recipe?.foodName}
                                   </Text>
                                 </TouchableOpacity>
                               </View>
@@ -248,7 +261,7 @@ const VolunteerHomeScreen = ({ route }: any) => {
                 </View>
               </TouchableOpacity>
             </ScrollView>
-          </SafeAreaView>
+          {/* </SafeAreaView> */}
         </LinearGradient>
       </TouchableWithoutFeedback>
     </>

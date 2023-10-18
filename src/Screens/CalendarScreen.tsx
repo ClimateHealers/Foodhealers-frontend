@@ -69,11 +69,11 @@ const CalendarScreen = ({ route }: any) => {
                   enableSwipeMonths={true}
                   headerStyle={{
                     backgroundColor: "white",
-                    marginTop: h2dp(3)
+                    // marginTop: h2dp(3)
                   }}
                   style={{
                     borderRadius: 10,
-                    height:h2dp(38)
+                    height:h2dp(35)
                   }}
                   markedDates={{
                     [date]: {

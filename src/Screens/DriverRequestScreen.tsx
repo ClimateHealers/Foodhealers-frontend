@@ -3,54 +3,36 @@ import {
   Ionicons,
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
-import { CommonActions, useNavigation } from "@react-navigation/native";
-import * as ImagePicker from "expo-image-picker";
+import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
-import * as MediaLibrary from "expo-media-library";
 import React, { useState } from "react";
 import {
-  ActivityIndicator,
-  Alert,
-  Keyboard,
   Image,
-  Linking,
-  Modal,
-  Platform,
+  Keyboard,
   ScrollView,
-  StyleSheet,
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  View,
+  View
 } from "react-native";
-import { Camera } from "expo-camera";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { localized } from "../locales/localization";
-import * as Permissions from "expo-permissions";
 
-import { removeAuthData, updatePhoto } from "../redux/actions/authAction";
 import {
   heightPercentageToDP as h2dp,
   widthPercentageToDP as w2dp,
 } from "react-native-responsive-screen";
-import { useDispatch, useSelector } from "react-redux";
-import { getLocation } from "../Components/getCurrentLocation";
-import { logOut } from "../redux/reducers/authreducers";
-import { styles } from "../Components/Styles";
+import { useSelector } from "react-redux";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
-import BurgerIcon from "../Components/BurgerIcon";
 import PrimaryButton from "../Components/PrimaryButton";
+import { styles } from "../Components/Styles";
+import { getLocation } from "../Components/getCurrentLocation";
 
 const DriverRequestScreen = ({ route }: any) => {
-  // const { selectedImage } = route?.params;
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
-  const [loc, setLoc] = useState(false);
-  // const [selectedImage1, setSelectedImage1] = useState(selectedImage);
-  const [loading, setLoading] = useState(false);
   const userDetails = useSelector((state: any) => state.auth);
   const { data } = userDetails;
   const navigation: any = useNavigation<string>();
-  const dispatch = useDispatch();
   const handlePressOutside = () => {
     Keyboard.dismiss();
   };
@@ -174,6 +156,7 @@ const DriverRequestScreen = ({ route }: any) => {
                   overflow: "hidden",
                   marginTop: h2dp(3),
                   marginBottom: h2dp(3),
+                  borderWidth: 2,
                 }}
               >
                 <TouchableOpacity>
@@ -193,13 +176,12 @@ const DriverRequestScreen = ({ route }: any) => {
                         marginBottom: h2dp(1),
                       }}
                     >
-                      <AntDesign name="user" size={150} color="#B01D19" />
+                      <AntDesign name="user" size={300} color="#B01D19" />
                     </View>
                   )}
                 </TouchableOpacity>
               </View>
               <Text style={{ fontSize: 36, color: "#00693D" }}>
-                {/* {localized.t("DRIVE")} */}
                 Hello, {data?.user?.name}
               </Text>
               <PrimaryButton

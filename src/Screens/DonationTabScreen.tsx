@@ -286,7 +286,7 @@ const DonationTabScreen = () => {
           />
         </View>
         <View style={styles.itemFilter}>
-          <Text style={styles.itemFilterText}>{localized.t("EVENTS")}</Text>
+          <Text style={styles.itemFilterText}>{localized.t("DONATIONS")}</Text>
           <TouchableOpacity
             style={{
               display: "flex",

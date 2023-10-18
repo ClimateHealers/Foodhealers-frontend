@@ -3,7 +3,7 @@ import {
   Ionicons,
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
-import { CommonActions, useNavigation } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
 import { LinearGradient } from "expo-linear-gradient";
 import * as MediaLibrary from "expo-media-library";
@@ -11,35 +11,26 @@ import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
-  Keyboard,
   Image,
-  Linking,
+  Keyboard,
   Modal,
-  Platform,
   ScrollView,
-  StyleSheet,
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import { Camera } from "expo-camera";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { localized } from "../locales/localization";
-import * as Permissions from "expo-permissions";
-
-import { removeAuthData, updatePhoto } from "../redux/actions/authAction";
 import {
   heightPercentageToDP as h2dp,
   widthPercentageToDP as w2dp,
 } from "react-native-responsive-screen";
 import { useDispatch, useSelector } from "react-redux";
-import { getLocation } from "../Components/getCurrentLocation";
-import { logOut } from "../redux/reducers/authreducers";
-import { styles } from "../Components/Styles";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
-import BurgerIcon from "../Components/BurgerIcon";
 import PrimaryButton from "../Components/PrimaryButton";
+import { styles } from "../Components/Styles";
+import { getLocation } from "../Components/getCurrentLocation";
 import { fetchVehicle } from "../redux/actions/addVehicle";
 
 const DriverProfileScreen = ({ route }: any) => {
@@ -288,6 +279,9 @@ const DriverProfileScreen = ({ route }: any) => {
                     </View>
                   )}
                 </TouchableOpacity>
+                <Text style={{ fontSize: 36, color: "#00693D" }}>
+                  {data?.user?.name}
+                </Text>
               </View>
             </View>
             <View

@@ -1,30 +1,26 @@
-import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useEffect, useState } from "react";
 import {
   Image,
   Keyboard,
-  Platform,
   SafeAreaView,
   ScrollView,
-  StyleSheet,
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  View,
+  View
 } from "react-native";
 import {
-  heightPercentageToDP as h2dp,
-  widthPercentageToDP as w2dp,
+  heightPercentageToDP as h2dp
 } from "react-native-responsive-screen";
 import { useDispatch, useSelector } from "react-redux";
-import { getLocation } from "../Components/getCurrentLocation";
-import { styles } from "../Components/Styles";
-import FoodhealersHeader from "../Components/FoodhealersHeader";
 import BurgerIcon from "../Components/BurgerIcon";
+import FoodhealersHeader from "../Components/FoodhealersHeader";
+import { styles } from "../Components/Styles";
+import { getLocation } from "../Components/getCurrentLocation";
 import { localized } from "../locales/localization";
-import { VeganRecipesCategory } from "../redux/actions/veganRecipesCategory";
 import { VeganRecipesCategories } from "../redux/actions/veganRecipes";
 
 const RecipesHomeScreen = () => {

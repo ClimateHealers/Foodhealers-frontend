@@ -1,13 +1,11 @@
 import { Ionicons } from "@expo/vector-icons";
 import {
-  CommonActions,
   useFocusEffect,
-  useNavigation,
+  useNavigation
 } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import {
-  Alert,
   Image,
   Keyboard,
   SafeAreaView,
@@ -15,16 +13,16 @@ import {
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  View,
+  View
 } from "react-native";
 import { heightPercentageToDP as h2dp } from "react-native-responsive-screen";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
 import { styles } from "../Components/Styles";
 import { localized } from "../locales/localization";
-import { VeganRecipesCategory } from "../redux/actions/veganRecipesCategory";
 import { allEvents } from "../redux/actions/allEvents";
+import { VeganRecipesCategory } from "../redux/actions/veganRecipesCategory";
 
 const TeamHomeScreen = ({ route }: any) => {
   const [recipeData, setRecipeData] = useState<[]>([]);
@@ -59,7 +57,7 @@ const TeamHomeScreen = ({ route }: any) => {
     <>
       <TouchableWithoutFeedback onPress={handlePressOutside}>
         <LinearGradient
-          colors={["#012e17", "#017439", "#009b4d"]}
+          colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
           style={styles.background}
         >
           <SafeAreaView>
@@ -79,7 +77,7 @@ const TeamHomeScreen = ({ route }: any) => {
                     </View>
                     <BurgerIcon />
                   </View>
-                  <View
+                  {/* <View
                     style={{
                       marginBottom: h2dp(3),
                       position: "relative",
@@ -89,23 +87,24 @@ const TeamHomeScreen = ({ route }: any) => {
                       source={require("../../assets/images/shutterstock_1786476290.png")}
                       style={styles.imageStyle}
                     />
-                    <TouchableOpacity
-                    // onPress={() =>
-                    //   navigation.navigate("VolunteerDonateScreen", {
-                    //     latitude: latitude,
-                    //     longitude: longitude,
-                    //   })
-                    // }
-                    >
-                      <View style={styles.title}>
+                    <View style={styles.title}>
+                      <TouchableOpacity
+                      // onPress={() =>
+                      //   navigation.navigate("VolunteerDonateScreen", {
+                      //     latitude: latitude,
+                      //     longitude: longitude,
+                      //   })
+                      // }
+                      >
                         <Text style={styles.textStyle}>
                           {localized.t("REQUEST_VOLUNTEER")}
                         </Text>
-                      </View>
-                    </TouchableOpacity>
-                  </View>
+                      </TouchableOpacity>
+                    </View>
+                  </View> */}
                   <View
                     style={{
+                      marginTop: h2dp(3),
                       marginBottom: h2dp(3),
                       position: "relative",
                     }}
@@ -114,22 +113,22 @@ const TeamHomeScreen = ({ route }: any) => {
                       source={require("../../assets/images/shutterstock_633563996.png")}
                       style={styles.imageStyle}
                     />
-                    <TouchableOpacity
-                      onPress={() =>
-                        navigation.navigate("RequestFoodHomeScreen", {
-                          itemTypeId: 1,
-                          title: `${localized.t("REQUEST_FOOD")}`,
-                        })
-                      }
-                    >
-                      <View style={styles.title}>
+                    <View style={styles.title}>
+                      <TouchableOpacity
+                        onPress={() =>
+                          navigation.navigate("RequestFoodHomeScreen", {
+                            itemTypeId: 1,
+                            title: `${localized.t("REQUEST_FOOD")}`,
+                          })
+                        }
+                      >
                         <Text style={styles.textStyle}>
                           {localized.t("REQUEST_FOOD")}
                         </Text>
-                      </View>
-                    </TouchableOpacity>
+                      </TouchableOpacity>
+                    </View>
                   </View>
-                  <View
+                  {/* <View
                     style={{
                       marginBottom: h2dp(3),
                       position: "relative",
@@ -139,16 +138,16 @@ const TeamHomeScreen = ({ route }: any) => {
                       source={require("../../assets/images/Rectangle188.png")}
                       style={styles.imageStyle}
                     />
-                    <TouchableOpacity
-                    // onPress={() => navigation.navigate("DriverProfileScreen")}
-                    >
-                      <View style={styles.title}>
+                    <View style={styles.title}>
+                      <TouchableOpacity
+                      // onPress={() => navigation.navigate("DriverProfileScreen")}
+                      >
                         <Text style={styles.textStyle}>
                           {localized.t("REQUEST_PICKUPS")}
                         </Text>
-                      </View>
-                    </TouchableOpacity>
-                  </View>
+                      </TouchableOpacity>
+                    </View>
+                  </View> */}
                   <View
                     style={{
                       marginBottom: h2dp(3),
@@ -159,20 +158,20 @@ const TeamHomeScreen = ({ route }: any) => {
                       source={require("../../assets/images/Rectangle189.png")}
                       style={styles.imageStyle}
                     />
-                    <TouchableOpacity
-                      onPress={() =>
-                        navigation.navigate("RequestFoodHomeScreen", {
-                          itemTypeId: 2,
-                          title: `${localized.t("REQUEST_SUPPLIES")}`,
-                        })
-                      }
-                    >
-                      <View style={styles.title}>
+                    <View style={styles.title}>
+                      <TouchableOpacity
+                        onPress={() =>
+                          navigation.navigate("RequestFoodHomeScreen", {
+                            itemTypeId: 2,
+                            title: `${localized.t("REQUEST_SUPPLIES")}`,
+                          })
+                        }
+                      >
                         <Text style={styles.textStyle}>
                           {localized.t("REQUEST_SUPPLIES")}
                         </Text>
-                      </View>
-                    </TouchableOpacity>
+                      </TouchableOpacity>
+                    </View>
                   </View>
                 </View>
               </TouchableOpacity>

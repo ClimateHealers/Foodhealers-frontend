@@ -1,14 +1,20 @@
 import React, { useState } from "react";
 import {
+  Alert,
   Platform,
   ScrollView,
   StyleSheet,
+  Image,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
 
-import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import {
+  AntDesign,
+  Ionicons,
+  MaterialCommunityIcons,
+} from "@expo/vector-icons";
 import { CommonActions, useNavigation } from "@react-navigation/core";
 import Constants from "expo-constants";
 import { LinearGradient } from "expo-linear-gradient";
@@ -18,6 +24,8 @@ import {
   heightPercentageToDP as hp2dp,
   widthPercentageToDP as wp2dp,
 } from "react-native-responsive-screen";
+import * as MediaLibrary from "expo-media-library";
+import * as ImagePicker from "expo-image-picker";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { iOSColors, systemWeights } from "react-native-typography";
 import MaterialIcon from "react-native-vector-icons/MaterialIcons";
@@ -35,7 +43,8 @@ const ProfileScreen = () => {
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const [alert, setAlert] = useState(false);
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
-
+  const userDetails = useSelector((state: any) => state?.auth);
+  const { data } = userDetails;
   const navigation: any = useNavigation();
   const isAuthenticated = useSelector(
     (state: any) => state.auth.data.isAuthenticated
@@ -76,6 +85,39 @@ const ProfileScreen = () => {
 
   const navigationHandler = () => {
     navigation.navigate("DeleteAccount");
+  };
+
+  const openImagePickerAsync = async () => {
+    const res = await MediaLibrary.requestPermissionsAsync();
+    if (res.granted) {
+      const result = await ImagePicker.launchImageLibraryAsync({
+        allowsMultipleSelection: true,
+        selectionLimit: 1,
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: false,
+        aspect: [4, 3],
+        quality: 1,
+      });
+
+      if (!result.canceled) {
+        const multipleImages = result.assets.map((image) => image.uri);
+        const singlePhoto = result.assets[0].uri;
+        navigation.navigate("DriverPhotoSaveScreen", {
+          selectedImage: singlePhoto,
+        });
+      }
+    } else if (!res.granted) {
+      Alert.alert(
+        `${localized.t("MEDIA_LIBRARY_ACCESS")}`,
+        `${localized.t("FOODHEALERS_APP_NEEDS_PHOTOLIBRARY.")}`,
+        [
+          {
+            text: `${localized.t("OK")}`,
+          },
+        ],
+        { cancelable: true }
+      );
+    }
   };
 
   return (
@@ -126,7 +168,9 @@ const ProfileScreen = () => {
           </View>
         )}
         <View style={styles.row}>
-          <View style={{ height: 100, justifyContent: "center",width: wp2dp(25) }}></View>
+          <View
+            style={{ height: 100, justifyContent: "center", width: wp2dp(25) }}
+          ></View>
           <View style={{ height: 100, justifyContent: "center" }}>
             <Text style={styles.itemText}>{localized.t("ACCOUNT")}</Text>
           </View>
@@ -143,9 +187,7 @@ const ProfileScreen = () => {
               }}
               style={styles.circleAvatar}
             >
-              <Badge style={styles.notificatioAvatarLogo}>
-                0
-              </Badge>
+              <Badge style={styles.notificatioAvatarLogo}>0</Badge>
 
               <Ionicons
                 name="md-notifications-outline"
@@ -166,9 +208,70 @@ const ProfileScreen = () => {
         <ScrollView style={styles.ScrollView}>
           <View>
             <View>
-              <Text style={styles.profileDetailsText1}>
-                {localized.t("PERSONAL_INFO")}
-              </Text>
+              <View
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "center",
+                  flexDirection: "row",
+                }}
+              >
+                <View></View>
+                <View
+                  style={{
+                    height: hp2dp(20),
+                    width: hp2dp(20),
+                    borderRadius: hp2dp(50),
+                    alignItems: "center",
+                    backgroundColor: "white",
+                    overflow: "hidden",
+                    marginTop: hp2dp(2),
+                    alignSelf: "center",
+                  }}
+                >
+                  <TouchableOpacity onPress={openImagePickerAsync}>
+                    {data?.user?.profilePhoto ? (
+                      <View>
+                        <Image
+                          source={{ uri: data?.user?.profilePhoto }}
+                          style={{ width: hp2dp(20), height: hp2dp(20) }}
+                        />
+                      </View>
+                    ) : (
+                      <View
+                        style={{
+                          paddingVertical: hp2dp(2),
+                          paddingHorizontal: wp2dp(5),
+                          justifyContent: "center",
+                          marginBottom: hp2dp(1),
+                          position: "relative",
+                        }}
+                      >
+                        <AntDesign name="user" size={150} color="#B01D19" />
+                      </View>
+                    )}
+                  </TouchableOpacity>
+                </View>
+                <PrimaryButton
+                  title="Edit"
+                  onPress={logout}
+                  buttonStyle={{
+                    backgroundColor: "#D1D1D6",
+                    color: "white",
+                    borderRadius: 5,
+                    right: 0,
+                    float: "right",
+                    paddingHorizontal: wp2dp(6),
+                    marginLeft: wp2dp(2),
+                  }}
+                  titleStyle={{
+                    color: "black",
+                    fontSize: 18,
+                    lineHeight: 20,
+                    fontFamily: "OpenSans-Regular",
+                  }}
+                />
+              </View>
               <View style={styles.rowItem}>
                 <View
                   style={{
@@ -403,7 +506,6 @@ const styles = StyleSheet.create({
   titleStyle: {
     color: "white",
     fontSize: 26,
-
     lineHeight: 35,
     fontFamily: "OpenSans-Regular",
   },

@@ -1,8 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
-import {
-  useFocusEffect,
-  useNavigation
-} from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useCallback, useState } from "react";
 import {
@@ -13,7 +10,7 @@ import {
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  View
+  View,
 } from "react-native";
 import { heightPercentageToDP as h2dp } from "react-native-responsive-screen";
 import { useDispatch } from "react-redux";
@@ -58,7 +55,7 @@ const RequestFoodHomeScreen = ({ route }: any) => {
     <>
       <TouchableWithoutFeedback onPress={handlePressOutside}>
         <LinearGradient
-          colors={["#012e17", "#017439", "#009b4d"]}
+          colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
           style={styles.background}
         >
           <SafeAreaView>
@@ -74,12 +71,13 @@ const RequestFoodHomeScreen = ({ route }: any) => {
                       onPress={() => navigation.goBack()}
                     />
                     <View style={styles.item}>
-                      <Text style={styles.itemText}>{localized.t("TEAM")}</Text>
+                      <Text style={styles.itemText}>{title}</Text>
                     </View>
                     <BurgerIcon />
                   </View>
                   <View
                     style={{
+                      marginTop: h2dp(3),
                       marginBottom: h2dp(3),
                       position: "relative",
                     }}
@@ -88,20 +86,20 @@ const RequestFoodHomeScreen = ({ route }: any) => {
                       source={require("../../assets/images/Rectangle166.png")}
                       style={styles.imageStyle}
                     />
-                    <TouchableOpacity
-                      onPress={() =>
-                        navigation.navigate("AddRequestDonationsScreen", {
-                          itemTypeId: itemTypeId,
-                          title: title,
-                        })
-                      }
-                    >
-                      <View style={styles.title}>
+                    <View style={styles.title}>
+                      <TouchableOpacity
+                        onPress={() =>
+                          navigation.navigate("SeeExistingDonationScreen", {
+                            itemTypeId: itemTypeId,
+                            title: title,
+                          })
+                        }
+                      >
                         <Text style={styles.textStyle}>
                           {localized.t("REQUEST_NEW")}
                         </Text>
-                      </View>
-                    </TouchableOpacity>
+                      </TouchableOpacity>
+                    </View>
                   </View>
                   <View
                     style={{
@@ -113,20 +111,20 @@ const RequestFoodHomeScreen = ({ route }: any) => {
                       source={require("../../assets/images/Rectangle167.png")}
                       style={styles.imageStyle}
                     />
-                    <TouchableOpacity
-                      onPress={() =>
-                        navigation.navigate("RequestHistoryScreen", {
-                          itemTypeId: itemTypeId,
-                        })
-                      }
-                    >
-                      <View style={styles.title}>
+                    <View style={styles.title}>
+                      <TouchableOpacity
+                        onPress={() =>
+                          navigation.navigate("RequestHistoryScreen", {
+                            itemTypeId: itemTypeId,
+                          })
+                        }
+                      >
                         <Text style={styles.textStyle}>
                           {/* {localized.t("VOLUNTEER_TO_DRIVE")} */}
                           {localized.t("SEE_ALL_REQUESTS")}
                         </Text>
-                      </View>
-                    </TouchableOpacity>
+                      </TouchableOpacity>
+                    </View>
                   </View>
                 </View>
               </TouchableOpacity>

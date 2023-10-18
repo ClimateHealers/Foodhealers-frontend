@@ -1,31 +1,28 @@
-import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useEffect, useState } from "react";
 import {
   Image,
   Keyboard,
-  Platform,
   SafeAreaView,
   ScrollView,
-  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  View,
+  View
 } from "react-native";
 import {
-  heightPercentageToDP as h2dp,
-  widthPercentageToDP as w2dp,
+  heightPercentageToDP as h2dp
 } from "react-native-responsive-screen";
 import { useDispatch, useSelector } from "react-redux";
-import { getLocation } from "../Components/getCurrentLocation";
-import { VeganRecipesCategory } from "../redux/actions/veganRecipesCategory";
+import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
 import { styles } from "../Components/Styles";
-import BurgerIcon from "../Components/BurgerIcon";
+import { getLocation } from "../Components/getCurrentLocation";
 import { localized } from "../locales/localization";
+import { VeganRecipesCategory } from "../redux/actions/veganRecipesCategory";
 const CategoryScreen = ({ route }: any) => {
   const { categoryId, recipeName } = route.params;
 
@@ -176,7 +173,7 @@ const CategoryScreen = ({ route }: any) => {
                               }
                             >
                               <Text style={styles.textStyle}>
-                                {recipe?.foodName}
+                              {recipe?.foodName?.length > 25 ? `${recipe?.foodName?.slice(0,25)}...` : recipe?.foodName}
                               </Text>
                               <View style={styles.timerIcon}>
                                 <Ionicons
@@ -229,7 +226,7 @@ const CategoryScreen = ({ route }: any) => {
                               }
                             >
                               <Text style={styles.textStyle}>
-                                {recipe?.foodName}
+                              {recipe?.foodName?.length > 25 ? `${recipe?.foodName?.slice(0,25)}...` : recipe?.foodName}
                               </Text>
                               <View
                                 style={{

@@ -12,6 +12,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import {
+  Alert,
   FlatList,
   Keyboard,
   ScrollView,
@@ -20,35 +21,32 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
+import { Button } from "react-native-elements";
 import {
   heightPercentageToDP as h2dp,
   widthPercentageToDP as w2dp,
 } from "react-native-responsive-screen";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
-import { styles } from "../Components/Styles";
-import { getLocation } from "../Components/getCurrentLocation";
-import { localized } from "../locales/localization";
-import { myDonations } from "../redux/actions/myDonations";
-import { Modal } from "react-native-paper";
-import { Button } from "react-native-elements";
 import PrimaryButton from "../Components/PrimaryButton";
-import { myRequests } from "../redux/actions/myRequests";
+import { styles } from "../Components/Styles";
+import { localized } from "../locales/localization";
 import { allRequests } from "../redux/actions/allRequests";
+import { allDonations } from "../redux/actions/allDonations";
 
 const SeeExistingDonationScreen = ({ route }: any) => {
-  const { itemTypeId, title, latitude, longitude } = route?.params;
+  const { itemTypeId, title } = route?.params;
+  const [item, setItem] = useState<string>("");
   const [showDialog, setShowDialog] = useState<boolean>(true);
-  const [requestData, setRequestData]: any = useState<[]>([]);
+  const [donationData, setDonationData]: any = useState<[]>([]);
   useEffect(() => {
     fetchingRequestData();
   }, []);
 
   const [order, setOrder] = useState<"ASC" | "DESC">("ASC");
   const sortByDate = () => {
-    const postListFiltered = [...requestData].sort((a: any, b: any) => {
+    const postListFiltered = [...donationData].sort((a: any, b: any) => {
       const dateA = new Date(a?.createdAt);
       const dateB = new Date(b?.createdAt);
 
@@ -58,26 +56,35 @@ const SeeExistingDonationScreen = ({ route }: any) => {
         return dateB?.valueOf() - dateA?.valueOf();
       }
     });
-    setRequestData(postListFiltered);
+    setDonationData(postListFiltered);
     const newOrder = order === "ASC" ? "DESC" : "ASC";
     setOrder(newOrder);
   };
 
   const dispatch = useDispatch();
   const fetchingRequestData = async () => {
-    const response = await dispatch(allRequests({itemTypeId} as any) as any);
+    const response = await dispatch(allDonations({ itemTypeId } as any) as any);
     if (itemTypeId === 1) {
-      const filteredrequestData = response?.payload?.AllRequests.filter(
-        (event: any) => event?.type === "Food"
+      const filtereddonationData = response?.payload?.AllDonations.filter(
+        (event: any) => event?.donationType === "Food"
       );
-      setRequestData(filteredrequestData);
+      console.log("filtereddonationData", filtereddonationData);
+      setItem("Food");
+      const ApprovedDonation = filtereddonationData.filter(
+        (event: any) => event?.status === "approved"
+      );
+      setDonationData(ApprovedDonation);
     } else if (itemTypeId === 2) {
-      const filteredrequestData = response?.payload?.AllRequests.filter(
-        (event: any) => event?.type === "Supplies"
+      const filtereddonationData = response?.payload?.AllDonations.filter(
+        (event: any) => event?.donationType === "Supplies"
       );
-      setRequestData(filteredrequestData);
+      setItem("Supplies");
+      const ApprovedDonation = filtereddonationData.filter(
+        (event: any) => event?.status === "approved"
+      );
+      setDonationData(ApprovedDonation);
     } else {
-      setRequestData(response?.payload?.AllRequests);
+      setDonationData(response?.payload?.AllDonations);
     }
   };
 
@@ -89,11 +96,14 @@ const SeeExistingDonationScreen = ({ route }: any) => {
 
   const Item = ({
     foodItem,
+    foodName,
     status,
     delivery,
     requiredDate,
     type,
+    quantity,
     phoneNumber,
+    id,
   }: any) => (
     <TouchableOpacity activeOpacity={1}>
       <View style={styles.cardContainer}>
@@ -245,7 +255,7 @@ const SeeExistingDonationScreen = ({ route }: any) => {
               paddingTop: h2dp(0.7),
             }}
           >
-            {foodItem}
+            {foodName}
           </Text>
           <Text
             style={{
@@ -258,40 +268,72 @@ const SeeExistingDonationScreen = ({ route }: any) => {
           >
             {delivery}
           </Text>
-
-          <Text
+          <View
             style={{
-              marginLeft: w2dp(3),
-              fontWeight: "300",
-              fontSize: 16,
-              lineHeight: 20,
-              paddingBottom: h2dp(1),
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
             }}
           >
-            {phoneNumber}
-          </Text>
+            <FontAwesome
+              name="phone"
+              size={16}
+              color="black"
+              style={{
+                marginLeft: w2dp(3),
+                fontWeight: "300",
+                lineHeight: 20,
+                paddingBottom: h2dp(1),
+              }}
+            />
+            <Text
+              style={{
+                marginLeft: w2dp(2),
+                fontWeight: "300",
+                fontSize: 16,
+                lineHeight: 20,
+                paddingBottom: h2dp(1),
+              }}
+            >
+              {phoneNumber}
+            </Text>
+          </View>
         </ScrollView>
         <Button
-          title="Donate"
+          title="Request"
           onPress={() =>
-            navigation.navigate("SingleEventDetails", {
-              eventDetails: {
-                // additionalInfo: additionalInfo,
-                // itemTypeId: itemTypeId,
-                // title: title,
-                // id: id,
-                // name: name,
-                // address: address,
-                // eventStartDate: eventStartDate,
-                // eventEndDate: eventEndDate,
-                // lat: lat,
-                // long: long,
-                // eventPhoto: eventPhoto,
-                // requiredVolunteers: requiredVolunteers,
-                latitude: latitude,
-                longitude: longitude,
-              },
-            })
+            Alert.alert(
+              // `${localized.t("REGISTRATION_REQUIRED")}`,
+              `Request ${item}?`,
+              // `${localized.t("ONLY_A_REGISTERED")}`,
+              `${foodItem} (${quantity}) on ${moment(requiredDate).format(
+                "MMM DD, YYYY  ddd, hh:mm A"
+              )} from ${delivery}`,
+              [
+                {
+                  text: "Yes",
+                  onPress: () => {
+                    navigation.navigate("AcceptDonatedRequestScreen", {
+                      quantity: quantity,
+                      itemTypeId: itemTypeId,
+                      title: title,
+                      foodItem: foodItem,
+                      requiredDate: requiredDate,
+                      id: id,
+                    });
+                  },
+                  style: "default",
+                },
+                {
+                  text: `${localized.t("CANCEL")}`,
+                  onPress: () => {},
+                  style: "default",
+                },
+              ],
+              {
+                cancelable: true,
+              }
+            )
           }
           buttonStyle={{
             marginLeft: w2dp(3),
@@ -328,14 +370,20 @@ const SeeExistingDonationScreen = ({ route }: any) => {
               onPress={() => navigation.goBack()}
             />
             <View style={styles.item}>
-              <Text style={styles.itemText}>{localized.t("EXISTING_FOOD_REQUESTS")}</Text>
+              <Text style={styles.itemText}>
+                {/* {localized.t("EXISTING_FOOD_REQUESTS")} */}
+                Existing Food Donations
+              </Text>
             </View>
             <BurgerIcon />
           </View>
 
           <View>
             <View style={styles.itemFilter}>
-              <Text style={styles.itemFilterText}>{localized.t("EXISTING_FOOD_REQUESTS")}</Text>
+              <Text style={styles.itemFilterText}>
+                {/* {localized.t("EXISTING_FOOD_REQUESTS")} */}
+                Existing Food Donations
+              </Text>
               <TouchableOpacity
                 style={{
                   display: "flex",
@@ -354,30 +402,31 @@ const SeeExistingDonationScreen = ({ route }: any) => {
                 />
               </TouchableOpacity>
             </View>
-            <View style={{height:h2dp(70), marginTop: h2dp(1)}}>
+            <View style={{ height: h2dp(70), marginTop: h2dp(1) }}>
               <FlatList
-                data={requestData}
+                data={donationData}
                 renderItem={({ item }: any) => (
                   <Item
                     status={item?.status}
                     type={item?.type}
                     id={item.id}
-                    foodItem={`${item?.foodItem}  (${item?.quantity})`}
+                    foodItem={item.foodItem}
+                    quantity={item.quantity}
+                    foodName={`${item?.foodItem}  (${item?.quantity})`}
                     delivery={item?.delivery?.pickupAddress?.fullAddress}
-                    requiredDate={item?.requiredDate}
+                    requiredDate={item?.delivery?.pickupDate}
+                    phoneNumber={item?.donatedBy?.phoneNumber}
                   />
                 )}
               />
             </View>
           </View>
           <PrimaryButton
-            title={localized.t("DONATE_FOOD")}
+            title={`Request ${item}`}
             onPress={() =>
-              navigation.navigate("AddDonationsScreen", {
+              navigation.navigate("AddRequestDonationsScreen", {
                 itemTypeId: itemTypeId,
                 title: title,
-                latitude: latitude,
-                longitude: longitude,
               })
             }
             buttonStyle={{

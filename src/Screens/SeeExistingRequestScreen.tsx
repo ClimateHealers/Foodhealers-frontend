@@ -12,6 +12,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import {
+  Alert,
   FlatList,
   Keyboard,
   ScrollView,
@@ -20,29 +21,31 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
+import { Button } from "react-native-elements";
 import {
   heightPercentageToDP as h2dp,
   widthPercentageToDP as w2dp,
 } from "react-native-responsive-screen";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
+import PrimaryButton from "../Components/PrimaryButton";
 import { styles } from "../Components/Styles";
-import { getLocation } from "../Components/getCurrentLocation";
 import { localized } from "../locales/localization";
-import { myDonations } from "../redux/actions/myDonations";
+import { allRequests } from "../redux/actions/allRequests";
 
-const VolunteerDonationHistoryScreen = ({ route }: any) => {
-  const { itemTypeId, title } = route?.params;
-  const [donationData, setDonationData]: any = useState<[]>([]);
+const SeeExistingRequestScreen = ({ route }: any) => {
+  const { itemTypeId, title, latitude, longitude } = route?.params;
+  const [item, setItem] = useState<string>("")
+  const [showDialog, setShowDialog] = useState<boolean>(true);
+  const [requestData, setRequestData]: any = useState<[]>([]);
   useEffect(() => {
-    fetchingDonationData();
+    fetchingRequestData();
   }, []);
 
   const [order, setOrder] = useState<"ASC" | "DESC">("ASC");
   const sortByDate = () => {
-    const postListFiltered = [...donationData].sort((a: any, b: any) => {
+    const postListFiltered = [...requestData].sort((a: any, b: any) => {
       const dateA = new Date(a?.createdAt);
       const dateB = new Date(b?.createdAt);
 
@@ -52,26 +55,34 @@ const VolunteerDonationHistoryScreen = ({ route }: any) => {
         return dateB?.valueOf() - dateA?.valueOf();
       }
     });
-    setDonationData(postListFiltered);
+    setRequestData(postListFiltered);
     const newOrder = order === "ASC" ? "DESC" : "ASC";
     setOrder(newOrder);
   };
 
   const dispatch = useDispatch();
-  const fetchingDonationData = async () => {
-    const response = await dispatch(myDonations({} as any) as any);
+  const fetchingRequestData = async () => {
+    const response = await dispatch(allRequests({ itemTypeId } as any) as any);
     if (itemTypeId === 1) {
-      const filteredDonationData = response?.payload?.donationList.filter(
-        (event: any) => event?.donationType === "Food"
+      const filteredrequestData = response?.payload?.AllRequests.filter(
+        (event: any) => event?.type === "Food"
       );
-      setDonationData(filteredDonationData);
+      setItem("Food")
+      const ApprovedDonation = filteredrequestData.filter(
+        (event: any) => event?.status === "approved"
+      );
+      setRequestData(ApprovedDonation);
     } else if (itemTypeId === 2) {
-      const filteredDonationData = response?.payload?.donationList.filter(
-        (event: any) => event?.donationType === "Supplies"
+      const filteredrequestData = response?.payload?.AllRequests.filter(
+        (event: any) => event?.type === "Supplies"
       );
-      setDonationData(filteredDonationData);
+      setItem("Supplies")
+      const ApprovedDonation = filteredrequestData.filter(
+        (event: any) => event?.status === "approved"
+      );
+      setRequestData(ApprovedDonation);
     } else {
-      setDonationData(response?.payload?.donationList);
+      setRequestData(response?.payload?.AllRequests);
     }
   };
 
@@ -83,16 +94,20 @@ const VolunteerDonationHistoryScreen = ({ route }: any) => {
 
   const Item = ({
     foodItem,
+    foodName,
     status,
     delivery,
-    createdAt,
-    donationType,
+    requiredDate,
+    type,
+    quantity,
+    phoneNumber,
+    id,
   }: any) => (
     <TouchableOpacity activeOpacity={1}>
       <View style={styles.cardContainer}>
         {status === "approved" ? (
           <View>
-            {donationType === "Supplies" ? (
+            {type === "Supplies" ? (
               <MaterialCommunityIcons
                 name="truck-outline"
                 size={24}
@@ -135,7 +150,7 @@ const VolunteerDonationHistoryScreen = ({ route }: any) => {
           </View>
         ) : status === "pending" ? (
           <View>
-            {donationType === "Supplies" ? (
+            {type === "Supplies" ? (
               <MaterialCommunityIcons
                 name="truck-outline"
                 size={24}
@@ -178,7 +193,7 @@ const VolunteerDonationHistoryScreen = ({ route }: any) => {
           </View>
         ) : (
           <View>
-            {donationType === "Supplies" ? (
+            {type === "Supplies" ? (
               <MaterialCommunityIcons
                 name="truck-outline"
                 size={24}
@@ -217,6 +232,7 @@ const VolunteerDonationHistoryScreen = ({ route }: any) => {
             </Text>
           </View>
         )}
+
         <ScrollView showsVerticalScrollIndicator={false}>
           <Text
             style={{
@@ -226,7 +242,7 @@ const VolunteerDonationHistoryScreen = ({ route }: any) => {
               paddingTop: h2dp(0.5),
             }}
           >
-            {moment(createdAt).format("MMM DD, YYYY  ddd, hh:mm A")}
+            {moment(requiredDate).format("MMM DD, YYYY  ddd, hh:mm A")}
           </Text>
           <Text
             style={{
@@ -237,7 +253,7 @@ const VolunteerDonationHistoryScreen = ({ route }: any) => {
               paddingTop: h2dp(0.7),
             }}
           >
-            {foodItem}
+            {foodName}
           </Text>
           <Text
             style={{
@@ -250,7 +266,89 @@ const VolunteerDonationHistoryScreen = ({ route }: any) => {
           >
             {delivery}
           </Text>
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            <FontAwesome
+              name="phone"
+              size={16}
+              color="black"
+              style={{
+                marginLeft: w2dp(3),
+                fontWeight: "300",
+                lineHeight: 20,
+                paddingBottom: h2dp(1),
+              }}
+            />
+            <Text
+              style={{
+                marginLeft: w2dp(2),
+                fontWeight: "300",
+                fontSize: 16,
+                lineHeight: 20,
+                paddingBottom: h2dp(1),
+              }}
+            >
+              {phoneNumber}
+            </Text>
+          </View>
         </ScrollView>
+        <Button
+          title="Donate"
+          onPress={() =>
+            Alert.alert(
+              // `${localized.t("REGISTRATION_REQUIRED")}`,
+              `Donate ${item}?`,
+              // `${localized.t("ONLY_A_REGISTERED")}`,
+              `${foodItem} (${quantity}) on ${moment(requiredDate).format("MMM DD, YYYY  ddd, hh:mm A")} at ${delivery}`,
+              [
+                {
+                  text: "Yes",
+                  onPress: () => {
+                    navigation.navigate("AcceptRequestedDonationScreen", {
+                      quantity: quantity,
+                      itemTypeId: itemTypeId,
+                      title: title,
+                      foodItem: foodItem,
+                      latitude: latitude,
+                      longitude: longitude,
+                      requiredDate: requiredDate,
+                      id: id
+                    })
+                  },
+                  style: "default",
+                },
+                {
+                  text: `${localized.t("CANCEL")}`,
+                  onPress: () => {},
+                  style: "default",
+                },
+              ],
+              {
+                cancelable: true,
+              }
+            )
+            
+          }
+          buttonStyle={{
+            marginLeft: w2dp(3),
+            marginRight: w2dp(5),
+            backgroundColor: "white",
+            borderWidth: 1,
+            borderColor: "red",
+            borderRadius: 5,
+            paddingHorizontal: 8,
+            paddingVertical: 5,
+          }}
+          titleStyle={{
+            color: "black",
+            fontWeight: "300",
+          }}
+        />
       </View>
     </TouchableOpacity>
   );
@@ -272,15 +370,16 @@ const VolunteerDonationHistoryScreen = ({ route }: any) => {
             />
             <View style={styles.item}>
               <Text style={styles.itemText}>
-                {localized.t("DONATION_HISTORY")}
+                {localized.t("EXISTING_FOOD_REQUESTS")}
               </Text>
             </View>
             <BurgerIcon />
           </View>
+
           <View>
             <View style={styles.itemFilter}>
               <Text style={styles.itemFilterText}>
-                {localized.t("ALL_HISTORY")}
+                {localized.t("EXISTING_FOOD_REQUESTS")}
               </Text>
               <TouchableOpacity
                 style={{
@@ -300,24 +399,49 @@ const VolunteerDonationHistoryScreen = ({ route }: any) => {
                 />
               </TouchableOpacity>
             </View>
-            <FlatList
-              data={donationData}
-              renderItem={({ item }: any) => (
-                <Item
-                  status={item?.status}
-                  donationType={item?.donationType}
-                  id={item.id}
-                  foodItem={`${item?.foodItem}  (${item?.quantity})`}
-                  delivery={item?.delivery?.pickupAddress?.fullAddress}
-                  createdAt={item?.createdAt}
-                />
-              )}
-            />
+            <View style={{ height: h2dp(70), marginTop: h2dp(1) }}>
+              <FlatList
+                data={requestData}
+                renderItem={({ item }: any) => (
+                  <Item
+                    status={item?.status}
+                    type={item?.type}
+                    id={item.id}
+                    foodItem={item.foodItem}
+                    quantity={item.quantity}
+                    foodName={`${item?.foodItem}  (${item?.quantity})`}
+                    delivery={item?.createdBy?.address?.fullAddress}
+                    requiredDate={item?.requiredDate}
+                    phoneNumber={item?.createdBy?.phoneNumber}
+                  />
+                )}
+              />
+            </View>
           </View>
+          <PrimaryButton
+            title={`Donate ${item}`}
+            onPress={() =>
+              navigation.navigate("AddDonationsScreen", {
+                itemTypeId: itemTypeId,
+                title: title,
+                latitude: latitude,
+                longitude: longitude,
+              })
+            }
+            buttonStyle={{
+              backgroundColor: "#FC5A56",
+              color: "black",
+              borderRadius: 5,
+              width: w2dp(70),
+              alignSelf: "center",
+              marginTop: h2dp(3),
+            }}
+            titleStyle={styles.titleStyle}
+          />
         </View>
       </LinearGradient>
     </TouchableWithoutFeedback>
   );
 };
 
-export default VolunteerDonationHistoryScreen;
+export default SeeExistingRequestScreen;

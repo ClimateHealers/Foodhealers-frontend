@@ -3,8 +3,13 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
 import IntroSlider from "./Components/IntroSlider";
 import AddDonationsScreen from "./Screens/AddDonationsScreen";
+import AddDriverScreen from "./Screens/AddDriverScreen";
+import AddRequestDonationsScreen from "./Screens/AddRequestDonationsScreen";
+import AddVehicleScreen from "./Screens/AddVehicleScreen";
 import AddVolunteerToEvent from "./Screens/AddVolunteerToEventScreen";
 import AllEventScreen from "./Screens/AllEventScreen";
+import AllVolunteersScreen from "./Screens/AllVolunteersScreen";
+import BecomeADriverScreen from "./Screens/BecomeADriverScreen";
 import CalendarEventDetailScreen from "./Screens/CalendarEventDetailScreen";
 import CalendarEventScreen from "./Screens/CalendarEventScreen";
 import CalendarScreen from "./Screens/CalendarScreen";
@@ -12,6 +17,10 @@ import Camera from "./Screens/Camera";
 import CategoryScreen from "./Screens/CategoryScreen";
 import DeleteAccount from "./Screens/DeleteAccount";
 import DonationTabScreen from "./Screens/DonationTabScreen";
+import DriverPhotoSaveScreen from "./Screens/DriverPhotoSaveScreen";
+import DriverProfilePhoto from "./Screens/DriverProfilePhoto";
+import DriverProfileScreen from "./Screens/DriverProfileScreen";
+import DriverRequestScreen from "./Screens/DriverRequestScreen";
 import EventDetailsScreen from "./Screens/EventDetailsScreen";
 import EventPhotosScreen from "./Screens/EventPhotosScreen";
 import EventsHomeScreen from "./Screens/EventsHomeScreen";
@@ -22,13 +31,21 @@ import LinkingDemo from "./Screens/LinkingDemo";
 import LoginScreen from "./Screens/LoginScreen";
 import MapScreen from "./Screens/MapScreen";
 import NotificationScreen from "./Screens/NotificationScreen";
+import PickupConfirmScreen from "./Screens/PickupConfirmScreen";
+import PickupDetailsScreen from "./Screens/PickupDetailsScreen";
+import PickupSelectedDetailsScreen from "./Screens/PickupSelectedDetailsScreen";
 import PostEvent from "./Screens/PostEvent";
 import PostEventDetailsScreen from "./Screens/PostEventDetailsScreen";
 import ProfileScreen from "./Screens/ProfileScreen";
 import RecipesHomeScreen from "./Screens/RecipesHomeScreen";
+import RequestCreatedScreen from "./Screens/RequestCreatedScreen";
+import AcceptRequestedDonationScreen from "./Screens/AcceptRequestedDonationScreen";
+import RequestHistoryScreen from "./Screens/RequestHistoryScreen";
+import SeeExistingDonationScreen from "./Screens/SeeExistingDonationScreen";
 import SignupScreen from "./Screens/SignupScreen";
 import SingleEventDetails from "./Screens/SingleEventDetails";
 import SingleRecipeScreen from "./Screens/SingleRecipeScreen";
+import TeamHomeScreen from "./Screens/TeamHomeScreen";
 import UploadPhotosScreen from "./Screens/UploadPhotosScreen";
 import VolunteerAndDonateScreen from "./Screens/VolunteerAndDonateScreen";
 import VolunteerDonateScreen from "./Screens/VolunteerDonateScreen";
@@ -36,28 +53,13 @@ import VolunteerDonationHistoryScreen from "./Screens/VolunteerDonationHistorySc
 import VolunteerEventHistoryScreen from "./Screens/VolunteerEventHistoryScreen";
 import VolunteerEventScreen from "./Screens/VolunteerEventScreen";
 import VolunteerHomeScreen from "./Screens/VolunteerHomeScreeen";
+import VolunteerSingleEventDetails from "./Screens/VolunteerSingleEventDetails";
 import VolunteerThankYouScreen from "./Screens/VolunteerThankYouScreen";
 import WeekScreen from "./Screens/WeekScreen";
 import WelcomeScreen from "./Screens/WelcomeScreen";
-import VolunteerSingleEventDetails from "./Screens/VolunteerSingleEventDetails";
-import AllVolunteersScreen from "./Screens/AllVolunteersScreen";
-import BecomaADriverScreen from "./Screens/BecomeADriverScreen";
-import AddDriverScreen from "./Screens/AddDriverScreen";
-import AddVehicleScreen from "./Screens/AddVehicleScreen";
-import DriverProfilePhoto from "./Screens/DriverProfilePhoto";
-import BecomeADriverScreen from "./Screens/BecomeADriverScreen";
-import DriverPhotoSaveScreen from "./Screens/DriverPhotoSaveScreen";
-import DriverProfileScreen from "./Screens/DriverProfileScreen";
-import SeeExistingDonationScreen from "./Screens/SeeExistingDonationScreen";
-import TeamHomeScreen from "./Screens/TeamHomeScreen";
 import RequestFoodHomeScreen from "./Screens/RequestFoodHomeScreen";
-import AddRequestDonationsScreen from "./Screens/AddRequestDonationsScreen";
-import RequestCreatedScreen from "./Screens/RequestCreatedScreen";
-import RequestHistoryScreen from "./Screens/RequestHistoryScreen";
-import PickupDetailsScreen from "./Screens/PickupDetailsScreen";
-import PickupSelectedDetailsScreen from "./Screens/PickupSelectedDetailsScreen";
-import PickupConfirmScreen from "./Screens/PickupConfirmScreen";
-import DriverRequestScreen from "./Screens/DriverRequestScreen";
+import SeeExistingRequestScreen from "./Screens/SeeExistingRequestScreen";
+import AcceptDonatedRequestScreen from "./Screens/AcceptDonatedRequestScreen";
 
 const Navigation = () => {
   const Stack = createNativeStackNavigator();
@@ -351,6 +353,21 @@ const Navigation = () => {
           <Stack.Screen
             name="DriverRequestScreen"
             component={DriverRequestScreen}
+            options={{ title: "", header: () => null }}
+          />
+          <Stack.Screen
+            name="AcceptRequestedDonationScreen"
+            component={AcceptRequestedDonationScreen}
+            options={{ title: "", header: () => null }}
+          />
+          <Stack.Screen
+            name="SeeExistingRequestScreen"
+            component={SeeExistingRequestScreen}
+            options={{ title: "", header: () => null }}
+          />
+          <Stack.Screen
+            name="AcceptDonatedRequestScreen"
+            component={AcceptDonatedRequestScreen}
             options={{ title: "", header: () => null }}
           />
         </Stack.Navigator>

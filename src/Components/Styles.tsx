@@ -238,11 +238,10 @@ export const styles = StyleSheet.create({
   },
   textStyle: {
     textAlign: "center",
-    fontSize: 26,
+    fontSize: 20,
     lineHeight: 35,
     fontWeight: "normal",
     fontStyle: "normal",
-    marginTop: 13,
   },
   horizonatalView: {
     display: "flex",

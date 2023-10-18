@@ -31,8 +31,11 @@ import FoodhealersHeader from "../Components/FoodhealersHeader";
 import { styles } from "../Components/Styles";
 import { localized } from "../locales/localization";
 import { myRequests } from "../redux/actions/myRequests";
+import { allRequests } from "../redux/actions/allRequests";
+import ReactNativeSegmentedControlTab from "react-native-segmented-control-tab";
 
 const RequestHistoryScreen = ({ route }: any) => {
+  const [selectedIndex, setSelectedIndex] = useState(0);
   const { itemTypeId, title } = route?.params;
   const [requestData, setRequestData]: any = useState<[]>([]);
   useEffect(() => {
@@ -78,6 +81,30 @@ const RequestHistoryScreen = ({ route }: any) => {
 
   const handlePressOutside = () => {
     Keyboard.dismiss();
+  };
+
+  const handleSingleIndexSelect = async (index: any) => {
+    setSelectedIndex(index);
+    if (index === 0) {
+      fetchingRequestData();
+    } else if (index === 1) {
+      const response = await dispatch(allRequests({itemTypeId} as any) as any);
+    if (itemTypeId === 1) {
+      const filteredrequestData = response?.payload?.AllRequests.filter(
+        (event: any) => event?.type === "Food"
+      );
+      const ApprovedDonation = filteredrequestData.filter((event: any)=> event?.status === "approved")
+      setRequestData(ApprovedDonation);
+    } else if (itemTypeId === 2) {
+      const filteredrequestData = response?.payload?.AllRequests.filter(
+        (event: any) => event?.type === "Supplies"
+      );
+      const ApprovedDonation = filteredrequestData.filter((event: any)=> event?.status === "approved")
+      setRequestData(ApprovedDonation);
+    } else {
+      setRequestData(response?.payload?.AllRequests);
+    }
+    }
   };
 
   const Item = ({ foodItem, status, delivery, requiredDate, type }: any) => (
@@ -268,11 +295,35 @@ const RequestHistoryScreen = ({ route }: any) => {
                 />
                 <View style={styles.item}>
                   <Text style={styles.itemText}>
-                    {/* {localized.t("DONATION_HISTORY")} */}
                     {localized.t("REQUESTS_HISTORY")}
                   </Text>
                 </View>
                 <BurgerIcon />
+              </View>
+              <View style={styles.toggle}>
+                <ReactNativeSegmentedControlTab
+                  values={[
+                    // `${localized.t("MY_EVENTS")}`,
+                    "My Requests",
+                    // `${localized.t("ALL_EVENTS")}`,
+                    "All Requests"
+                  ]}
+                  selectedIndex={selectedIndex}
+                  tabsContainerStyle={{
+                    width: w2dp(50),
+                    height: h2dp(6),
+                  }}
+                  tabTextStyle={{
+                    color: "black",
+                    fontWeight: "400",
+                  }}
+                  tabStyle={styles.tabStyle}
+                  activeTabStyle={{
+                    backgroundColor: "#EDC258",
+                  }}
+                  activeTabTextStyle={{ color: "black" }}
+                  onTabPress={handleSingleIndexSelect}
+                />
               </View>
               <View>
                 <View style={styles.itemFilter}>
@@ -307,7 +358,7 @@ const RequestHistoryScreen = ({ route }: any) => {
                           type={item?.type}
                           id={item.id}
                           foodItem={`${item?.foodItem}  (${item?.quantity})`}
-                          delivery={item?.delivery?.pickupAddress?.fullAddress}
+                          delivery={item?.createdBy?.address?.fullAddress}
                           requiredDate={item?.requiredDate}
                         />
                       )}
