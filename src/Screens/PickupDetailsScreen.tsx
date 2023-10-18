@@ -25,21 +25,25 @@ import FoodhealersHeader from "../Components/FoodhealersHeader";
 import { styles } from "../Components/Styles";
 import { localized } from "../locales/localization";
 import { allEvents } from "../redux/actions/allEvents";
+import { allRequests } from "../redux/actions/allRequests";
 
 const PickupDetailsScreen = ({ route }: any) => {
-  const [eventData, setEventData]: any[] = useState<[]>([]);
+  const {itemTypeId} = route?.params;
+  const [pickupData, setPickupData]: any[] = useState<[]>([]);
   const dispatch = useDispatch();
   const fetchingEventsData = async () => {
-    const response = await dispatch(allEvents({} as any) as any);
-    const data = response?.payload?.foodEvents;
+    const response = await dispatch(allRequests({itemTypeId} as any) as any);
+    const data = response?.payload?.AllRequests;
+    console.log("data", data);
     const requiredVolunteers = data?.filter(
-      (event: any) => event?.requiredVolunteers > 0
+      (event: any) => event?.type === "Pickup"
     );
     const verifiedFoodEvents = requiredVolunteers?.filter(
       (event: any) => event?.active === true
     );
-    setEventData(verifiedFoodEvents);
+    setPickupData(verifiedFoodEvents);
   };
+  // console.log("fnsjbvdjbvhjdvbj", eventData);
 
   useEffect(() => {
     fetchingEventsData();
@@ -48,7 +52,7 @@ const PickupDetailsScreen = ({ route }: any) => {
 
   const [order, setOrder] = useState<"ASC" | "DESC">("ASC");
   const sortByDate = () => {
-    const postListFiltered = [...eventData].sort((a: any, b: any) => {
+    const postListFiltered = [...pickupData].sort((a: any, b: any) => {
       const dateA = new Date(a.eventStartDate);
       const dateB = new Date(b.eventStartDate);
 
@@ -58,7 +62,7 @@ const PickupDetailsScreen = ({ route }: any) => {
         return dateB?.valueOf() - dateA?.valueOf();
       }
     });
-    setEventData(postListFiltered);
+    setPickupData(postListFiltered);
     const newOrder = order === "ASC" ? "DESC" : "ASC";
     setOrder(newOrder);
   };
@@ -69,12 +73,7 @@ const PickupDetailsScreen = ({ route }: any) => {
     Keyboard.dismiss();
   };
 
-  const Item = ({
-    address,
-    eventTimings,
-    lat,
-    long,
-  }: any) => (
+  const Item = ({ address, eventTimings, lat, long }: any) => (
     <TouchableOpacity activeOpacity={1}>
       <View style={styles.cardContainer}>
         <ScrollView showsVerticalScrollIndicator={false}>
@@ -102,13 +101,13 @@ const PickupDetailsScreen = ({ route }: any) => {
           </Text>
         </ScrollView>
         <Button
-          title={localized.t("DETAILS")}
+          title={localized.t("ACCEPT")}
           onPress={() =>
             navigation.navigate("PickupSelectedDetailsScreen", {
               address: address,
               eventTimings: eventTimings,
               lat: lat,
-              lng: long
+              lng: long,
             })
           }
           buttonStyle={{
@@ -151,39 +150,42 @@ const PickupDetailsScreen = ({ route }: any) => {
                   />
                   <View style={styles.item}>
                     <Text style={styles.itemText}>
-                      {eventData?.length > 0
+                      {pickupData?.length > 0
                         ? `${localized.t("EVENTS")}`
                         : `${localized.t("POST_AN_EVENT")}`}
                     </Text>
                   </View>
                   <BurgerIcon />
                 </View>
-                {eventData?.length > 0 ? (
+                {pickupData?.length > 0 ? (
                   <View>
                     <View>
-                      <Text style={{ fontSize: 26, marginTop: h2dp(3), alignSelf: "center" }}>
+                      <Text
+                        style={{
+                          fontSize: 26,
+                          marginTop: h2dp(3),
+                          alignSelf: "center",
+                        }}
+                      >
                         {localized.t("ACCEPT_A_PICKUP_TODAY")}
                       </Text>
                     </View>
                     <View style={{ marginTop: h2dp(3) }}>
                       <FlatList
-                        data={eventData}
+                        data={pickupData}
                         renderItem={({ item }: any) => (
                           <Item
                             name={item?.name}
                             eventTimings={`${moment(
-                              item?.eventStartDate
+                              item?.deliver?.pickupDate
                             ).format("DD,  ddd, hh:mm A")}`}
-                            address={item?.address?.streetAddress}
-                            additionalInfo={item?.additionalInfo}
-                            lat={item?.address?.lat}
-                            long={item?.address?.lng}
+                            address={item?.deliver?.pickupAddress?.fullAddress}
+                            lat={item?.deliver?.pickupAddress?.lat}
+                            long={item?.deliver?.pickupAddress?.lng}
                             eventStartDate={item?.eventStartDate}
                             eventEndDate={item?.eventEndDate}
                             id={item?.id}
                             status={item?.status}
-                            eventPhoto={item?.eventPhoto}
-                            requiredVolunteers={item?.requiredVolunteers}
                           />
                         )}
                         keyExtractor={(item): any => {
@@ -193,20 +195,17 @@ const PickupDetailsScreen = ({ route }: any) => {
                     </View>
                   </View>
                 ) : (
-                  <View style={{ marginTop: h2dp(3), alignItems: "center" }}>
-                    <Image
-                      source={require("../../assets/images/shutterShock.png")}
-                      style={styles.imageStyle}
-                    />
-                    <View style={styles.title}>
-                      <TouchableOpacity
-                        onPress={() => navigation.navigate("PostEvent")}
-                      >
-                        <Text style={styles.textStyle}>
-                          {localized.t("POST_AN_EVENT")}
-                        </Text>
-                      </TouchableOpacity>
-                    </View>
+                  <View
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      marginTop: h2dp(25),
+                    }}
+                  >
+                    <Text style={styles.itemText}>
+                      {localized.t("NOTHING_TO_SHOW")}
+                    </Text>
                   </View>
                 )}
               </View>

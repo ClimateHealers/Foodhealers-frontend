@@ -36,7 +36,7 @@ import { allRequests } from "../redux/actions/allRequests";
 
 const SeeExistingRequestScreen = ({ route }: any) => {
   const { itemTypeId, title, latitude, longitude } = route?.params;
-  const [item, setItem] = useState<string>("")
+  const [item, setItem] = useState<string>("");
   const [showDialog, setShowDialog] = useState<boolean>(true);
   const [requestData, setRequestData]: any = useState<[]>([]);
   useEffect(() => {
@@ -67,7 +67,7 @@ const SeeExistingRequestScreen = ({ route }: any) => {
       const filteredrequestData = response?.payload?.AllRequests.filter(
         (event: any) => event?.type === "Food"
       );
-      setItem("Food")
+      setItem("Food");
       const ApprovedDonation = filteredrequestData.filter(
         (event: any) => event?.status === "approved"
       );
@@ -76,7 +76,7 @@ const SeeExistingRequestScreen = ({ route }: any) => {
       const filteredrequestData = response?.payload?.AllRequests.filter(
         (event: any) => event?.type === "Supplies"
       );
-      setItem("Supplies")
+      setItem("Supplies");
       const ApprovedDonation = filteredrequestData.filter(
         (event: any) => event?.status === "approved"
       );
@@ -304,7 +304,9 @@ const SeeExistingRequestScreen = ({ route }: any) => {
               // `${localized.t("REGISTRATION_REQUIRED")}`,
               `Donate ${item}?`,
               // `${localized.t("ONLY_A_REGISTERED")}`,
-              `${foodItem} (${quantity}) on ${moment(requiredDate).format("MMM DD, YYYY  ddd, hh:mm A")} at ${delivery}`,
+              `${foodItem} (${quantity}) on ${moment(requiredDate).format(
+                "MMM DD, YYYY  ddd, hh:mm A"
+              )} at ${delivery}`,
               [
                 {
                   text: "Yes",
@@ -317,8 +319,8 @@ const SeeExistingRequestScreen = ({ route }: any) => {
                       latitude: latitude,
                       longitude: longitude,
                       requiredDate: requiredDate,
-                      id: id
-                    })
+                      id: id,
+                    });
                   },
                   style: "default",
                 },
@@ -332,7 +334,6 @@ const SeeExistingRequestScreen = ({ route }: any) => {
                 cancelable: true,
               }
             )
-            
           }
           buttonStyle={{
             marginLeft: w2dp(3),
@@ -399,24 +400,39 @@ const SeeExistingRequestScreen = ({ route }: any) => {
                 />
               </TouchableOpacity>
             </View>
-            <View style={{ height: h2dp(70), marginTop: h2dp(1) }}>
-              <FlatList
-                data={requestData}
-                renderItem={({ item }: any) => (
-                  <Item
-                    status={item?.status}
-                    type={item?.type}
-                    id={item.id}
-                    foodItem={item.foodItem}
-                    quantity={item.quantity}
-                    foodName={`${item?.foodItem}  (${item?.quantity})`}
-                    delivery={item?.createdBy?.address?.fullAddress}
-                    requiredDate={item?.requiredDate}
-                    phoneNumber={item?.createdBy?.phoneNumber}
-                  />
-                )}
-              />
-            </View>
+            {requestData?.length > 0 ? (
+              <View style={{ height: h2dp(70), marginTop: h2dp(1) }}>
+                <FlatList
+                  data={requestData}
+                  renderItem={({ item }: any) => (
+                    <Item
+                      status={item?.status}
+                      type={item?.type}
+                      id={item.id}
+                      foodItem={item.foodItem}
+                      quantity={item.quantity}
+                      foodName={`${item?.foodItem}  (${item?.quantity})`}
+                      delivery={item?.createdBy?.address?.fullAddress}
+                      requiredDate={item?.requiredDate}
+                      phoneNumber={item?.createdBy?.phoneNumber}
+                    />
+                  )}
+                />
+              </View>
+            ) : (
+              <View
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginTop: h2dp(25),
+                }}
+              >
+                <Text style={styles.itemText}>
+                  {localized.t("NOTHING_TO_SHOW")}
+                </Text>
+              </View>
+            )}
           </View>
           <PrimaryButton
             title={`Donate ${item}`}

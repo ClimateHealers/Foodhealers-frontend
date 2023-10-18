@@ -372,7 +372,7 @@ const SeeExistingDonationScreen = ({ route }: any) => {
             <View style={styles.item}>
               <Text style={styles.itemText}>
                 {/* {localized.t("EXISTING_FOOD_REQUESTS")} */}
-                Existing Food Donations
+                Existing {item} Donations
               </Text>
             </View>
             <BurgerIcon />
@@ -382,7 +382,7 @@ const SeeExistingDonationScreen = ({ route }: any) => {
             <View style={styles.itemFilter}>
               <Text style={styles.itemFilterText}>
                 {/* {localized.t("EXISTING_FOOD_REQUESTS")} */}
-                Existing Food Donations
+                Existing {item} Donations
               </Text>
               <TouchableOpacity
                 style={{
@@ -402,24 +402,39 @@ const SeeExistingDonationScreen = ({ route }: any) => {
                 />
               </TouchableOpacity>
             </View>
-            <View style={{ height: h2dp(70), marginTop: h2dp(1) }}>
-              <FlatList
-                data={donationData}
-                renderItem={({ item }: any) => (
-                  <Item
-                    status={item?.status}
-                    type={item?.type}
-                    id={item.id}
-                    foodItem={item.foodItem}
-                    quantity={item.quantity}
-                    foodName={`${item?.foodItem}  (${item?.quantity})`}
-                    delivery={item?.delivery?.pickupAddress?.fullAddress}
-                    requiredDate={item?.delivery?.pickupDate}
-                    phoneNumber={item?.donatedBy?.phoneNumber}
-                  />
-                )}
-              />
-            </View>
+            {donationData.length > 0 ? (
+              <View style={{ height: h2dp(70), marginTop: h2dp(1) }}>
+                <FlatList
+                  data={donationData}
+                  renderItem={({ item }: any) => (
+                    <Item
+                      status={item?.status}
+                      type={item?.type}
+                      id={item.id}
+                      foodItem={item.foodItem}
+                      quantity={item.quantity}
+                      foodName={`${item?.foodItem}  (${item?.quantity})`}
+                      delivery={item?.delivery?.pickupAddress?.fullAddress}
+                      requiredDate={item?.delivery?.pickupDate}
+                      phoneNumber={item?.donatedBy?.phoneNumber}
+                    />
+                  )}
+                />
+              </View>
+            ) : (
+              <View
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginTop: h2dp(25),
+                }}
+              >
+                <Text style={styles.itemText}>
+                  {localized.t("NOTHING_TO_SHOW")}
+                </Text>
+              </View>
+            )}
           </View>
           <PrimaryButton
             title={`Request ${item}`}

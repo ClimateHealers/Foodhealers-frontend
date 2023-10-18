@@ -13,7 +13,7 @@ import {
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  View
+  View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { localized } from "../locales/localization";
@@ -186,13 +186,19 @@ const DriverRequestScreen = ({ route }: any) => {
               </Text>
               <PrimaryButton
                 title="See Pickup Requests"
-                onPress={() => navigation.navigate("PickupDetailsScreen")}
-                buttonStyle={{backgroundColor: "#00693D",
-                color: "black",
-                borderRadius: 5,
-                width: w2dp(70),
-                marginTop: h2dp(5),
-                alignSelf: "center",}}
+                onPress={() =>
+                  navigation.navigate("PickupDetailsScreen", {
+                    itemTypeId: 4,
+                  })
+                }
+                buttonStyle={{
+                  backgroundColor: "#00693D",
+                  color: "black",
+                  borderRadius: 5,
+                  width: w2dp(70),
+                  marginTop: h2dp(5),
+                  alignSelf: "center",
+                }}
                 titleStyle={[
                   styles.titleMainStyle,
                   {
