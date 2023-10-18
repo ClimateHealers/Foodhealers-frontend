@@ -22,7 +22,17 @@ import { styles } from "../Components/Styles";
 import { localized } from "../locales/localization";
 
 const PickupConfirmScreen = ({ route }: any) => {
-  const { address, eventTimings, lat, lng } = route?.params;
+  const {
+    pickAddress,
+    pickupTiming,
+    picklat,
+    picklng,
+    droplat,
+    droplng,
+    dropTiming,
+    dropAddress
+  } = route?.params;
+  console.log("object", route)
   const navigation: any = useNavigation();
 
   const handlePressOutside = () => {
@@ -30,7 +40,7 @@ const PickupConfirmScreen = ({ route }: any) => {
   };
 
   const navigationHandler = () => {
-    const url = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`;
+    const url = `https://www.google.com/maps/dir/?api=1&destination=${picklat},${picklng}`;
     Linking.openURL(url);
   };
 
@@ -88,7 +98,7 @@ const PickupConfirmScreen = ({ route }: any) => {
                         marginTop: h2dp(3),
                       }}
                     >
-                      {eventTimings}
+                      {pickupTiming}
                     </Text>
 
                     <View
@@ -117,9 +127,10 @@ const PickupConfirmScreen = ({ route }: any) => {
                             fontSize: 16,
                             lineHeight: 30,
                             paddingTop: h2dp(0.5),
+                            marginRight: w2dp(3),
                           }}
                         >
-                          {address}
+                          {pickAddress}
                         </Text>
                       </ScrollView>
                     </View>
@@ -149,9 +160,10 @@ const PickupConfirmScreen = ({ route }: any) => {
                             fontSize: 16,
                             lineHeight: 30,
                             paddingTop: h2dp(0.5),
+                            marginRight: w2dp(3),
                           }}
                         >
-                          Bommanahalli, Bangalore, Karnataka
+                          {dropAddress}
                         </Text>
                       </ScrollView>
                     </View>

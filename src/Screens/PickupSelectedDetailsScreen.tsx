@@ -21,7 +21,16 @@ import { styles } from "../Components/Styles";
 import { localized } from "../locales/localization";
 
 const PickupSelectedDetailsScreen = ({ route }: any) => {
-  const { address, eventTimings, lat, lng } = route?.params;
+  const {
+    pickAddress,
+    pickupTiming,
+    picklat,
+    dropAddress,
+    picklng,
+    droplat,
+    droplng,
+    dropTiming,
+  } = route?.params;
   const navigation: any = useNavigation();
 
   const handlePressOutside = () => {
@@ -80,7 +89,7 @@ const PickupSelectedDetailsScreen = ({ route }: any) => {
                         marginVertical: h2dp(1),
                       }}
                     >
-                      {eventTimings}
+                      {pickupTiming}
                     </Text>
 
                     <View
@@ -109,9 +118,10 @@ const PickupSelectedDetailsScreen = ({ route }: any) => {
                             fontSize: 16,
                             lineHeight: 30,
                             paddingTop: h2dp(0.5),
+                            marginRight: w2dp(3),
                           }}
                         >
-                          {address}
+                          {pickAddress}
                         </Text>
                       </ScrollView>
                     </View>
@@ -141,9 +151,10 @@ const PickupSelectedDetailsScreen = ({ route }: any) => {
                             fontSize: 16,
                             lineHeight: 30,
                             paddingTop: h2dp(0.5),
+                            marginRight: w2dp(3),
                           }}
                         >
-                          Bommanahalli, Bangalore, Karnataka
+                          {dropAddress}
                         </Text>
                       </ScrollView>
                     </View>
@@ -154,10 +165,14 @@ const PickupSelectedDetailsScreen = ({ route }: any) => {
                 title={localized.t("ACCEPT")}
                 onPress={() =>
                   navigation.navigate("PickupConfirmScreen", {
-                    address: address,
-                    eventTimings: eventTimings,
-                    lat: lat,
-                    lng: lng,
+                    pickAddress: pickAddress,
+                    pickupTiming: pickupTiming,
+                    picklat: picklat,
+                    picklng: picklng,
+                    droplat: droplat,
+                    droplng: droplng,
+                    dropTiming: dropTiming,
+                    dropAddress: dropAddress,
                   })
                 }
                 buttonStyle={styles.buttonStyles}

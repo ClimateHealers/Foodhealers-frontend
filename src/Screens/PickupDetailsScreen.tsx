@@ -43,7 +43,7 @@ const PickupDetailsScreen = ({ route }: any) => {
     );
     setPickupData(verifiedFoodEvents);
   };
-  // console.log("fnsjbvdjbvhjdvbj", eventData);
+  console.log("fnsjbvdjbvhjdvbj", pickupData);
 
   useEffect(() => {
     fetchingEventsData();
@@ -73,7 +73,7 @@ const PickupDetailsScreen = ({ route }: any) => {
     Keyboard.dismiss();
   };
 
-  const Item = ({ address, eventTimings, lat, long }: any) => (
+  const Item = ({ pickAddress, pickupTiming, picklat, picklng, droplat, droplng, dropTiming, dropAddress }: any) => (
     <TouchableOpacity activeOpacity={1}>
       <View style={styles.cardContainer}>
         <ScrollView showsVerticalScrollIndicator={false}>
@@ -86,7 +86,7 @@ const PickupDetailsScreen = ({ route }: any) => {
               fontWeight: "500",
             }}
           >
-            {eventTimings}
+            {pickupTiming}
           </Text>
           <Text
             style={{
@@ -97,17 +97,21 @@ const PickupDetailsScreen = ({ route }: any) => {
               paddingBottom: h2dp(1),
             }}
           >
-            {address}
+            {pickAddress}
           </Text>
         </ScrollView>
         <Button
           title={localized.t("ACCEPT")}
           onPress={() =>
             navigation.navigate("PickupSelectedDetailsScreen", {
-              address: address,
-              eventTimings: eventTimings,
-              lat: lat,
-              lng: long,
+              pickAddress: pickAddress,
+              pickupTiming: pickupTiming,
+              picklat: picklat,
+              picklng: picklng,
+              droplat: droplat,
+              droplng: droplng,
+              dropTiming: dropTiming,
+              dropAddress: dropAddress,
             })
           }
           buttonStyle={{
@@ -176,16 +180,22 @@ const PickupDetailsScreen = ({ route }: any) => {
                         renderItem={({ item }: any) => (
                           <Item
                             name={item?.name}
-                            eventTimings={`${moment(
+                            pickupTiming={`${moment(
                               item?.deliver?.pickupDate
                             ).format("DD,  ddd, hh:mm A")}`}
-                            address={item?.deliver?.pickupAddress?.fullAddress}
-                            lat={item?.deliver?.pickupAddress?.lat}
-                            long={item?.deliver?.pickupAddress?.lng}
+                            pickAddress={item?.deliver?.pickupAddress?.fullAddress}
+                            dropAddress={item?.deliver?.dropAddress?.fullAddress}
+                            picklat={item?.deliver?.pickupAddress?.lat}
+                            picklng={item?.deliver?.pickupAddress?.lng}
                             eventStartDate={item?.eventStartDate}
                             eventEndDate={item?.eventEndDate}
                             id={item?.id}
                             status={item?.status}
+                            droplat={item?.deliver?.dropAddress?.lat}
+                            droplng={item?.deliver?.dropAddress?.lng}
+                            dropTiming={`${moment(
+                              item?.deliver?.dropDate
+                            ).format("DD,  ddd, hh:mm A")}`}
                           />
                         )}
                         keyExtractor={(item): any => {

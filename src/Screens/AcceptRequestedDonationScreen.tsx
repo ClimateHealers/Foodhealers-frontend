@@ -33,7 +33,7 @@ import { localized } from "../locales/localization";
 import { acceptRequest } from "../redux/actions/acceptRequestAction";
 
 const AcceptRequestedDonationScreen = ({ route }: any) => {
-  const { itemTypeId, title, foodItem, id, quantity, requiredDate } = route?.params;
+  const { itemTypeId, title, foodItem, id, quantity, requiredDate, latitude, longitude } = route?.params;
   const [loading, setLoading] = useState(false);
   const [langOpen, setlangOpen] = useState(false);
   const [showDatePicker, setShowDatePicker] = useState(false);
@@ -45,7 +45,7 @@ const AcceptRequestedDonationScreen = ({ route }: any) => {
     message: "",
   });
   const [selectedDate, setSelectedDate] = useState<Date | any>(new Date());
-  const [selectedTime, setSelectedTime] = useState<Date | any>(new Date());
+  const [selectedTime, setSelectedTime] = useState<Date | any>(itemTypeId === 1 ? moment(new Date(requiredDate)).subtract(48, "hour") : new Date());
   const [selectedEndDate, setSelectedEndDate] = useState<Date | any>(
     moment().add(1, "hour")
   );
@@ -188,6 +188,8 @@ const AcceptRequestedDonationScreen = ({ route }: any) => {
                                       params: {
                                         itemTypeId: itemTypeId,
                                         title: title,
+                                        latitude: latitude,
+                                        longitude: longitude,
                                       },
                                     },
                                   ],
@@ -421,13 +423,13 @@ const AcceptRequestedDonationScreen = ({ route }: any) => {
                                 marginLeft: 15,
                               }}
                             >
-                              {moment(selectedDate).format("MMM, DD, YYYY")}
+                              {moment(requiredDate).subtract(48, "hour").format("MMM, DD, YYYY")}
                             </Text>
                           </View>
                           {showDatePicker && (
                             <DateTimePickerModal
                               isVisible={showDatePicker}
-                              minimumDate={new Date()}
+                              minimumDate={new Date(selectedTime)}
                               maximumDate={new Date(requiredDate)}
                               date={
                                 selectedDate

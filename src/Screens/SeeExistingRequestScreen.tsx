@@ -114,7 +114,6 @@ const SeeExistingRequestScreen = ({ route }: any) => {
                 color="black"
                 style={{
                   marginLeft: h2dp(2.3),
-                  marginTop: h2dp(-2),
                 }}
               />
             ) : (
@@ -124,7 +123,6 @@ const SeeExistingRequestScreen = ({ route }: any) => {
                 color="black"
                 style={{
                   marginLeft: h2dp(2.5),
-                  marginTop: h2dp(-2),
                 }}
               />
             )}
@@ -157,7 +155,6 @@ const SeeExistingRequestScreen = ({ route }: any) => {
                 color="black"
                 style={{
                   marginLeft: h2dp(2.3),
-                  marginTop: h2dp(-2),
                 }}
               />
             ) : (
@@ -167,7 +164,6 @@ const SeeExistingRequestScreen = ({ route }: any) => {
                 color="black"
                 style={{
                   marginLeft: h2dp(2.5),
-                  marginTop: h2dp(-2),
                 }}
               />
             )}
@@ -200,7 +196,7 @@ const SeeExistingRequestScreen = ({ route }: any) => {
                 color="black"
                 style={{
                   marginLeft: h2dp(2.3),
-                  marginTop: h2dp(-2),
+                  // marginTop: h2dp(-2),
                 }}
               />
             ) : (
@@ -210,7 +206,7 @@ const SeeExistingRequestScreen = ({ route }: any) => {
                 color="black"
                 style={{
                   marginLeft: h2dp(2.5),
-                  marginTop: h2dp(-2),
+                  // marginTop: h2dp(-2),
                 }}
               />
             )}
@@ -412,8 +408,8 @@ const SeeExistingRequestScreen = ({ route }: any) => {
                       foodItem={item.foodItem}
                       quantity={item.quantity}
                       foodName={`${item?.foodItem}  (${item?.quantity})`}
-                      delivery={item?.createdBy?.address?.fullAddress}
-                      requiredDate={item?.requiredDate}
+                      delivery={item?.deliver?.dropAddress?.fullAddress}
+                      requiredDate={item?.deliver?.dropDate}
                       phoneNumber={item?.createdBy?.phoneNumber}
                     />
                   )}
