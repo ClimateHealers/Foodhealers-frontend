@@ -1,12 +1,10 @@
-import {
-  AntDesign,
-  Ionicons
-} from "@expo/vector-icons";
+import { AntDesign, Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
 import { LinearGradient } from "expo-linear-gradient";
 import * as MediaLibrary from "expo-media-library";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { Camera, CameraType } from "expo-camera";
 import {
   ActivityIndicator,
   Alert,
@@ -17,7 +15,7 @@ import {
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  View
+  View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { localized } from "../locales/localization";
@@ -36,46 +34,13 @@ const DriverProfilePhoto = ({ route }: any) => {
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const [loc, setLoc] = useState(false);
   const [selectedImage, setSelectedImage] = useState("");
-  const [loading, setLoading] = useState(false);
   const userDetails = useSelector((state: any) => state.auth);
-  const { data } = userDetails;
   const navigation: any = useNavigation<string>();
   const dispatch = useDispatch();
 
   const handlePressOutside = () => {
     Keyboard.dismiss();
   };
-
-  // const takePhoto = async () => {
-  //   const res = await Camera.getPhoto();
-  //   if (res.granted) {
-  //     const result = await ImagePicker.launchCamera({
-  //       allowsMultipleSelection: true,
-  //       selectionLimit: 1,
-  //       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-  //       allowsEditing: false,
-  //       aspect: [4, 3],
-  //       quality: 1,
-  //     });
-
-  //     if (!result.canceled) {
-  //       const multipleImages = result.assets.map((image) => image.uri);
-  //       const singlePhoto = result.assets[0].uri;
-  //       setSelectedImage(singlePhoto);
-  //     }
-  //   } else if (!res.granted) {
-  //     Alert.alert(
-  //       `${localized.t("MEDIA_LIBRARY_ACCESS")}`,
-  //       `${localized.t("FOODHEALERS_APP_NEEDS_PHOTOLIBRARY.")}`,
-  //       [
-  //         {
-  //           text: `${localized.t("OK")}`,
-  //         },
-  //       ],
-  //       { cancelable: true }
-  //     );
-  //   }
-  // };
 
   const openImagePickerAsync = async () => {
     const res = await MediaLibrary.requestPermissionsAsync();
@@ -92,6 +57,7 @@ const DriverProfilePhoto = ({ route }: any) => {
       if (!result.canceled) {
         const multipleImages = result.assets.map((image) => image.uri);
         const singlePhoto = result.assets[0].uri;
+        console.log("kjfnsjknvkdnvd", singlePhoto)
         navigation.navigate("DriverPhotoSaveScreen", {
           selectedImage: singlePhoto,
         });
@@ -108,20 +74,6 @@ const DriverProfilePhoto = ({ route }: any) => {
         { cancelable: true }
       );
     }
-  };
-
-  const appLoader = (loader: any) => {
-    return (
-      <View style={styles.centeredView}>
-        <Modal visible={loader} animationType="slide" transparent={true}>
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <ActivityIndicator size={"large"} color="white" />
-            </View>
-          </View>
-        </Modal>
-      </View>
-    );
   };
 
   return (
@@ -142,9 +94,7 @@ const DriverProfilePhoto = ({ route }: any) => {
                   onPress={() => navigation.goBack()}
                 />
                 <View style={styles.item}>
-                  <Text style={styles.itemText}>
-                    {localized.t("DRIVE")}
-                  </Text>
+                  <Text style={styles.itemText}>{localized.t("DRIVE")}</Text>
                 </View>
                 <BurgerIcon />
               </View>
@@ -156,7 +106,7 @@ const DriverProfilePhoto = ({ route }: any) => {
                   alignItems: "center",
                   backgroundColor: "white",
                   overflow: "hidden",
-                  marginTop: h2dp(10)
+                  marginTop: h2dp(10),
                 }}
               >
                 <TouchableOpacity onPress={openImagePickerAsync}>
@@ -182,12 +132,13 @@ const DriverProfilePhoto = ({ route }: any) => {
                 </TouchableOpacity>
               </View>
               <Text style={{ fontSize: 26, marginTop: h2dp(3) }}>
-              {localized.t("A_PHOTO_OF_YOU")}
+                {localized.t("A_PHOTO_OF_YOU")}
               </Text>
               <PrimaryButton
                 title={localized.t("TAKE_PHOTO")}
                 buttonStyle={styles.buttonStyles}
                 titleStyle={styles.titleStyle}
+                onPress={() => navigation.navigate("TakePictureScreen")}
               />
               <PrimaryButton
                 title={localized.t("CHOOSE_FROM_CAMERA_ROLL")}

@@ -24,10 +24,9 @@ import SegmentedControlTab from "react-native-segmented-control-tab";
 import { useDispatch } from "react-redux";
 import { styles } from "../Components/Styles";
 import { localized } from "../locales/localization";
-import { allDonations } from "../redux/actions/allDonations";
 import { myDonations } from "../redux/actions/myDonations";
 
-const DonationTabScreen = () => {
+const DonationHistoryTabScreen = () => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [donationData, setDonationData]: any[] = useState<[]>([]);
 
@@ -35,18 +34,17 @@ const DonationTabScreen = () => {
 
   const navigation: any = useNavigation();
 
-  const fetchingDonationData = async () => {
+  const fetchingFoodDonationData = async () => {
     const response = await dispatch(myDonations({} as any) as any);
-    setDonationData(response?.payload?.donationList);
-  };
-
-  const fetchingallDonationData = async () => {
-    const response = await dispatch(allDonations({} as any) as any);
+    const donationsAll = response?.payload?.donationList;
+    const verifiedDonations = donationsAll?.filter(
+      (event: any) => event?.donationType === "Food"
+    );
+    setDonationData(verifiedDonations);
   };
 
   useEffect(() => {
-    fetchingDonationData();
-    fetchingallDonationData();
+    fetchingFoodDonationData();
     sortByDate();
   }, []);
 
@@ -70,12 +68,12 @@ const DonationTabScreen = () => {
   const handleSingleIndexSelect = async (index: any) => {
     setSelectedIndex(index);
     if (index === 0) {
-      fetchingDonationData();
+      fetchingFoodDonationData();
     } else if (index === 1) {
-      const res = await dispatch(allDonations({} as any) as any);
-      const donationsAll = res?.payload?.AllDonations;
+      const res = await dispatch(myDonations({} as any) as any);
+      const donationsAll = res?.payload?.donationList;
       const verifiedDonations = donationsAll?.filter(
-        (event: any) => event?.status === "approved"
+        (event: any) => event?.donationType === "Supplies"
       );
       setDonationData(verifiedDonations);
     }
@@ -257,10 +255,7 @@ const DonationTabScreen = () => {
       <View style={{ flex: 1 }}>
         <View style={styles.toggle}>
           <SegmentedControlTab
-            values={[
-              `${localized.t("MY_DONATIONS")}`,
-              `${localized.t("ALL_DONATIONS")}`,
-            ]}
+            values={[`${localized.t("FOOD")}`, `${localized.t("SUPPLIES")}`]}
             selectedIndex={selectedIndex}
             tabsContainerStyle={{
               width: w2dp(50),
@@ -333,4 +328,4 @@ const DonationTabScreen = () => {
   );
 };
 
-export default DonationTabScreen;
+export default DonationHistoryTabScreen;

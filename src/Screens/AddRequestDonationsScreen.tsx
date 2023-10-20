@@ -187,7 +187,7 @@ const AddRequestDonationsScreen = ({ route }: any) => {
                                         itemTypeId: itemTypeId,
                                         title: title,
                                         address: address,
-                                        eventDateTime: eventDateTime,
+                                        eventDateTime: selectedDate,
                                         foodItem: foodItem,
                                       },
                                     },

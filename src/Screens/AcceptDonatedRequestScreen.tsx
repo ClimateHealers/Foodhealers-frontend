@@ -66,7 +66,6 @@ const AcceptDonatedRequestScreen = ({ route }: any) => {
 
   var dropOffDate = new Date(requiredDate);
   dropOffDate.setHours(dropOffDate.getHours() + 12);
-  console.log("jdbfhsbddbmn", dropOffDate, requiredDate);
 
   const phoneInput = useRef<PhoneInput>(null);
 

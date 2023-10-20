@@ -19,6 +19,7 @@ import FoodhealersHeader from "../Components/FoodhealersHeader";
 import PrimaryButton from "../Components/PrimaryButton";
 import { styles } from "../Components/Styles";
 import { localized } from "../locales/localization";
+import moment from "moment";
 
 const RequestCreatedScreen = ({ route }: any) => {
   const { itemTypeId, title, foodItem, address, eventDateTime } = route?.params;
@@ -27,6 +28,9 @@ const RequestCreatedScreen = ({ route }: any) => {
   const handlePressOutside = () => {
     Keyboard.dismiss();
   };
+  var t = new Date();
+  t.setSeconds(eventDateTime);
+  const formatted = moment(t).format("MMM DD, YYYY  ddd, hh:mm A");
 
   return (
     <TouchableWithoutFeedback onPress={handlePressOutside}>
@@ -51,7 +55,7 @@ const RequestCreatedScreen = ({ route }: any) => {
                 <BurgerIcon />
               </View>
               <View style={{ height: h2dp(47), marginTop: h2dp(3) }}>
-                <View style={styles.cardContainer}>
+                <View style={[styles.cardContainer, { width: w2dp(85) }]}>
                   <ScrollView showsVerticalScrollIndicator={false}>
                     <Text
                       style={{
@@ -61,7 +65,7 @@ const RequestCreatedScreen = ({ route }: any) => {
                         paddingTop: h2dp(0.5),
                       }}
                     >
-                      {eventDateTime}
+                      {formatted}
                     </Text>
                     <Text
                       style={{
@@ -73,17 +77,19 @@ const RequestCreatedScreen = ({ route }: any) => {
                     >
                       {foodItem}
                     </Text>
-                    <Text
-                      style={{
-                        marginLeft: w2dp(3),
-                        fontWeight: "300",
-                        fontSize: 16,
-                        lineHeight: 20,
-                        paddingBottom: h2dp(1),
-                      }}
-                    >
-                      {address}
-                    </Text>
+                    <ScrollView showsVerticalScrollIndicator={false}>
+                      <Text
+                        style={{
+                          marginLeft: w2dp(3),
+                          fontWeight: "300",
+                          fontSize: 16,
+                          lineHeight: 20,
+                          paddingBottom: h2dp(1),
+                        }}
+                      >
+                        {address}
+                      </Text>
+                    </ScrollView>
                   </ScrollView>
                 </View>
               </View>

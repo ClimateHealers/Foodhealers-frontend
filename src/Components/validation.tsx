@@ -202,3 +202,10 @@ export const AddRequest = Yup.object().shape({
         )}`
     ),
 });
+
+export const adddVehicle = Yup.object().shape({
+  carModel: Yup.string().required(`${localized.t("THIS_FIELD_IS_REQUIRED")}`),
+  carMake: Yup.string().required(`${localized.t("THIS_FIELD_IS_REQUIRED")}`),
+  carColor: Yup.string().required(`${localized.t("THIS_FIELD_IS_REQUIRED")}`),
+  licencePlate: Yup.string().required(`${localized.t("THIS_FIELD_IS_REQUIRED")}`),
+});

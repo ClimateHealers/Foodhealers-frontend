@@ -63,205 +63,205 @@ const VolunteerHomeScreen = ({ route }: any) => {
           colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
           style={styles.background}
         >
-          {/* <SafeAreaView> */}
-            <ScrollView keyboardShouldPersistTaps="handled">
-              <TouchableOpacity activeOpacity={1}>
-                <View style={styles.containerVolunteer}>
-                  <FoodhealersHeader />
-                  <View style={styles.rootVolunteerHome}>
-                    <Ionicons
-                      name="chevron-back"
-                      size={32}
-                      color="white"
-                      onPress={() => navigation.navigate("HomeScreen")}
-                    />
-                    <View style={styles.item}>
-                      <Text style={styles.itemText}>{localized.t("HOME")}</Text>
-                    </View>
-                    <BurgerIcon />
+          <ScrollView keyboardShouldPersistTaps="handled">
+            <TouchableOpacity activeOpacity={1}>
+              <View style={styles.containerVolunteer}>
+                <FoodhealersHeader />
+                <View style={styles.rootVolunteerHome}>
+                  <Ionicons
+                    name="chevron-back"
+                    size={32}
+                    color="white"
+                    onPress={() => navigation.navigate("HomeScreen")}
+                  />
+                  <View style={styles.item}>
+                    <Text style={styles.itemText}>{localized.t("HOME")}</Text>
                   </View>
-                  <View
-                    style={{
-                      marginBottom: h2dp(3),
-                      position: "relative",
-                    }}
-                  >
-                    <Image
-                      source={require("../../assets/images/shutterShock.png")}
-                      style={styles.imageStyle}
-                    />
-                    <View style={styles.title}>
-                      <TouchableOpacity
-                        onPress={() =>
-                          navigation.navigate("VolunteerDonateScreen", {
-                            latitude: latitude,
-                            longitude: longitude,
-                          })
-                        }
-                      >
-                        <Text style={styles.textStyle}>
-                          {localized.t("VOLUNTEER/DONATE")}
-                        </Text>
-                      </TouchableOpacity>
-                    </View>
+                  <BurgerIcon />
+                </View>
+                <View
+                  style={{
+                    marginBottom: h2dp(3),
+                    position: "relative",
+                  }}
+                >
+                  <Image
+                    source={require("../../assets/images/shutterShock.png")}
+                    style={styles.imageStyle}
+                  />
+                  <View style={styles.title}>
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigation.navigate("VolunteerDonateScreen", {
+                          latitude: latitude,
+                          longitude: longitude,
+                        })
+                      }
+                    >
+                      <Text style={styles.textStyle}>
+                        {localized.t("VOLUNTEER/DONATE")}
+                      </Text>
+                    </TouchableOpacity>
                   </View>
-                  <View
-                    style={{
-                      marginBottom: h2dp(3),
-                      position: "relative",
-                    }}
-                  >
-                    <Image
-                      source={require("../../assets/images/volunteerToDrive.png")}
-                      style={styles.imageStyle}
-                    />
-                    <View style={styles.title}>
-                      <TouchableOpacity
-                        onPress={() => {
-                          data?.user?.isDriver
-                            ? navigation.navigate("DriverRequestScreen")
-                            : navigation.navigate("BecomeADriverScreen");
-                        }}
-                      >
-                        <Text style={styles.textStyle}>
-                          {localized.t("VOLUNTEER_TO_DRIVE")}
-                        </Text>
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-                  {events && (
-                    <View
-                      style={{
-                        alignSelf: "flex-start",
-                        marginHorizontal: w2dp(4),
+                </View>
+                <View
+                  style={{
+                    marginBottom: h2dp(3),
+                    position: "relative",
+                  }}
+                >
+                  <Image
+                    source={require("../../assets/images/volunteerToDrive.png")}
+                    style={styles.imageStyle}
+                  />
+                  <View style={styles.title}>
+                    <TouchableOpacity
+                      onPress={() => {
+                        data?.user?.isDriver
+                          ? navigation.navigate("DriverRequestScreen")
+                          : navigation.navigate("BecomeADriverScreen");
                       }}
                     >
-                      <Text style={[styles.subHeading]}>
-                        {localized.t("EVENTS")}
+                      <Text style={styles.textStyle}>
+                        {localized.t("VOLUNTEER_TO_DRIVE")}
                       </Text>
-                    </View>
-                  )}
-                  <ScrollView
-                    horizontal={true}
-                    keyboardShouldPersistTaps="always"
-                    showsHorizontalScrollIndicator={false}
-                    style={{ marginBottom: h2dp(3) }}
+                    </TouchableOpacity>
+                  </View>
+                </View>
+                {events && (
+                  <View
+                    style={{
+                      alignSelf: "flex-start",
+                      marginHorizontal: w2dp(4),
+                    }}
                   >
-                    <TouchableOpacity activeOpacity={1}>
-                      <View style={styles.horizonatalView}>
-                        {events?.slice(0, 1)?.map((event: any) => (
+                    <Text style={[styles.subHeading]}>
+                      {localized.t("EVENTS")}
+                    </Text>
+                  </View>
+                )}
+                <ScrollView
+                  horizontal={true}
+                  keyboardShouldPersistTaps="always"
+                  showsHorizontalScrollIndicator={false}
+                  style={{ marginBottom: h2dp(3) }}
+                >
+                  <TouchableOpacity activeOpacity={1}>
+                    <View style={styles.horizonatalView}>
+                      {events?.slice(0, 1)?.map((event: any) => (
+                        <View
+                          key={event?.id}
+                          style={{
+                            position: "relative",
+                          }}
+                        >
+                          <Image
+                            source={{ uri: event?.eventPhoto }}
+                            style={styles.imageStyle}
+                          />
+                          <View style={styles.title}>
+                            <TouchableOpacity
+                              onPress={() =>
+                                navigation?.navigate("WeekScreen", {
+                                  currentlatitude: latitude,
+                                  currentlongitude: longitude,
+                                  city: event?.address?.city,
+                                  state: event?.address?.state,
+                                  fullAddress: event?.address?.fullAddress,
+                                  postalCode: event?.address?.postalCode,
+                                  lat: event?.address?.lat,
+                                  lng: event?.address?.lng,
+                                  address: event?.address,
+                                })
+                              }
+                            >
+                              <Text style={styles.textStyle}>
+                                {event?.address?.city}
+                              </Text>
+                            </TouchableOpacity>
+                          </View>
+                        </View>
+                      ))}
+                    </View>
+                  </TouchableOpacity>
+                </ScrollView>
+                {recipeData && (
+                  <View
+                    style={{
+                      alignSelf: "flex-start",
+                      marginHorizontal: w2dp(4),
+                    }}
+                  >
+                    <Text style={styles.subHeading}>
+                      {localized.t("VEGAN_RECIPES")}
+                    </Text>
+                  </View>
+                )}
+                <ScrollView
+                  keyboardShouldPersistTaps="handled"
+                  horizontal={true}
+                  showsHorizontalScrollIndicator={false}
+                >
+                  <TouchableOpacity activeOpacity={1}>
+                    <View style={styles.horizonatalView}>
+                      {recipeData &&
+                        recipeData?.slice(1, 2)?.map((recipe: any) => (
                           <View
-                            key={event?.id}
+                            key={recipe?.id}
                             style={{
                               position: "relative",
                             }}
                           >
                             <Image
-                              source={{ uri: event?.eventPhoto }}
+                              source={{ uri: recipe?.foodImage }}
                               style={styles.imageStyle}
                             />
                             <View style={styles.title}>
                               <TouchableOpacity
                                 onPress={() =>
-                                  navigation?.navigate("WeekScreen", {
-                                    currentlatitude: latitude,
-                                    currentlongitude: longitude,
-                                    city: event?.address?.city,
-                                    state: event?.address?.state,
-                                    fullAddress: event?.address?.fullAddress,
-                                    postalCode: event?.address?.postalCode,
-                                    lat: event?.address?.lat,
-                                    lng: event?.address?.lng,
-                                    address: event?.address,
+                                  navigation.navigate("RecipesHomeScreen", {
+                                    recipeData: {
+                                      recipeImage: recipe?.foodImage,
+                                      recipeIngredient: recipe?.ingredients,
+                                      recipeName: recipe?.foodName,
+                                      recipeInstructions:
+                                        recipe?.cookingInstructions,
+                                      cookingTime: recipe?.preparationTime,
+                                      recipeSource: recipe?.recipeSource,
+                                      recipeCredits: recipe?.recipeCredits,
+                                    },
                                   })
                                 }
                               >
                                 <Text style={styles.textStyle}>
-                                  {event?.address?.city}
+                                  {recipe?.foodName?.length > 25
+                                    ? `${recipe?.foodName?.slice(0, 25)}...`
+                                    : recipe?.foodName}
                                 </Text>
                               </TouchableOpacity>
                             </View>
                           </View>
                         ))}
-                      </View>
-                    </TouchableOpacity>
-                  </ScrollView>
-                  {recipeData && (
-                    <View
-                      style={{
-                        alignSelf: "flex-start",
-                        marginHorizontal: w2dp(4),
-                      }}
-                    >
-                      <Text style={styles.subHeading}>
-                        {localized.t("VEGAN_RECIPES")}
-                      </Text>
-                    </View>
-                  )}
-                  <ScrollView
-                    keyboardShouldPersistTaps="handled"
-                    horizontal={true}
-                    showsHorizontalScrollIndicator={false}
-                  >
-                    <TouchableOpacity activeOpacity={1}>
-                      <View style={styles.horizonatalView}>
-                        {recipeData &&
-                          recipeData?.slice(1, 2)?.map((recipe: any) => (
-                            <View
-                              key={recipe?.id}
-                              style={{
-                                position: "relative",
-                              }}
-                            >
-                              <Image
-                                source={{ uri: recipe?.foodImage }}
-                                style={styles.imageStyle}
-                              />
-                              <View style={styles.title}>
-                                <TouchableOpacity
-                                  onPress={() =>
-                                    navigation.navigate("RecipesHomeScreen", {
-                                      recipeData: {
-                                        recipeImage: recipe?.foodImage,
-                                        recipeIngredient: recipe?.ingredients,
-                                        recipeName: recipe?.foodName,
-                                        recipeInstructions:
-                                          recipe?.cookingInstructions,
-                                        cookingTime: recipe?.preparationTime,
-                                        recipeSource: recipe?.recipeSource,
-                                        recipeCredits: recipe?.recipeCredits,
-                                      },
-                                    })
-                                  }
-                                >
-                                  <Text style={styles.textStyle}>
-                                  {recipe?.foodName?.length > 25 ? `${recipe?.foodName?.slice(0,25)}...` : recipe?.foodName}
-                                  </Text>
-                                </TouchableOpacity>
-                              </View>
-                            </View>
-                          ))}
-                      </View>
-                    </TouchableOpacity>
-                  </ScrollView>
-                  <TouchableOpacity>
-                    <View style={{ marginTop: h2dp(4) }}>
-                      <Image
-                        source={require("../../assets/images/map.png")}
-                        style={styles.mapImage}
-                      />
                     </View>
                   </TouchableOpacity>
-                  <View style={{ marginVertical: h2dp(3) }}>
-                    <Text style={styles.mapContent}>{eventsScheduled}</Text>
-                    <Text style={styles.mapContent}>
-                      {localized.t("EVENTS_SCHEDULED")}
-                    </Text>
+                </ScrollView>
+                <TouchableOpacity>
+                  <View style={{ marginTop: h2dp(4) }}>
+                    <Image
+                      source={require("../../assets/images/map.png")}
+                      style={styles.mapImage}
+                    />
                   </View>
+                </TouchableOpacity>
+                <View style={{ marginVertical: h2dp(3) }}>
+                  <Text style={styles.mapContent}>{eventsScheduled}</Text>
+                  <Text style={styles.mapContent}>
+                    {localized.t("EVENTS_SCHEDULED")}
+                  </Text>
                 </View>
-              </TouchableOpacity>
-            </ScrollView>
-          {/* </SafeAreaView> */}
+              </View>
+            </TouchableOpacity>
+          </ScrollView>
         </LinearGradient>
       </TouchableWithoutFeedback>
     </>

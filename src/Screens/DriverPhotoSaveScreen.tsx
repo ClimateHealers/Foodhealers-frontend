@@ -55,37 +55,6 @@ const DriverPhotoSaveScreen = ({ route }: any) => {
     Keyboard.dismiss();
   };
 
-  // const takePhoto = async () => {
-  //   const res = await Camera.getPhoto();
-  //   if (res.granted) {
-  //     const result = await ImagePicker.launchCamera({
-  //       allowsMultipleSelection: true,
-  //       selectionLimit: 1,
-  //       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-  //       allowsEditing: false,
-  //       aspect: [4, 3],
-  //       quality: 1,
-  //     });
-
-  //     if (!result.canceled) {
-  //       const multipleImages = result.assets.map((image) => image.uri);
-  //       const singlePhoto = result.assets[0].uri;
-  //       setSelectedImage(singlePhoto);
-  //     }
-  //   } else if (!res.granted) {
-  //     Alert.alert(
-  //       `${localized.t("MEDIA_LIBRARY_ACCESS")}`,
-  //       `${localized.t("FOODHEALERS_APP_NEEDS_PHOTOLIBRARY.")}`,
-  //       [
-  //         {
-  //           text: `${localized.t("OK")}`,
-  //         },
-  //       ],
-  //       { cancelable: true }
-  //     );
-  //   }
-  // };
-
   const openImagePickerAsync = async () => {
     const res = await MediaLibrary.requestPermissionsAsync();
     if (res.granted) {
@@ -102,6 +71,7 @@ const DriverPhotoSaveScreen = ({ route }: any) => {
         const multipleImages = result.assets.map((image) => image.uri);
         const singlePhoto = result.assets[0].uri;
         setSelectedImage1(singlePhoto);
+        console.log("singlephoto", singlePhoto);
       }
     } else if (!res.granted) {
       Alert.alert(
@@ -116,6 +86,7 @@ const DriverPhotoSaveScreen = ({ route }: any) => {
       );
     }
   };
+  console.log("knksnvsvsvm", selectedImage);
 
   const formData = new FormData();
   formData.append("profilePhoto", {
@@ -145,12 +116,6 @@ const DriverPhotoSaveScreen = ({ route }: any) => {
                     routes: [
                       {
                         name: "DriverProfileScreen",
-                        params: {
-                          // itemTypeId: itemTypeId,
-                          // title: title,
-                          // latitude: latitude,
-                          // longitude: longitude,
-                        },
                       },
                     ],
                   })
@@ -199,9 +164,7 @@ const DriverPhotoSaveScreen = ({ route }: any) => {
                   onPress={() => navigation.goBack()}
                 />
                 <View style={styles.item}>
-                  <Text style={styles.itemText}>
-                    {localized.t("DRIVE")}
-                  </Text>
+                  <Text style={styles.itemText}>{localized.t("DRIVE")}</Text>
                 </View>
                 <BurgerIcon />
               </View>
@@ -231,6 +194,12 @@ const DriverPhotoSaveScreen = ({ route }: any) => {
                 buttonStyle={styles.buttonStyles}
                 titleStyle={styles.titleStyle}
                 onPress={navigateToProfileScreen}
+              />
+              <PrimaryButton
+                title="Retake"
+                buttonStyle={styles.buttonHistoryStyles}
+                titleStyle={styles.titleMainStyle}
+                onPress={() => navigation.navigate("TakePictureScreen")}
               />
               <PrimaryButton
                 title={localized.t("CHOOSE_FROM_CAMERA_ROLL")}

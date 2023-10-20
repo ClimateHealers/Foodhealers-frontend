@@ -88,22 +88,28 @@ const RequestHistoryScreen = ({ route }: any) => {
     if (index === 0) {
       fetchingRequestData();
     } else if (index === 1) {
-      const response = await dispatch(allRequests({itemTypeId} as any) as any);
-    if (itemTypeId === 1) {
-      const filteredrequestData = response?.payload?.AllRequests.filter(
-        (event: any) => event?.type === "Food"
+      const response = await dispatch(
+        allRequests({ itemTypeId } as any) as any
       );
-      const ApprovedDonation = filteredrequestData.filter((event: any)=> event?.status === "approved")
-      setRequestData(ApprovedDonation);
-    } else if (itemTypeId === 2) {
-      const filteredrequestData = response?.payload?.AllRequests.filter(
-        (event: any) => event?.type === "Supplies"
-      );
-      const ApprovedDonation = filteredrequestData.filter((event: any)=> event?.status === "approved")
-      setRequestData(ApprovedDonation);
-    } else {
-      setRequestData(response?.payload?.AllRequests);
-    }
+      if (itemTypeId === 1) {
+        const filteredrequestData = response?.payload?.AllRequests.filter(
+          (event: any) => event?.type === "Food"
+        );
+        const ApprovedDonation = filteredrequestData.filter(
+          (event: any) => event?.status === "approved"
+        );
+        setRequestData(ApprovedDonation);
+      } else if (itemTypeId === 2) {
+        const filteredrequestData = response?.payload?.AllRequests.filter(
+          (event: any) => event?.type === "Supplies"
+        );
+        const ApprovedDonation = filteredrequestData.filter(
+          (event: any) => event?.status === "approved"
+        );
+        setRequestData(ApprovedDonation);
+      } else {
+        setRequestData(response?.payload?.AllRequests);
+      }
     }
   };
 
@@ -119,7 +125,6 @@ const RequestHistoryScreen = ({ route }: any) => {
                 color="black"
                 style={{
                   marginLeft: h2dp(2.3),
-                  marginTop: h2dp(-2),
                 }}
               />
             ) : (
@@ -129,7 +134,6 @@ const RequestHistoryScreen = ({ route }: any) => {
                 color="black"
                 style={{
                   marginLeft: h2dp(2.5),
-                  marginTop: h2dp(-2),
                 }}
               />
             )}
@@ -162,7 +166,6 @@ const RequestHistoryScreen = ({ route }: any) => {
                 color="black"
                 style={{
                   marginLeft: h2dp(2.3),
-                  marginTop: h2dp(-2),
                 }}
               />
             ) : (
@@ -172,7 +175,6 @@ const RequestHistoryScreen = ({ route }: any) => {
                 color="black"
                 style={{
                   marginLeft: h2dp(2.5),
-                  marginTop: h2dp(-2),
                 }}
               />
             )}
@@ -205,7 +207,6 @@ const RequestHistoryScreen = ({ route }: any) => {
                 color="black"
                 style={{
                   marginLeft: h2dp(2.3),
-                  marginTop: h2dp(-2),
                 }}
               />
             ) : (
@@ -215,7 +216,6 @@ const RequestHistoryScreen = ({ route }: any) => {
                 color="black"
                 style={{
                   marginLeft: h2dp(2.5),
-                  marginTop: h2dp(-2),
                 }}
               />
             )}
@@ -306,7 +306,7 @@ const RequestHistoryScreen = ({ route }: any) => {
                     // `${localized.t("MY_EVENTS")}`,
                     "My Requests",
                     // `${localized.t("ALL_EVENTS")}`,
-                    "All Requests"
+                    "All Requests",
                   ]}
                   selectedIndex={selectedIndex}
                   tabsContainerStyle={{

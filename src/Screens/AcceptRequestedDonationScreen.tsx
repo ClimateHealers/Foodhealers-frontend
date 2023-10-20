@@ -160,7 +160,6 @@ const AcceptRequestedDonationScreen = ({ route }: any) => {
                       state: state,
                       postalCode: Number(zipCode) ? Number(zipCode) : 0,
                     };
-                    console.log("bfnksjndsn", data)
                     const res = await dispatch(
                       acceptRequest(data as any) as any
                     );

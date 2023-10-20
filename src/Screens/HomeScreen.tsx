@@ -346,7 +346,8 @@ const styles = StyleSheet.create({
   },
   titleStyle: {
     color: "black",
-    fontSize: 26,
+    fontSize: 22
+    ,
     fontWeight: "200",
     lineHeight: 35,
     fontFamily: "OpenSans-bold",

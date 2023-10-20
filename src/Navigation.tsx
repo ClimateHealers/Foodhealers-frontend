@@ -60,6 +60,9 @@ import WelcomeScreen from "./Screens/WelcomeScreen";
 import RequestFoodHomeScreen from "./Screens/RequestFoodHomeScreen";
 import SeeExistingRequestScreen from "./Screens/SeeExistingRequestScreen";
 import AcceptDonatedRequestScreen from "./Screens/AcceptDonatedRequestScreen";
+import TakePictureScreen from "./Screens/TakePictureScreen";
+import PickupHistoryScreen from "./Screens/PickupHistoryScreen";
+import HistoryScreen from "./Screens/HistoryScreen";
 
 const Navigation = () => {
   const Stack = createNativeStackNavigator();
@@ -368,6 +371,21 @@ const Navigation = () => {
           <Stack.Screen
             name="AcceptDonatedRequestScreen"
             component={AcceptDonatedRequestScreen}
+            options={{ title: "", header: () => null }}
+          />
+          <Stack.Screen
+            name="TakePictureScreen"
+            component={TakePictureScreen}
+            options={{ title: "", header: () => null }}
+          />
+          <Stack.Screen
+            name="PickupHistoryScreen"
+            component={PickupHistoryScreen}
+            options={{ title: "", header: () => null }}
+          />
+          <Stack.Screen
+            name="HistoryScreen"
+            component={HistoryScreen}
             options={{ title: "", header: () => null }}
           />
         </Stack.Navigator>

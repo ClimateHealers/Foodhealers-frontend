@@ -207,12 +207,20 @@ const DriverRequestScreen = ({ route }: any) => {
                 ]}
               />
               <PrimaryButton
-                disabled={true}
                 title={localized.t("HISTORY")}
-                // onPress={() =>
-                //   navigation.navigate("VolunteerDonationHistoryScreen")
-                // }
-                buttonStyle={styles.buttonHistoryStyles}
+                onPress={() =>
+                  navigation.navigate("PickupHistoryScreen", {
+                    itemTypeId: 4,
+                  })
+                }
+                buttonStyle={{backgroundColor: "white",
+                color: "black",
+                borderRadius: 5,
+                borderColor: "black",
+                borderWidth: 1,
+                width: w2dp(70),
+                marginTop: h2dp(5),
+                alignSelf: "center",}}
                 titleStyle={styles.titleMainStyle}
               />
             </View>

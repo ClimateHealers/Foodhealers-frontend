@@ -25,13 +25,10 @@ import FoodhealersHeader from "../Components/FoodhealersHeader";
 import { styles } from "../Components/Styles";
 import { localized } from "../locales/localization";
 import { allEvents } from "../redux/actions/allEvents";
-import { allRequests } from "../redux/actions/allRequests";
 import { fetchPickup } from "../redux/actions/acceptPickupAction";
-import ReactNativeSegmentedControlTab from "react-native-segmented-control-tab";
 
-const PickupDetailsScreen = ({ route }: any) => {
+const PickupHistoryScreen = ({ route }: any) => {
   const { itemTypeId } = route?.params;
-  const [selectedIndex, setSelectedIndex] = useState(0);
   const [pickupData, setPickupData]: any[] = useState<[]>([]);
   const dispatch = useDispatch();
 
@@ -47,7 +44,7 @@ const PickupDetailsScreen = ({ route }: any) => {
       (event: any) => event?.active === false
     );
     const fullfilledRequests = verifiedFoodEvents?.filter(
-      (event: any) => event?.fullfilled === false
+      (event: any) => event?.fullfilled === true
     );
     setPickupData(fullfilledRequests);
   };
@@ -74,28 +71,11 @@ const PickupDetailsScreen = ({ route }: any) => {
     setOrder(newOrder);
   };
 
+
   const navigation: any = useNavigation();
 
   const handlePressOutside = () => {
     Keyboard.dismiss();
-  };
-  
-
-  const handleSingleIndexSelect = async (index: any) => {
-    setSelectedIndex(index);
-    if (index === 0) {
-      fetchingPickedupData();
-    } else if (index === 1) {
-      const response = await dispatch(allRequests({ itemTypeId } as any) as any);
-    const data = response?.payload?.AllRequests;
-    const requiredVolunteers = data?.filter(
-      (event: any) => event?.type === "Pickup"
-    );
-    const verifiedFoodEvents = requiredVolunteers?.filter(
-      (event: any) => event?.active === true
-    );
-    setPickupData(verifiedFoodEvents);
-    }
   };
 
   const Item = ({
@@ -109,8 +89,7 @@ const PickupDetailsScreen = ({ route }: any) => {
     dropAddress,
     id,
     active,
-    pickedup,
-    delivered
+    fullfilled,
   }: any) => (
     <TouchableOpacity activeOpacity={1}>
       <View style={styles.cardContainer}>
@@ -154,8 +133,7 @@ const PickupDetailsScreen = ({ route }: any) => {
                   dropAddress: dropAddress,
                   pickupId: id,
                   active: active,
-                  pickedup: pickedup,
-                  delivered: delivered
+                  fullfilled: fullfilled
                 })
               : navigation.navigate("PickupSelectedDetailsScreen", {
                   pickAddress: pickAddress,
@@ -168,8 +146,7 @@ const PickupDetailsScreen = ({ route }: any) => {
                   dropAddress: dropAddress,
                   pickupId: id,
                   active: active,
-                  pickedup: pickedup,
-                  delivered: delivered
+                  fullfilled: fullfilled
                 });
           }}
           buttonStyle={{
@@ -211,84 +188,70 @@ const PickupDetailsScreen = ({ route }: any) => {
                     onPress={() => navigation.goBack()}
                   />
                   <View style={styles.item}>
-                    <Text style={styles.itemText}>Pickups</Text>
+                    <Text style={styles.itemText}>
+                      Pickup History
+                    </Text>
                   </View>
                   <BurgerIcon />
                 </View>
-                <View style={styles.toggle}>
-                  <ReactNativeSegmentedControlTab
-                    values={[
-                      // `${localized.t("MY_EVENTS")}`,
-                      "Ongoing Pickups",
-                      // `${localized.t("ALL_EVENTS")}`,
-                      "Pickup Requests",
-                    ]}
-                    selectedIndex={selectedIndex}
-                    tabsContainerStyle={{
-                      width: w2dp(50),
-                      height: h2dp(6),
-                    }}
-                    tabTextStyle={{
-                      color: "black",
-                      fontWeight: "400",
-                    }}
-                    tabStyle={styles.tabStyle}
-                    activeTabStyle={{
-                      backgroundColor: "#EDC258",
-                    }}
-                    activeTabTextStyle={{ color: "black" }}
-                    onTabPress={handleSingleIndexSelect}
-                  />
-                </View>
                 {pickupData?.length > 0 ? (
                   <View>
-                    <View>
-                      <Text
-                        style={{
-                          fontSize: 26,
-                          marginTop: h2dp(3),
-                          alignSelf: "center",
-                        }}
-                      >
-                        {localized.t("ACCEPT_A_PICKUP_TODAY")}
+                    <View style={styles.itemFilter}>
+                      <Text style={styles.itemFilterText}>
+                        {/* {localized.t("EVENTS")} */}
+                        Pickup History
                       </Text>
-                    </View>
-                    <View style={{ marginTop: h2dp(3) }}>
-                      <FlatList
-                        data={pickupData}
-                        renderItem={({ item }: any) => (
-                          <Item
-                            name={item?.name}
-                            pickupTiming={`${moment(
-                              item?.deliver?.pickupDate
-                            ).format("DD,  ddd, hh:mm A")}`}
-                            pickAddress={
-                              item?.deliver?.pickupAddress?.fullAddress
-                            }
-                            dropAddress={
-                              item?.deliver?.dropAddress?.fullAddress
-                            }
-                            picklat={item?.deliver?.pickupAddress?.lat}
-                            picklng={item?.deliver?.pickupAddress?.lng}
-                            eventStartDate={item?.eventStartDate}
-                            eventEndDate={item?.eventEndDate}
-                            id={item?.id}
-                            status={item?.status}
-                            droplat={item?.deliver?.dropAddress?.lat}
-                            droplng={item?.deliver?.dropAddress?.lng}
-                            dropTiming={`${moment(
-                              item?.deliver?.dropDate
-                            ).format("DD,  ddd, hh:mm A")}`}
-                            active={item?.active}
-                            pickedup={item?.deliver?.pickedup}
-                            delivered={item?.deliver?.delivered}
-                          />
-                        )}
-                        keyExtractor={(item): any => {
-                          item?.id;
+                      <TouchableOpacity
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          justifyContent: "center",
+                          alignItems: "center",
                         }}
-                      />
+                        onPress={sortByDate}
+                      >
+                        <Text style={styles.itemFilterText}>
+                          {localized.t("FILTER")}
+                        </Text>
+                        <MaterialIcons
+                          name="filter-list-alt"
+                          style={styles.itemFilterText}
+                        />
+                      </TouchableOpacity>
                     </View>
+                    <FlatList
+                      data={pickupData}
+                      renderItem={({ item }: any) => (
+                        <Item
+                        name={item?.name}
+                        pickupTiming={`${moment(
+                          item?.deliver?.pickupDate
+                        ).format("DD,  ddd, hh:mm A")}`}
+                        pickAddress={
+                          item?.deliver?.pickupAddress?.fullAddress
+                        }
+                        dropAddress={
+                          item?.deliver?.dropAddress?.fullAddress
+                        }
+                        picklat={item?.deliver?.pickupAddress?.lat}
+                        picklng={item?.deliver?.pickupAddress?.lng}
+                        eventStartDate={item?.eventStartDate}
+                        eventEndDate={item?.eventEndDate}
+                        id={item?.id}
+                        status={item?.status}
+                        droplat={item?.deliver?.dropAddress?.lat}
+                        droplng={item?.deliver?.dropAddress?.lng}
+                        dropTiming={`${moment(
+                          item?.deliver?.dropDate
+                        ).format("DD,  ddd, hh:mm A")}`}
+                        active={item?.active}
+                        fullfilled={item?.fullfilled}
+                        />
+                      )}
+                      keyExtractor={(item): any => {
+                        item?.id;
+                      }}
+                    />
                   </View>
                 ) : (
                   <View
@@ -313,4 +276,4 @@ const PickupDetailsScreen = ({ route }: any) => {
   );
 };
 
-export default PickupDetailsScreen;
+export default PickupHistoryScreen;

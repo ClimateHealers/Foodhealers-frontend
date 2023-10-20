@@ -196,7 +196,7 @@ const SeeExistingRequestScreen = ({ route }: any) => {
                 color="black"
                 style={{
                   marginLeft: h2dp(2.3),
-                  // marginTop: h2dp(-2),
+                  // ,
                 }}
               />
             ) : (
@@ -206,7 +206,7 @@ const SeeExistingRequestScreen = ({ route }: any) => {
                 color="black"
                 style={{
                   marginLeft: h2dp(2.5),
-                  // marginTop: h2dp(-2),
+                  // ,
                 }}
               />
             )}
@@ -421,7 +421,8 @@ const SeeExistingRequestScreen = ({ route }: any) => {
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
-                  marginTop: h2dp(25),
+                  marginTop: h2dp(10),
+                  marginBottom: h2dp(10),
                 }}
               >
                 <Text style={styles.itemText}>

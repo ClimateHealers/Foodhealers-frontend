@@ -23,6 +23,7 @@ import PrimaryButton from "../Components/PrimaryButton";
 import { styles } from "../Components/Styles";
 import { localized } from "../locales/localization";
 import { addVehicle } from "../redux/actions/addVehicle";
+import { addDriver, adddVehicle } from "../Components/validation";
 
 const AddVehicleScreen = ({ route }: any) => {
   const [loading, setLoading] = useState(false);
@@ -76,7 +77,7 @@ const AddVehicleScreen = ({ route }: any) => {
                 </View>
               </Modal>
               <Formik
-                // validationSchema={addDriver}
+                validationSchema={adddVehicle}
                 initialValues={{
                   carModel: "",
                   carColor: "",
@@ -103,7 +104,6 @@ const AddVehicleScreen = ({ route }: any) => {
                       make: carMake,
                       active: true,
                     };
-                    console.log("kjvshvfsbvn", data)
                     const res = await dispatch(
                       addVehicle(data as any) as any
                     );
@@ -127,12 +127,7 @@ const AddVehicleScreen = ({ route }: any) => {
                                   index: 0,
                                   routes: [
                                     {
-                                      name: "DriverProfilePhoto",
-                                      // params: {
-                                      //   id: id,
-                                      //   itemTypeId: itemTypeId,
-                                      //   title: title,
-                                      // },
+                                      name: "DriverProfilePhoto"
                                     },
                                   ],
                                 })

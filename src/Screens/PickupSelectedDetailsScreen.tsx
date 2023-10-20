@@ -1,8 +1,9 @@
 import { Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { CommonActions, useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
-import React from "react";
+import React, { useState } from "react";
 import {
+  Alert,
   Keyboard,
   ScrollView,
   Text,
@@ -19,6 +20,8 @@ import FoodhealersHeader from "../Components/FoodhealersHeader";
 import PrimaryButton from "../Components/PrimaryButton";
 import { styles } from "../Components/Styles";
 import { localized } from "../locales/localization";
+import { useDispatch } from "react-redux";
+import { acceptPickup } from "../redux/actions/acceptPickupAction";
 
 const PickupSelectedDetailsScreen = ({ route }: any) => {
   const {
@@ -30,7 +33,20 @@ const PickupSelectedDetailsScreen = ({ route }: any) => {
     droplat,
     droplng,
     dropTiming,
+    pickupId,
+    active,
+    fullfilled,
+    pickedup,
+    delivered
   } = route?.params;
+
+  const [loading, setLoading] = useState(false);
+  const [response, setResponse] = useState({
+    loading: false,
+    error: false,
+    message: "",
+  });
+  const dispatch = useDispatch();
   const navigation: any = useNavigation();
 
   const handlePressOutside = () => {
@@ -125,6 +141,19 @@ const PickupSelectedDetailsScreen = ({ route }: any) => {
                         </Text>
                       </ScrollView>
                     </View>
+                    <Text
+                      style={{
+                        marginLeft: w2dp(3),
+                        fontSize: 16,
+                        lineHeight: 30,
+                        fontWeight: "500",
+                        paddingTop: h2dp(0.5),
+                        alignSelf: "center",
+                        marginVertical: h2dp(1),
+                      }}
+                    >
+                      {dropTiming}
+                    </Text>
                     <View
                       style={{
                         display: "flex",
@@ -163,18 +192,74 @@ const PickupSelectedDetailsScreen = ({ route }: any) => {
               </View>
               <PrimaryButton
                 title={localized.t("ACCEPT")}
-                onPress={() =>
-                  navigation.navigate("PickupConfirmScreen", {
-                    pickAddress: pickAddress,
-                    pickupTiming: pickupTiming,
-                    picklat: picklat,
-                    picklng: picklng,
-                    droplat: droplat,
-                    droplng: droplng,
-                    dropTiming: dropTiming,
-                    dropAddress: dropAddress,
-                  })
-                }
+                onPress={async () => {
+                  setLoading(true);
+                  try {
+                    setResponse({
+                      loading: true,
+                      message: "",
+                      error: false,
+                    });
+                    const data = {
+                      requestId: pickupId
+                    };
+                    const res = await dispatch(acceptPickup(data as any) as any);
+                    if (res?.payload?.success == true) {
+                      setLoading(false);
+                      setResponse({
+                        loading: false,
+                        message: "PickUp Accepted",
+                        error: false,
+                      });
+                      setLoading(false);
+                      Alert.alert(
+                        // `${localized.t("VEHICLE_ADDED_SUCCESSFULLY")}`,
+                        "Pickup Accepted",
+                        // `${localized.t("YOUR_VEHICLE_HAS_BEEN_ADDED_SUCCESSFULLY")}`,
+                        "You have accepted the pickup request.",
+                        [
+                          {
+                            text: "OK",
+                            onPress: () =>
+                              navigation.dispatch(
+                                CommonActions.reset({
+                                  index: 0,
+                                  routes: [
+                                    {
+                                      name: "PickupConfirmScreen",
+                                      params: {
+                                        pickAddress: pickAddress,
+                                        pickupTiming: pickupTiming,
+                                        picklat: picklat,
+                                        picklng: picklng,
+                                        droplat: droplat,
+                                        droplng: droplng,
+                                        dropTiming: dropTiming,
+                                        dropAddress: dropAddress,
+                                        pickupId: pickupId,
+                                        active: active,
+                                        fullfilled: fullfilled,
+                                        pickedup: pickedup,
+                                        delivered: delivered
+                                      }
+                                    },
+                                  ],
+                                })
+                              ),
+                          },
+                        ],
+                        { cancelable: false }
+                      );
+                    }
+                  } catch (err: any) {
+                    setLoading(false);
+                    setResponse({
+                      loading: false,
+                      message: err?.message,
+                      error: true,
+                    });
+                  }
+                }}
                 buttonStyle={styles.buttonStyles}
                 titleStyle={styles.titleStyle}
               />

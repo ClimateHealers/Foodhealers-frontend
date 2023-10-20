@@ -4,55 +4,39 @@ import {
   Feather,
   FontAwesome,
   MaterialCommunityIcons,
-  MaterialIcons,
+  MaterialIcons
 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import {
   FlatList,
+  Keyboard,
   ScrollView,
   Text,
   TouchableOpacity,
-  View,
+  View
 } from "react-native";
 import {
   heightPercentageToDP as h2dp,
   widthPercentageToDP as w2dp,
 } from "react-native-responsive-screen";
-import SegmentedControlTab from "react-native-segmented-control-tab";
+import ReactNativeSegmentedControlTab from "react-native-segmented-control-tab";
 import { useDispatch } from "react-redux";
 import { styles } from "../Components/Styles";
 import { localized } from "../locales/localization";
-import { allDonations } from "../redux/actions/allDonations";
-import { myDonations } from "../redux/actions/myDonations";
+import { myRequests } from "../redux/actions/myRequests";
 
-const DonationTabScreen = () => {
+const RequestHistoryTabScreen = ({ route }: any) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const [donationData, setDonationData]: any[] = useState<[]>([]);
-
-  const dispatch = useDispatch();
-
-  const navigation: any = useNavigation();
-
-  const fetchingDonationData = async () => {
-    const response = await dispatch(myDonations({} as any) as any);
-    setDonationData(response?.payload?.donationList);
-  };
-
-  const fetchingallDonationData = async () => {
-    const response = await dispatch(allDonations({} as any) as any);
-  };
-
+  const [requestData, setRequestData]: any = useState<[]>([]);
   useEffect(() => {
-    fetchingDonationData();
-    fetchingallDonationData();
-    sortByDate();
+    fetchingRequestData();
   }, []);
 
   const [order, setOrder] = useState<"ASC" | "DESC">("ASC");
   const sortByDate = () => {
-    const postListFiltered = [...donationData].sort((a: any, b: any) => {
+    const postListFiltered = [...requestData].sort((a: any, b: any) => {
       const dateA = new Date(a?.createdAt);
       const dateB = new Date(b?.createdAt);
 
@@ -62,39 +46,48 @@ const DonationTabScreen = () => {
         return dateB?.valueOf() - dateA?.valueOf();
       }
     });
-    setDonationData(postListFiltered);
+    setRequestData(postListFiltered);
     const newOrder = order === "ASC" ? "DESC" : "ASC";
     setOrder(newOrder);
+  };
+
+  const dispatch = useDispatch();
+  const fetchingRequestData = async () => {
+    const response = await dispatch(myRequests(1 as any) as any);
+    const filteredrequestData = response?.payload?.requestList.filter(
+      (event: any) => event?.type === "Food"
+    );
+    setRequestData(filteredrequestData);
+  };
+
+  const navigation: any = useNavigation();
+
+  const handlePressOutside = () => {
+    Keyboard.dismiss();
   };
 
   const handleSingleIndexSelect = async (index: any) => {
     setSelectedIndex(index);
     if (index === 0) {
-      fetchingDonationData();
+      fetchingRequestData();
     } else if (index === 1) {
-      const res = await dispatch(allDonations({} as any) as any);
-      const donationsAll = res?.payload?.AllDonations;
-      const verifiedDonations = donationsAll?.filter(
+      const response = await dispatch(myRequests(2 as any) as any);
+      const filteredrequestData = response?.payload?.requestList.filter(
+        (event: any) => event?.type === "Supplies"
+      );
+      const ApprovedDonation = filteredrequestData.filter(
         (event: any) => event?.status === "approved"
       );
-      setDonationData(verifiedDonations);
+      setRequestData(ApprovedDonation);
     }
   };
 
-  const Item = ({
-    foodItem,
-    status,
-    delivery,
-    createdAt,
-    donationType,
-    donatedBy,
-    quantity,
-  }: any) => (
+  const Item = ({ foodItem, status, delivery, requiredDate, type }: any) => (
     <TouchableOpacity activeOpacity={1}>
       <View style={styles.cardContainer}>
         {status === "approved" ? (
           <View>
-            {donationType === "Supplies" ? (
+            {type === "Supplies" ? (
               <MaterialCommunityIcons
                 name="truck-outline"
                 size={24}
@@ -135,7 +128,7 @@ const DonationTabScreen = () => {
           </View>
         ) : status === "pending" ? (
           <View>
-            {donationType === "Supplies" ? (
+            {type === "Supplies" ? (
               <MaterialCommunityIcons
                 name="truck-outline"
                 size={24}
@@ -176,7 +169,7 @@ const DonationTabScreen = () => {
           </View>
         ) : (
           <View>
-            {donationType === "Supplies" ? (
+            {type === "Supplies" ? (
               <MaterialCommunityIcons
                 name="truck-outline"
                 size={24}
@@ -213,6 +206,7 @@ const DonationTabScreen = () => {
             </Text>
           </View>
         )}
+
         <ScrollView showsVerticalScrollIndicator={false}>
           <Text
             style={{
@@ -222,7 +216,7 @@ const DonationTabScreen = () => {
               paddingTop: h2dp(0.5),
             }}
           >
-            {moment(createdAt).format("MMM DD, YYYY  ddd, hh:mm A")}
+            {moment(requiredDate).format("MMM DD, YYYY  ddd, hh:mm A")}
           </Text>
           <Text
             style={{
@@ -238,11 +232,10 @@ const DonationTabScreen = () => {
           <Text
             style={{
               marginLeft: w2dp(3),
-              fontWeight: "200",
+              fontWeight: "300",
               fontSize: 16,
               lineHeight: 20,
               paddingBottom: h2dp(1),
-              marginHorizontal: w2dp(0.5),
             }}
           >
             {delivery}
@@ -253,34 +246,32 @@ const DonationTabScreen = () => {
   );
 
   return (
-    <>
-      <View style={{ flex: 1 }}>
-        <View style={styles.toggle}>
-          <SegmentedControlTab
-            values={[
-              `${localized.t("MY_DONATIONS")}`,
-              `${localized.t("ALL_DONATIONS")}`,
-            ]}
-            selectedIndex={selectedIndex}
-            tabsContainerStyle={{
-              width: w2dp(50),
-              height: h2dp(6),
-              marginTop: h2dp(2),
-            }}
-            tabTextStyle={{
-              color: "black",
-              fontWeight: "400",
-            }}
-            tabStyle={styles.tabStyle}
-            activeTabStyle={{
-              backgroundColor: "#EDC258",
-            }}
-            activeTabTextStyle={{ color: "black" }}
-            onTabPress={handleSingleIndexSelect}
-          />
-        </View>
+    <View style={{ flex: 1 }}>
+      <View style={styles.toggle}>
+        <ReactNativeSegmentedControlTab
+          values={[`${localized.t("FOOD")}`, `${localized.t("SUPPLIES")}`]}
+          selectedIndex={selectedIndex}
+          tabsContainerStyle={{
+            width: w2dp(50),
+            height: h2dp(6),
+          }}
+          tabTextStyle={{
+            color: "black",
+            fontWeight: "400",
+          }}
+          tabStyle={styles.tabStyle}
+          activeTabStyle={{
+            backgroundColor: "#EDC258",
+          }}
+          activeTabTextStyle={{ color: "black" }}
+          onTabPress={handleSingleIndexSelect}
+        />
+      </View>
+      <View>
         <View style={styles.itemFilter}>
-          <Text style={styles.itemFilterText}>{localized.t("DONATIONS")}</Text>
+          <Text style={styles.itemFilterText}>
+            {localized.t("ALL_HISTORY")}
+          </Text>
           <TouchableOpacity
             style={{
               display: "flex",
@@ -297,23 +288,22 @@ const DonationTabScreen = () => {
             />
           </TouchableOpacity>
         </View>
-        {donationData?.length > 0 ? (
-          <View style={{ flex: 1 }}>
+        {requestData?.length > 0 ? (
+          <ScrollView style={{ flex: 1 }}>
             <FlatList
-              data={donationData}
+              data={requestData}
               renderItem={({ item }: any) => (
                 <Item
-                  donationType={item?.donationType}
                   status={item?.status}
+                  type={item?.type}
+                  id={item.id}
                   foodItem={`${item?.foodItem}  (${item?.quantity})`}
-                  delivery={item?.delivery?.pickupAddress?.fullAddress}
-                  createdAt={item?.createdAt}
-                  donatedBy={item?.donatedBy?.name}
+                  delivery={item?.createdBy?.address?.fullAddress}
+                  requiredDate={item?.requiredDate}
                 />
               )}
-              keyExtractor={(item: any) => item?.id}
             />
-          </View>
+          </ScrollView>
         ) : (
           <View
             style={{
@@ -329,8 +319,8 @@ const DonationTabScreen = () => {
           </View>
         )}
       </View>
-    </>
+    </View>
   );
 };
 
-export default DonationTabScreen;
+export default RequestHistoryTabScreen;
