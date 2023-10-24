@@ -1,40 +1,46 @@
-import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useEffect, useState } from "react";
 import {
+  FlatList,
   Image,
   Keyboard,
-  Platform,
   SafeAreaView,
   ScrollView,
-  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import {
-  heightPercentageToDP as h2dp,
-  widthPercentageToDP as w2dp,
-} from "react-native-responsive-screen";
+import { heightPercentageToDP as h2dp } from "react-native-responsive-screen";
 import { useDispatch, useSelector } from "react-redux";
-import { getLocation } from "../Components/getCurrentLocation";
-import { VeganRecipesCategory } from "../redux/actions/veganRecipesCategory";
+import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
 import { styles } from "../Components/Styles";
-import BurgerIcon from "../Components/BurgerIcon";
+import { getLocation } from "../Components/getCurrentLocation";
+import axios from "axios";
 import { localized } from "../locales/localization";
+import { VeganRecipesCategory } from "../redux/actions/veganRecipesCategory";
 const CategoryScreen = ({ route }: any) => {
   const { categoryId, recipeName } = route.params;
+  const [response, setResponse] = useState({
+    loading: false,
+    error: false,
+    message: "",
+  });
 
   const [langOpen, setlangOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<any>([]);
+  const [recipeCat, setRecipeCat] = useState<any>([]);
   const [searchText, setSearchText] = useState("");
   const [filteredData, setFilteredData] = useState([]);
   const [textChange, setTextChange] = useState(false);
+  const [page, setPage] = useState(1); // Track the current page
+  const [loading, setLoading] = useState(false);
+  const [hasMoreData, setHasMoreData] = useState(true);
 
   const dispatch = useDispatch();
   const navigation: any = useNavigation();
@@ -47,6 +53,7 @@ const CategoryScreen = ({ route }: any) => {
       const recipeData = await dispatch(
         VeganRecipesCategory(categoryId) as any
       );
+      setRecipeCat(recipeData?.payload);
       setData(recipeData?.payload?.results?.recipeList);
     } catch (error) {
       console.error(error);
@@ -55,7 +62,50 @@ const CategoryScreen = ({ route }: any) => {
 
   useEffect(() => {
     fetchRecipesCategory();
+    fetchData();
   }, []);
+
+  const fetchData = async () => {
+    // if (loading) {
+    //   return;
+    // }
+
+    setLoading(true);
+    try{
+      setResponse({
+        loading: true,
+        message: "",
+        error: false,
+      });
+    
+    axios
+      .get(`https://api.climatehealers.com/v1/api/recipe/2/?page=${page}`)
+      .then((response) => {
+        
+        const newData=(response?.data?.results?.recipeList)
+        setData((prevData : any[]) => [...prevData, ...response.data?.results?.recipeList])
+        setLoading(false);
+        if (response.data.length > 0) {
+          setData((prevData : any[]) => [...prevData, ...JSON.stringify(response.data)]);
+          setPage(page + 1);
+        } else {
+          setHasMoreData(false);
+        }
+
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error(error);
+        setLoading(false);
+      })} catch(err: any) {
+        setLoading(false);
+        setResponse({
+          loading: false,
+          message: err.message,
+          error: true,
+        });
+  };
+}
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
@@ -94,6 +144,7 @@ const CategoryScreen = ({ route }: any) => {
     );
     setFilteredData(filtered);
   };
+
   return (
     <>
       <TouchableWithoutFeedback onPress={handlePressOutside}>
@@ -141,8 +192,18 @@ const CategoryScreen = ({ route }: any) => {
               />
             </View>
             <ScrollView
-              keyboardShouldPersistTaps="always"
-              showsVerticalScrollIndicator={false}
+              onScroll={(e) => {
+                const { layoutMeasurement, contentOffset, contentSize } =
+                  e.nativeEvent;
+                const isCloseToBottom =
+                  layoutMeasurement?.height + contentOffset?.y >=
+                  contentSize?.height - 70;
+
+                if (isCloseToBottom) {
+                  fetchData();
+                }
+              }}
+              scrollEventThrottle={400}
             >
               <TouchableOpacity activeOpacity={1}>
                 <View style={[styles.centeredView]}>
@@ -157,9 +218,12 @@ const CategoryScreen = ({ route }: any) => {
                         >
                           <Image
                             source={{ uri: recipe?.foodImage }}
-                            style={[styles.imageStyle,{
-                              height: h2dp(20)
-                            }]}
+                            style={[
+                              styles.imageStyle,
+                              {
+                                height: h2dp(20),
+                              },
+                            ]}
                           />
                           <View style={styles.title}>
                             <TouchableOpacity
@@ -176,7 +240,9 @@ const CategoryScreen = ({ route }: any) => {
                               }
                             >
                               <Text style={styles.textStyle}>
-                                {recipe?.foodName}
+                                {recipe?.foodName?.length > 25
+                                  ? `${recipe?.foodName?.slice(0, 25)}...`
+                                  : recipe?.foodName}
                               </Text>
                               <View style={styles.timerIcon}>
                                 <Ionicons
@@ -207,9 +273,12 @@ const CategoryScreen = ({ route }: any) => {
                         >
                           <Image
                             source={{ uri: recipe?.foodImage }}
-                            style={[styles.imageStyle,{
-                              height: h2dp(20)
-                            }]}
+                            style={[
+                              styles.imageStyle,
+                              {
+                                height: h2dp(20),
+                              },
+                            ]}
                           />
                           <View style={styles.title}>
                             <TouchableOpacity
@@ -229,7 +298,9 @@ const CategoryScreen = ({ route }: any) => {
                               }
                             >
                               <Text style={styles.textStyle}>
-                                {recipe?.foodName}
+                                {recipe?.foodName?.length > 25
+                                  ? `${recipe?.foodName?.slice(0, 25)}...`
+                                  : recipe?.foodName}
                               </Text>
                               <View
                                 style={{

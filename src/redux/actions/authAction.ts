@@ -13,8 +13,19 @@ interface SignupData {
 interface LoginData {
   tokenId: string;
 }
+interface UpdateProfile {
+  tokenId: string;
+}
 interface DeleteUser {
   tokenId: string;
+}
+
+interface FetchUser {
+  tokenId: string;
+}
+
+interface updatePhoto {
+  file: [];
 }
 
 export const registerUser = createAsyncThunk<SignupData, SignupData>(
@@ -76,6 +87,63 @@ export const login = createAsyncThunk<LoginData, LoginData>(
       return result?.data;
     } catch (error: any) {
       return rejectWithValue(error.response.data.message);
+    }
+  }
+);
+
+export const updateProfile = createAsyncThunk<UpdateProfile, UpdateProfile>(
+  "auth/updateProfile",
+  async (userData: UpdateProfile, { rejectWithValue, getState }: any) => {
+    try {
+      const token = getState()?.auth?.data?.token;
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Token ${token}`,
+        },
+      };
+      const result = await API.put("v1/api/volunteer-profile/", userData, config);
+      return result?.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
+
+export const updatePhoto = createAsyncThunk<updatePhoto, updatePhoto>(
+  "updatePhoto",
+  async (updateProfilePic: updatePhoto, { rejectWithValue, getState }: any) => {
+    try {
+      const token = getState().auth.data.token;
+      const config = {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Token ${token} `,
+        },
+      };
+      const result = await API.post("v1/api/volunteer-profile-photo/", updateProfilePic, config);
+      return result.data;
+    } catch (error: any) {
+      return rejectWithValue(error?.response?.data?.message);
+    }
+  }
+);
+
+export const fetchUser = createAsyncThunk<FetchUser, FetchUser>(
+  "fetchUser",
+  async (_, thunkAPI: any) => {
+    try {
+        const token = thunkAPI?.getState()?.auth?.data?.token;
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Token ${token}`,
+        },
+      };
+      const result = await API.get(`v1/api/volunteer-profile/`, config);
+      return result?.data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error?.response?.data?.message);
     }
   }
 );

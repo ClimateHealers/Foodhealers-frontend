@@ -38,6 +38,7 @@ const VolunteerDonationHistoryScreen = ({ route }: any) => {
   const [donationData, setDonationData]: any = useState<[]>([]);
   useEffect(() => {
     fetchingDonationData();
+    sortByDate();
   }, []);
 
   const [order, setOrder] = useState<"ASC" | "DESC">("ASC");
@@ -99,7 +100,6 @@ const VolunteerDonationHistoryScreen = ({ route }: any) => {
                 color="black"
                 style={{
                   marginLeft: h2dp(2.3),
-                  marginTop: h2dp(-2),
                 }}
               />
             ) : (
@@ -109,7 +109,6 @@ const VolunteerDonationHistoryScreen = ({ route }: any) => {
                 color="black"
                 style={{
                   marginLeft: h2dp(2.5),
-                  marginTop: h2dp(-2),
                 }}
               />
             )}
@@ -142,7 +141,6 @@ const VolunteerDonationHistoryScreen = ({ route }: any) => {
                 color="black"
                 style={{
                   marginLeft: h2dp(2.3),
-                  marginTop: h2dp(-2),
                 }}
               />
             ) : (
@@ -152,7 +150,6 @@ const VolunteerDonationHistoryScreen = ({ route }: any) => {
                 color="black"
                 style={{
                   marginLeft: h2dp(2.5),
-                  marginTop: h2dp(-2),
                 }}
               />
             )}
@@ -185,7 +182,6 @@ const VolunteerDonationHistoryScreen = ({ route }: any) => {
                 color="black"
                 style={{
                   marginLeft: h2dp(2.3),
-                  marginTop: h2dp(-2),
                 }}
               />
             ) : (
@@ -195,7 +191,6 @@ const VolunteerDonationHistoryScreen = ({ route }: any) => {
                 color="black"
                 style={{
                   marginLeft: h2dp(2.5),
-                  marginTop: h2dp(-2),
                 }}
               />
             )}
@@ -217,7 +212,6 @@ const VolunteerDonationHistoryScreen = ({ route }: any) => {
             </Text>
           </View>
         )}
-
         <ScrollView showsVerticalScrollIndicator={false}>
           <Text
             style={{
@@ -262,66 +256,60 @@ const VolunteerDonationHistoryScreen = ({ route }: any) => {
         colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
         style={styles.background}
       >
-        <SafeAreaView>
-          <ScrollView keyboardShouldPersistTaps="handled">
-            <View style={styles.container}>
-              <FoodhealersHeader />
-              <View style={styles.root}>
-                <Ionicons
-                  name="chevron-back"
-                  size={32}
-                  color="white"
-                  onPress={() => navigation.goBack()}
-                />
-                <View style={styles.item}>
-                  <Text style={styles.itemText}>
-                    {localized.t("DONATION_HISTORY")}
-                  </Text>
-                </View>
-                <BurgerIcon />
-              </View>
-              <View>
-                <View style={styles.itemFilter}>
-                  <Text style={styles.itemFilterText}>
-                    {localized.t("ALL_HISTORY")}
-                  </Text>
-                  <TouchableOpacity
-                    style={{
-                      display: "flex",
-                      flexDirection: "row",
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                    onPress={sortByDate}
-                  >
-                    <Text style={styles.itemFilterText}>
-                      {localized.t("FILTER")}
-                    </Text>
-                    <MaterialIcons
-                      name="filter-list-alt"
-                      style={styles.itemFilterText}
-                    />
-                  </TouchableOpacity>
-                </View>
-                <ScrollView style={{ flex: 1 }}>
-                  <FlatList
-                    data={donationData}
-                    renderItem={({ item }: any) => (
-                      <Item
-                        status={item?.status}
-                        donationType={item?.donationType}
-                        id={item.id}
-                        foodItem={`${item?.foodItem}  (${item?.quantity})`}
-                        delivery={item?.delivery?.pickupAddress?.fullAddress}
-                        createdAt={item?.createdAt}
-                      />
-                    )}
-                  />
-                </ScrollView>
-              </View>
+        <View style={styles.container}>
+          <FoodhealersHeader />
+          <View style={styles.root}>
+            <Ionicons
+              name="chevron-back"
+              size={32}
+              color="white"
+              onPress={() => navigation.goBack()}
+            />
+            <View style={styles.item}>
+              <Text style={styles.itemText}>
+                {localized.t("DONATION_HISTORY")}
+              </Text>
             </View>
-          </ScrollView>
-        </SafeAreaView>
+            <BurgerIcon />
+          </View>
+          <View>
+            <View style={styles.itemFilter}>
+              <Text style={styles.itemFilterText}>
+                {localized.t("ALL_HISTORY")}
+              </Text>
+              <TouchableOpacity
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+                onPress={sortByDate}
+              >
+                <Text style={styles.itemFilterText}>
+                  {localized.t("FILTER")}
+                </Text>
+                <MaterialIcons
+                  name="filter-list-alt"
+                  style={styles.itemFilterText}
+                />
+              </TouchableOpacity>
+            </View>
+            <FlatList
+              data={donationData}
+              renderItem={({ item }: any) => (
+                <Item
+                  status={item?.status}
+                  donationType={item?.donationType}
+                  id={item.id}
+                  foodItem={`${item?.foodItem}  (${item?.quantity})`}
+                  delivery={item?.delivery?.pickupAddress?.fullAddress}
+                  createdAt={item?.createdAt}
+                />
+              )}
+            />
+          </View>
+        </View>
       </LinearGradient>
     </TouchableWithoutFeedback>
   );

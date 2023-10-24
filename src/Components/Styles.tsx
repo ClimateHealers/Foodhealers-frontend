@@ -27,7 +27,7 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     width: "100%",
     zIndex: 1,
-    marginBottom:h2dp(1),
+    marginBottom: h2dp(1),
   },
   leftalign: {
     textAlign: "left",
@@ -38,7 +38,7 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     width: w2dp(85),
     zIndex: 1,
-    marginBottom:h2dp(1),
+    marginBottom: h2dp(1),
   },
   centeredView: {
     flex: 1,
@@ -52,7 +52,7 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginVertical: h2dp(1),
+    marginBottom: h2dp(2),
     backgroundColor: "white",
     marginHorizontal: w2dp(1),
     borderRadius: 5,
@@ -82,11 +82,19 @@ export const styles = StyleSheet.create({
     resizeMode: "cover",
   },
   buttonStyles: {
-    backgroundColor: "#FC5A56",
+    backgroundColor: "#B01D19",
     color: "black",
     borderRadius: 5,
     alignSelf: "center",
     width: w2dp(70),
+    marginTop: h2dp(5),
+  },
+  nextButtonStyles: {
+    backgroundColor: "#FC5A56",
+    color: "black",
+    borderRadius: 5,
+    alignSelf: "center",
+    width: w2dp(50),
     marginTop: h2dp(5),
   },
   titleStyle: {
@@ -132,12 +140,16 @@ export const styles = StyleSheet.create({
     fontWeight: "400",
   },
   item: {
-    height: h2dp(10),
+    minHeight: h2dp(10),
     justifyContent: "center"
   },
   itemText: {
     fontSize: 25,
     color: "white",
+  },
+  itemTextDriver: {
+    fontSize: 25,
+    color: "black",
   },
   datePickerStyle: {
     width: 345,
@@ -226,11 +238,10 @@ export const styles = StyleSheet.create({
   },
   textStyle: {
     textAlign: "center",
-    fontSize: 26,
+    fontSize: 20,
     lineHeight: 35,
     fontWeight: "normal",
     fontStyle: "normal",
-    marginTop: 13,
   },
   horizonatalView: {
     display: "flex",

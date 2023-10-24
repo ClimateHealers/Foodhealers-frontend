@@ -3,7 +3,7 @@ import { login } from "../actions/authAction";
 
 const initialState = {
   data: {
-    token :null
+    token: null,
   },
   error: null,
   loading: false,
@@ -18,7 +18,7 @@ const authSlice = createSlice({
     },
     setAuthToken: (state, action) => {
       state.data.token = action.payload;
-    }
+    },
   },
   extraReducers: (builder) => {
     builder

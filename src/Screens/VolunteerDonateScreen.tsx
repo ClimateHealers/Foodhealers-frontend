@@ -45,7 +45,7 @@ const VolunteerDonateScreen = ({ route }: any) => {
       id: 1,
       title: `${localized.t("DONATE_FOOD")}`,
       image: require("../../assets/images/donateFood.png"),
-      navigation: "AddDonationsScreen",
+      navigation: "SeeExistingRequestScreen",
       itemTypeId: 1,
     },
     {
@@ -59,7 +59,7 @@ const VolunteerDonateScreen = ({ route }: any) => {
       id: 3,
       title: `${localized.t("DONATE_SUPPLIES")}`,
       image: require("../../assets/images/donateSupplies.png"),
-      navigation: "AddDonationsScreen",
+      navigation: "SeeExistingRequestScreen",
       itemTypeId: 2,
     },
     {

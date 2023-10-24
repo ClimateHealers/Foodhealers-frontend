@@ -9,17 +9,7 @@ export interface MyDonations {
 }
 
 export interface PostDonation{
-  itemTypeId: number,
-  pickupDate: Date,
-  foodItem: string,
-  quantity: string,
-  phoneNumber: number,
-  flatNo: number,
-  address: string,
-  city: string,
-  state: string,
-  postalCode: number,
-  zipCode: number,
+  token: string;
 }
 
 export const myDonations = createAsyncThunk<MyDonations, MyDonations>(

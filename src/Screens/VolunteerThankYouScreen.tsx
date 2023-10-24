@@ -139,10 +139,12 @@ const VolunteerThankYouScreen = ({ route }: any) => {
                   </Text>
                   <PrimaryButton
                     title={localized.t("HOME")}
-                    onPress={() => navigation.navigate("VolunteerHomeScreen", {
-                      latitude: latitude,
-                      longitude: longitude,
-                    })}
+                    onPress={() =>
+                      navigation.navigate("VolunteerHomeScreen", {
+                        latitude: latitude,
+                        longitude: longitude,
+                      })
+                    }
                     buttonStyle={styles.buttonMainStyles}
                     titleStyle={styles.titleMainStyle}
                   />

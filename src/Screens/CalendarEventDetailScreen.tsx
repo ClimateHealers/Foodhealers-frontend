@@ -232,7 +232,7 @@ const CalendarEventDetailScreen = ({ route }: any) => {
               />
 
               <PrimaryButton
-                disabled={!volunteersRequired}
+                disabled={!volunteersRequired || eventDetails?.status === "Rejected"}
                 title={`${localized.t("VOLUNTEER")}`}
                 onPress={() =>
                   navigation.navigate("AddVolunteerToEventScreen", {
@@ -248,7 +248,6 @@ const CalendarEventDetailScreen = ({ route }: any) => {
                 buttonStyle={styles.buttonStyles}
                 titleStyle={styles.titleStyle}
               />
-
               {!expired && (
                 <TouchableOpacity onPress={onShare}>
                   <Text

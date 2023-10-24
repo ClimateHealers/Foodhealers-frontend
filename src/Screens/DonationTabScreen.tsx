@@ -3,38 +3,33 @@ import {
   Entypo,
   Feather,
   FontAwesome,
-  Ionicons,
   MaterialCommunityIcons,
   MaterialIcons,
 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import moment from "moment";
 import React, { useEffect, useState } from "react";
 import {
   FlatList,
   ScrollView,
-  StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
-import { Button } from "react-native-elements";
 import {
   heightPercentageToDP as h2dp,
   widthPercentageToDP as w2dp,
 } from "react-native-responsive-screen";
 import SegmentedControlTab from "react-native-segmented-control-tab";
 import { useDispatch } from "react-redux";
+import { styles } from "../Components/Styles";
+import { localized } from "../locales/localization";
 import { allDonations } from "../redux/actions/allDonations";
 import { myDonations } from "../redux/actions/myDonations";
-import moment from "moment";
-import { localized } from "../locales/localization";
-import { styles } from "../Components/Styles";
 
 const DonationTabScreen = () => {
-  const [menuOpen, setMenuOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [donationData, setDonationData]: any[] = useState<[]>([]);
-  const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -106,7 +101,6 @@ const DonationTabScreen = () => {
                 color="black"
                 style={{
                   marginLeft: h2dp(2.3),
-                  marginTop: h2dp(-2),
                 }}
               />
             ) : (
@@ -116,7 +110,6 @@ const DonationTabScreen = () => {
                 color="black"
                 style={{
                   marginLeft: h2dp(2.5),
-                  marginTop: h2dp(-2),
                 }}
               />
             )}
@@ -149,7 +142,6 @@ const DonationTabScreen = () => {
                 color="black"
                 style={{
                   marginLeft: h2dp(2.3),
-                  marginTop: h2dp(-2),
                 }}
               />
             ) : (
@@ -159,7 +151,6 @@ const DonationTabScreen = () => {
                 color="black"
                 style={{
                   marginLeft: h2dp(2.5),
-                  marginTop: h2dp(-2),
                 }}
               />
             )}
@@ -192,7 +183,6 @@ const DonationTabScreen = () => {
                 color="black"
                 style={{
                   marginLeft: h2dp(2.3),
-                  marginTop: h2dp(-2),
                 }}
               />
             ) : (
@@ -202,7 +192,6 @@ const DonationTabScreen = () => {
                 color="black"
                 style={{
                   marginLeft: h2dp(2.5),
-                  marginTop: h2dp(-2),
                 }}
               />
             )}
@@ -291,7 +280,7 @@ const DonationTabScreen = () => {
           />
         </View>
         <View style={styles.itemFilter}>
-          <Text style={styles.itemFilterText}>{localized.t("EVENTS")}</Text>
+          <Text style={styles.itemFilterText}>{localized.t("DONATIONS")}</Text>
           <TouchableOpacity
             style={{
               display: "flex",
@@ -334,7 +323,9 @@ const DonationTabScreen = () => {
               marginTop: h2dp(25),
             }}
           >
-            <Text style={styles.itemText}>{localized.t("NOTHING_TO_SHOW")}</Text>
+            <Text style={styles.itemText}>
+              {localized.t("NOTHING_TO_SHOW")}
+            </Text>
           </View>
         )}
       </View>
