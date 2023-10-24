@@ -1,20 +1,33 @@
-import { useNavigation } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { Camera, CameraCapturedPicture, CameraType } from "expo-camera";
+import { FlipType, SaveFormat, manipulateAsync } from "expo-image-manipulator";
+import * as MediaLibrary from "expo-media-library";
+import * as Permissions from "expo-permissions";
 import React, { useCallback, useRef, useState } from "react";
-import { Button, StyleSheet, Text, TouchableOpacity, View, MediaLibrary } from "react-native";
+import { Button, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { localized } from "../locales/localization";
 
 export default function TakePictureScreen() {
   const [type, setType] = useState(CameraType.front);
   const [permission, requestPermission] = Camera.useCameraPermissions();
-  const [camera, setCamera] = useState<any | null>(null);
   const [imageUri, setImageUri] = useState<any | null>(null);
   const cameraRef = useRef<Camera | null>(null);
-
+  const isFocused = useIsFocused();
   const navigation: any = useNavigation<string>();
 
   const setCameraRef = useCallback((ref: any) => {
     cameraRef.current = ref;
   }, []);
+
+  const requestCameraPermission = async () => {
+    const { status } = await Permissions.askAsync(Permissions.CAMERA);
+
+    if (status === "granted") {
+      requestPermission();
+    } else {
+      requestPermission();
+    }
+  };
   if (!permission) {
     return <View />;
   }
@@ -23,7 +36,7 @@ export default function TakePictureScreen() {
     return (
       <View style={styles.container}>
         <Text style={{ textAlign: "center" }}>
-          We need your permission to show the camera
+        {localized.t("WE_NEED_YOUR_PERMISSION_TO_SHOW_THE_CAMERA")}
         </Text>
         <Button onPress={requestPermission} title="grant permission" />
       </View>
@@ -35,11 +48,18 @@ export default function TakePictureScreen() {
       try {
         const { uri }: CameraCapturedPicture =
           await cameraRef?.current?.takePictureAsync();
-        console.log("kndkjancnsdvsm", uri);
         setImageUri(uri);
-        MediaLibrary.saveToLibraryAsync(localUri)
+        const adjustedImage = await manipulateAsync(
+          uri,
+          [{ flip: FlipType.Horizontal }],
+          {
+            compress: 1,
+            format: SaveFormat.JPEG,
+          }
+        );
+        MediaLibrary.saveToLibraryAsync(adjustedImage.uri);
         navigation.navigate("DriverPhotoSaveScreen", {
-          selectedImage: imageUri,
+          selectedImage: adjustedImage.uri,
         });
       } catch (error) {
         console.error("Error taking picture:", error);
@@ -55,16 +75,23 @@ export default function TakePictureScreen() {
 
   return (
     <View style={styles.container}>
-      <Camera ref={setCameraRef} style={styles.camera} type={type}>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={toggleCameraType}>
-            <Text style={styles.text}>Flip Camera</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={takePicture}>
-            <Text style={styles.text}>Capture</Text>
-          </TouchableOpacity>
-        </View>
-      </Camera>
+      {isFocused && (
+        <Camera
+          ref={setCameraRef}
+          style={styles.camera}
+          type={type}
+          onCameraReady={requestCameraPermission}
+        >
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity style={styles.button} onPress={toggleCameraType}>
+              <Text style={styles.text}>{localized.t("FLIP_CAMERA")}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={takePicture}>
+              <Text style={styles.text}>{localized.t("CAPTURE")}</Text>
+            </TouchableOpacity>
+          </View>
+        </Camera>
+      )}
     </View>
   );
 }

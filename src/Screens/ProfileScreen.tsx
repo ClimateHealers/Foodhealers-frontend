@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Alert,
   Platform,
@@ -32,7 +32,11 @@ import MaterialIcon from "react-native-vector-icons/MaterialIcons";
 import { useDispatch, useSelector } from "react-redux";
 import { getLocation } from "../Components/getCurrentLocation";
 import PrimaryButton from "../Components/PrimaryButton";
-import { removeAuthData } from "../redux/actions/authAction";
+import {
+  fetchUser,
+  removeAuthData,
+  updatePhoto,
+} from "../redux/actions/authAction";
 import { logOut } from "../redux/reducers/authreducers";
 import { localized } from "../locales/localization";
 
@@ -43,13 +47,23 @@ const ProfileScreen = () => {
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const [alert, setAlert] = useState(false);
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
-  const userDetails = useSelector((state: any) => state?.auth);
-  const { data } = userDetails;
+  const [ data , setData ]= useState<any>();
   const navigation: any = useNavigation();
   const isAuthenticated = useSelector(
     (state: any) => state.auth.data.isAuthenticated
   );
-  const userInfo = useSelector((state: any) => state.auth.data.user);
+
+  const fetchingUserData = async () => {
+    const response = await dispatch(fetchUser({} as any) as any);
+    const data = response?.payload?.userDetails;
+    setData(data)
+  };
+
+  const [response, setResponse] = useState({
+    loading: false,
+    error: false,
+    message: "",
+  });
 
   const appVersion = Constants?.manifest?.version;
 
@@ -83,13 +97,17 @@ const ProfileScreen = () => {
     );
   };
 
+  useEffect(() => {
+    fetchingUserData();
+  }, []);
+
   const navigationHandler = () => {
     navigation.navigate("DeleteAccount");
   };
 
   const openImagePickerAsync = async () => {
     const res = await MediaLibrary.requestPermissionsAsync();
-    if (res.granted) {
+    if (res?.granted) {
       const result = await ImagePicker.launchImageLibraryAsync({
         allowsMultipleSelection: true,
         selectionLimit: 1,
@@ -99,12 +117,31 @@ const ProfileScreen = () => {
         quality: 1,
       });
 
-      if (!result.canceled) {
-        const multipleImages = result.assets.map((image) => image.uri);
-        const singlePhoto = result.assets[0].uri;
-        navigation.navigate("DriverPhotoSaveScreen", {
-          selectedImage: singlePhoto,
+      if (!result?.canceled) {
+        const multipleImages = result?.assets.map((image) => image.uri);
+        const singlePhoto = result?.assets[0].uri;
+        const formData = new FormData();
+        formData.append("profilePhoto", {
+          uri: singlePhoto,
+          type: "image/jpeg",
+          name: `${data?.name}.jpg`,
         });
+        try {
+          setLoading(true);
+          const response = await dispatch(updatePhoto(formData as any) as any);
+          if (response?.payload?.success === true) {
+            setLoading(false);
+            setResponse({
+              loading: false,
+              message: `${localized.t("PHOTO_UPDATED")}`,
+              error: true,
+            });
+          } else {
+            setLoading(false);
+          }
+        } catch (error) {
+          console.log("firstfirstfirstfirst", error);
+        }
       }
     } else if (!res.granted) {
       Alert.alert(
@@ -131,11 +168,11 @@ const ProfileScreen = () => {
             style={{
               position: "absolute",
               right: wp2dp("12"),
-              top: Platform.OS === "ios" ? hp2dp(13) : hp2dp(9),
+              top: Platform.OS === "ios" ? hp2dp(8) : hp2dp(6),
               backgroundColor: "white",
               borderColor: "black",
+              borderWidth: 0.5,
               borderRadius: 5,
-              width: wp2dp("32"),
               zIndex: 9999,
             }}
           >
@@ -165,6 +202,52 @@ const ProfileScreen = () => {
                 {localized.t("FIND_FOOD")}
               </Text>
             </TouchableOpacity>
+            {isAuthenticated && (
+              <View>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate("HistoryScreen")}
+                >
+                  <Text
+                    style={{
+                      padding: 10,
+                      fontSize: 20,
+                      fontWeight: "300",
+                      lineHeight: 27.24,
+                    }}
+                  >
+                    {localized.t("HISTORY")}
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate("TeamHomeScreen")}
+                >
+                  <Text
+                    style={{
+                      padding: 10,
+                      fontSize: 20,
+                      fontWeight: "300",
+                      lineHeight: 27.24,
+                    }}
+                  >
+                    {localized.t("TEAM")}
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate("ProfileScreen")}
+                >
+                  <Text
+                    style={{
+                      padding: 10,
+                      fontSize: 20,
+                      fontWeight: "300",
+                      lineHeight: 27.24,
+                    }}
+                  >
+                    {localized.t("ACCOUNT")}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            )}
           </View>
         )}
         <View style={styles.row}>
@@ -230,10 +313,10 @@ const ProfileScreen = () => {
                   }}
                 >
                   <TouchableOpacity onPress={openImagePickerAsync}>
-                    {data?.user?.profilePhoto ? (
+                    {data?.profilePhoto ? (
                       <View>
                         <Image
-                          source={{ uri: data?.user?.profilePhoto }}
+                          source={{ uri: data?.profilePhoto }}
                           style={{ width: hp2dp(20), height: hp2dp(20) }}
                         />
                       </View>
@@ -253,8 +336,10 @@ const ProfileScreen = () => {
                   </TouchableOpacity>
                 </View>
                 <PrimaryButton
-                  title="Edit"
-                  onPress={logout}
+                  title={localized.t("EDIT")}
+                  onPress={() => {
+                    navigation.navigate("UpdateProfileScreen");
+                  }}
                   buttonStyle={{
                     backgroundColor: "#D1D1D6",
                     color: "white",
@@ -282,7 +367,7 @@ const ProfileScreen = () => {
                 >
                   <MaterialCommunityIcons
                     color="white"
-                    size={30}
+                    size={24}
                     style={{
                       justifyContent: "center",
                       alignSelf: "center",
@@ -295,7 +380,7 @@ const ProfileScreen = () => {
                       {localized.t("NAME")}
                     </Text>
                     <Text style={[styles.profileDetailsText2]}>
-                      {userInfo?.name}
+                      {data?.name}
                     </Text>
                   </View>
                 </View>
@@ -336,7 +421,48 @@ const ProfileScreen = () => {
                       {localized.t("EMAIL")}
                     </Text>
                     <Text style={[styles.profileDetailsText2]}>
-                      {userInfo?.email}
+                      {data?.email}
+                    </Text>
+                  </View>
+                </View>
+                <View
+                  style={{
+                    width: wp2dp("28%"),
+                  }}
+                ></View>
+              </View>
+              <Divider
+                style={{
+                  backgroundColor: "white",
+                  height: 1,
+                  padding: 0.8,
+                  marginTop: hp2dp("0.5%"),
+                }}
+              />
+              <View style={styles.rowItem}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    display: "flex",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <MaterialCommunityIcons
+                    color="white"
+                    size={24}
+                    style={{
+                      justifyContent: "center",
+                      alignSelf: "center",
+                      marginRight: 5,
+                    }}
+                    name="phone"
+                  />
+                  <View style={{ justifyContent: "center" }}>
+                    <Text style={styles.profileDetailsText3}>
+                      {localized.t("NUMBER")}
+                    </Text>
+                    <Text style={[styles.profileDetailsText2]}>
+                      {data?.phoneNumber}
                     </Text>
                   </View>
                 </View>
@@ -562,10 +688,10 @@ const styles = StyleSheet.create({
     right: 0,
   },
   logout: {
-    marginTop: hp2dp("20%"),
+    marginTop: hp2dp(5),
   },
   deleteProfile: {
-    marginTop: hp2dp("10%"),
+    marginTop: hp2dp(5),
   },
   deleteProfileTextContainer: {
     alignItems: "center",

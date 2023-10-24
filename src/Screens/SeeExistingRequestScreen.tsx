@@ -26,7 +26,7 @@ import {
   heightPercentageToDP as h2dp,
   widthPercentageToDP as w2dp,
 } from "react-native-responsive-screen";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
 import PrimaryButton from "../Components/PrimaryButton";
@@ -37,10 +37,12 @@ import { allRequests } from "../redux/actions/allRequests";
 const SeeExistingRequestScreen = ({ route }: any) => {
   const { itemTypeId, title, latitude, longitude } = route?.params;
   const [item, setItem] = useState<string>("");
-  const [showDialog, setShowDialog] = useState<boolean>(true);
   const [requestData, setRequestData]: any = useState<[]>([]);
+  const userDetails = useSelector((state: any) => state.auth);
+  const { data } = userDetails;
   useEffect(() => {
     fetchingRequestData();
+    sortByDate();
   }, []);
 
   const [order, setOrder] = useState<"ASC" | "DESC">("ASC");
@@ -71,7 +73,10 @@ const SeeExistingRequestScreen = ({ route }: any) => {
       const ApprovedDonation = filteredrequestData.filter(
         (event: any) => event?.status === "approved"
       );
-      setRequestData(ApprovedDonation);
+      const filterNotme = ApprovedDonation.filter(
+        (event: any) => event?.createdBy?.id != data?.user?.id
+      );
+      setRequestData(filterNotme);
     } else if (itemTypeId === 2) {
       const filteredrequestData = response?.payload?.AllRequests.filter(
         (event: any) => event?.type === "Supplies"
@@ -80,7 +85,10 @@ const SeeExistingRequestScreen = ({ route }: any) => {
       const ApprovedDonation = filteredrequestData.filter(
         (event: any) => event?.status === "approved"
       );
-      setRequestData(ApprovedDonation);
+      const filterNotme = ApprovedDonation.filter(
+        (event: any) => event?.createdBy?.id != data?.user?.id
+      );
+      setRequestData(filterNotme);
     } else {
       setRequestData(response?.payload?.AllRequests);
     }
@@ -294,16 +302,19 @@ const SeeExistingRequestScreen = ({ route }: any) => {
           </View>
         </ScrollView>
         <Button
-          title="Donate"
+          title={localized.t("DONATE")}
           onPress={() =>
             Alert.alert(
-              // `${localized.t("REGISTRATION_REQUIRED")}`,
-              `Donate ${item}?`,
-              // `${localized.t("ONLY_A_REGISTERED")}`,
-              `${foodItem} (${quantity}) on ${moment(requiredDate).format(
+              `${localized.t("DONATE")} ${item}?`,
+              `${foodItem} (${quantity}) ${localized.t("ON")} ${moment(requiredDate).format(
                 "MMM DD, YYYY  ddd, hh:mm A"
-              )} at ${delivery}`,
+              )} ${localized.t("AT")} ${delivery}`,
               [
+                {
+                  text: `${localized.t("CANCEL")}`,
+                  onPress: () => {},
+                  style: "default",
+                },
                 {
                   text: "Yes",
                   onPress: () => {
@@ -318,11 +329,6 @@ const SeeExistingRequestScreen = ({ route }: any) => {
                       id: id,
                     });
                   },
-                  style: "default",
-                },
-                {
-                  text: `${localized.t("CANCEL")}`,
-                  onPress: () => {},
                   style: "default",
                 },
               ],
@@ -432,7 +438,7 @@ const SeeExistingRequestScreen = ({ route }: any) => {
             )}
           </View>
           <PrimaryButton
-            title={`Donate ${item}`}
+            title={`${localized.t("DONATE")} ${item}`}
             onPress={() =>
               navigation.navigate("AddDonationsScreen", {
                 itemTypeId: itemTypeId,

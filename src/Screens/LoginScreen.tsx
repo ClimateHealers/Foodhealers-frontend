@@ -226,6 +226,11 @@ const LoginScreen = () => {
                             `${localized.t("PLEASE_SIGN_UP")}`,
                             [
                               {
+                                text: `${localized.t("CANCEL")}`,
+                                onPress: () => {},
+                                style: "cancel",
+                              },
+                              {
                                 text: `${localized.t("SIGN_UP")}`,
                                 onPress: () => {
                                   navigation.navigate("SignupScreen");

@@ -1,8 +1,4 @@
-import {
-  AntDesign,
-  Ionicons,
-  MaterialCommunityIcons,
-} from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import { CommonActions, useNavigation } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
 import { LinearGradient } from "expo-linear-gradient";
@@ -11,40 +7,28 @@ import React, { useState } from "react";
 import {
   ActivityIndicator,
   Alert,
-  Keyboard,
   Image,
-  Linking,
+  Keyboard,
   Modal,
-  Platform,
   ScrollView,
-  StyleSheet,
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import { Camera } from "expo-camera";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { localized } from "../locales/localization";
-import * as Permissions from "expo-permissions";
 
-import { removeAuthData, updatePhoto } from "../redux/actions/authAction";
-import {
-  heightPercentageToDP as h2dp,
-  widthPercentageToDP as w2dp,
-} from "react-native-responsive-screen";
+import { heightPercentageToDP as h2dp } from "react-native-responsive-screen";
 import { useDispatch, useSelector } from "react-redux";
-import { getLocation } from "../Components/getCurrentLocation";
-import { logOut } from "../redux/reducers/authreducers";
-import { styles } from "../Components/Styles";
-import FoodhealersHeader from "../Components/FoodhealersHeader";
 import BurgerIcon from "../Components/BurgerIcon";
+import FoodhealersHeader from "../Components/FoodhealersHeader";
 import PrimaryButton from "../Components/PrimaryButton";
+import { styles } from "../Components/Styles";
+import { updatePhoto } from "../redux/actions/authAction";
 
 const DriverPhotoSaveScreen = ({ route }: any) => {
   const { selectedImage } = route?.params;
-  const [menuOpen, setMenuOpen] = useState<boolean>(false);
-  const [loc, setLoc] = useState(false);
   const [selectedImage1, setSelectedImage1] = useState(selectedImage);
   const [loading, setLoading] = useState(false);
   const userDetails = useSelector((state: any) => state.auth);
@@ -71,7 +55,6 @@ const DriverPhotoSaveScreen = ({ route }: any) => {
         const multipleImages = result.assets.map((image) => image.uri);
         const singlePhoto = result.assets[0].uri;
         setSelectedImage1(singlePhoto);
-        console.log("singlephoto", singlePhoto);
       }
     } else if (!res.granted) {
       Alert.alert(
@@ -86,7 +69,6 @@ const DriverPhotoSaveScreen = ({ route }: any) => {
       );
     }
   };
-  console.log("knksnvsvsvm", selectedImage);
 
   const formData = new FormData();
   formData.append("profilePhoto", {
@@ -102,10 +84,8 @@ const DriverPhotoSaveScreen = ({ route }: any) => {
       if (response?.payload?.success === true) {
         setLoading(false);
         Alert.alert(
-          // `${localized.t("THAN_YOU_FOR_DONATION")}`,
-          "Driver Profile created successfully",
-          // `${localized.t("WH_HAVE_SUCCESSFULLY_ADDED_YOUR_DONATION")}`,
-          "We have created your Driver Profile.",
+          `${localized.t("DRIVER_PROFILE_CREATED_SUCCESSFULLY")}`,
+          `${localized.t("WE_HAVE_CREATED_YOUR_DRIVER_PROFILE")}`,
           [
             {
               text: `${localized.t("OK")}`,
@@ -196,7 +176,7 @@ const DriverPhotoSaveScreen = ({ route }: any) => {
                 onPress={navigateToProfileScreen}
               />
               <PrimaryButton
-                title="Retake"
+                title={localized.t("RETAKE")}
                 buttonStyle={styles.buttonHistoryStyles}
                 titleStyle={styles.titleMainStyle}
                 onPress={() => navigation.navigate("TakePictureScreen")}

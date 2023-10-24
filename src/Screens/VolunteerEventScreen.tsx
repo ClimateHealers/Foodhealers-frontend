@@ -166,98 +166,87 @@ const VolunteerEventScreen = ({ route }: any) => {
         colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
         style={styles.background}
       >
-        <SafeAreaView>
-          <TouchableOpacity activeOpacity={1}>
-            <ScrollView keyboardShouldPersistTaps="handled">
-              <StatusBar animated={true} backgroundColor="auto" />
-              <View style={styles.container}>
-                <FoodhealersHeader />
-                <View style={styles.root}>
-                  <Ionicons
-                    name="chevron-back"
-                    size={32}
-                    color="white"
-                    onPress={() => navigation.goBack()}
+        <View style={styles.container}>
+          <FoodhealersHeader />
+          <View style={styles.root}>
+            <Ionicons
+              name="chevron-back"
+              size={32}
+              color="white"
+              onPress={() => navigation.goBack()}
+            />
+            <View style={styles.item}>
+              <Text style={styles.itemText}>
+                {eventData?.length > 0
+                  ? `${localized.t("EVENTS")}`
+                  : `${localized.t("POST_AN_EVENT")}`}
+              </Text>
+            </View>
+            <BurgerIcon />
+          </View>
+          <View style={styles.itemFilter}>
+            <Text style={styles.itemFilterText}>{localized.t("EVENTS")}</Text>
+            <TouchableOpacity
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+              onPress={sortByDate}
+            >
+              <Text style={styles.itemFilterText}>{localized.t("FILTER")}</Text>
+              <MaterialIcons
+                name="filter-list-alt"
+                style={styles.itemFilterText}
+              />
+            </TouchableOpacity>
+          </View>
+          {eventData?.length > 0 ? (
+            <View style={{ flex: 1 }}>
+              <FlatList
+                data={eventData}
+                renderItem={({ item }: any) => (
+                  <Item
+                    name={item?.name}
+                    eventTimings={`${moment(item?.eventStartDate).format(
+                      "DD,  ddd, hh:mm A"
+                    )}`}
+                    address={item?.address?.streetAddress}
+                    additionalInfo={item?.additionalInfo}
+                    lat={item?.address?.lat}
+                    long={item?.address?.lng}
+                    eventStartDate={item?.eventStartDate}
+                    eventEndDate={item?.eventEndDate}
+                    id={item?.id}
+                    status={item?.status}
+                    eventPhoto={item?.eventPhoto}
+                    requiredVolunteers={item?.requiredVolunteers}
                   />
-                  <View style={styles.item}>
-                    <Text style={styles.itemText}>
-                      {eventData?.length > 0
-                        ? `${localized.t("EVENTS")}`
-                        : `${localized.t("POST_AN_EVENT")}`}
-                    </Text>
-                  </View>
-                  <BurgerIcon />
-                </View>
-                {eventData?.length > 0 ? (
-                  <View>
-                    <View style={styles.itemFilter}>
-                      <Text style={styles.itemFilterText}>
-                        {localized.t("EVENTS")}
-                      </Text>
-                      <TouchableOpacity
-                        style={{
-                          display: "flex",
-                          flexDirection: "row",
-                          justifyContent: "center",
-                          alignItems: "center",
-                        }}
-                        onPress={sortByDate}
-                      >
-                        <Text style={styles.itemFilterText}>
-                          {localized.t("FILTER")}
-                        </Text>
-                        <MaterialIcons
-                          name="filter-list-alt"
-                          style={styles.itemFilterText}
-                        />
-                      </TouchableOpacity>
-                    </View>
-                    <FlatList
-                      data={eventData}
-                      renderItem={({ item }: any) => (
-                        <Item
-                          name={item?.name}
-                          eventTimings={`${moment(item?.eventStartDate).format(
-                            "DD,  ddd, hh:mm A"
-                          )}`}
-                          address={item?.address?.streetAddress}
-                          additionalInfo={item?.additionalInfo}
-                          lat={item?.address?.lat}
-                          long={item?.address?.lng}
-                          eventStartDate={item?.eventStartDate}
-                          eventEndDate={item?.eventEndDate}
-                          id={item?.id}
-                          status={item?.status}
-                          eventPhoto={item?.eventPhoto}
-                          requiredVolunteers={item?.requiredVolunteers}
-                        />
-                      )}
-                      keyExtractor={(item): any => {
-                        item?.id;
-                      }}
-                    />
-                  </View>
-                ) : (
-                  <View style={{ marginTop: h2dp(3), alignItems: "center" }}>
-                    <Image
-                      source={require("../../assets/images/shutterShock.png")}
-                      style={styles.imageStyle}
-                    />
-                    <View style={styles.title}>
-                      <TouchableOpacity
-                        onPress={() => navigation.navigate("PostEvent")}
-                      >
-                        <Text style={styles.textStyle}>
-                          {localized.t("POST_AN_EVENT")}
-                        </Text>
-                      </TouchableOpacity>
-                    </View>
-                  </View>
                 )}
+                keyExtractor={(item): any => {
+                  item?.id;
+                }}
+              />
+            </View>
+          ) : (
+            <View style={{ marginTop: h2dp(3), alignItems: "center" }}>
+              <Image
+                source={require("../../assets/images/shutterShock.png")}
+                style={styles.imageStyle}
+              />
+              <View style={styles.title}>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate("PostEvent")}
+                >
+                  <Text style={styles.textStyle}>
+                    {localized.t("POST_AN_EVENT")}
+                  </Text>
+                </TouchableOpacity>
               </View>
-            </ScrollView>
-          </TouchableOpacity>
-        </SafeAreaView>
+            </View>
+          )}
+        </View>
       </LinearGradient>
     </TouchableWithoutFeedback>
   );

@@ -26,6 +26,7 @@ import { otpGenerate } from "../redux/actions/optGenerateAction";
 import { TextInput } from "react-native-paper";
 import { useDispatch } from "react-redux";
 import { updatePickupRequest } from "../redux/actions/acceptPickupAction";
+import { GenerateOTP } from "../Components/validation";
 
 const PickupConfirmScreen = ({ route }: any) => {
   const {
@@ -107,7 +108,7 @@ const PickupConfirmScreen = ({ route }: any) => {
               >
                 {!fullfilled
                   ? `${localized.t("PICKUP_CONFIRMED")}`
-                  : "Pickup Completed"}
+                  : `${localized.t("PICKUP_COMPLETED")}`}
               </Text>
               <View style={{ marginTop: h2dp(3) }}>
                 <View
@@ -271,64 +272,74 @@ const PickupConfirmScreen = ({ route }: any) => {
                       />
                     </View>
                   ) : (
-                    <PrimaryButton
-                      title={localized.t("GENERATE_OTP")}
-                      onPress={async () => {
-                        setLoading(true);
-                        try {
-                          setResponse({
-                            loading: true,
-                            message: "",
-                            error: false,
-                          });
-                          const data = {
-                            requestId: pickupId,
-                            otpType: otpType,
-                          };
-                          const res = await dispatch(
-                            otpGenerate(data as any) as any
-                          );
-                          if (res?.payload?.success == true) {
-                            setLoading(false);
-                            setResponse({
-                              loading: false,
-                              message: "PickUp Delivered",
-                              error: false,
-                            });
-                            setLoading(false);
-                            Alert.alert(
-                              // `${localized.t("VEHICLE_ADDED_SUCCESSFULLY")}`,
-                              "Pickup Delivered",
-                              // `${localized.t("YOUR_VEHICLE_HAS_BEEN_ADDED_SUCCESSFULLY")}`,
-                              "You have delivered the pickup request.",
-                              [
-                                {
-                                  text: "OK",
-                                  onPress: () => {setOtp(true)},
-                                  style: "default",
-                                },
-                              ],
-                              { cancelable: false }
-                            );
-                          }
-                        } catch (err: any) {
-                          setLoading(false);
-                          setResponse({
-                            loading: false,
-                            message: err?.message,
-                            error: true,
-                          });
-                        }
-                      }}
-                      buttonStyle={styles.buttonHistoryStyles}
-                      titleStyle={styles.titleMainStyle}
-                    />
+                    <View>
+                      {!fullfilled ? (
+                        <View>
+                          <PrimaryButton
+                            title={localized.t("GENERATE_OTP")}
+                            onPress={async () => {
+                              setLoading(true);
+                              try {
+                                setResponse({
+                                  loading: true,
+                                  message: "",
+                                  error: false,
+                                });
+                                const data = {
+                                  requestId: pickupId,
+                                  otpType: otpType,
+                                };
+                                const res = await dispatch(
+                                  otpGenerate(data as any) as any
+                                );
+                                if (res?.payload?.success == true) {
+                                  setLoading(false);
+                                  setResponse({
+                                    loading: false,
+                                    message: `${localized.t(
+                                      "PICKUP_DELIVERED"
+                                    )}`,
+                                    error: false,
+                                  });
+                                  setLoading(false);
+                                  Alert.alert(
+                                    `${localized.t("PICKUP_DELIVERED")}`,
+                                    `${localized.t(
+                                      "THANK_YOU_YOU_HAVE_DELIVERED_THE_PICKUP"
+                                    )}`,
+                                    [
+                                      {
+                                        text: "OK",
+                                        onPress: () => {
+                                          setOtp(false);
+                                        },
+                                        style: "default",
+                                      },
+                                    ],
+                                    { cancelable: false }
+                                  );
+                                }
+                              } catch (err: any) {
+                                setLoading(false);
+                                setResponse({
+                                  loading: false,
+                                  message: err?.message,
+                                  error: true,
+                                });
+                              }
+                            }}
+                            buttonStyle={styles.buttonHistoryStyles}
+                            titleStyle={styles.titleMainStyle}
+                          />
+                        </View>
+                      ) : null}
+                    </View>
                   )}
                 </View>
               ) : (
                 <View>
                   <Formik
-                    // validationSchema={AddDonations}
+                    validationSchema={GenerateOTP}
                     initialValues={{
                       otp: "",
                     }}
@@ -343,7 +354,7 @@ const PickupConfirmScreen = ({ route }: any) => {
                         const data = {
                           otp: otp,
                           requestId: pickupId,
-                          otpType: otpType
+                          otpType: otpType,
                         };
                         const res = await dispatch(
                           updatePickupRequest(data as any) as any
@@ -357,14 +368,15 @@ const PickupConfirmScreen = ({ route }: any) => {
                           });
                           setLoading(false);
                           Alert.alert(
-                            `${localized.t("THAN_YOU_FOR_DONATION")}`,
-                            `${localized.t(
-                              "WH_HAVE_SUCCESSFULLY_ADDED_YOUR_DONATION"
-                            )}`,
+                            // `${localized.t("THAN_YOU_FOR_DONATION")}`,
+                            `${localized.t("SUCCESSFULL")}`,
+                            `${localized.t("OTP_SUCCESS")}`,
                             [
                               {
                                 text: `${localized.t("OK")}`,
-                                onPress: () => {setOtp(true)},
+                                onPress: () => {
+                                  setOtp(true);
+                                },
                                 style: "default",
                               },
                             ],
@@ -372,7 +384,7 @@ const PickupConfirmScreen = ({ route }: any) => {
                           );
                         } else {
                           setLoading(false);
-                          console.log("Error");
+                          console.log("ERROR");
                         }
                       } catch (err: any) {
                         setLoading(false);
@@ -382,7 +394,8 @@ const PickupConfirmScreen = ({ route }: any) => {
                           error: true,
                         });
                         Alert.alert(
-                          `${localized.t("DONATION_NOT_ADDED")}`,
+                          // `${localized.t("DONATION_NOT_ADDED")}`,
+                          `${localized.t("ERROR")}`,
                           `${err.message}`,
                           [{ text: `${localized.t("OK")}` }],
                           { cancelable: false }
@@ -405,13 +418,11 @@ const PickupConfirmScreen = ({ route }: any) => {
                           onChangeText={handleChange("otp")}
                           onBlur={handleBlur("otp")}
                           value={values?.otp}
-                          placeholder="Please enter OTP"
+                          placeholder={localized.t("PLEASE_ENTER_OTP")}
                           placeholderTextColor={"black"}
                           style={[styles.textInput]}
                         />
-                        {/* <Text style={styles.inputError}>
-                          {errors?.foodItem}
-                        </Text> */}
+                        <Text style={styles.inputError}>{errors?.otp}</Text>
                         <View
                           style={{
                             display: "flex",

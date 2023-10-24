@@ -17,10 +17,8 @@ export const acceptRequest = createAsyncThunk<AcceptRequest, AcceptRequest>(
         },
       };
       const result = await API.put("v1/api/accept-food-request/", userData, config);
-      console.log("nfkjsdnvksdnvk", result?.data)
       return result?.data;
     } catch (error: any) {
-      console.log("nfkjsdnvksdnvk", error.response.data.message)
       return rejectWithValue(error.response.data.message);
     }
   }

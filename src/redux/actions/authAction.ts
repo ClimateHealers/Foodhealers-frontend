@@ -20,11 +20,11 @@ interface DeleteUser {
   tokenId: string;
 }
 
-interface updatePhoto {
-  file: [];
+interface FetchUser {
+  tokenId: string;
 }
 
-interface fetchPhoto {
+interface updatePhoto {
   file: [];
 }
 
@@ -124,8 +124,26 @@ export const updatePhoto = createAsyncThunk<updatePhoto, updatePhoto>(
       const result = await API.post("v1/api/volunteer-profile-photo/", updateProfilePic, config);
       return result.data;
     } catch (error: any) {
-      console.log("error",error.response.data.message)
       return rejectWithValue(error?.response?.data?.message);
+    }
+  }
+);
+
+export const fetchUser = createAsyncThunk<FetchUser, FetchUser>(
+  "fetchUser",
+  async (_, thunkAPI: any) => {
+    try {
+        const token = thunkAPI?.getState()?.auth?.data?.token;
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Token ${token}`,
+        },
+      };
+      const result = await API.get(`v1/api/volunteer-profile/`, config);
+      return result?.data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error?.response?.data?.message);
     }
   }
 );

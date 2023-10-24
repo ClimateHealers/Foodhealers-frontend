@@ -209,3 +209,12 @@ export const adddVehicle = Yup.object().shape({
   carColor: Yup.string().required(`${localized.t("THIS_FIELD_IS_REQUIRED")}`),
   licencePlate: Yup.string().required(`${localized.t("THIS_FIELD_IS_REQUIRED")}`),
 });
+
+export const GenerateOTP = Yup.object().shape({
+  otp: Yup.string()
+    .required(`${localized.t("THIS_FIELD_IS_REQUIRED")}`)
+    .matches(/^[0-9]+$/, {
+      message: `${localized.t("Only numbers are allowed")}`,
+      excludeEmptyString: true,
+    }),
+  });

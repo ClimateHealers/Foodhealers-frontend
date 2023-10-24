@@ -32,6 +32,7 @@ import PrimaryButton from "../Components/PrimaryButton";
 import { styles } from "../Components/Styles";
 import { getLocation } from "../Components/getCurrentLocation";
 import { fetchVehicle } from "../redux/actions/addVehicle";
+import { fetchUser } from "../redux/actions/authAction";
 
 const DriverProfileScreen = ({ route }: any) => {
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
@@ -39,22 +40,29 @@ const DriverProfileScreen = ({ route }: any) => {
   // const [selectedImage, setSelectedImage] = useState("");
   const [vehicleDetails, setVehicleDetails] = useState<any>();
   const [loading, setLoading] = useState(false);
-  const userDetails = useSelector((state: any) => state?.auth);
-  const { data } = userDetails;
+  const [ data , setData ]= useState<any>();
   const navigation: any = useNavigation<string>();
   const dispatch = useDispatch();
   const isAuthenticated = useSelector(
     (state: any) => state?.auth?.data?.isAuthenticated
   );
 
+  const fetchingUserData = async () => {
+    const response = await dispatch(fetchUser({} as any) as any);
+    const data = response?.payload?.userDetails;
+    setData(data)
+  };
+
   const fetchingVehiclesData = async () => {
     const response = await dispatch(fetchVehicle({} as any) as any);
-    const data = response?.payload?.vehicleDetails[0];
+    const indexLength = response?.payload?.vehicleDetails?.length;
+    const data = response?.payload?.vehicleDetails[indexLength-1];
     setVehicleDetails(data);
   };
 
   useEffect(() => {
     fetchingVehiclesData();
+    fetchingUserData();
   }, []);
 
   const handleMenuItemPress = (item: any) => {
@@ -84,37 +92,6 @@ const DriverProfileScreen = ({ route }: any) => {
   const handlePressOutside = () => {
     Keyboard.dismiss();
   };
-
-  // const takePhoto = async () => {
-  //   const res = await Camera.getPhoto();
-  //   if (res.granted) {
-  //     const result = await ImagePicker.launchCamera({
-  //       allowsMultipleSelection: true,
-  //       selectionLimit: 1,
-  //       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-  //       allowsEditing: false,
-  //       aspect: [4, 3],
-  //       quality: 1,
-  //     });
-
-  //     if (!result.canceled) {
-  //       const multipleImages = result.assets.map((image) => image.uri);
-  //       const singlePhoto = result.assets[0].uri;
-  //       setSelectedImage(singlePhoto);
-  //     }
-  //   } else if (!res.granted) {
-  //     Alert.alert(
-  //       `${localized.t("MEDIA_LIBRARY_ACCESS")}`,
-  //       `${localized.t("FOODHEALERS_APP_NEEDS_PHOTOLIBRARY.")}`,
-  //       [
-  //         {
-  //           text: `${localized.t("OK")}`,
-  //         },
-  //       ],
-  //       { cancelable: true }
-  //     );
-  //   }
-  // };
 
   const openImagePickerAsync = async () => {
     const res = await MediaLibrary.requestPermissionsAsync();
@@ -259,10 +236,10 @@ const DriverProfileScreen = ({ route }: any) => {
                 }}
               >
                 <TouchableOpacity onPress={openImagePickerAsync}>
-                  {data?.user?.profilePhoto ? (
+                  {data?.profilePhoto ? (
                     <View>
                       <Image
-                        source={{ uri: data?.user?.profilePhoto }}
+                        source={{ uri: data?.profilePhoto }}
                         style={{ width: h2dp(20), height: h2dp(20) }}
                       />
                     </View>
@@ -295,16 +272,16 @@ const DriverProfileScreen = ({ route }: any) => {
               <Text
                 style={{ fontSize: 24, fontWeight: "500", marginTop: h2dp(2) }}
               >
-                {data?.user?.name}
+                {data?.name}
               </Text>
               <Text style={{ fontSize: 24, marginTop: h2dp(2) }}>
-                {data?.user?.email}
+                {data?.email}
               </Text>
               <Text style={{ fontSize: 24, marginTop: h2dp(2) }}>
-                {data?.user?.address?.fullAddress}
+                {data?.address?.fullAddress}
               </Text>
               <Text style={{ fontSize: 24, marginTop: h2dp(2) }}>
-                {data?.user?.phoneNumber}
+                {data?.phoneNumber}
               </Text>
               <Text style={{ fontSize: 24, marginTop: h2dp(2) }}>
                 {vehicleDetails?.make} {vehicleDetails?.model},{" "}
@@ -316,7 +293,9 @@ const DriverProfileScreen = ({ route }: any) => {
             </View>
             <PrimaryButton
               title={localized.t("ACCEPT_RIDES")}
-              onPress={() => navigation.navigate("PickupDetailsScreen")}
+              onPress={() => navigation.navigate("PickupDetailsScreen",{
+                itemTypeId: 4,
+              })}
               buttonStyle={[
                 styles.nextButtonStyles,
                 {

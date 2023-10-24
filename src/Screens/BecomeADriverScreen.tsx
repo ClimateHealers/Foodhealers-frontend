@@ -1,7 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
-import React, { useState } from "react";
+import React from "react";
 import {
   Image,
   Keyboard,
@@ -20,13 +20,10 @@ import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
 import PrimaryButton from "../Components/PrimaryButton";
 import { styles } from "../Components/Styles";
-import { getLocation } from "../Components/getCurrentLocation";
 import { localized } from "../locales/localization";
 
-const BecomeADriverScreen = ({ route }: any) => {
-  const userDetails = useSelector((state: any) => state.auth);
+const BecomeADriverScreen = () => {
   const navigation: any = useNavigation();
-  const { data } = userDetails;
 
   const handlePressOutside = () => {
     Keyboard.dismiss();
@@ -76,13 +73,10 @@ const BecomeADriverScreen = ({ route }: any) => {
               </View>
               <View>
                 <PrimaryButton
-                  title="Become a driver for Food Healers" // {localized.t(
-                  // )}
+                  title={localized.t("BECOME_A_DRIVER_FOR_FOOD_HEALERS")} // {localized.t(// )}
                   onPress={() =>
                     navigation.navigate("AddDriverScreen", {
-                      // itemTypeId: itemTypeId,
-                      // id: id,
-                      // title: title,
+                      title: `${localized.t("BECOME_A_DRIVER_FOR_FOOD_HEALERS")}`
                     })
                   }
                   buttonStyle={{

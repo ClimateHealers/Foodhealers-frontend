@@ -58,7 +58,7 @@ const SingleRecipeScreen = ({ route }: any) => {
                   { alignSelf: "center", justifyContent: "center" },
                 ]}
               >
-                <Text style={styles.itemText}>{recipeData?.recipeName?.length > 25 ? `${recipeData?.recipeName?.slice(0,25)}...` : recipeData?.recipeName}</Text>
+                <Text style={styles.itemText}>{recipeData?.recipeName}</Text>
               </View>
             </ScrollView>
             <BurgerIcon />

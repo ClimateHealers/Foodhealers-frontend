@@ -3,10 +3,11 @@ import {
   Ionicons,
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
+  Alert,
   Image,
   Keyboard,
   ScrollView,
@@ -22,19 +23,53 @@ import {
   heightPercentageToDP as h2dp,
   widthPercentageToDP as w2dp,
 } from "react-native-responsive-screen";
-import { useSelector } from "react-redux";
+import * as MediaLibrary from "expo-media-library";
+import * as ImagePicker from "expo-image-picker";
+import { useDispatch, useSelector } from "react-redux";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
 import PrimaryButton from "../Components/PrimaryButton";
 import { styles } from "../Components/Styles";
 import { getLocation } from "../Components/getCurrentLocation";
+import { fetchVehicle } from "../redux/actions/addVehicle";
+import { fetchUser, updatePhoto } from "../redux/actions/authAction";
 
 const DriverRequestScreen = ({ route }: any) => {
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
-  const userDetails = useSelector((state: any) => state.auth);
-  const { data } = userDetails;
+  const [loading, setLoading] = useState(false);
+  const [vehicleDetails, setVehicleDetails] = useState<any>();
+  const [data, setData] = useState<any>();
+  const [image, setImage] = useState<any>();
   const navigation: any = useNavigation<string>();
   const handlePressOutside = () => {
     Keyboard.dismiss();
+  };
+  const [response, setResponse] = useState({
+    loading: false,
+    error: false,
+    message: "",
+  });
+
+  const fetchingUserData = async () => {
+    const response = await dispatch(fetchUser({} as any) as any);
+    const data = response?.payload?.userDetails;
+    setData(data);
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchingVehiclesData();
+      fetchingUserData();
+    }, [])
+  );
+
+  const dispatch = useDispatch();
+
+  const fetchingVehiclesData = async () => {
+    const response = await dispatch(fetchVehicle({} as any) as any);
+
+    const indexLength = response?.payload?.vehicleDetails?.length;
+    const data = response?.payload?.vehicleDetails[indexLength - 1];
+    setVehicleDetails(data);
   };
 
   const handleMenuItemPress = (item: any) => {
@@ -56,6 +91,59 @@ const DriverRequestScreen = ({ route }: any) => {
       }
     });
     setMenuOpen(false);
+  };
+
+  const openImagePickerAsync = async () => {
+    const res = await MediaLibrary.requestPermissionsAsync();
+    if (res.granted) {
+      const result = await ImagePicker.launchImageLibraryAsync({
+        allowsMultipleSelection: true,
+        selectionLimit: 1,
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: false,
+        aspect: [4, 3],
+        quality: 1,
+      });
+
+      if (!result.canceled) {
+        const multipleImages = result.assets.map((image) => image.uri);
+        const singlePhoto = result.assets[0].uri;
+        const formData = new FormData();
+        setImage(singlePhoto);
+        formData.append("profilePhoto", {
+          uri: singlePhoto,
+          type: "image/jpeg",
+          name: `${data?.name}.jpg`,
+        });
+        try {
+          setLoading(true);
+          const response = await dispatch(updatePhoto(formData as any) as any);
+          if (response?.payload?.success === true) {
+            setLoading(false);
+            setResponse({
+              loading: false,
+              message: `${localized.t("PHOTO_UPDATED")}`,
+              error: true,
+            });
+          } else {
+            setLoading(false);
+          }
+        } catch (error) {
+          console.log("firstfirstfirstfirst", error);
+        }
+      }
+    } else if (!res.granted) {
+      Alert.alert(
+        `${localized.t("MEDIA_LIBRARY_ACCESS")}`,
+        `${localized.t("FOODHEALERS_APP_NEEDS_PHOTOLIBRARY.")}`,
+        [
+          {
+            text: `${localized.t("OK")}`,
+          },
+        ],
+        { cancelable: true }
+      );
+    }
   };
 
   const isAuthenticated = useSelector(
@@ -154,38 +242,84 @@ const DriverRequestScreen = ({ route }: any) => {
                   alignItems: "center",
                   backgroundColor: "white",
                   overflow: "hidden",
-                  marginTop: h2dp(3),
                   marginBottom: h2dp(3),
                   borderWidth: 2,
                 }}
               >
-                <TouchableOpacity>
-                  {data?.user?.profilePhoto ? (
+                <TouchableOpacity onPress={openImagePickerAsync}>
+                  {image ? (
                     <View>
                       <Image
-                        source={{ uri: data?.user?.profilePhoto }}
+                        source={{ uri: image }}
                         style={{ width: h2dp(35), height: h2dp(35) }}
                       />
                     </View>
                   ) : (
-                    <View
-                      style={{
-                        paddingVertical: h2dp(2),
-                        paddingHorizontal: w2dp(5),
-                        justifyContent: "center",
-                        marginBottom: h2dp(1),
-                      }}
-                    >
-                      <AntDesign name="user" size={300} color="#B01D19" />
+                    <View>
+                      <Image
+                        source={{ uri: data?.profilePhoto }}
+                        style={{ width: h2dp(35), height: h2dp(35) }}
+                      />
                     </View>
                   )}
                 </TouchableOpacity>
               </View>
               <Text style={{ fontSize: 36, color: "#00693D" }}>
-                Hello, {data?.user?.name}
+                {localized.t("HELLO")}, {data?.name}
               </Text>
+              <View
+                style={{
+                  backgroundColor: "#00693D",
+                  borderRadius: 5,
+                  width: w2dp(70),
+                  marginTop: h2dp(5),
+                  alignItems: "center",
+                  justifyContent: "center",
+                  display: "flex",
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: 24,
+                    color: "white",
+                    marginVertical: h2dp(1),
+                    alignItems: "center",
+                    display: "flex",
+                  }}
+                >
+                  {vehicleDetails?.make} {vehicleDetails?.model},{" "}
+                  {vehicleDetails?.vehicleColour}, {vehicleDetails?.plateNumber}
+                </Text>
+                <PrimaryButton
+                  title={localized.t("EDIT_VEHICLE_DETAILS")}
+                  onPress={() => {
+                    navigation.navigate("UpdateVehicleScreen", {
+                      id: vehicleDetails?.id,
+                      make: vehicleDetails?.make,
+                      model: vehicleDetails?.model,
+                      vehicleColour: vehicleDetails.vehicleColour,
+                      plateNumber: vehicleDetails?.plateNumber,
+                    });
+                  }}
+                  buttonStyle={{
+                    backgroundColor: "#D1D1D6",
+                    color: "white",
+                    borderRadius: 5,
+                    right: 0,
+                    marginBottom: h2dp(2),
+                    // width: w2dp(20),
+                    paddingHorizontal: w2dp(6),
+                  }}
+                  titleStyle={{
+                    color: "black",
+                    fontSize: 18,
+                    lineHeight: 20,
+                    fontFamily: "OpenSans-Regular",
+                  }}
+                />
+              </View>
               <PrimaryButton
-                title="See Pickup Requests"
+                title={localized.t("SEE_PICKUP_REQUESTS")}
                 onPress={() =>
                   navigation.navigate("PickupDetailsScreen", {
                     itemTypeId: 4,
@@ -213,14 +347,16 @@ const DriverRequestScreen = ({ route }: any) => {
                     itemTypeId: 4,
                   })
                 }
-                buttonStyle={{backgroundColor: "white",
-                color: "black",
-                borderRadius: 5,
-                borderColor: "black",
-                borderWidth: 1,
-                width: w2dp(70),
-                marginTop: h2dp(5),
-                alignSelf: "center",}}
+                buttonStyle={{
+                  backgroundColor: "white",
+                  color: "black",
+                  borderRadius: 5,
+                  borderColor: "black",
+                  borderWidth: 1,
+                  width: w2dp(70),
+                  marginTop: h2dp(5),
+                  alignSelf: "center",
+                }}
                 titleStyle={styles.titleMainStyle}
               />
             </View>

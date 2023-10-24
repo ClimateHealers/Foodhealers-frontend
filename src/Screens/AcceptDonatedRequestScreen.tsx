@@ -19,19 +19,17 @@ import {
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { Text, TextInput } from "react-native-paper";
 import PrimaryButton from "../Components/PrimaryButton";
-import { AddDonations, AddRequest } from "../Components/validation";
+import { AddRequest } from "../Components/validation";
 
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import PhoneInput from "react-native-phone-number-input";
 import { heightPercentageToDP as h2dp } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
-import { postDonation } from "../redux/actions/myDonations";
-import { styles } from "../Components/Styles";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
+import { styles } from "../Components/Styles";
 import { localized } from "../locales/localization";
-import { postRequest } from "../redux/actions/myRequests";
 import { acceptDonation } from "../redux/actions/acceptDonationAction";
 
 const AcceptDonatedRequestScreen = ({ route }: any) => {
@@ -56,7 +54,6 @@ const AcceptDonatedRequestScreen = ({ route }: any) => {
     message: "",
   });
   const [selectedDate, setSelectedDate] = useState<Date | any>(new Date());
-  const [selectedTime, setSelectedTime] = useState<Date | any>(new Date());
   const [selectedEndDate, setSelectedEndDate] = useState<Date | any>(
     moment().add(1, "hour")
   );
@@ -65,7 +62,7 @@ const AcceptDonatedRequestScreen = ({ route }: any) => {
   );
 
   var dropOffDate = new Date(requiredDate);
-  dropOffDate.setHours(dropOffDate.getHours() + 12);
+  dropOffDate?.setHours(dropOffDate?.getHours() + 12);
 
   const phoneInput = useRef<PhoneInput>(null);
 
@@ -178,14 +175,12 @@ const AcceptDonatedRequestScreen = ({ route }: any) => {
                       setLoading(false);
                       setResponse({
                         loading: false,
-                        message: "Request Added Successfully",
+                        message: "REQUEST_ADDED_SUCCESSFULLY",
                         error: false,
                       });
                       setLoading(false);
                       Alert.alert(
-                        // `${localized.t("THAN_YOU_FOR_DONATION")}`,
                         `${localized.t("REQUEST_ADDED")}`,
-                        // `${localized.t("WH_HAVE_SUCCESSFULLY_ADDED_YOUR_DONATION")}`,
                         `${localized.t(
                           "WE_HAVE_SUCCESSFULLY_ADDED_YOUR_REQUEST"
                         )}`,
@@ -216,7 +211,7 @@ const AcceptDonatedRequestScreen = ({ route }: any) => {
                       );
                     } else {
                       setLoading(false);
-                      console.log("Error");
+                      console.log("ERROR");
                     }
                   } catch (err: any) {
                     setLoading(false);
@@ -226,7 +221,7 @@ const AcceptDonatedRequestScreen = ({ route }: any) => {
                       error: true,
                     });
                     Alert.alert(
-                      `${localized.t("DONATION_NOT_ADDED")}`,
+                      `${localized.t("REQUEST_NOT_ADDED")}`,
                       `${err.message}`,
                       [{ text: `${localized.t("OK")}` }],
                       { cancelable: false }

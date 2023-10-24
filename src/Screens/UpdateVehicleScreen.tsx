@@ -2,7 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { CommonActions, useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Formik } from "formik";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
@@ -19,15 +19,21 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
+``;
 import PrimaryButton from "../Components/PrimaryButton";
 import { styles } from "../Components/Styles";
 import { localized } from "../locales/localization";
-import { addVehicle } from "../redux/actions/addVehicle";
+import {
+  addVehicle,
+  fetchVehicle,
+  updateVehicle,
+} from "../redux/actions/addVehicle";
 import { addDriver, adddVehicle } from "../Components/validation";
 
-const AddVehicleScreen = ({ route }: any) => {
-  const { newVehicle } = route?.params;
+const UpdateVehicleScreen = ({ route }: any) => {
+  const { id, model, make, vehicleColour, plateNumber } = route?.params;
   const [loading, setLoading] = useState(false);
+  const [vehicleDetails, setVehicleDetails] = useState<any>();
   const [response, setResponse] = useState({
     loading: false,
     error: false,
@@ -80,10 +86,10 @@ const AddVehicleScreen = ({ route }: any) => {
               <Formik
                 validationSchema={adddVehicle}
                 initialValues={{
-                  carModel: "",
-                  carColor: "",
-                  licencePlate: "",
-                  carMake: "",
+                  carModel: model,
+                  carColor: vehicleColour,
+                  licencePlate: plateNumber,
+                  carMake: make,
                 }}
                 onSubmit={async ({
                   carModel,
@@ -104,78 +110,44 @@ const AddVehicleScreen = ({ route }: any) => {
                       plateNumber: licencePlate,
                       make: carMake,
                       active: true,
+                      vehicleId: id,
                     };
-                    const res = await dispatch(addVehicle(data as any) as any);
+                    const res = await dispatch(
+                      updateVehicle(data as any) as any
+                    );
                     if (res?.payload?.success == true) {
-                      if (newVehicle) {
-                        setLoading(false);
-                        setResponse({
-                          loading: false,
-                          message: `${localized.t(
-                            "VEHICLE_ADDED_SUCCESSFULLY"
-                          )}`,
-                          error: false,
-                        });
-                        setLoading(false);
-                        Alert.alert(
-                          `${localized.t("VEHICLE_ADDED_SUCCESSFULLY")}`,
-                          `${localized.t(
-                            "YOUR_VEHICLE_HAS_BEEN_ADDED_SUCCESSFULLY"
-                          )}`,
-                          [
-                            {
-                              text: "OK",
-                              onPress: () => {
-                                navigation.dispatch(
-                                  CommonActions.reset({
-                                    index: 0,
-                                    routes: [
-                                      {
-                                        name: "DriverRequestScreen",
-                                      },
-                                    ],
-                                  })
-                                );
-                              },
-                            },
-                          ],
-                          { cancelable: false }
-                        );
-                      } else {
-                        setLoading(false);
-                        setResponse({
-                          loading: false,
-                          message: `${localized.t(
-                            "VEHICLE_ADDED_SUCCESSFULLY"
-                          )}`,
-                          error: false,
-                        });
-                        setLoading(false);
-                        Alert.alert(
-                          `${localized.t("VEHICLE_ADDED_SUCCESSFULLY")}`,
-                          `${localized.t(
-                            "YOUR_VEHICLE_HAS_BEEN_ADDED_SUCCESSFULLY"
-                          )}`,
-                          [
-                            {
-                              text: "OK",
-                              onPress: () => {
-                                navigation.dispatch(
-                                  CommonActions.reset({
-                                    index: 0,
-                                    routes: [
-                                      {
-                                        name: "DriverProfilePhoto",
-                                      },
-                                    ],
-                                  })
-                                );
-                              },
-                            },
-                          ],
-                          { cancelable: false }
-                        );
-                      }
+                      setLoading(false);
+                      setResponse({
+                        loading: false,
+                        message: `${localized.t(
+                          "VEHICLE_UPDATED_SUCCESSFULLY"
+                        )}`,
+                        error: false,
+                      });
+                      setLoading(false);
+                      Alert.alert(
+                        `${localized.t("VEHICLE_UPDATED_SUCCESSFULLY")}`,
+                        `${localized.t(
+                          "YOUR_VEHICLE_HAS_BEEN_UPDATED_SUCCESSFULLY"
+                        )}`,
+                        [
+                          {
+                            text: "OK",
+                            onPress: () =>
+                              navigation.dispatch(
+                                CommonActions.reset({
+                                  index: 0,
+                                  routes: [
+                                    {
+                                      name: "DriverRequestScreen",
+                                    },
+                                  ],
+                                })
+                              ),
+                          },
+                        ],
+                        { cancelable: false }
+                      );
                     } else {
                       setLoading(false);
                       Alert.alert(
@@ -198,7 +170,7 @@ const AddVehicleScreen = ({ route }: any) => {
                       error: true,
                     });
                     Alert.alert(
-                      `${localized.t("VOLUNTEER_NOT_ADDED")}`,
+                      `${localized.t("VEHICLE_NOT_UPDATED")}`,
                       `${err.message}`,
                       [{ text: `${localized.t("OK")}` }],
                       { cancelable: false }
@@ -228,32 +200,40 @@ const AddVehicleScreen = ({ route }: any) => {
                       <View
                         style={[
                           styles.dateTimePickerContainer,
-                          { backgroundColor: "white" },
+                          { backgroundColor: "#deddd9" },
                         ]}
                       >
                         <TextInput
+                          disabled={true}
                           onChangeText={handleChange("carMake")}
                           onBlur={handleBlur("carMake")}
                           value={values.carMake}
                           placeholder={"Car make"}
                           placeholderTextColor={"black"}
-                          style={styles.textInput}
+                          style={[
+                            styles.textInput,
+                            { backgroundColor: "#deddd9" },
+                          ]}
                         />
-                        <Text style={styles.inputError}>{errors.carMake}</Text>
+                        <Text style={styles.inputError}>{errors?.carMake}</Text>
                       </View>
                       <View
                         style={[
                           styles.dateTimePickerContainer,
-                          { backgroundColor: "white" },
+                          { backgroundColor: "#deddd9" },
                         ]}
                       >
                         <TextInput
+                          disabled={true}
                           onChangeText={handleChange("carModel")}
                           onBlur={handleBlur("carModel")}
                           value={values?.carModel}
                           placeholder={"Car model"}
                           placeholderTextColor={"black"}
-                          style={styles.textInput}
+                          style={[
+                            styles.textInput,
+                            { backgroundColor: "#deddd9" },
+                          ]}
                         />
                         <Text style={styles.inputError}>
                           {errors?.carModel}
@@ -266,17 +246,21 @@ const AddVehicleScreen = ({ route }: any) => {
                       value={values.carColor}
                       placeholder={"Car color"}
                       placeholderTextColor={"black"}
-                      style={styles.textInput}
+                      style={[styles.textInput]}
                     />
-                    <Text style={styles.inputError}>{errors.carColor}</Text>
+                    <Text style={styles.inputError}>{errors?.carColor}</Text>
                     <View>
                       <TextInput
+                        disabled={true}
                         onChangeText={handleChange("licencePlate")}
                         onBlur={handleBlur("licencePlate")}
                         value={values?.licencePlate}
                         placeholder={"Licence plate Number"}
                         placeholderTextColor={"black"}
-                        style={[styles.textInput]}
+                        style={[
+                          styles.textInput,
+                          { backgroundColor: "#deddd9" },
+                        ]}
                       />
                     </View>
                     <Text style={styles.inputError}>
@@ -291,10 +275,20 @@ const AddVehicleScreen = ({ route }: any) => {
                       }}
                     >
                       <PrimaryButton
-                        title={localized.t("NEXT")}
+                        title={localized.t("UPDATE")}
                         buttonStyle={styles.nextButtonStyles}
                         titleStyle={styles.titleStyle}
                         onPress={handleSubmit}
+                      />
+                      <PrimaryButton
+                        title={localized.t("ADD_NEW_VEHICLE")}
+                        buttonStyle={styles.nextButtonStyles}
+                        titleStyle={styles.titleStyle}
+                        onPress={() => {
+                          navigation.navigate("AddVehicleScreen",{
+                            newVehicle: true,
+                          })
+                        }}
                       />
                     </View>
                   </>
@@ -308,4 +302,4 @@ const AddVehicleScreen = ({ route }: any) => {
   );
 };
 
-export default AddVehicleScreen;
+export default UpdateVehicleScreen;

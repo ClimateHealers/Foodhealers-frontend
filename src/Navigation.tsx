@@ -63,6 +63,8 @@ import AcceptDonatedRequestScreen from "./Screens/AcceptDonatedRequestScreen";
 import TakePictureScreen from "./Screens/TakePictureScreen";
 import PickupHistoryScreen from "./Screens/PickupHistoryScreen";
 import HistoryScreen from "./Screens/HistoryScreen";
+import UpdateVehicleScreen from "./Screens/UpdateVehicleScreen";
+import UpdateProfileScreen from "./Screens/UpdateProfileScreen";
 
 const Navigation = () => {
   const Stack = createNativeStackNavigator();
@@ -386,6 +388,16 @@ const Navigation = () => {
           <Stack.Screen
             name="HistoryScreen"
             component={HistoryScreen}
+            options={{ title: "", header: () => null }}
+          />
+          <Stack.Screen
+            name="UpdateVehicleScreen"
+            component={UpdateVehicleScreen}
+            options={{ title: "", header: () => null }}
+          />
+          <Stack.Screen
+            name="UpdateProfileScreen"
+            component={UpdateProfileScreen}
             options={{ title: "", header: () => null }}
           />
         </Stack.Navigator>

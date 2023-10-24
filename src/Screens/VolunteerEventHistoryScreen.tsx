@@ -180,65 +180,61 @@ const VolunteerEventHistoryScreen = ({ route }: any) => {
         colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
         style={styles.background}
       >
-        <SafeAreaView>
-          <ScrollView keyboardShouldPersistTaps="handled">
-            <View style={styles.container}>
-              <FoodhealersHeader />
-              <View style={styles.root}>
-                <Ionicons
-                  name="chevron-back"
-                  size={32}
-                  color="white"
-                  onPress={() => navigation.goBack()}
-                />
-                <View style={styles.item}>
-                  <Text style={styles.itemText}>
-                    {localized.t("VOLUNTEER")} {localized.t("EVENT_HISTORY")}
-                  </Text>
-                </View>
-                <BurgerIcon />
-              </View>
-              <View>
-                <View style={styles.itemFilter}>
-                  <Text style={styles.itemFilterText}>
-                    {localized.t("ALL_HISTORY")}
-                  </Text>
-                  <TouchableOpacity
-                    style={{
-                      display: "flex",
-                      flexDirection: "row",
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                    onPress={sortByDate}
-                  >
-                    <Text style={styles.itemFilterText}>
-                      {localized.t("FILTER")}
-                    </Text>
-                    <MaterialIcons
-                      name="filter-list-alt"
-                      style={styles.itemFilterText}
-                    />
-                  </TouchableOpacity>
-                </View>
-                <ScrollView style={{ flex: 1 }}>
-                  <FlatList
-                    data={volunteerData}
-                    renderItem={({ item }: any) => (
-                      <Item
-                        status={item?.event?.status}
-                        id={item.id}
-                        name={item?.event?.name}
-                        address={item?.event?.address?.fullAddress}
-                        fromDate={item?.fromDate}
-                      />
-                    )}
-                  />
-                </ScrollView>
-              </View>
+        <View style={styles.container}>
+          <FoodhealersHeader />
+          <View style={styles.root}>
+            <Ionicons
+              name="chevron-back"
+              size={32}
+              color="white"
+              onPress={() => navigation.goBack()}
+            />
+            <View style={styles.item}>
+              <Text style={styles.itemText}>
+                {localized.t("VOLUNTEER")} {localized.t("EVENT_HISTORY")}
+              </Text>
             </View>
-          </ScrollView>
-        </SafeAreaView>
+            <BurgerIcon />
+          </View>
+          <View>
+            <View style={styles.itemFilter}>
+              <Text style={styles.itemFilterText}>
+                {localized.t("ALL_HISTORY")}
+              </Text>
+              <TouchableOpacity
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+                onPress={sortByDate}
+              >
+                <Text style={styles.itemFilterText}>
+                  {localized.t("FILTER")}
+                </Text>
+                <MaterialIcons
+                  name="filter-list-alt"
+                  style={styles.itemFilterText}
+                />
+              </TouchableOpacity>
+            </View>
+            <View style={{ flex: 1 }}>
+              <FlatList
+                data={volunteerData}
+                renderItem={({ item }: any) => (
+                  <Item
+                    status={item?.event?.status}
+                    id={item.id}
+                    name={item?.event?.name}
+                    address={item?.event?.address?.fullAddress}
+                    fromDate={item?.fromDate}
+                  />
+                )}
+              />
+            </View>
+          </View>
+        </View>
       </LinearGradient>
     </TouchableWithoutFeedback>
   );

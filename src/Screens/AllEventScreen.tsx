@@ -231,104 +231,101 @@ const AllEventScreen = () => {
         colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
         style={styles.background}
       >
-        <SafeAreaView>
-          <ScrollView keyboardShouldPersistTaps="handled">
-            <View style={styles.container}>
-              <FoodhealersHeader />
-              <View style={styles.root}>
-                <Ionicons
-                  name="chevron-back"
-                  size={32}
-                  color="white"
-                  onPress={() => navigation.navigate("EventsHomeScreen")}
-                />
-                <View style={styles.item}>
-                  <Text style={styles.itemText}>
-                    {localized.t("SEE_ALL_EVENTS")}
-                  </Text>
-                </View>
-                <BurgerIcon />
-              </View>
-              <View style={styles.toggle}>
-                <SegmentedControlTab
-                  values={[
-                    `${localized.t("MY_EVENTS")}`,
-                    `${localized.t("ALL_EVENTS")}`,
-                  ]}
-                  selectedIndex={selectedIndex}
-                  tabsContainerStyle={{
-                    width: w2dp(50),
-                    height: h2dp(6),
-                  }}
-                  tabTextStyle={{
-                    color: "black",
-                    fontWeight: "400",
-                  }}
-                  tabStyle={styles.tabStyle}
-                  activeTabStyle={{
-                    backgroundColor: "#EDC258",
-                  }}
-                  activeTabTextStyle={{ color: "black" }}
-                  onTabPress={handleSingleIndexSelect}
-                />
-              </View>
-              <View style={styles.itemFilter}>
-                <Text style={styles.itemFilterText}>
-                  {localized.t("EVENTS")}
-                </Text>
-                <TouchableOpacity
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                  onPress={sortByDate}
-                >
-                  <Text style={styles.itemFilterText}>
-                    {localized.t("FILTER")}
-                  </Text>
-                  <MaterialIcons
-                    name="filter-list-alt"
-                    style={styles.itemFilterText}
-                  />
-                </TouchableOpacity>
-              </View>
-              {eventData?.length > 0 ? (<View style={{ flex: 1 }}>
-                <FlatList
-                  data={eventData}
-                  renderItem={({ item }: any) => (
-                    <Item
-                      id={item.id}
-                      additionalInfo={item?.additionalInfo}
-                      name={item?.name}
-                      address={item?.address?.fullAddress}
-                      lat={item.address?.lat}
-                      long={item.address?.lng}
-                      eventStartDate={item?.eventStartDate}
-                      eventEndDate={item?.eventEndDate}
-                      verified={item?.verified}
-                      status={item?.status}
-                      eventPhoto={item?.eventPhoto}
-                      requiredVolunteers={item?.requiredVolunteers}
-                    />
-                  )}
-                  keyExtractor={(item: any) => item?.id}
-                />
-              </View>) : (
-                <View style={{
-                  display: 'flex',
-                  justifyContent: "center",
-                  alignItems: "center",
-                  marginTop: h2dp(25)
-                }}>
-                  <Text style={styles.itemText}>{localized.t("NOTHING_TO_SHOW")}</Text>
-                </View>
-              ) }
-              
+        <View style={styles.container}>
+          <FoodhealersHeader />
+          <View style={styles.root}>
+            <Ionicons
+              name="chevron-back"
+              size={32}
+              color="white"
+              onPress={() => navigation.navigate("EventsHomeScreen")}
+            />
+            <View style={styles.item}>
+              <Text style={styles.itemText}>
+                {localized.t("SEE_ALL_EVENTS")}
+              </Text>
             </View>
-          </ScrollView>
-        </SafeAreaView>
+            <BurgerIcon />
+          </View>
+          <View style={styles.toggle}>
+            <SegmentedControlTab
+              values={[
+                `${localized.t("MY_EVENTS")}`,
+                `${localized.t("ALL_EVENTS")}`,
+              ]}
+              selectedIndex={selectedIndex}
+              tabsContainerStyle={{
+                width: w2dp(50),
+                height: h2dp(6),
+              }}
+              tabTextStyle={{
+                color: "black",
+                fontWeight: "400",
+              }}
+              tabStyle={styles.tabStyle}
+              activeTabStyle={{
+                backgroundColor: "#EDC258",
+              }}
+              activeTabTextStyle={{ color: "black" }}
+              onTabPress={handleSingleIndexSelect}
+            />
+          </View>
+          <View style={styles.itemFilter}>
+            <Text style={styles.itemFilterText}>{localized.t("EVENTS")}</Text>
+            <TouchableOpacity
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+              onPress={sortByDate}
+            >
+              <Text style={styles.itemFilterText}>{localized.t("FILTER")}</Text>
+              <MaterialIcons
+                name="filter-list-alt"
+                style={styles.itemFilterText}
+              />
+            </TouchableOpacity>
+          </View>
+          {eventData?.length > 0 ? (
+            <View style={{ flex: 1 }}>
+              <FlatList
+                data={eventData}
+                renderItem={({ item }: any) => (
+                  <Item
+                    id={item.id}
+                    additionalInfo={item?.additionalInfo}
+                    name={item?.name}
+                    address={item?.address?.fullAddress}
+                    lat={item.address?.lat}
+                    long={item.address?.lng}
+                    eventStartDate={item?.eventStartDate}
+                    eventEndDate={item?.eventEndDate}
+                    verified={item?.verified}
+                    status={item?.status}
+                    eventPhoto={item?.eventPhoto}
+                    requiredVolunteers={item?.requiredVolunteers}
+                  />
+                )}
+                keyExtractor={(item: any) => item?.id}
+              />
+            </View>
+          ) : (
+            <View
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                marginTop: h2dp(25),
+              }}
+            >
+              <Text style={styles.itemText}>
+                {localized.t("NOTHING_TO_SHOW")}
+              </Text>
+            </View>
+          )}
+        </View>
       </LinearGradient>
     </>
   );

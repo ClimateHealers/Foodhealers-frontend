@@ -17,10 +17,8 @@ export const acceptDonation = createAsyncThunk<AcceptDonation, AcceptDonation>(
         },
       };
       const result = await API.put("v1/api/accept-food-donation/", userData, config);
-      console.log("nfkjsdnvksdnvk", result?.data)
       return result?.data;
     } catch (error: any) {
-      console.log("nfkjsdnvksdnvk", error.response.data.message)
       return rejectWithValue(error.response.data.message);
     }
   }

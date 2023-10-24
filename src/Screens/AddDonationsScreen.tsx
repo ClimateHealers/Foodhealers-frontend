@@ -166,13 +166,17 @@ const AddDonationsScreen = ({ route }: any) => {
                       setLoading(false);
                       setResponse({
                         loading: false,
-                        message: `${localized.t("DONATION_ADDED_SUCCESSFULLY")}`,
+                        message: `${localized.t(
+                          "DONATION_ADDED_SUCCESSFULLY"
+                        )}`,
                         error: false,
                       });
                       setLoading(false);
                       Alert.alert(
                         `${localized.t("THAN_YOU_FOR_DONATION")}`,
-                        `${localized.t("WH_HAVE_SUCCESSFULLY_ADDED_YOUR_DONATION")}`,
+                        `${localized.t(
+                          "WH_HAVE_SUCCESSFULLY_ADDED_YOUR_DONATION"
+                        )}`,
                         [
                           {
                             text: `${localized.t("OK")}`,
@@ -199,7 +203,7 @@ const AddDonationsScreen = ({ route }: any) => {
                       );
                     } else {
                       setLoading(false);
-                      console.log("Error");
+                      console.log("ERROR");
                     }
                   } catch (err: any) {
                     setLoading(false);
@@ -211,7 +215,7 @@ const AddDonationsScreen = ({ route }: any) => {
                     Alert.alert(
                       `${localized.t("DONATION_NOT_ADDED")}`,
                       `${err.message}`,
-                      [{ text: `${localized.t("OK")}`}],
+                      [{ text: `${localized.t("OK")}` }],
                       { cancelable: false }
                     );
                   }

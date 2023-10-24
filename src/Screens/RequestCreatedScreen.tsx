@@ -22,7 +22,7 @@ import { localized } from "../locales/localization";
 import moment from "moment";
 
 const RequestCreatedScreen = ({ route }: any) => {
-  const { itemTypeId, title, foodItem, address, eventDateTime } = route?.params;
+  const { itemTypeId, title, foodItem, quantity, address, eventDateTime } = route?.params;
   const navigation: any = useNavigation();
 
   const handlePressOutside = () => {
@@ -54,7 +54,7 @@ const RequestCreatedScreen = ({ route }: any) => {
                 </View>
                 <BurgerIcon />
               </View>
-              <View style={{ height: h2dp(47), marginTop: h2dp(3) }}>
+              <View style={{ height: h2dp(25), marginTop: h2dp(5) }}>
                 <View style={[styles.cardContainer, { width: w2dp(85) }]}>
                   <ScrollView showsVerticalScrollIndicator={false}>
                     <Text
@@ -75,7 +75,7 @@ const RequestCreatedScreen = ({ route }: any) => {
                         lineHeight: 30,
                       }}
                     >
-                      {foodItem}
+                      {foodItem} {quantity}
                     </Text>
                     <ScrollView showsVerticalScrollIndicator={false}>
                       <Text
@@ -103,7 +103,7 @@ const RequestCreatedScreen = ({ route }: any) => {
                     })
                   }
                   buttonStyle={styles.buttonStyles}
-                  titleStyle={styles.titleMainStyle}
+                  titleStyle={styles.titleStyle}
                 />
               </View>
               <View>

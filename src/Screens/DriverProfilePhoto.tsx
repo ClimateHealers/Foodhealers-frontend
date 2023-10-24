@@ -55,9 +55,8 @@ const DriverProfilePhoto = ({ route }: any) => {
       });
 
       if (!result.canceled) {
-        const multipleImages = result.assets.map((image) => image.uri);
-        const singlePhoto = result.assets[0].uri;
-        console.log("kjfnsjknvkdnvd", singlePhoto)
+        const multipleImages = result?.assets?.map((image) => image.uri);
+        const singlePhoto = result?.assets[0]?.uri;
         navigation.navigate("DriverPhotoSaveScreen", {
           selectedImage: singlePhoto,
         });

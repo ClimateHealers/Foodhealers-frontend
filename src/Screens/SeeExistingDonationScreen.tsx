@@ -26,7 +26,7 @@ import {
   heightPercentageToDP as h2dp,
   widthPercentageToDP as w2dp,
 } from "react-native-responsive-screen";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
 import PrimaryButton from "../Components/PrimaryButton";
@@ -40,8 +40,11 @@ const SeeExistingDonationScreen = ({ route }: any) => {
   const [item, setItem] = useState<string>("");
   const [showDialog, setShowDialog] = useState<boolean>(true);
   const [donationData, setDonationData]: any = useState<[]>([]);
+  const userDetails = useSelector((state: any) => state.auth);
+  const { data } = userDetails;
   useEffect(() => {
     fetchingRequestData();
+    sortByDate();
   }, []);
 
   const [order, setOrder] = useState<"ASC" | "DESC">("ASC");
@@ -68,12 +71,14 @@ const SeeExistingDonationScreen = ({ route }: any) => {
       const filtereddonationData = response?.payload?.AllDonations.filter(
         (event: any) => event?.donationType === "Food"
       );
-      console.log("filtereddonationData", filtereddonationData);
       setItem("Food");
       const ApprovedDonation = filtereddonationData.filter(
         (event: any) => event?.status === "approved"
       );
-      setDonationData(ApprovedDonation);
+      const filterNotme = ApprovedDonation.filter(
+        (event: any) => event?.createdBy?.id != data?.user?.id
+      );
+      setDonationData(filterNotme);
     } else if (itemTypeId === 2) {
       const filtereddonationData = response?.payload?.AllDonations.filter(
         (event: any) => event?.donationType === "Supplies"
@@ -82,7 +87,10 @@ const SeeExistingDonationScreen = ({ route }: any) => {
       const ApprovedDonation = filtereddonationData.filter(
         (event: any) => event?.status === "approved"
       );
-      setDonationData(ApprovedDonation);
+      const filterNotme = ApprovedDonation.filter(
+        (event: any) => event?.createdBy?.id != data?.user?.id
+      );
+      setDonationData(filterNotme);
     } else {
       setDonationData(response?.payload?.AllDonations);
     }
@@ -294,16 +302,21 @@ const SeeExistingDonationScreen = ({ route }: any) => {
           </View>
         </ScrollView>
         <Button
-          title="Request"
+          title={localized.t("REQUEST")}
           onPress={() =>
             Alert.alert(
-              // `${localized.t("REGISTRATION_REQUIRED")}`,
-              `Request ${item}?`,
-              // `${localized.t("ONLY_A_REGISTERED")}`,
-              `${foodItem} (${quantity}) on ${moment(requiredDate).format(
-                "MMM DD, YYYY  ddd, hh:mm A"
-              )} from ${delivery}`,
+              `${localized.t("REQUEST")} ${item}?`,
+              `${foodItem} (${quantity}) ${localized.t("ON")} ${moment(
+                requiredDate
+              ).format("MMM DD, YYYY  ddd, hh:mm A")} ${localized.t(
+                "FROM"
+              )} ${delivery}`,
               [
+                {
+                  text: `${localized.t("CANCEL")}`,
+                  onPress: () => {},
+                  style: "default",
+                },
                 {
                   text: "Yes",
                   onPress: () => {
@@ -316,11 +329,6 @@ const SeeExistingDonationScreen = ({ route }: any) => {
                       id: id,
                     });
                   },
-                  style: "default",
-                },
-                {
-                  text: `${localized.t("CANCEL")}`,
-                  onPress: () => {},
                   style: "default",
                 },
               ],
@@ -365,8 +373,7 @@ const SeeExistingDonationScreen = ({ route }: any) => {
             />
             <View style={styles.item}>
               <Text style={styles.itemText}>
-                {/* {localized.t("EXISTING_FOOD_REQUESTS")} */}
-                Existing {item} Donations
+                {localized.t("EXISTING")} {item} {localized.t("DONATIONS")}
               </Text>
             </View>
             <BurgerIcon />
@@ -375,8 +382,7 @@ const SeeExistingDonationScreen = ({ route }: any) => {
           <View>
             <View style={styles.itemFilter}>
               <Text style={styles.itemFilterText}>
-                {/* {localized.t("EXISTING_FOOD_REQUESTS")} */}
-                Existing {item} Donations
+                {localized.t("EXISTING")} {item} {localized.t("DONATIONS")}
               </Text>
               <TouchableOpacity
                 style={{

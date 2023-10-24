@@ -9,6 +9,10 @@ export interface FetchVehicle{
   token: string;
 }
 
+export interface UpdateVehicle{
+  token: string;
+}
+
 export const addVehicle = createAsyncThunk<AddVehicle, AddVehicle>(
   "addVehicle",
   async (AddVehicle: AddVehicle, { rejectWithValue, getState }: any) => {
@@ -43,6 +47,25 @@ export const fetchVehicle = createAsyncThunk<FetchVehicle, FetchVehicle>(
       return result?.data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error?.response?.data?.message);
+    }
+  }
+);
+
+export const updateVehicle = createAsyncThunk<UpdateVehicle, UpdateVehicle>(
+  "updateVehicle",
+  async (userData: UpdateVehicle, { rejectWithValue, getState }: any) => {
+    try {
+      const token = getState()?.auth?.data?.token;
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Token ${token}`,
+        },
+      };
+      const result = await API.put("v1/api/volunteer-vehicle/", userData, config);
+      return result?.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response.data.message);
     }
   }
 );

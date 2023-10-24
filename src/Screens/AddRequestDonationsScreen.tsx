@@ -157,22 +157,20 @@ const AddRequestDonationsScreen = ({ route }: any) => {
                       state: state,
                       postalCode: Number(zipCode) ? Number(zipCode) : 0,
                     };
-                    const res = await dispatch(
-                      postRequest(data as any) as any
-                    );
+                    const res = await dispatch(postRequest(data as any) as any);
                     if (res?.payload?.success == true) {
                       setLoading(false);
                       setResponse({
                         loading: false,
-                        message: "Request Added Successfully",
+                        message: "REQUEST_ADDED_SUCCESSFULLY",
                         error: false,
                       });
                       setLoading(false);
                       Alert.alert(
-                        // `${localized.t("THAN_YOU_FOR_DONATION")}`,
-                        `${localized.t("REQUEST_ADDED")}`,
-                        // `${localized.t("WH_HAVE_SUCCESSFULLY_ADDED_YOUR_DONATION")}`,
-                        `${localized.t("WE_HAVE_SUCCESSFULLY_ADDED_YOUR_REQUEST")}`,
+                        `${localized.t("REQUEST_ADDED_SUCCESSFULLY")}`,
+                        `${localized.t(
+                          "WE_HAVE_SUCCESSFULLY_ADDED_YOUR_REQUEST"
+                        )}`,
                         [
                           {
                             text: `${localized.t("OK")}`,
@@ -189,6 +187,7 @@ const AddRequestDonationsScreen = ({ route }: any) => {
                                         address: address,
                                         eventDateTime: selectedDate,
                                         foodItem: foodItem,
+                                        quantity: quantity,
                                       },
                                     },
                                   ],
@@ -200,7 +199,7 @@ const AddRequestDonationsScreen = ({ route }: any) => {
                       );
                     } else {
                       setLoading(false);
-                      console.log("Error");
+                      console.log("ERROR");
                     }
                   } catch (err: any) {
                     setLoading(false);
@@ -210,9 +209,9 @@ const AddRequestDonationsScreen = ({ route }: any) => {
                       error: true,
                     });
                     Alert.alert(
-                      `${localized.t("DONATION_NOT_ADDED")}`,
+                      `${localized.t("REQUEST_NOT_ADDED")}`,
                       `${err.message}`,
-                      [{ text: `${localized.t("OK")}`}],
+                      [{ text: `${localized.t("OK")}` }],
                       { cancelable: false }
                     );
                   }

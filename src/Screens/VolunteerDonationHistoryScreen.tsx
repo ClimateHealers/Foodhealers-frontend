@@ -38,6 +38,7 @@ const VolunteerDonationHistoryScreen = ({ route }: any) => {
   const [donationData, setDonationData]: any = useState<[]>([]);
   useEffect(() => {
     fetchingDonationData();
+    sortByDate();
   }, []);
 
   const [order, setOrder] = useState<"ASC" | "DESC">("ASC");

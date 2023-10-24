@@ -12,69 +12,52 @@ import {
   Modal,
   ScrollView,
   StatusBar,
-  TouchableOpacity,
   TouchableWithoutFeedback,
   View,
 } from "react-native";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { Text, TextInput } from "react-native-paper";
-import PrimaryButton from "../Components/PrimaryButton";
-import { AddDonations } from "../Components/validation";
-
-import DateTimePickerModal from "react-native-modal-datetime-picker";
 import PhoneInput from "react-native-phone-number-input";
 import { heightPercentageToDP as h2dp } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
+import PrimaryButton from "../Components/PrimaryButton";
 import { styles } from "../Components/Styles";
+import { addDriver } from "../Components/validation";
 import { localized } from "../locales/localization";
-import { acceptRequest } from "../redux/actions/acceptRequestAction";
+import { updateProfile } from "../redux/actions/authAction";
 
-const AcceptRequestedDonationScreen = ({ route }: any) => {
-  const {
-    itemTypeId,
-    title,
-    foodItem,
-    id,
-    quantity,
-    requiredDate,
-    latitude,
-    longitude,
-  } = route?.params;
+const UpdateProfileScreen = ({ route }: any) => {
   const [loading, setLoading] = useState(false);
   const [langOpen, setlangOpen] = useState(false);
-  const [showDatePicker, setShowDatePicker] = useState(false);
-  const [countryPhoneCode, setCountryPhoneCode] = useState<string>("");
-  const phoneCode = countryPhoneCode.toString();
   const [response, setResponse] = useState({
     loading: false,
     error: false,
     message: "",
   });
   const [selectedDate, setSelectedDate] = useState<Date | any>(new Date());
-  const [selectedTime, setSelectedTime] = useState<Date | any>(
-    itemTypeId === 1
-      ? moment(new Date(requiredDate)).subtract(24, "hour")
-      : new Date()
-  );
+  const [selectedTime, setSelectedTime] = useState<Date | any>(new Date());
   const [selectedEndDate, setSelectedEndDate] = useState<Date | any>(
-    itemTypeId === 1
-      ? moment(new Date(requiredDate)).subtract(2, "hour")
-      : new Date()
-  );
-  const [minmumEndDate, setMinmumEndDate] = useState<Date | any>(
     moment().add(1, "hour")
   );
 
+  const userDetails = useSelector((state: any) => state.auth);
+  const { data } = userDetails;
+  const eventDateTime = moment(selectedDate).utc().unix();
+  const eventEndDateTime = moment(selectedEndDate).utc().unix();
+  const [minmumEndDate, setMinmumEndDate] = useState<Date | any>(
+    moment().add(1, "hour")
+  );
+  const [selectedEndTime, setSelectedEndTime] = useState<Date | any>(
+    moment(new Date(selectedTime)).add(1, "hour")
+  );
   const phoneInput = useRef<PhoneInput>(null);
 
   const dispatch = useDispatch();
 
   const API_KEY = Constants?.manifest?.extra?.googleMapsApiKey;
-
-  const eventDateTime = moment(selectedDate).utc().unix();
 
   const handlePressOutside = () => {
     setlangOpen(false);
@@ -82,36 +65,14 @@ const AcceptRequestedDonationScreen = ({ route }: any) => {
   };
   const navigation: any = useNavigation();
 
-  const handleDateChange = (date: any) => {
-    setSelectedDate(date);
-    const dateA = new Date(date);
-    const dateB = new Date(selectedEndDate);
-    if (dateA?.valueOf() - dateB?.valueOf() > 0) {
-      setSelectedDate(selectedEndDate);
-      Alert.alert(
-        `${localized.t("ALERT")}`,
-        `${localized.t("YOU_CANT_SELECT_A_TIME_AFTER")} ${moment(
-          selectedEndDate
-        ).format("MMM DD, YYYY hh:mm A")}`
-      );
-    } else {
-      setSelectedDate(date);
-    }
-    setShowDatePicker(false);
-  };
-
   useEffect(() => {
-    setSelectedEndDate(
-      itemTypeId === 1
-        ? moment(new Date(requiredDate)).subtract(2, "hour")
-        : new Date()
-    );
+    setSelectedEndDate(moment(selectedDate).add(1, "hour"));
     setMinmumEndDate(moment(new Date(selectedTime)).add(1, "hour"));
   }, [selectedDate]);
   return (
     <TouchableWithoutFeedback onPress={handlePressOutside}>
       <LinearGradient
-        colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
+        colors={["#6fa200", "#72a400", "#82b200", "#87b500", "#6fa200"]}
         style={styles.background}
       >
         <SafeAreaView>
@@ -127,7 +88,7 @@ const AcceptRequestedDonationScreen = ({ route }: any) => {
                   onPress={() => navigation.goBack()}
                 />
                 <View style={styles.item}>
-                  <Text style={styles.itemText}>{title}</Text>
+                  <Text style={styles.itemText}>{localized.t("PROFILE_UPDATE")}</Text>
                 </View>
                 <BurgerIcon />
               </View>
@@ -139,28 +100,25 @@ const AcceptRequestedDonationScreen = ({ route }: any) => {
                 </View>
               </Modal>
               <Formik
-                validationSchema={AddDonations}
+                validationSchema={addDriver}
                 initialValues={{
-                  foodItem: foodItem,
-                  quantity: quantity,
-                  phoneNumber: "",
-                  flatNo: "",
-                  lat: 0,
-                  long: 0,
-                  address: "",
-                  city: "",
-                  state: "",
-                  postalCode: "",
-                  zipCode: "",
+                  name: data?.user?.name,
+                  phoneNumber: data?.user?.phoneNumber,
+                  email: data?.user?.email,
+                  lat: data?.user?.address?.lat,
+                  long: data?.user?.address?.lng,
+                  volunteerFullAddress: data?.user?.address?.fullAddress,
+                  city: data?.user?.address?.city,
+                  state: data?.user?.address?.state,
+                  zipCode: data?.user?.address?.postalCode,
                 }}
                 onSubmit={async ({
-                  foodItem,
-                  quantity,
+                  name,
                   lat,
+                  email,
                   long,
-                  address,
+                  volunteerFullAddress,
                   phoneNumber,
-                  flatNo,
                   city,
                   state,
                   zipCode,
@@ -173,55 +131,46 @@ const AcceptRequestedDonationScreen = ({ route }: any) => {
                       error: false,
                     });
                     const data = {
-                      pickupRequestTypeId: 4,
-                      requestId: id,
-                      foodName: foodItem,
-                      quantity: quantity,
+                      name: name,
+                      email: email,
                       phoneNumber: phoneNumber,
-                      pickupDate: eventDateTime,
+                      availableFromDate: eventDateTime,
+                      availableToDate: eventEndDateTime,
                       lat: lat,
                       lng: long,
-                      flatNo: flatNo,
-                      fullAddress: flatNo,
-                      address,
+                      fullAddress: volunteerFullAddress,
                       city: city,
                       state: state,
                       postalCode: Number(zipCode) ? Number(zipCode) : 0,
                     };
                     const res = await dispatch(
-                      acceptRequest(data as any) as any
+                      updateProfile(data as any) as any
                     );
                     if (res?.payload?.success == true) {
                       setLoading(false);
                       setResponse({
                         loading: false,
                         message: `${localized.t(
-                          "DONATION_ADDED_SUCCESSFULLY"
+                          "PROFILE_UPDATE_SUCCESS"
                         )}`,
                         error: false,
                       });
                       setLoading(false);
                       Alert.alert(
-                        `${localized.t("THAN_YOU_FOR_DONATION")}`,
+                        `${localized.t("PROFILE_UPDATE_SUCCESS")}`,
                         `${localized.t(
-                          "WH_HAVE_SUCCESSFULLY_ADDED_YOUR_DONATION"
+                          "YOUR_PROFILE_HAS_BEEN_UPDATED_SUCCESSFULLY"
                         )}`,
                         [
                           {
-                            text: `${localized.t("OK")}`,
+                            text: "OK",
                             onPress: () =>
                               navigation.dispatch(
                                 CommonActions.reset({
                                   index: 0,
                                   routes: [
                                     {
-                                      name: "VolunteerThankYouScreen",
-                                      params: {
-                                        itemTypeId: itemTypeId,
-                                        title: title,
-                                        latitude: latitude,
-                                        longitude: longitude,
-                                      },
+                                      name: "ProfileScreen",
                                     },
                                   ],
                                 })
@@ -232,17 +181,27 @@ const AcceptRequestedDonationScreen = ({ route }: any) => {
                       );
                     } else {
                       setLoading(false);
-                      console.log("ERROR");
+                      Alert.alert(
+                        `${localized.t("ALERT")}`,
+                        `${res?.payload}`,
+                        [
+                          {
+                            text: `${localized.t("OK")}`,
+                            style: "cancel",
+                          },
+                        ],
+                        { cancelable: true }
+                      );
                     }
                   } catch (err: any) {
                     setLoading(false);
                     setResponse({
                       loading: false,
-                      message: err.message,
+                      message: err?.message,
                       error: true,
                     });
                     Alert.alert(
-                      `${localized.t("DONATION_NOT_ADDED")}`,
+                      `${localized.t("Profle Not Updated")}`,
                       `${err.message}`,
                       [{ text: `${localized.t("OK")}` }],
                       { cancelable: false }
@@ -262,45 +221,33 @@ const AcceptRequestedDonationScreen = ({ route }: any) => {
                 }) => (
                   <>
                     <TextInput
-                      onChangeText={handleChange("foodItem")}
-                      onBlur={handleBlur("foodItem")}
-                      value={values?.foodItem}
+                      onChangeText={handleChange("name")}
+                      onBlur={handleBlur("name")}
+                      value={values?.name}
                       placeholder={
-                        itemTypeId == 1
-                          ? `${localized.t("FOOD_ITEM")}`
-                          : `${localized.t("SUPPLIES_LIST")}`
+                        data?.user?.name
+                          ? data?.user?.name
+                          : `${localized.t("VOLUNTEER_NAME")}`
                       }
-                      placeholderTextColor={"black"}
-                      style={[
-                        styles.textInput,
-                        { backgroundColor: foodItem ? "#deddd9" : "white" },
-                      ]}
-                    />
-                    <Text style={styles.inputError}>{errors?.foodItem}</Text>
-                    <TextInput
-                      onChangeText={handleChange("quantity")}
-                      onBlur={handleBlur("quantity")}
-                      value={values?.quantity}
-                      placeholder={localized.t("QUANTITY")}
-                      placeholderTextColor={"black"}
-                      style={[
-                        styles.textInput,
-                        { backgroundColor: quantity ? "#deddd9" : "white" },
-                      ]}
-                    />
-                    <Text style={styles.inputError}>{errors?.quantity}</Text>
-                    <TextInput
-                      onChangeText={handleChange("flatNo")}
-                      onBlur={handleBlur("flatNo")}
-                      keyboardType="numeric"
-                      value={values?.flatNo}
-                      placeholder={localized.t("FLAT_NO")}
                       placeholderTextColor={"black"}
                       style={styles.textInput}
                     />
-                    <Text style={styles.inputError}>{errors?.flatNo}</Text>
+                    <Text style={styles.inputError}>{errors?.name}</Text>
+                    <TextInput
+                      onChangeText={handleChange("email")}
+                      onBlur={handleBlur("email")}
+                      value={values.email.toLocaleLowerCase()}
+                      placeholder={localized.t("EMAIL")}
+                      placeholderTextColor={"black"}
+                      style={styles.textInput}
+                    />
+                    <Text style={styles.inputError}>{errors.email}</Text>
                     <GooglePlacesAutocomplete
-                      placeholder={localized.t("ADDRESS")}
+                      placeholder={
+                        data?.user?.address?.streetAddress
+                          ? data?.user?.address?.streetAddress
+                          : `${localized.t("ADDRESS")}`
+                      }
                       fetchDetails={true}
                       keepResultsAfterBlur={true}
                       listViewDisplayed="auto"
@@ -313,7 +260,10 @@ const AcceptRequestedDonationScreen = ({ route }: any) => {
                       onPress={(data, details) => {
                         setFieldValue("lat", details?.geometry?.location?.lat);
                         setFieldValue("long", details?.geometry?.location?.lng);
-                        setFieldValue("address", details?.formatted_address);
+                        setFieldValue(
+                          "volunteerFullAddress",
+                          details?.formatted_address
+                        );
 
                         const addressComponents =
                           details?.address_components || [];
@@ -329,10 +279,6 @@ const AcceptRequestedDonationScreen = ({ route }: any) => {
                           if (component?.types?.includes("locality")) {
                             const city = component?.long_name;
                             setFieldValue("city", city);
-                          }
-                          if (component?.types?.includes("country")) {
-                            const country = component?.short_name;
-                            setCountryPhoneCode(country);
                           }
 
                           if (component?.types?.includes("postal_code")) {
@@ -366,7 +312,9 @@ const AcceptRequestedDonationScreen = ({ route }: any) => {
                         },
                       }}
                     />
-                    <Text style={styles.inputError}>{errors.address}</Text>
+                    <Text style={styles.inputError}>
+                      {errors?.volunteerFullAddress}
+                    </Text>
                     <View
                       style={{
                         display: "flex",
@@ -425,94 +373,7 @@ const AcceptRequestedDonationScreen = ({ route }: any) => {
                         style={[styles.textInput]}
                       />
                     </View>
-
                     <Text style={styles.inputError}>{errors?.zipCode}</Text>
-                    <View
-                      style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      <TouchableOpacity onPress={() => setShowDatePicker(true)}>
-                        <View style={styles.dateTimePickerContainer}>
-                          <View>
-                            <Text
-                              style={{
-                                color: "black",
-                                fontSize: 13,
-                                marginBottom: 5,
-                                marginLeft: 15,
-                              }}
-                            >
-                              {localized.t("PICKUP_DATE")}
-                            </Text>
-                            <Text
-                              style={{
-                                color: "black",
-                                fontSize: 13,
-                                marginBottom: 5,
-                                marginLeft: 15,
-                              }}
-                            >
-                              {moment(selectedDate).format("MMM, DD, YYYY")}
-                            </Text>
-                          </View>
-                          {showDatePicker && (
-                            <DateTimePickerModal
-                              isVisible={showDatePicker}
-                              minimumDate={new Date(selectedTime)}
-                              maximumDate={new Date(requiredDate)}
-                              date={
-                                selectedDate
-                                  ? new Date(selectedDate)
-                                  : undefined
-                              }
-                              mode="datetime"
-                              is24Hour={true}
-                              onConfirm={handleDateChange}
-                              onCancel={() => setShowDatePicker(false)}
-                            />
-                          )}
-                        </View>
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        disabled={true}
-                        onPress={() => setShowDatePicker(true)}
-                      >
-                        <View
-                          style={[
-                            styles.dateTimePickerContainer,
-                            { backgroundColor: "#deddd9" },
-                          ]}
-                        >
-                          <View>
-                            <Text
-                              style={{
-                                color: "black",
-                                fontSize: 13,
-                                width: 200,
-                                marginBottom: 5,
-                                marginLeft: 15,
-                              }}
-                            >
-                              {localized.t("PICKUP_TIME")}
-                            </Text>
-                            <Text
-                              style={{
-                                color: "black",
-                                fontSize: 13,
-                                marginBottom: 5,
-                                marginLeft: 15,
-                              }}
-                            >
-                              {moment(selectedDate).format("hh:mm A")}
-                            </Text>
-                          </View>
-                        </View>
-                      </TouchableOpacity>
-                    </View>
                     <View
                       style={{
                         display: "flex",
@@ -551,12 +412,12 @@ const AcceptRequestedDonationScreen = ({ route }: any) => {
                         marginTop: h2dp(1),
                       }}
                     >
-                      <PrimaryButton
-                        title={localized.t("SUBMIT")}
-                        buttonStyle={styles.buttonStyles}
-                        titleStyle={styles.titleStyle}
-                        onPress={handleSubmit}
-                      />
+                        <PrimaryButton
+                          title={localized.t("UPDATE")}
+                          buttonStyle={styles.nextButtonStyles}
+                          titleStyle={styles.titleStyle}
+                          onPress={handleSubmit}
+                        />
                     </View>
                   </>
                 )}
@@ -569,4 +430,4 @@ const AcceptRequestedDonationScreen = ({ route }: any) => {
   );
 };
 
-export default AcceptRequestedDonationScreen;
+export default UpdateProfileScreen;

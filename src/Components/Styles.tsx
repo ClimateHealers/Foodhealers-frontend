@@ -140,7 +140,7 @@ export const styles = StyleSheet.create({
     fontWeight: "400",
   },
   item: {
-    height: h2dp(10),
+    minHeight: h2dp(10),
     justifyContent: "center"
   },
   itemText: {

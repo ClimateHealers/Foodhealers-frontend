@@ -12,45 +12,27 @@ import {
   Modal,
   ScrollView,
   StatusBar,
-  TouchableOpacity,
   TouchableWithoutFeedback,
   View,
 } from "react-native";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
-import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { Text, TextInput } from "react-native-paper";
 import PhoneInput from "react-native-phone-number-input";
 import { heightPercentageToDP as h2dp } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
-import PrimaryButton from "../Components/PrimaryButton";
-import { getLocation } from "../Components/getCurrentLocation";
-import { addDriver, addVolunteer } from "../Components/validation";
-import { localized } from "../locales/localization";
-import { volunteerAtEvent } from "../redux/actions/volunteerAction";
-import { styles } from "../Components/Styles";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
+import PrimaryButton from "../Components/PrimaryButton";
+import { styles } from "../Components/Styles";
+import { addDriver } from "../Components/validation";
+import { localized } from "../locales/localization";
 import { updateProfile } from "../redux/actions/authAction";
 
 const AddDriverScreen = ({ route }: any) => {
-  const { id, title, itemTypeId } = route?.params;
+  const { title } = route?.params;
   const [loading, setLoading] = useState(false);
   const [langOpen, setlangOpen] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [showDatePicker, setShowDatePicker] = useState(false);
-  const [showEndDatePicker, setShowEndDatePicker] = useState(false);
-  const [selectedLanguage, setSelectedLanguage] = useState(localized.locale);
-  const [lang, setLang] = useState([
-    { id: 1, label: "Bengali", value: "be" },
-    { id: 2, label: "Chinese", value: "ch" },
-    { id: 3, label: "English", value: "en" },
-    { id: 4, label: "French", value: "fr" },
-    { id: 5, label: "Hindi", value: "hi" },
-    { id: 6, label: "Mandarin", value: "ma" },
-    { id: 7, label: "Punjabi", value: "pu" },
-    { id: 8, label: "Spanish", value: "es" },
-  ]);
   const [response, setResponse] = useState({
     loading: false,
     error: false,
@@ -190,6 +172,9 @@ const AddDriverScreen = ({ route }: any) => {
                                   routes: [
                                     {
                                       name: "AddVehicleScreen",
+                                      params: {
+                                        newVehicle: false,
+                                      },
                                     },
                                   ],
                                 })
@@ -220,7 +205,7 @@ const AddDriverScreen = ({ route }: any) => {
                       error: true,
                     });
                     Alert.alert(
-                      `${localized.t("VOLUNTEER_NOT_ADDED")}`,
+                      `${localized.t("DRIVER_NOT_ADDED")}`,
                       `${err.message}`,
                       [{ text: `${localized.t("OK")}` }],
                       { cancelable: false }

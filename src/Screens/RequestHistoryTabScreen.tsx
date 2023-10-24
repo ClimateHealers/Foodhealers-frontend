@@ -4,35 +4,39 @@ import {
   Feather,
   FontAwesome,
   MaterialCommunityIcons,
-  MaterialIcons
+  MaterialIcons,
 } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
 import moment from "moment";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   FlatList,
-  Keyboard,
   ScrollView,
   Text,
   TouchableOpacity,
-  View
+  View,
 } from "react-native";
 import {
   heightPercentageToDP as h2dp,
   widthPercentageToDP as w2dp,
 } from "react-native-responsive-screen";
+import SegmentedControlTab from "react-native-segmented-control-tab";
 import ReactNativeSegmentedControlTab from "react-native-segmented-control-tab";
 import { useDispatch } from "react-redux";
 import { styles } from "../Components/Styles";
 import { localized } from "../locales/localization";
 import { myRequests } from "../redux/actions/myRequests";
+import { useFocusEffect } from "@react-navigation/native";
 
 const RequestHistoryTabScreen = ({ route }: any) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const [requestData, setRequestData]: any = useState<[]>([]);
-  useEffect(() => {
-    fetchingRequestData();
-  }, []);
+  const [requestData, setRequestData]: any[] = useState<[]>([]);
+  const [itemTypeId, setItemTypeId] = useState<number>(1);
+  useFocusEffect(
+    useCallback(() => {
+      fetchingRequestData();
+      sortByDate();
+    }, [selectedIndex])
+  );
 
   const [order, setOrder] = useState<"ASC" | "DESC">("ASC");
   const sortByDate = () => {
@@ -53,29 +57,22 @@ const RequestHistoryTabScreen = ({ route }: any) => {
 
   const dispatch = useDispatch();
   const fetchingRequestData = async () => {
-    const response = await dispatch(myRequests(1 as any) as any);
-    const filteredrequestData = response?.payload?.requestList.filter(
-      (event: any) => event?.type === "Food"
+    const response = await dispatch(myRequests({ itemTypeId } as any) as any);
+    const ApprovedDonation = response?.payload?.requestList?.filter(
+      (event: any) => event?.status === "approved"
     );
-    setRequestData(filteredrequestData);
-  };
-
-  const navigation: any = useNavigation();
-
-  const handlePressOutside = () => {
-    Keyboard.dismiss();
+    setRequestData(ApprovedDonation);
   };
 
   const handleSingleIndexSelect = async (index: any) => {
     setSelectedIndex(index);
     if (index === 0) {
+      setItemTypeId(1);
       fetchingRequestData();
     } else if (index === 1) {
-      const response = await dispatch(myRequests(2 as any) as any);
-      const filteredrequestData = response?.payload?.requestList.filter(
-        (event: any) => event?.type === "Supplies"
-      );
-      const ApprovedDonation = filteredrequestData.filter(
+      setItemTypeId(2);
+      const response = await dispatch(myRequests({ itemTypeId } as any) as any);
+      const ApprovedDonation = response?.payload?.requestList?.filter(
         (event: any) => event?.status === "approved"
       );
       setRequestData(ApprovedDonation);
@@ -248,12 +245,13 @@ const RequestHistoryTabScreen = ({ route }: any) => {
   return (
     <View style={{ flex: 1 }}>
       <View style={styles.toggle}>
-        <ReactNativeSegmentedControlTab
+        <SegmentedControlTab
           values={[`${localized.t("FOOD")}`, `${localized.t("SUPPLIES")}`]}
           selectedIndex={selectedIndex}
           tabsContainerStyle={{
             width: w2dp(50),
             height: h2dp(6),
+            marginTop: h2dp(2),
           }}
           tabTextStyle={{
             color: "black",
@@ -267,58 +265,50 @@ const RequestHistoryTabScreen = ({ route }: any) => {
           onTabPress={handleSingleIndexSelect}
         />
       </View>
-      <View>
-        <View style={styles.itemFilter}>
-          <Text style={styles.itemFilterText}>
-            {localized.t("ALL_HISTORY")}
-          </Text>
-          <TouchableOpacity
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-            onPress={sortByDate}
-          >
-            <Text style={styles.itemFilterText}>{localized.t("FILTER")}</Text>
-            <MaterialIcons
-              name="filter-list-alt"
-              style={styles.itemFilterText}
-            />
-          </TouchableOpacity>
-        </View>
-        {requestData?.length > 0 ? (
-          <ScrollView style={{ flex: 1 }}>
-            <FlatList
-              data={requestData}
-              renderItem={({ item }: any) => (
-                <Item
-                  status={item?.status}
-                  type={item?.type}
-                  id={item.id}
-                  foodItem={`${item?.foodItem}  (${item?.quantity})`}
-                  delivery={item?.createdBy?.address?.fullAddress}
-                  requiredDate={item?.requiredDate}
-                />
-              )}
-            />
-          </ScrollView>
-        ) : (
-          <View
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              marginTop: h2dp(25),
-            }}
-          >
-            <Text style={styles.itemText}>
-              {localized.t("NOTHING_TO_SHOW")}
-            </Text>
-          </View>
-        )}
+      <View style={styles.itemFilter}>
+        <Text style={styles.itemFilterText}>{localized.t("ALL_HISTORY")}</Text>
+        <TouchableOpacity
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+          onPress={sortByDate}
+        >
+          <Text style={styles.itemFilterText}>{localized.t("FILTER")}</Text>
+          <MaterialIcons name="filter-list-alt" style={styles.itemFilterText} />
+        </TouchableOpacity>
       </View>
+      {requestData?.length > 0 ? (
+        <View style={{ flex: 1 }}>
+          <FlatList
+            data={requestData}
+            renderItem={({ item }: any) => (
+              <Item
+                status={item?.status}
+                type={item?.type}
+                id={item.id}
+                foodItem={`${item?.foodItem}  (${item?.quantity})`}
+                delivery={item?.createdBy?.address?.fullAddress}
+                requiredDate={item?.requiredDate}
+              />
+            )}
+            keyExtractor={(item: any) => item?.id}
+          />
+        </View>
+      ) : (
+        <View
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: h2dp(25),
+          }}
+        >
+          <Text style={styles.itemText}>{localized.t("NOTHING_TO_SHOW")}</Text>
+        </View>
+      )}
     </View>
   );
 };
