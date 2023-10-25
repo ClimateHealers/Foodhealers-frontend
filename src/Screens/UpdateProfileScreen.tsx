@@ -204,7 +204,7 @@ const UpdateProfileScreen = ({ route }: any) => {
                       error: true,
                     });
                     Alert.alert(
-                      `${localized.t("Profle Not Updated")}`,
+                      `${localized.t("PROFILE_NOT_UPDATED")}`,
                       `${err.message}`,
                       [{ text: `${localized.t("OK")}` }],
                       { cancelable: false }

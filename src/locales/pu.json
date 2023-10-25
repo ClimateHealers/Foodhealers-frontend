@@ -270,6 +270,7 @@
     "OTP_HAS_BEEN_GENERATED_FOR_DELIVERY": "ਡਿਲਿਵਰੀ ਲਈ OTP ਬਣਾਇਆ ਗਿਆ ਹੈ।",
     "NUMBER": "ਨੰਬਰ",
     "PROFILE_UPDATE_SUCCESS": "ਪ੍ਰੋਫਾਈਲ ਅਪਡੇਟ ਸਫਲ",
-    "YOUR_PROFILE_HAS_BEEN_UPDATED_SUCCESSFULLY": "ਤੁਹਾਡੀ ਪ੍ਰੋਫਾਈਲ ਸਫਲਤਾਪੂਰਵਕ ਅਪਡੇਟ ਹੋ ਗਈ ਹੈ"
+    "YOUR_PROFILE_HAS_BEEN_UPDATED_SUCCESSFULLY": "ਤੁਹਾਡੀ ਪ੍ਰੋਫਾਈਲ ਸਫਲਤਾਪੂਰਵਕ ਅਪਡੇਟ ਹੋ ਗਈ ਹੈ",
+    "PROFILE_NOT_UPDATED": "ਪ੍ਰੋਫਾਈਲ ਅਪਡੇਟ ਨਹੀਂ ਹੋਈ"
   }
 }

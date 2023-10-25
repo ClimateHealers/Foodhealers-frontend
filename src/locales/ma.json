@@ -270,6 +270,7 @@
     "OTP_HAS_BEEN_GENERATED_FOR_DELIVERY": "已生成交付OTP。",
     "NUMBER": "号码",
     "PROFILE_UPDATE_SUCCESS": "个人资料更新成功",
-    "YOUR_PROFILE_HAS_BEEN_UPDATED_SUCCESSFULLY": "您的个人资料已成功更新"
+    "YOUR_PROFILE_HAS_BEEN_UPDATED_SUCCESSFULLY": "您的个人资料已成功更新",
+    "PROFILE_NOT_UPDATED": "个人资料未更新"
   }
 }

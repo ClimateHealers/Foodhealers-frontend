@@ -271,6 +271,7 @@
     "OTP_HAS_BEEN_GENERATED_FOR_DELIVERY": "Le code OTP a été généré pour la livraison.",
     "NUMBER": "Numéro",
     "PROFILE_UPDATE_SUCCESS": "Mise à jour du profil réussie",
-    "YOUR_PROFILE_HAS_BEEN_UPDATED_SUCCESSFULLY": "Votre profil a été mis à jour avec succès"
+    "YOUR_PROFILE_HAS_BEEN_UPDATED_SUCCESSFULLY": "Votre profil a été mis à jour avec succès",
+    "PROFILE_NOT_UPDATED": "Profil non mis à jour"
   }
 }

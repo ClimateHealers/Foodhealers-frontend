@@ -272,6 +272,7 @@
     "OTP_HAS_BEEN_GENERATED_FOR_DELIVERY": "OTP has been generated for Delivery.",
     "NUMBER": "Number",
     "PROFILE_UPDATE_SUCCESS": "Profile Update Success",
-    "YOUR_PROFILE_HAS_BEEN_UPDATED_SUCCESSFULLY": "Your profile has been updated successfully"
+    "YOUR_PROFILE_HAS_BEEN_UPDATED_SUCCESSFULLY": "Your profile has been updated successfully",
+    "PROFILE_NOT_UPDATED": "Profile Not Updated"
   }
 }
