@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Alert,
   Platform,
@@ -15,7 +15,11 @@ import {
   Ionicons,
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
-import { CommonActions, useNavigation } from "@react-navigation/core";
+import {
+  CommonActions,
+  useNavigation,
+  useFocusEffect,
+} from "@react-navigation/core";
 import Constants from "expo-constants";
 import { LinearGradient } from "expo-linear-gradient";
 import { Divider } from "react-native-elements";
@@ -47,7 +51,9 @@ const ProfileScreen = () => {
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const [alert, setAlert] = useState(false);
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
-  const [ data , setData ]= useState<any>();
+  const [data, setData] = useState<any>();
+  let date = new Date().getTime();
+  const [image, setImage] = useState<any>();
   const navigation: any = useNavigation();
   const isAuthenticated = useSelector(
     (state: any) => state.auth.data.isAuthenticated
@@ -56,7 +62,7 @@ const ProfileScreen = () => {
   const fetchingUserData = async () => {
     const response = await dispatch(fetchUser({} as any) as any);
     const data = response?.payload?.userDetails;
-    setData(data)
+    setData(data);
   };
 
   const [response, setResponse] = useState({
@@ -97,9 +103,11 @@ const ProfileScreen = () => {
     );
   };
 
-  useEffect(() => {
-    fetchingUserData();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      fetchingUserData();
+    }, [])
+  );
 
   const navigationHandler = () => {
     navigation.navigate("DeleteAccount");
@@ -121,10 +129,11 @@ const ProfileScreen = () => {
         const multipleImages = result?.assets.map((image) => image.uri);
         const singlePhoto = result?.assets[0].uri;
         const formData = new FormData();
+        setImage(singlePhoto);
         formData.append("profilePhoto", {
           uri: singlePhoto,
           type: "image/jpeg",
-          name: `${data?.name}.jpg`,
+          name: `${data?.name}${date}.jpg`,
         });
         try {
           setLoading(true);
@@ -140,7 +149,7 @@ const ProfileScreen = () => {
             setLoading(false);
           }
         } catch (error) {
-          console.log("firstfirstfirstfirst", error);
+          console.log("ERROR", error);
         }
       }
     } else if (!res.granted) {
@@ -313,24 +322,35 @@ const ProfileScreen = () => {
                   }}
                 >
                   <TouchableOpacity onPress={openImagePickerAsync}>
-                    {data?.profilePhoto ? (
+                    {image ? (
                       <View>
                         <Image
-                          source={{ uri: data?.profilePhoto }}
+                          source={{ uri: image }}
                           style={{ width: hp2dp(20), height: hp2dp(20) }}
                         />
                       </View>
                     ) : (
-                      <View
-                        style={{
-                          paddingVertical: hp2dp(2),
-                          paddingHorizontal: wp2dp(5),
-                          justifyContent: "center",
-                          marginBottom: hp2dp(1),
-                          position: "relative",
-                        }}
-                      >
-                        <AntDesign name="user" size={150} color="#B01D19" />
+                      <View>
+                        {data?.profilePhoto ? (
+                          <View>
+                            <Image
+                              source={{ uri: data?.profilePhoto }}
+                              style={{ width: hp2dp(20), height: hp2dp(20) }}
+                            />
+                          </View>
+                        ) : (
+                          <View
+                            style={{
+                              paddingVertical: hp2dp(2),
+                              paddingHorizontal: wp2dp(5),
+                              justifyContent: "center",
+                              marginBottom: hp2dp(1),
+                              position: "relative",
+                            }}
+                          >
+                            <AntDesign name="user" size={150} color="#B01D19" />
+                          </View>
+                        )}
                       </View>
                     )}
                   </TouchableOpacity>

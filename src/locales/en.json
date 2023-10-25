@@ -259,6 +259,9 @@
     "WE_NEED_YOUR_PERMISSION_TO_SHOW_THE_CAMERA": "We need your permission to show the camera",
     "PROFILE_UPDATE": "Profile Update",
     "VEHICLE_NOT_UPDATED": "Vehicle Not Updated",
-    "REQUEST": "Request"
+    "REQUEST": "Request",
+    "ONGOING_PICKUPS": "Ongoing Pickups",
+    "PICKUP_REQUESTS": "Pickup Requests",
+    "PICKUPS": "Pickups"
   }
 }

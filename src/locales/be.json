@@ -260,6 +260,9 @@
     "WE_NEED_YOUR_PERMISSION_TO_SHOW_THE_CAMERA": "আমাদের ক্যামেরা দেখাতে আপনার অনুমতি প্রয়োজন",
     "PROFILE_UPDATE": "প্রোফাইল আপডেট",
     "VEHICLE_NOT_UPDATED": "যানবাহন আপডেট হয়নি",
-    "REQUEST": "অনুরোধ"
+    "REQUEST": "অনুরোধ",
+    "ONGOING_PICKUPS": "চলমান পিকআপ",
+    "PICKUP_REQUESTS": "পিকআপ অনুরোধ",
+    "PICKUPS": "পিকআপ"
   }
 }

@@ -257,6 +257,9 @@
     "WE_NEED_YOUR_PERMISSION_TO_SHOW_THE_CAMERA": "我们需要您的相机权限",
     "PROFILE_UPDATE": "个人资料更新",
     "VEHICLE_NOT_UPDATED": "车辆未更新",
-    "REQUEST": "请求"
+    "REQUEST": "请求",
+    "ONGOING_PICKUPS": "进行中的取件",
+    "PICKUP_REQUESTS": "取件请求",
+    "PICKUPS": "取件"
   }
 }

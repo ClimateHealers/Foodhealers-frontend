@@ -38,6 +38,7 @@ const DriverRequestScreen = ({ route }: any) => {
   const [loading, setLoading] = useState(false);
   const [vehicleDetails, setVehicleDetails] = useState<any>();
   const [data, setData] = useState<any>();
+  const date = new Date().getTime();
   const [image, setImage] = useState<any>();
   const navigation: any = useNavigation<string>();
   const handlePressOutside = () => {
@@ -113,7 +114,7 @@ const DriverRequestScreen = ({ route }: any) => {
         formData.append("profilePhoto", {
           uri: singlePhoto,
           type: "image/jpeg",
-          name: `${data?.name}.jpg`,
+          name: `${data?.name}${date}.jpg`,
         });
         try {
           setLoading(true);
@@ -129,7 +130,7 @@ const DriverRequestScreen = ({ route }: any) => {
             setLoading(false);
           }
         } catch (error) {
-          console.log("firstfirstfirstfirst", error);
+          console.log("ERROR", error);
         }
       }
     } else if (!res.granted) {

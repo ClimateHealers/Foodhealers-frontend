@@ -9,7 +9,7 @@ import {
   StatusBar,
   Text,
   TouchableWithoutFeedback,
-  View
+  View,
 } from "react-native";
 import { Calendar } from "react-native-calendars";
 import { heightPercentageToDP as h2dp } from "react-native-responsive-screen";
@@ -62,18 +62,22 @@ const CalendarScreen = ({ route }: any) => {
                 </View>
                 <BurgerIcon />
               </View>
-              <View style={[styles.calendarView,{
-                marginTop:h2dp(7)
-              }]}>
+              <View
+                style={[
+                  styles.calendarView,
+                  {
+                    marginTop: h2dp(7),
+                  },
+                ]}
+              >
                 <Calendar
                   enableSwipeMonths={true}
                   headerStyle={{
                     backgroundColor: "white",
-                    // marginTop: h2dp(3)
                   }}
                   style={{
                     borderRadius: 10,
-                    height:h2dp(35)
+                    height: h2dp(35),
                   }}
                   markedDates={{
                     [date]: {
@@ -90,14 +94,12 @@ const CalendarScreen = ({ route }: any) => {
                       const selectedDate = new Date(day.dateString);
 
                       const startDate = moment(selectedDate)
-                        .startOf("day")
                         .utc()
                         .unix();
                       const endDate = moment(selectedDate)
-                        .endOf("day")
+                        .add(23.99, "hour")
                         .utc()
                         .unix();
-
                       const payloadData = {
                         startDate: startDate,
                         endDate: endDate,
@@ -110,7 +112,7 @@ const CalendarScreen = ({ route }: any) => {
                       if (response?.payload?.foodEvents) {
                         navigation.navigate("CalendarEventScreen", {
                           selectedDate: day.dateString,
-                          singleDayEvent: response.payload.foodEvents,
+                          singleDayEvent: response?.payload?.foodEvents,
                           latitude: latitude,
                           longitude: longitude,
                         });

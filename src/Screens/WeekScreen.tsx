@@ -1,16 +1,15 @@
 import { MaterialIcons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import * as Location from "expo-location";
 import moment from "moment";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import {
   Dimensions,
   Keyboard,
   Platform,
   ScrollView,
   StatusBar,
-  StyleSheet,
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
@@ -27,11 +26,11 @@ import SegmentedControlTab from "react-native-segmented-control-tab";
 import SelectDropdown from "react-native-select-dropdown";
 import { useDispatch, useSelector } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
+import FoodhealersHeader from "../Components/FoodhealersHeader";
+import { styles } from "../Components/Styles";
 import { localized } from "../locales/localization";
 import { findFood } from "../redux/actions/findFoodaction";
 import { setLanguage } from "../redux/reducers/langReducer";
-import { styles } from "../Components/Styles";
-import FoodhealersHeader from "../Components/FoodhealersHeader";
 
 const WeekScreen = ({ route }: any) => {
   const {
@@ -68,14 +67,15 @@ const WeekScreen = ({ route }: any) => {
   const [selectedLanguage, setSelectedLanguage] = useState(localized.locale);
   const [currentLat, setCurrentlat] = useState(0);
   const [currentLong, setCurrentlong] = useState(0);
-  const [result, setResult] = useState(false);
   const mapRef = useRef<any>(null);
   const dispatch = useDispatch();
 
   const languageName = useSelector((state: any) => state.language);
 
-  const startDate = moment(new Date().setHours(0, 0, 0, 0)).utc().unix();
-  const endDate = moment(new Date().setHours(23, 59, 59, 0)).utc().unix();
+  const currentDate = moment(new Date()).format("YYYY-MM-DD");
+
+  const startDate = moment(new Date(currentDate)).utc().unix();
+  const endDate = moment(new Date(currentDate)).add(23.99, "hours").utc().unix();
 
   const oneWeek = moment(new Date().setHours(23, 59, 59, 0))
     .add(6, "d")
@@ -130,7 +130,6 @@ const WeekScreen = ({ route }: any) => {
     let latitudeToUse, longitudeToUse;
 
     if (locationResult) {
-      // setResult(true)
       latitudeToUse = locationResult.coords.latitude;
       longitudeToUse = locationResult.coords.longitude;
     } else {
@@ -197,10 +196,6 @@ const WeekScreen = ({ route }: any) => {
     const verifiedFoodEvents = foodEvents?.filter(
       (event: any) => event.status === "approved"
     );
-    console.log(
-      "checking events from find food api that are approved in week screen",
-      verifiedFoodEvents
-    );
     setEvents(verifiedFoodEvents);
   };
 
@@ -212,9 +207,11 @@ const WeekScreen = ({ route }: any) => {
     });
   };
 
-  useEffect(() => {
-    gettingEvents();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      gettingEvents();
+    }, [])
+  );
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
