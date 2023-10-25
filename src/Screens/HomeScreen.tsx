@@ -26,6 +26,7 @@ import { myDonations } from "../redux/actions/myDonations";
 import { volunteerHistory } from "../redux/actions/volunteerHistoryAction";
 import { setLanguage } from "../redux/reducers/langReducer";
 import axios from "axios";
+import { fetchUser } from "../redux/actions/authAction";
 
 const HomeScreen = ({ route }: any) => {
   const userDetails = useSelector((state: any) => state.auth);
@@ -36,6 +37,7 @@ const HomeScreen = ({ route }: any) => {
 
   const [loc, setLoc] = useState(false);
   const [langOpen, setlangOpen] = useState(false);
+  const [userdata, setData] = useState<any>();
   const [donationData, setDonationData] = useState("");
   const [volunteerData, setVolunteerData] = useState("");
   const [selectedLanguage, setSelectedLanguage] = useState(localized.locale);
@@ -51,6 +53,12 @@ const HomeScreen = ({ route }: any) => {
     { id: 7, label: "Punjabi", value: "pu" },
     { id: 8, label: "Spanish", value: "es" },
   ]);
+
+  const fetchingUserData = async () => {
+    const response = await dispatch(fetchUser({} as any) as any);
+    const data = response?.payload?.userDetails;
+    setData(data);
+  };
 
   const handlePressOutside = () => {
     setlangOpen(false);
@@ -78,6 +86,7 @@ const HomeScreen = ({ route }: any) => {
         return null;
       }
     };
+    fetchingUserData();
     getUserLocation();
     fetchingDonationData();
     fetchingvolunteerHistory();
@@ -239,7 +248,7 @@ const HomeScreen = ({ route }: any) => {
               }}
               titleStyle={styles.titleStyle}
             />
-            {data?.user?.name ? (
+            {data?.name ? (
               ""
             ) : (
               <Text
@@ -254,7 +263,7 @@ const HomeScreen = ({ route }: any) => {
               </Text>
             )}
 
-            {data?.user?.name ? (
+            {userdata?.name ? (
               <Text
                 style={{
                   color: "white",
@@ -263,7 +272,7 @@ const HomeScreen = ({ route }: any) => {
                 }}
               >
                 {localized.t("WELCOME")}{" "}
-                {data?.user?.name ? data?.user?.name : ""}
+                {userdata?.name ? userdata?.name : ""}
               </Text>
             ) : (
               <TouchableOpacity

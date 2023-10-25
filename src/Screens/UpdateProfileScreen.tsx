@@ -27,7 +27,7 @@ import PrimaryButton from "../Components/PrimaryButton";
 import { styles } from "../Components/Styles";
 import { addDriver } from "../Components/validation";
 import { localized } from "../locales/localization";
-import { updateProfile } from "../redux/actions/authAction";
+import { fetchUser, updateProfile } from "../redux/actions/authAction";
 
 const UpdateProfileScreen = ({ route }: any) => {
   const [loading, setLoading] = useState(false);
@@ -42,9 +42,7 @@ const UpdateProfileScreen = ({ route }: any) => {
   const [selectedEndDate, setSelectedEndDate] = useState<Date | any>(
     moment().add(1, "hour")
   );
-
-  const userDetails = useSelector((state: any) => state.auth);
-  const { data } = userDetails;
+  const [ data, setData ]  = useState<any>();
   const eventDateTime = moment(selectedDate).utc().unix();
   const eventEndDateTime = moment(selectedEndDate).utc().unix();
   const [minmumEndDate, setMinmumEndDate] = useState<Date | any>(
@@ -54,7 +52,11 @@ const UpdateProfileScreen = ({ route }: any) => {
     moment(new Date(selectedTime)).add(1, "hour")
   );
   const phoneInput = useRef<PhoneInput>(null);
-
+  const fetchingUserData = async () => {
+    const response = await dispatch(fetchUser({} as any) as any);
+    const data = response?.payload?.userDetails;
+    setData(data);
+  };
   const dispatch = useDispatch();
 
   const API_KEY = Constants?.manifest?.extra?.googleMapsApiKey;
@@ -66,6 +68,7 @@ const UpdateProfileScreen = ({ route }: any) => {
   const navigation: any = useNavigation();
 
   useEffect(() => {
+    fetchingUserData();
     setSelectedEndDate(moment(selectedDate).add(1, "hour"));
     setMinmumEndDate(moment(new Date(selectedTime)).add(1, "hour"));
   }, [selectedDate]);
@@ -102,15 +105,15 @@ const UpdateProfileScreen = ({ route }: any) => {
               <Formik
                 validationSchema={addDriver}
                 initialValues={{
-                  name: data?.user?.name,
-                  phoneNumber: data?.user?.phoneNumber,
-                  email: data?.user?.email,
-                  lat: data?.user?.address?.lat,
-                  long: data?.user?.address?.lng,
-                  volunteerFullAddress: data?.user?.address?.fullAddress,
-                  city: data?.user?.address?.city,
-                  state: data?.user?.address?.state,
-                  zipCode: data?.user?.address?.postalCode,
+                  name: data?.name,
+                  phoneNumber: data?.phoneNumber,
+                  email: data?.email,
+                  lat: data?.address?.lat,
+                  long: data?.address?.lng,
+                  volunteerFullAddress: data?.address?.fullAddress,
+                  city: data?.address?.city,
+                  state: data?.address?.state,
+                  zipCode: data?.address?.postalCode,
                 }}
                 onSubmit={async ({
                   name,
@@ -225,8 +228,8 @@ const UpdateProfileScreen = ({ route }: any) => {
                       onBlur={handleBlur("name")}
                       value={values?.name}
                       placeholder={
-                        data?.user?.name
-                          ? data?.user?.name
+                        data?.name
+                          ? data?.name
                           : `${localized.t("VOLUNTEER_NAME")}`
                       }
                       placeholderTextColor={"black"}
@@ -244,8 +247,8 @@ const UpdateProfileScreen = ({ route }: any) => {
                     <Text style={styles.inputError}>{errors.email}</Text>
                     <GooglePlacesAutocomplete
                       placeholder={
-                        data?.user?.address?.streetAddress
-                          ? data?.user?.address?.streetAddress
+                        data?.address?.streetAddress
+                          ? data?.address?.streetAddress
                           : `${localized.t("ADDRESS")}`
                       }
                       fetchDetails={true}

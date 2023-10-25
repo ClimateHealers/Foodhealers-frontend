@@ -263,6 +263,16 @@
     "REQUEST": "অনুরোধ",
     "ONGOING_PICKUPS": "চলমান পিকআপ",
     "PICKUP_REQUESTS": "পিকআপ অনুরোধ",
-    "PICKUPS": "পিকআপ"
+    "PICKUPS": "পিকআপ",
+    "PLEASE_ENTER_OTP": "OTP দিন দয়া করে",
+    "PICKUP_OTP": "পিকআপ ওটিপি",
+    "OTP_HAS_BEEN_GENERATED_FOR_PICKUP": "পিকআপের জন্য ওটিপি তৈরি হয়েছে।",
+    "PICKEDUP": "পিকআপ করা হয়েছে",
+    "DELIVERED": "ডেলিভার করা হয়েছে",
+    "DELIVERY_OTP": "ডেলিভারি ওটিপি",
+    "OTP_HAS_BEEN_GENERATED_FOR_DELIVERY": "ডেলিভারির জন্য ওটিপি তৈরি হয়েছে।",
+    "NUMBER": "নম্বর",
+    "PROFILE_UPDATE_SUCCESS": "প্রোফাইল আপডেট সাফল",
+    "YOUR_PROFILE_HAS_BEEN_UPDATED_SUCCESSFULLY": "আপনার প্রোফাইল সফলভাবে আপডেট হয়েছে"
   }
 }

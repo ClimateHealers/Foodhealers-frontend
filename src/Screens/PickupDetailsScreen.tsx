@@ -28,10 +28,12 @@ import { allEvents } from "../redux/actions/allEvents";
 import { allRequests } from "../redux/actions/allRequests";
 import { fetchPickup } from "../redux/actions/acceptPickupAction";
 import ReactNativeSegmentedControlTab from "react-native-segmented-control-tab";
+import { fetchUser } from "../redux/actions/authAction";
 
 const PickupDetailsScreen = ({ route }: any) => {
-  const { itemTypeId } = route?.params;
+  const { itemTypeId, driverCity } = route?.params;
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [data, setData] = useState<any>();
   const [pickupData, setPickupData]: any[] = useState<[]>([]);
   const dispatch = useDispatch();
 
@@ -52,9 +54,16 @@ const PickupDetailsScreen = ({ route }: any) => {
     setPickupData(fullfilledRequests);
   };
 
+  const fetchingUserData = async () => {
+    const response = await dispatch(fetchUser({} as any) as any);
+    const data = response?.payload?.userDetails;
+    setData(data);
+  };
+
   useEffect(() => {
     fetchingPickedupData();
     sortByDate();
+    fetchingUserData();
   }, []);
 
   const [order, setOrder] = useState<"ASC" | "DESC">("ASC");
@@ -96,7 +105,7 @@ const PickupDetailsScreen = ({ route }: any) => {
         (event: any) => event?.active === true
       );
       const pickupLocationAround = verifiedFoodEvents?.filter(
-        (event: any) => event?.deliver?.pickupAddress?.city === event?.createdBy?.address?.city
+        (event: any) => event?.deliver?.pickupAddress?.city === data?.address?.city
       );
       setPickupData(pickupLocationAround);
     }

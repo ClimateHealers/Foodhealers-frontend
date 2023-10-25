@@ -56,6 +56,8 @@ const DriverRequestScreen = ({ route }: any) => {
     setData(data);
   };
 
+  console.log("lnvlkdvfdb", data)
+
   useFocusEffect(
     useCallback(() => {
       fetchingVehiclesData();

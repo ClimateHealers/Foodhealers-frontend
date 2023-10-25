@@ -101,7 +101,7 @@ const HistoryScreen = ({ route }: any) => {
                 </View>
                 <View style={styles.item}>
                   <Text style={[styles.itemText, { marginTop: h2dp(-0.5) }]}>
-                    {localized.t("VOLUNTEER")}
+                    {localized.t("HISTORY")}
                   </Text>
                 </View>
                 <BurgerIcon />

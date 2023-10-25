@@ -260,6 +260,16 @@
     "REQUEST": "ਅਨੁਰੋਧ",
     "ONGOING_PICKUPS": "ਚਲਦੀ ਪਿਕਅਪ",
     "PICKUP_REQUESTS": "ਪਿਕਅਪ ਦੀਆਂ ਬੇਨਤੀਆਂ",
-    "PICKUPS": "ਪਿਕਅਪ"
+    "PICKUPS": "ਪਿਕਅਪ",
+    "PLEASE_ENTER_OTP": "OTP ਦਰਜ ਕਰੋ ਜੀ ਕਰਕੇ",
+    "PICKUP_OTP": "ਪਿਕਅਪ OTP",
+    "OTP_HAS_BEEN_GENERATED_FOR_PICKUP": "ਪਿਕਅਪ ਲਈ OTP ਬਣਾਇਆ ਗਿਆ ਹੈ।",
+    "PICKEDUP": "ਪਿਕਅਪ ਕੀਤਾ ਗਿਆ ਹੈ",
+    "DELIVERED": "ਪ੍ਰਾਪਤ ਕੀਤਾ",
+    "DELIVERY_OTP": "ਡਿਲਿਵਰੀ OTP",
+    "OTP_HAS_BEEN_GENERATED_FOR_DELIVERY": "ਡਿਲਿਵਰੀ ਲਈ OTP ਬਣਾਇਆ ਗਿਆ ਹੈ।",
+    "NUMBER": "ਨੰਬਰ",
+    "PROFILE_UPDATE_SUCCESS": "ਪ੍ਰੋਫਾਈਲ ਅਪਡੇਟ ਸਫਲ",
+    "YOUR_PROFILE_HAS_BEEN_UPDATED_SUCCESSFULLY": "ਤੁਹਾਡੀ ਪ੍ਰੋਫਾਈਲ ਸਫਲਤਾਪੂਰਵਕ ਅਪਡੇਟ ਹੋ ਗਈ ਹੈ"
   }
 }

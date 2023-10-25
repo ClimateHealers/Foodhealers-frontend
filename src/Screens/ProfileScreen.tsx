@@ -126,7 +126,7 @@ const ProfileScreen = () => {
       });
 
       if (!result?.canceled) {
-        const multipleImages = result?.assets.map((image) => image.uri);
+        const multipleImages = result?.assets?.map((image) => image.uri);
         const singlePhoto = result?.assets[0].uri;
         const formData = new FormData();
         setImage(singlePhoto);

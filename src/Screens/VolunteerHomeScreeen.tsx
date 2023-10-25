@@ -132,7 +132,7 @@ const VolunteerHomeScreen = ({ route }: any) => {
                   </TouchableOpacity>
                 </View>
               </View>
-              {events && (
+              {events?.length > 0 && (
                 <View
                   style={{
                     alignSelf: "flex-start",
