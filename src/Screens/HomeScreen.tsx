@@ -248,7 +248,7 @@ const HomeScreen = ({ route }: any) => {
               }}
               titleStyle={styles.titleStyle}
             />
-            {data?.name ? (
+            {userdata?.name ? (
               ""
             ) : (
               <Text

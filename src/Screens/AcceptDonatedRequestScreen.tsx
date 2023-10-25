@@ -45,20 +45,27 @@ const AcceptDonatedRequestScreen = ({ route }: any) => {
   } = route?.params;
   const [loading, setLoading] = useState(false);
   const [langOpen, setlangOpen] = useState(false);
+  const [showTimePicker, setShowTimePicker] = useState(false);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [countryPhoneCode, setCountryPhoneCode] = useState<string>("");
+  
   const phoneCode = countryPhoneCode.toString();
   const [response, setResponse] = useState({
     loading: false,
     error: false,
     message: "",
   });
-  const [selectedDate, setSelectedDate] = useState<Date | any>(new Date());
+  const [selectedTime, setSelectedTime] = useState<Date | any>(new Date());
+  const [selectedDate, setSelectedDate] = useState<Date | any>(
+    moment(new Date(requiredDate)).add(2, "hour"));
   const [selectedEndDate, setSelectedEndDate] = useState<Date | any>(
     moment().add(1, "hour")
   );
   const [minmumEndDate, setMinmumEndDate] = useState<Date | any>(
     moment(new Date(requiredDate)).add(12, "hour")
+  );
+  const [selectedEndTime, setSelectedEndTime] = useState<Date | any>(
+    moment(new Date(selectedTime)).add(1, "hour")
   );
 
   var dropOffDate = new Date(requiredDate);
@@ -79,13 +86,25 @@ const AcceptDonatedRequestScreen = ({ route }: any) => {
   const navigation: any = useNavigation();
 
   const handleDateChange = (date: any) => {
-    setSelectedDate(date);
-    if (selectedDate > selectedEndDate) {
-      setSelectedEndDate(selectedDate);
+    if (moment(date).isBefore(moment(requiredDate).add(1, "hour"))) {
+      Alert.alert(
+        `${localized.t("ALERT")}`,
+        `${localized.t("YOU_CANT_SELECT_A_TIME_BEFORE")} ${moment(requiredDate)
+          .add(1, "hour")
+          .format("MMM DD, YYYY hh:mm A")}`
+      );
     } else {
-      setSelectedEndDate(date);
+      setSelectedDate(date);
     }
     setShowDatePicker(false);
+  };
+
+  const handleTimeChange = (time: any) => {
+    setSelectedTime(time);
+    if (moment(selectedDate).isSame(selectedEndDate, "day")) {
+      setSelectedEndTime(moment(selectedTime).add(1, "hour"));
+    }
+    setShowTimePicker(false);
   };
 
   useEffect(() => {
