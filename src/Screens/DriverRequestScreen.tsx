@@ -130,7 +130,7 @@ const DriverRequestScreen = ({ route }: any) => {
             setLoading(false);
           }
         } catch (error) {
-          console.log("firstfirstfirstfirst", error);
+          console.log("ERROR", error);
         }
       }
     } else if (!res.granted) {
