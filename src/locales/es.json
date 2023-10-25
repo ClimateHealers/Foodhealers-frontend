@@ -258,6 +258,9 @@
     "WE_NEED_YOUR_PERMISSION_TO_SHOW_THE_CAMERA": "Necesitamos su permiso para mostrar la cámara",
     "PROFILE_UPDATE": "Actualizar perfil",
     "VEHICLE_NOT_UPDATED": "Vehículo no actualizado",
-    "REQUEST": "Solicitud"
+    "REQUEST": "Solicitud",
+    "ONGOING_PICKUPS": "Recogidas en curso",
+    "PICKUP_REQUESTS": "Solicitudes de recogida",
+    "PICKUPS": "Recogidas"
   }
 }

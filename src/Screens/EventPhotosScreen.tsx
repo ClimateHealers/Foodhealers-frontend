@@ -119,7 +119,7 @@ const EventPhotosScreen = ({ route }: any) => {
         setShowDialog(false);
       }
     } catch (error) {
-      console.log("firstfirstfirstfirst", error);
+      console.log("ERROR", error);
     }
   };
 

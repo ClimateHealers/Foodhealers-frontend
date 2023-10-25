@@ -79,22 +79,26 @@ const PickupDetailsScreen = ({ route }: any) => {
   const handlePressOutside = () => {
     Keyboard.dismiss();
   };
-  
 
   const handleSingleIndexSelect = async (index: any) => {
     setSelectedIndex(index);
     if (index === 0) {
       fetchingPickedupData();
     } else if (index === 1) {
-      const response = await dispatch(allRequests({ itemTypeId } as any) as any);
-    const data = response?.payload?.AllRequests;
-    const requiredVolunteers = data?.filter(
-      (event: any) => event?.type === "Pickup"
-    );
-    const verifiedFoodEvents = requiredVolunteers?.filter(
-      (event: any) => event?.active === true
-    );
-    setPickupData(verifiedFoodEvents);
+      const response = await dispatch(
+        allRequests({ itemTypeId } as any) as any
+      );
+      const data = response?.payload?.AllRequests;
+      const requiredVolunteers = data?.filter(
+        (event: any) => event?.type === "Pickup"
+      );
+      const verifiedFoodEvents = requiredVolunteers?.filter(
+        (event: any) => event?.active === true
+      );
+      const pickupLocationAround = verifiedFoodEvents?.filter(
+        (event: any) => event?.deliver?.pickupAddress?.city === event?.createdBy?.address?.city
+      );
+      setPickupData(pickupLocationAround);
     }
   };
 
@@ -110,7 +114,7 @@ const PickupDetailsScreen = ({ route }: any) => {
     id,
     active,
     pickedup,
-    delivered
+    delivered,
   }: any) => (
     <TouchableOpacity activeOpacity={1}>
       <View style={styles.cardContainer}>
@@ -155,7 +159,7 @@ const PickupDetailsScreen = ({ route }: any) => {
                   pickupId: id,
                   active: active,
                   pickedup: pickedup,
-                  delivered: delivered
+                  delivered: delivered,
                 })
               : navigation.navigate("PickupSelectedDetailsScreen", {
                   pickAddress: pickAddress,
@@ -169,7 +173,7 @@ const PickupDetailsScreen = ({ route }: any) => {
                   pickupId: id,
                   active: active,
                   pickedup: pickedup,
-                  delivered: delivered
+                  delivered: delivered,
                 });
           }}
           buttonStyle={{
@@ -211,17 +215,17 @@ const PickupDetailsScreen = ({ route }: any) => {
                     onPress={() => navigation.goBack()}
                   />
                   <View style={styles.item}>
-                    <Text style={styles.itemText}>Pickups</Text>
+                    <Text style={styles.itemText}>
+                      {localized.t("PICKUPS")}
+                    </Text>
                   </View>
                   <BurgerIcon />
                 </View>
                 <View style={styles.toggle}>
                   <ReactNativeSegmentedControlTab
                     values={[
-                      // `${localized.t("MY_EVENTS")}`,
-                      "Ongoing Pickups",
-                      // `${localized.t("ALL_EVENTS")}`,
-                      "Pickup Requests",
+                      `${localized.t("ONGOING_PICKUPS")}`,
+                      `${localized.t("PICKUP_REQUESTS")}`,
                     ]}
                     selectedIndex={selectedIndex}
                     tabsContainerStyle={{

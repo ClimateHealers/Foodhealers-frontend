@@ -257,6 +257,9 @@
     "WE_NEED_YOUR_PERMISSION_TO_SHOW_THE_CAMERA": "ਸਾਡੀ ਕੈਮਰਾ ਦਿਖਾਉਣ ਲਈ ਤੁਹਾਨੂੰ ਆਪਣੀ ਅਨੁਮਤੀ ਚਾਹੀਦੀ ਹੈ",
     "PROFILE_UPDATE": "ਪ੍ਰੋਫਾਇਲ ਅੱਪਡੇਟ",
     "VEHICLE_NOT_UPDATED": "ਵਾਹਨ ਅੱਪਡੇਟ ਨਹੀਂ ਹੋਇਆ",
-    "REQUEST": "ਅਨੁਰੋਧ"
+    "REQUEST": "ਅਨੁਰੋਧ",
+    "ONGOING_PICKUPS": "ਚਲਦੀ ਪਿਕਅਪ",
+    "PICKUP_REQUESTS": "ਪਿਕਅਪ ਦੀਆਂ ਬੇਨਤੀਆਂ",
+    "PICKUPS": "ਪਿਕਅਪ"
   }
 }

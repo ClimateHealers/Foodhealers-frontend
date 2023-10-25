@@ -31,6 +31,7 @@ const DriverPhotoSaveScreen = ({ route }: any) => {
   const { selectedImage } = route?.params;
   const [selectedImage1, setSelectedImage1] = useState(selectedImage);
   const [loading, setLoading] = useState(false);
+  const date = new Date().getTime();
   const userDetails = useSelector((state: any) => state.auth);
   const { data } = userDetails;
   const navigation: any = useNavigation<string>();
@@ -74,7 +75,7 @@ const DriverPhotoSaveScreen = ({ route }: any) => {
   formData.append("profilePhoto", {
     uri: selectedImage1,
     type: "image/jpeg",
-    name: `${data?.user?.name}.jpg`,
+    name: `${data?.user?.name}${date}.jpg`,
   });
 
   const navigateToProfileScreen = async () => {
@@ -108,7 +109,7 @@ const DriverPhotoSaveScreen = ({ route }: any) => {
         setLoading(false);
       }
     } catch (error) {
-      console.log("firstfirstfirstfirst", error);
+      console.log("ERROR", error);
     }
   };
 
