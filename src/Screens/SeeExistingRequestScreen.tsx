@@ -37,6 +37,7 @@ import { allRequests } from "../redux/actions/allRequests";
 const SeeExistingRequestScreen = ({ route }: any) => {
   const { itemTypeId, title, latitude, longitude } = route?.params;
   const [item, setItem] = useState<string>("");
+  const [filterName, setFilterName] = useState<string>(`${localized.t("NEW")}`);
   const [requestData, setRequestData]: any = useState<[]>([]);
   const userDetails = useSelector((state: any) => state.auth);
   const { data } = userDetails;
@@ -52,8 +53,10 @@ const SeeExistingRequestScreen = ({ route }: any) => {
       const dateB = new Date(b?.createdAt);
 
       if (order === "ASC") {
+        setFilterName(`${localized.t("NEW")}`);
         return dateA?.valueOf() - dateB?.valueOf();
       } else {
+        setFilterName(`${localized.t("OLD")}`);
         return dateB?.valueOf() - dateA?.valueOf();
       }
     });
@@ -306,9 +309,11 @@ const SeeExistingRequestScreen = ({ route }: any) => {
           onPress={() =>
             Alert.alert(
               `${localized.t("DONATE")} ${item}?`,
-              `${foodItem} (${quantity}) ${localized.t("ON")} ${moment(requiredDate).format(
-                "MMM DD, YYYY  ddd, hh:mm A"
-              )} ${localized.t("AT")} ${delivery}`,
+              `${foodItem} (${quantity}) ${localized.t("ON")} ${moment(
+                requiredDate
+              ).format("MMM DD, YYYY  ddd, hh:mm A")} ${localized.t(
+                "AT"
+              )} ${delivery}`,
               [
                 {
                   text: `${localized.t("CANCEL")}`,
@@ -396,6 +401,7 @@ const SeeExistingRequestScreen = ({ route }: any) => {
                 <Text style={styles.itemFilterText}>
                   {localized.t("FILTER")}
                 </Text>
+                <Text style={styles.filterNameText}>({filterName})</Text>
                 <MaterialIcons
                   name="filter-list-alt"
                   style={styles.itemFilterText}
@@ -405,6 +411,7 @@ const SeeExistingRequestScreen = ({ route }: any) => {
             {requestData?.length > 0 ? (
               <View style={{ height: h2dp(70), marginTop: h2dp(1) }}>
                 <FlatList
+                  showsVerticalScrollIndicator={false}
                   data={requestData}
                   renderItem={({ item }: any) => (
                     <Item

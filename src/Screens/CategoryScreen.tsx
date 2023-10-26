@@ -1,11 +1,14 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import axios from "axios";
+import { decode } from "html-entities";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useEffect, useState } from "react";
 import {
-  FlatList,
+  ActivityIndicator,
   Image,
   Keyboard,
+  Modal,
   SafeAreaView,
   ScrollView,
   Text,
@@ -20,7 +23,6 @@ import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
 import { styles } from "../Components/Styles";
 import { getLocation } from "../Components/getCurrentLocation";
-import axios from "axios";
 import { localized } from "../locales/localization";
 import { VeganRecipesCategory } from "../redux/actions/veganRecipesCategory";
 const CategoryScreen = ({ route }: any) => {
@@ -38,13 +40,12 @@ const CategoryScreen = ({ route }: any) => {
   const [searchText, setSearchText] = useState("");
   const [filteredData, setFilteredData] = useState([]);
   const [textChange, setTextChange] = useState(false);
-  const [page, setPage] = useState(1); // Track the current page
+  const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [hasMoreData, setHasMoreData] = useState(true);
 
   const dispatch = useDispatch();
   const navigation: any = useNavigation();
-
   const isAuthenticated = useSelector(
     (state: any) => state?.auth?.data?.isAuthenticated
   );
@@ -66,46 +67,49 @@ const CategoryScreen = ({ route }: any) => {
   }, []);
 
   const fetchData = async () => {
-    // if (loading) {
-    //   return;
-    // }
 
     setLoading(true);
-    try{
+    try {
       setResponse({
         loading: true,
         message: "",
         error: false,
       });
-    
-    axios
-      .get(`https://api.climatehealers.com/v1/api/recipe/2/?page=${page}`)
-      .then((response) => {
-        
-        const newData=(response?.data?.results?.recipeList)
-        setData((prevData : any[]) => [...prevData, ...response.data?.results?.recipeList])
-        setLoading(false);
-        if (response.data.length > 0) {
-          setData((prevData : any[]) => [...prevData, ...JSON.stringify(response.data)]);
-          setPage(page + 1);
-        } else {
-          setHasMoreData(false);
-        }
 
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error(error);
-        setLoading(false);
-      })} catch(err: any) {
-        setLoading(false);
-        setResponse({
-          loading: false,
-          message: err.message,
-          error: true,
+      axios
+        .get(`https://api.climatehealers.com/v1/api/recipe/2/?page=${page}`)
+        .then((response) => {
+          const newData = response?.data?.results?.recipeList;
+          setData((prevData: any[]) => [
+            ...prevData,
+            ...response.data?.results?.recipeList,
+          ]);
+          setLoading(false);
+          if (response.data.length > 0) {
+            setData((prevData: any[]) => [
+              ...prevData,
+              ...JSON.stringify(response.data),
+            ]);
+            setPage(page + 1);
+          } else {
+            setHasMoreData(false);
+          }
+
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.error(error);
+          setLoading(false);
         });
+    } catch (err: any) {
+      setLoading(false);
+      setResponse({
+        loading: false,
+        message: err.message,
+        error: true,
+      });
+    }
   };
-}
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
@@ -169,6 +173,13 @@ const CategoryScreen = ({ route }: any) => {
               </ScrollView>
               <BurgerIcon />
             </View>
+            <Modal visible={loading} animationType="slide" transparent={true}>
+              <View style={styles.centeredView}>
+                <View style={styles.modalView}>
+                  <ActivityIndicator size={"large"} />
+                </View>
+              </View>
+            </Modal>
             <View
               style={[
                 styles.inputContainer,
@@ -206,7 +217,7 @@ const CategoryScreen = ({ route }: any) => {
               scrollEventThrottle={400}
             >
               <TouchableOpacity activeOpacity={1}>
-                <View style={[styles.centeredView]}>
+                <View style={[styles.centeredalignView]}>
                   {textChange
                     ? filteredData?.map((recipe: any) => (
                         <View
@@ -241,10 +252,17 @@ const CategoryScreen = ({ route }: any) => {
                             >
                               <Text style={styles.textStyle}>
                                 {recipe?.foodName?.length > 25
-                                  ? `${recipe?.foodName?.slice(0, 25)}...`
-                                  : recipe?.foodName}
+                                  ? `${decode(recipe?.foodName, { level: "html5" })?.slice(0, 20)}...`
+                                  : decode(recipe?.foodName, { level: "html5" })}
                               </Text>
-                              <View style={styles.timerIcon}>
+                              <View
+                                style={{
+                                  display: "flex",
+                                  flexDirection: "row",
+                                  alignItems: "center",
+                                  justifyContent: "center",
+                                }}
+                              >
                                 <Ionicons
                                   name="ios-time-outline"
                                   size={20}
@@ -299,8 +317,8 @@ const CategoryScreen = ({ route }: any) => {
                             >
                               <Text style={styles.textStyle}>
                                 {recipe?.foodName?.length > 25
-                                  ? `${recipe?.foodName?.slice(0, 25)}...`
-                                  : recipe?.foodName}
+                                  ? `${decode(recipe?.foodName, { level: "html5" })?.slice(0, 20)}...`
+                                  : decode(recipe?.foodName, { level: "html5" })}
                               </Text>
                               <View
                                 style={{

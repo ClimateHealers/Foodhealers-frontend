@@ -37,6 +37,7 @@ import ReactNativeSegmentedControlTab from "react-native-segmented-control-tab";
 const RequestHistoryScreen = ({ route }: any) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const { itemTypeId, title } = route?.params;
+  const [filterName, setFilterName] = useState<string>(`${localized.t("NEW")}`);
   const [requestData, setRequestData]: any = useState<[]>([]);
   useEffect(() => {
     fetchingRequestData();
@@ -50,8 +51,10 @@ const RequestHistoryScreen = ({ route }: any) => {
       const dateB = new Date(b?.createdAt);
 
       if (order === "ASC") {
+        setFilterName(`${localized.t("NEW")}`);
         return dateA?.valueOf() - dateB?.valueOf();
       } else {
+        setFilterName(`${localized.t("OLD")}`);
         return dateB?.valueOf() - dateA?.valueOf();
       }
     });
@@ -322,58 +325,58 @@ const RequestHistoryScreen = ({ route }: any) => {
               onTabPress={handleSingleIndexSelect}
             />
           </View>
-            <View style={styles.itemFilter}>
-              <Text style={styles.itemFilterText}>
-                {localized.t("ALL_HISTORY")}
-              </Text>
-              <TouchableOpacity
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-                onPress={sortByDate}
-              >
-                <Text style={styles.itemFilterText}>
-                  {localized.t("FILTER")}
-                </Text>
-                <MaterialIcons
-                  name="filter-list-alt"
-                  style={styles.itemFilterText}
-                />
-              </TouchableOpacity>
+          <View style={styles.itemFilter}>
+            <Text style={styles.itemFilterText}>
+              {localized.t("ALL_HISTORY")}
+            </Text>
+            <TouchableOpacity
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+              onPress={sortByDate}
+            >
+              <Text style={styles.itemFilterText}>{localized.t("FILTER")}</Text>
+              <Text style={styles.filterNameText}>({filterName})</Text>
+              <MaterialIcons
+                name="filter-list-alt"
+                style={styles.itemFilterText}
+              />
+            </TouchableOpacity>
+          </View>
+          {requestData?.length > 0 ? (
+            <View style={{ flex: 1 }}>
+              <FlatList
+                showsVerticalScrollIndicator={false}
+                data={requestData}
+                renderItem={({ item }: any) => (
+                  <Item
+                    status={item?.status}
+                    type={item?.type}
+                    id={item.id}
+                    foodItem={`${item?.foodItem}  (${item?.quantity})`}
+                    delivery={item?.createdBy?.address?.fullAddress}
+                    requiredDate={item?.requiredDate}
+                  />
+                )}
+              />
             </View>
-            {requestData?.length > 0 ? (
-              <View style={{ flex: 1 }}>
-                <FlatList
-                  data={requestData}
-                  renderItem={({ item }: any) => (
-                    <Item
-                      status={item?.status}
-                      type={item?.type}
-                      id={item.id}
-                      foodItem={`${item?.foodItem}  (${item?.quantity})`}
-                      delivery={item?.createdBy?.address?.fullAddress}
-                      requiredDate={item?.requiredDate}
-                    />
-                  )}
-                />
-              </View>
-            ) : (
-              <View
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  marginTop: h2dp(25),
-                }}
-              >
-                <Text style={styles.itemText}>
-                  {localized.t("NOTHING_TO_SHOW")}
-                </Text>
-              </View>
-            )}
+          ) : (
+            <View
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                marginTop: h2dp(25),
+              }}
+            >
+              <Text style={styles.itemText}>
+                {localized.t("NOTHING_TO_SHOW")}
+              </Text>
+            </View>
+          )}
         </View>
       </LinearGradient>
     </TouchableWithoutFeedback>

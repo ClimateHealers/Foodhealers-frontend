@@ -27,48 +27,43 @@ import PrimaryButton from "../Components/PrimaryButton";
 import { styles } from "../Components/Styles";
 import { addDriver } from "../Components/validation";
 import { localized } from "../locales/localization";
-import { updateProfile } from "../redux/actions/authAction";
+import { fetchUser, updateProfile } from "../redux/actions/authAction";
 
 const UpdateProfileScreen = ({ route }: any) => {
+  const {name, phoneNumber, email, lat, long, volunteerFullAddress, city, state, zipCode } = route?.params;
   const [loading, setLoading] = useState(false);
-  const [langOpen, setlangOpen] = useState(false);
   const [response, setResponse] = useState({
     loading: false,
     error: false,
     message: "",
   });
-  const [selectedDate, setSelectedDate] = useState<Date | any>(new Date());
-  const [selectedTime, setSelectedTime] = useState<Date | any>(new Date());
-  const [selectedEndDate, setSelectedEndDate] = useState<Date | any>(
-    moment().add(1, "hour")
-  );
-
-  const userDetails = useSelector((state: any) => state.auth);
-  const { data } = userDetails;
-  const eventDateTime = moment(selectedDate).utc().unix();
-  const eventEndDateTime = moment(selectedEndDate).utc().unix();
-  const [minmumEndDate, setMinmumEndDate] = useState<Date | any>(
-    moment().add(1, "hour")
-  );
-  const [selectedEndTime, setSelectedEndTime] = useState<Date | any>(
-    moment(new Date(selectedTime)).add(1, "hour")
-  );
+  const [data, setData] = useState<any>([]);
   const phoneInput = useRef<PhoneInput>(null);
-
+  const fetchingUserData = async () => {
+    const response = await dispatch(fetchUser({} as any) as any);
+    const data = response?.payload?.userDetails;
+    setData(data);
+  };
   const dispatch = useDispatch();
 
   const API_KEY = Constants?.manifest?.extra?.googleMapsApiKey;
 
   const handlePressOutside = () => {
-    setlangOpen(false);
     Keyboard.dismiss();
   };
   const navigation: any = useNavigation();
 
   useEffect(() => {
-    setSelectedEndDate(moment(selectedDate).add(1, "hour"));
-    setMinmumEndDate(moment(new Date(selectedTime)).add(1, "hour"));
-  }, [selectedDate]);
+    setLoading(true);
+    fetchingUserData()
+      .then(() => {
+        setLoading(false);
+      })
+      .catch((err) => {
+        setLoading(false);
+        console.log("Error in fetchingUserData: ", err);
+      });
+  }, []);
   return (
     <TouchableWithoutFeedback onPress={handlePressOutside}>
       <LinearGradient
@@ -88,7 +83,9 @@ const UpdateProfileScreen = ({ route }: any) => {
                   onPress={() => navigation.goBack()}
                 />
                 <View style={styles.item}>
-                  <Text style={styles.itemText}>{localized.t("PROFILE_UPDATE")}</Text>
+                  <Text style={styles.itemText}>
+                    {localized.t("PROFILE_UPDATE")}
+                  </Text>
                 </View>
                 <BurgerIcon />
               </View>
@@ -102,15 +99,15 @@ const UpdateProfileScreen = ({ route }: any) => {
               <Formik
                 validationSchema={addDriver}
                 initialValues={{
-                  name: data?.user?.name,
-                  phoneNumber: data?.user?.phoneNumber,
-                  email: data?.user?.email,
-                  lat: data?.user?.address?.lat,
-                  long: data?.user?.address?.lng,
-                  volunteerFullAddress: data?.user?.address?.fullAddress,
-                  city: data?.user?.address?.city,
-                  state: data?.user?.address?.state,
-                  zipCode: data?.user?.address?.postalCode,
+                  name: name,
+                  phoneNumber: phoneNumber,
+                  email: email,
+                  lat: lat,
+                  long: long,
+                  volunteerFullAddress: volunteerFullAddress,
+                  city: city,
+                  state: state,
+                  zipCode: zipCode,
                 }}
                 onSubmit={async ({
                   name,
@@ -134,8 +131,6 @@ const UpdateProfileScreen = ({ route }: any) => {
                       name: name,
                       email: email,
                       phoneNumber: phoneNumber,
-                      availableFromDate: eventDateTime,
-                      availableToDate: eventEndDateTime,
                       lat: lat,
                       lng: long,
                       fullAddress: volunteerFullAddress,
@@ -150,9 +145,7 @@ const UpdateProfileScreen = ({ route }: any) => {
                       setLoading(false);
                       setResponse({
                         loading: false,
-                        message: `${localized.t(
-                          "PROFILE_UPDATE_SUCCESS"
-                        )}`,
+                        message: `${localized.t("PROFILE_UPDATE_SUCCESS")}`,
                         error: false,
                       });
                       setLoading(false);
@@ -201,7 +194,7 @@ const UpdateProfileScreen = ({ route }: any) => {
                       error: true,
                     });
                     Alert.alert(
-                      `${localized.t("Profle Not Updated")}`,
+                      `${localized.t("PROFILE_NOT_UPDATED")}`,
                       `${err.message}`,
                       [{ text: `${localized.t("OK")}` }],
                       { cancelable: false }
@@ -225,8 +218,8 @@ const UpdateProfileScreen = ({ route }: any) => {
                       onBlur={handleBlur("name")}
                       value={values?.name}
                       placeholder={
-                        data?.user?.name
-                          ? data?.user?.name
+                        name
+                          ? name
                           : `${localized.t("VOLUNTEER_NAME")}`
                       }
                       placeholderTextColor={"black"}
@@ -236,16 +229,18 @@ const UpdateProfileScreen = ({ route }: any) => {
                     <TextInput
                       onChangeText={handleChange("email")}
                       onBlur={handleBlur("email")}
-                      value={values.email.toLocaleLowerCase()}
-                      placeholder={localized.t("EMAIL")}
+                      value={values?.email?.toLocaleLowerCase()}
+                      placeholder={
+                        email ? email : localized.t("EMAIL")
+                      }
                       placeholderTextColor={"black"}
                       style={styles.textInput}
                     />
                     <Text style={styles.inputError}>{errors.email}</Text>
                     <GooglePlacesAutocomplete
                       placeholder={
-                        data?.user?.address?.streetAddress
-                          ? data?.user?.address?.streetAddress
+                        volunteerFullAddress
+                          ? volunteerFullAddress
                           : `${localized.t("ADDRESS")}`
                       }
                       fetchDetails={true}
@@ -333,7 +328,11 @@ const UpdateProfileScreen = ({ route }: any) => {
                           onChangeText={handleChange("city")}
                           onBlur={handleBlur("city")}
                           value={values?.city}
-                          placeholder={localized.t("CITY")}
+                          placeholder={
+                            city
+                              ? city
+                              : localized.t("CITY")
+                          }
                           placeholderTextColor={"black"}
                           style={[
                             styles.textInput,
@@ -352,7 +351,11 @@ const UpdateProfileScreen = ({ route }: any) => {
                           onChangeText={handleChange("state")}
                           onBlur={handleBlur("state")}
                           value={values?.state}
-                          placeholder={localized.t("STATE")}
+                          placeholder={
+                            state
+                              ? state
+                              : localized.t("STATE")
+                          }
                           placeholderTextColor={"black"}
                           style={[
                             styles.textInput,
@@ -368,7 +371,11 @@ const UpdateProfileScreen = ({ route }: any) => {
                         onBlur={handleBlur("zipCode")}
                         value={values?.zipCode}
                         keyboardType="numeric"
-                        placeholder={localized.t("ZIP_CODE")}
+                        placeholder={
+                          zipCode
+                            ? zipCode
+                            : localized.t("ZIP_CODE")
+                        }
                         placeholderTextColor={"black"}
                         style={[styles.textInput]}
                       />
@@ -382,7 +389,11 @@ const UpdateProfileScreen = ({ route }: any) => {
                     >
                       <PhoneInput
                         ref={phoneInput}
-                        placeholder={localized.t("PHONE_NUMBER")}
+                        placeholder={
+                          phoneNumber
+                            ? phoneNumber?.slice(2, 12)
+                            : localized.t("PHONE_NUMBER")
+                        }
                         onChangeText={(text) => {
                           const callingCode =
                             phoneInput.current?.getCallingCode();
@@ -412,12 +423,12 @@ const UpdateProfileScreen = ({ route }: any) => {
                         marginTop: h2dp(1),
                       }}
                     >
-                        <PrimaryButton
-                          title={localized.t("UPDATE")}
-                          buttonStyle={styles.nextButtonStyles}
-                          titleStyle={styles.titleStyle}
-                          onPress={handleSubmit}
-                        />
+                      <PrimaryButton
+                        title={localized.t("UPDATE")}
+                        buttonStyle={styles.nextButtonStyles}
+                        titleStyle={styles.titleStyle}
+                        onPress={handleSubmit}
+                      />
                     </View>
                   </>
                 )}

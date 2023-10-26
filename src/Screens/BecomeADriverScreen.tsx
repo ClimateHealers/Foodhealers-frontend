@@ -54,7 +54,7 @@ const BecomeADriverScreen = () => {
                   onPress={() => navigation.goBack()}
                 />
                 <View style={styles.item}>
-                  <Text style={styles.itemTextDriver}>Drive</Text>
+                  <Text style={styles.itemText}>{localized.t("DRIVE")}</Text>
                 </View>
                 <BurgerIcon />
               </View>
@@ -75,9 +75,7 @@ const BecomeADriverScreen = () => {
                 <PrimaryButton
                   title={localized.t("BECOME_A_DRIVER_FOR_FOOD_HEALERS")} // {localized.t(// )}
                   onPress={() =>
-                    navigation.navigate("AddDriverScreen", {
-                      title: `${localized.t("BECOME_A_DRIVER_FOR_FOOD_HEALERS")}`
-                    })
+                    navigation.navigate("AddDriverScreen")
                   }
                   buttonStyle={{
                     backgroundColor: "white",

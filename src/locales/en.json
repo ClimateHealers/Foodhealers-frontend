@@ -262,6 +262,22 @@
     "REQUEST": "Request",
     "ONGOING_PICKUPS": "Ongoing Pickups",
     "PICKUP_REQUESTS": "Pickup Requests",
-    "PICKUPS": "Pickups"
+    "PICKUPS": "Pickups",
+    "PLEASE_ENTER_OTP": "Please Enter OTP",
+    "PICKUP_OTP": "Pickup OTP",
+    "OTP_HAS_BEEN_GENERATED_FOR_PICKUP": "OTP has been generated for pickup.",
+    "PICKEDUP": "PickedUp",
+    "DELIVERED": "Delivered",
+    "DELIVERY_OTP": "Delivery OTP",
+    "OTP_HAS_BEEN_GENERATED_FOR_DELIVERY": "OTP has been generated for Delivery.",
+    "NUMBER": "Number",
+    "PROFILE_UPDATE_SUCCESS": "Profile Update Success",
+    "YOUR_PROFILE_HAS_BEEN_UPDATED_SUCCESSFULLY": "Your profile has been updated successfully",
+    "PROFILE_NOT_UPDATED": "Profile Not Updated",
+    "PLEASE_ENTER_VALID_OTP": "Please enter valid OTP",
+    "WRONG_OTP": "Wrong OTP",
+    "PICKUP_HISTORY": "Pickup History",
+    "NEW": "New",
+    "OLD": "Old"
   }
 }

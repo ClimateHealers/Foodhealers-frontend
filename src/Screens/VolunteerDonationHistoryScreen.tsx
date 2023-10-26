@@ -35,6 +35,7 @@ import { myDonations } from "../redux/actions/myDonations";
 
 const VolunteerDonationHistoryScreen = ({ route }: any) => {
   const { itemTypeId, title } = route?.params;
+  const [filterName, setFilterName] = useState<string>(`${localized.t("NEW")}`);
   const [donationData, setDonationData]: any = useState<[]>([]);
   useEffect(() => {
     fetchingDonationData();
@@ -48,8 +49,10 @@ const VolunteerDonationHistoryScreen = ({ route }: any) => {
       const dateB = new Date(b?.createdAt);
 
       if (order === "ASC") {
+        setFilterName(`${localized.t("NEW")}`);
         return dateA?.valueOf() - dateB?.valueOf();
       } else {
+        setFilterName(`${localized.t("OLD")}`);
         return dateB?.valueOf() - dateA?.valueOf();
       }
     });
@@ -289,6 +292,7 @@ const VolunteerDonationHistoryScreen = ({ route }: any) => {
                 <Text style={styles.itemFilterText}>
                   {localized.t("FILTER")}
                 </Text>
+                <Text style={styles.filterNameText}>({filterName})</Text>
                 <MaterialIcons
                   name="filter-list-alt"
                   style={styles.itemFilterText}
@@ -296,6 +300,7 @@ const VolunteerDonationHistoryScreen = ({ route }: any) => {
               </TouchableOpacity>
             </View>
             <FlatList
+              showsVerticalScrollIndicator={false}
               data={donationData}
               renderItem={({ item }: any) => (
                 <Item

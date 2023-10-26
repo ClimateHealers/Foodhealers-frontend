@@ -82,7 +82,7 @@ const VolunteerHomeScreen = ({ route }: any) => {
               </View>
               <BurgerIcon />
             </View>
-            <ScrollView keyboardShouldPersistTaps="handled">
+            <ScrollView keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
               <View
                 style={{
                   marginBottom: h2dp(3),
@@ -132,7 +132,7 @@ const VolunteerHomeScreen = ({ route }: any) => {
                   </TouchableOpacity>
                 </View>
               </View>
-              {events && (
+              {events?.length > 0 && (
                 <View
                   style={{
                     alignSelf: "flex-start",

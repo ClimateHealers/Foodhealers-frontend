@@ -126,7 +126,7 @@ const UploadPhotosScreen = ({ route }: any) => {
         <Modal visible={loader} animationType="slide" transparent={true}>
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
-              <ActivityIndicator size={"large"} color="white" />
+              <ActivityIndicator size={"large"} />
             </View>
           </View>
         </Modal>

@@ -53,10 +53,14 @@ const AcceptRequestedDonationScreen = ({ route }: any) => {
     error: false,
     message: "",
   });
-  const [selectedDate, setSelectedDate] = useState<Date | any>(new Date());
+  const [selectedDate, setSelectedDate] = useState<Date | any>(
+    itemTypeId === 1
+      ? moment(new Date(requiredDate)).subtract(6, "hour")
+      : new Date()
+  );
   const [selectedTime, setSelectedTime] = useState<Date | any>(
     itemTypeId === 1
-      ? moment(new Date(requiredDate)).subtract(24, "hour")
+      ? moment(new Date(requiredDate)).subtract(6, "hour")
       : new Date()
   );
   const [selectedEndDate, setSelectedEndDate] = useState<Date | any>(
@@ -182,8 +186,7 @@ const AcceptRequestedDonationScreen = ({ route }: any) => {
                       lat: lat,
                       lng: long,
                       flatNo: flatNo,
-                      fullAddress: flatNo,
-                      address,
+                      fullAddress: address,
                       city: city,
                       state: state,
                       postalCode: Number(zipCode) ? Number(zipCode) : 0,

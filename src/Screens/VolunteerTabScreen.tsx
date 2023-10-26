@@ -26,6 +26,8 @@ import { localized } from "../locales/localization";
 
 const VolunteerTabScreen = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  
+  const [filterName, setFilterName] = useState<string>(`${localized.t("NEW")}`);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [eventData, setEventData]: any = useState<[]>([]);
   const [loading, setLoading] = useState(false);
@@ -46,8 +48,10 @@ const VolunteerTabScreen = () => {
       const dateB = new Date(b?.eventStartDate);
 
       if (order === "ASC") {
+        setFilterName(`${localized.t("NEW")}`);
         return dateA?.valueOf() - dateB?.valueOf();
       } else {
+        setFilterName(`${localized.t("OLD")}`);
         return dateB?.valueOf() - dateA?.valueOf();
       }
     });
@@ -228,6 +232,7 @@ const VolunteerTabScreen = () => {
             onPress={sortByDate}
           >
             <Text style={styles.itemFilterText}>{localized.t("FILTER")}</Text>
+            <Text style={styles.filterNameText}>({filterName})</Text>
             <MaterialIcons
               name="filter-list-alt"
               style={styles.itemFilterText}
@@ -237,6 +242,7 @@ const VolunteerTabScreen = () => {
         {eventData?.length > 0 ? (
           <ScrollView style={{ flex: 1 }}>
             <FlatList
+              showsVerticalScrollIndicator={false}
               data={eventData}
               renderItem={({ item }: any) => (
                 <Item

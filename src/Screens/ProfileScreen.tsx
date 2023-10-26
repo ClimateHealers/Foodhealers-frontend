@@ -126,7 +126,7 @@ const ProfileScreen = () => {
       });
 
       if (!result?.canceled) {
-        const multipleImages = result?.assets.map((image) => image.uri);
+        const multipleImages = result?.assets?.map((image) => image.uri);
         const singlePhoto = result?.assets[0].uri;
         const formData = new FormData();
         setImage(singlePhoto);
@@ -358,7 +358,17 @@ const ProfileScreen = () => {
                 <PrimaryButton
                   title={localized.t("EDIT")}
                   onPress={() => {
-                    navigation.navigate("UpdateProfileScreen");
+                    navigation.navigate("UpdateProfileScreen", {
+                      name: data?.name,
+                      phoneNumber: data?.phoneNumber,
+                      email: data?.email,
+                      lat: data?.address?.lat,
+                      long: data?.address?.lng,
+                      volunteerFullAddress: data?.address?.fullAddress,
+                      city: data?.address?.city,
+                      state: data?.address?.state,
+                      zipCode: data?.address?.postalCode,
+                    });
                   }}
                   buttonStyle={{
                     backgroundColor: "#D1D1D6",

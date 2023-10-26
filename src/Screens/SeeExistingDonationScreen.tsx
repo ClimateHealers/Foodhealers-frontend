@@ -38,6 +38,7 @@ import { allDonations } from "../redux/actions/allDonations";
 const SeeExistingDonationScreen = ({ route }: any) => {
   const { itemTypeId, title } = route?.params;
   const [item, setItem] = useState<string>("");
+  const [filterName, setFilterName] = useState<string>(`${localized.t("NEW")}`);
   const [showDialog, setShowDialog] = useState<boolean>(true);
   const [donationData, setDonationData]: any = useState<[]>([]);
   const userDetails = useSelector((state: any) => state.auth);
@@ -54,8 +55,10 @@ const SeeExistingDonationScreen = ({ route }: any) => {
       const dateB = new Date(b?.createdAt);
 
       if (order === "ASC") {
+        setFilterName(`${localized.t("NEW")}`);
         return dateA?.valueOf() - dateB?.valueOf();
       } else {
+        setFilterName(`${localized.t("OLD")}`);
         return dateB?.valueOf() - dateA?.valueOf();
       }
     });
@@ -396,6 +399,7 @@ const SeeExistingDonationScreen = ({ route }: any) => {
                 <Text style={styles.itemFilterText}>
                   {localized.t("FILTER")}
                 </Text>
+                <Text style={styles.filterNameText}>({filterName})</Text>
                 <MaterialIcons
                   name="filter-list-alt"
                   style={styles.itemFilterText}
@@ -405,6 +409,7 @@ const SeeExistingDonationScreen = ({ route }: any) => {
             {donationData.length > 0 ? (
               <View style={{ height: h2dp(70), marginTop: h2dp(1) }}>
                 <FlatList
+                  showsVerticalScrollIndicator={false}
                   data={donationData}
                   renderItem={({ item }: any) => (
                     <Item

@@ -1,7 +1,7 @@
 import { MaterialIcons } from "@expo/vector-icons";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import * as Location from "expo-location";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
@@ -26,17 +26,20 @@ import { myDonations } from "../redux/actions/myDonations";
 import { volunteerHistory } from "../redux/actions/volunteerHistoryAction";
 import { setLanguage } from "../redux/reducers/langReducer";
 import axios from "axios";
+import { fetchUser } from "../redux/actions/authAction";
+import { allRequests } from "../redux/actions/allRequests";
 
 const HomeScreen = ({ route }: any) => {
   const userDetails = useSelector((state: any) => state.auth);
   const { data } = userDetails;
   const languageName = useSelector((state: any) => state.language);
-
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
   const [loc, setLoc] = useState(false);
   const [langOpen, setlangOpen] = useState(false);
   const [donationData, setDonationData] = useState("");
+  const [userData, setData] = useState<any>();
   const [volunteerData, setVolunteerData] = useState("");
   const [selectedLanguage, setSelectedLanguage] = useState(localized.locale);
   const [lat, setLat] = useState(0);
@@ -62,26 +65,33 @@ const HomeScreen = ({ route }: any) => {
     setSelectedLanguage(selectedLanguage);
   };
 
-  useEffect(() => {
-    const getUserLocation = async () => {
-      try {
-        const response = await axios.get("http://ipinfo.io/json");
-        const { loc } = response?.data;
-        const [latitude, longitude] = loc
-          .split(",")
-          .map((coord: any) => parseFloat(coord));
-        setLat(latitude);
-        setLong(longitude);
-        return { latitude, longitude };
-      } catch (error) {
-        console.error("Error fetching user location", error);
-        return null;
-      }
-    };
-    getUserLocation();
-    fetchingDonationData();
-    fetchingvolunteerHistory();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      const getUserLocation = async () => {
+        setLoading(true);
+        try {
+          const data1 = await fetchingDonationData();
+          const data2 = await fetchingvolunteerHistory();
+          const data3 = await fetchingUserData();
+          const response = await axios.get("http://ipinfo.io/json");
+          const { loc } = response?.data;
+          const [latitude, longitude] = loc
+            .split(",")
+            .map((coord: any) => parseFloat(coord));
+          setLat(latitude);
+          setLong(longitude);
+          setLoading(false);
+          return { latitude, longitude };
+        } catch (error) {
+          console.error("Error fetching user location", error);
+          setLoading(false);
+          return null;
+        }
+      };
+      setLoading(true);
+      getUserLocation();
+    }, [])
+  );
 
   const fetchingDonationData = async () => {
     const response = await dispatch(myDonations({} as any) as any);
@@ -91,6 +101,12 @@ const HomeScreen = ({ route }: any) => {
   const fetchingvolunteerHistory = async () => {
     const response = await dispatch(volunteerHistory({} as any) as any);
     setVolunteerData(response?.payload?.volunteerHistory);
+  };
+
+  const fetchingUserData = async () => {
+    const response = await dispatch(fetchUser({} as any) as any);
+    const data = response?.payload?.userDetails;
+    setData(data);
   };
 
   const navigateToMapScreen = () => {
@@ -105,7 +121,7 @@ const HomeScreen = ({ route }: any) => {
         <Modal visible={loader} animationType="slide" transparent={true}>
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
-              <ActivityIndicator size={"large"} color="white" />
+              <ActivityIndicator size={"large"} />
             </View>
           </View>
         </Modal>
@@ -181,6 +197,13 @@ const HomeScreen = ({ route }: any) => {
             />
           </View>
           <View style={{ flex: 1 }}>{appLoader(loc == true)}</View>
+          <Modal visible={loading} animationType="slide" transparent={true}>
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                <ActivityIndicator size={"large"} />
+              </View>
+            </View>
+          </Modal>
           <View style={styles.headerContainer}>
             <PrimaryButton
               title={localized.t("FIND_FOOD")}
@@ -263,7 +286,7 @@ const HomeScreen = ({ route }: any) => {
                 }}
               >
                 {localized.t("WELCOME")}{" "}
-                {data?.user?.name ? data?.user?.name : ""}
+                {data?.user?.name ? userData?.name : ""}
               </Text>
             ) : (
               <TouchableOpacity
@@ -346,8 +369,7 @@ const styles = StyleSheet.create({
   },
   titleStyle: {
     color: "black",
-    fontSize: 22
-    ,
+    fontSize: 22,
     fontWeight: "200",
     lineHeight: 35,
     fontFamily: "OpenSans-bold",

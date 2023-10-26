@@ -30,7 +30,6 @@ import { localized } from "../locales/localization";
 import { updateProfile } from "../redux/actions/authAction";
 
 const AddDriverScreen = ({ route }: any) => {
-  const { title } = route?.params;
   const [loading, setLoading] = useState(false);
   const [langOpen, setlangOpen] = useState(false);
   const [response, setResponse] = useState({
@@ -89,7 +88,7 @@ const AddDriverScreen = ({ route }: any) => {
                   onPress={() => navigation.goBack()}
                 />
                 <View style={styles.item}>
-                  <Text style={styles.itemText}>{title}</Text>
+                  <Text style={styles.itemText}>{localized.t("DRIVE")}</Text>
                 </View>
                 <BurgerIcon />
               </View>

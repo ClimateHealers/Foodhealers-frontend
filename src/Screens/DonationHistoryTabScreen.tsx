@@ -10,7 +10,9 @@ import { useNavigation } from "@react-navigation/native";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import {
+  ActivityIndicator,
   FlatList,
+  Modal,
   ScrollView,
   Text,
   TouchableOpacity,
@@ -28,6 +30,8 @@ import { myDonations } from "../redux/actions/myDonations";
 
 const DonationHistoryTabScreen = () => {
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [filterName, setFilterName] = useState<string>(`${localized.t("NEW")}`);
   const [donationData, setDonationData]: any[] = useState<[]>([]);
 
   const dispatch = useDispatch();
@@ -55,8 +59,10 @@ const DonationHistoryTabScreen = () => {
       const dateB = new Date(b?.createdAt);
 
       if (order === "ASC") {
+        setFilterName(`${localized.t("NEW")}`);
         return dateA?.valueOf() - dateB?.valueOf();
       } else {
+        setFilterName(`${localized.t("OLD")}`);
         return dateB?.valueOf() - dateA?.valueOf();
       }
     });
@@ -70,12 +76,14 @@ const DonationHistoryTabScreen = () => {
     if (index === 0) {
       fetchingFoodDonationData();
     } else if (index === 1) {
+      setLoading(true);
       const res = await dispatch(myDonations({} as any) as any);
       const donationsAll = res?.payload?.donationList;
       const verifiedDonations = donationsAll?.filter(
         (event: any) => event?.donationType === "Supplies"
       );
       setDonationData(verifiedDonations);
+      setLoading(false);
     }
   };
 
@@ -274,6 +282,13 @@ const DonationHistoryTabScreen = () => {
             onTabPress={handleSingleIndexSelect}
           />
         </View>
+        <Modal visible={loading} animationType="slide" transparent={true}>
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <ActivityIndicator size={"large"} />
+            </View>
+          </View>
+        </Modal>
         <View style={styles.itemFilter}>
           <Text style={styles.itemFilterText}>{localized.t("DONATIONS")}</Text>
           <TouchableOpacity
@@ -286,6 +301,7 @@ const DonationHistoryTabScreen = () => {
             onPress={sortByDate}
           >
             <Text style={styles.itemFilterText}>{localized.t("FILTER")}</Text>
+            <Text style={styles.filterNameText}>({filterName})</Text>
             <MaterialIcons
               name="filter-list-alt"
               style={styles.itemFilterText}
@@ -295,6 +311,7 @@ const DonationHistoryTabScreen = () => {
         {donationData?.length > 0 ? (
           <View style={{ flex: 1 }}>
             <FlatList
+              showsVerticalScrollIndicator={false}
               data={donationData}
               renderItem={({ item }: any) => (
                 <Item

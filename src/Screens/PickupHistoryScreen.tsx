@@ -30,6 +30,7 @@ import { fetchPickup } from "../redux/actions/acceptPickupAction";
 const PickupHistoryScreen = ({ route }: any) => {
   const { itemTypeId } = route?.params;
   const [pickupData, setPickupData]: any[] = useState<[]>([]);
+  const [filterName, setFilterName] = useState<string>(`${localized.t("NEW")}`);
   const dispatch = useDispatch();
 
   const fetchingPickedupData = async () => {
@@ -61,8 +62,10 @@ const PickupHistoryScreen = ({ route }: any) => {
       const dateB = new Date(b.eventStartDate);
 
       if (order === "ASC") {
+        setFilterName(`${localized.t("NEW")}`);
         return dateA?.valueOf() - dateB?.valueOf();
       } else {
+        setFilterName(`${localized.t("OLD")}`);
         return dateB?.valueOf() - dateA?.valueOf();
       }
     });
@@ -70,7 +73,6 @@ const PickupHistoryScreen = ({ route }: any) => {
     const newOrder = order === "ASC" ? "DESC" : "ASC";
     setOrder(newOrder);
   };
-
 
   const navigation: any = useNavigation();
 
@@ -133,7 +135,7 @@ const PickupHistoryScreen = ({ route }: any) => {
                   dropAddress: dropAddress,
                   pickupId: id,
                   active: active,
-                  fullfilled: fullfilled
+                  fullfilled: fullfilled,
                 })
               : navigation.navigate("PickupSelectedDetailsScreen", {
                   pickAddress: pickAddress,
@@ -146,7 +148,7 @@ const PickupHistoryScreen = ({ route }: any) => {
                   dropAddress: dropAddress,
                   pickupId: id,
                   active: active,
-                  fullfilled: fullfilled
+                  fullfilled: fullfilled,
                 });
           }}
           buttonStyle={{
@@ -188,9 +190,7 @@ const PickupHistoryScreen = ({ route }: any) => {
                     onPress={() => navigation.goBack()}
                   />
                   <View style={styles.item}>
-                    <Text style={styles.itemText}>
-                      Pickup History
-                    </Text>
+                    <Text style={styles.itemText}>{localized.t("PICKUP_HISTORY")}</Text>
                   </View>
                   <BurgerIcon />
                 </View>
@@ -198,8 +198,7 @@ const PickupHistoryScreen = ({ route }: any) => {
                   <View>
                     <View style={styles.itemFilter}>
                       <Text style={styles.itemFilterText}>
-                        {/* {localized.t("EVENTS")} */}
-                        Pickup History
+                        {localized.t("PICKUP_HISTORY")}
                       </Text>
                       <TouchableOpacity
                         style={{
@@ -213,6 +212,9 @@ const PickupHistoryScreen = ({ route }: any) => {
                         <Text style={styles.itemFilterText}>
                           {localized.t("FILTER")}
                         </Text>
+                        <Text style={styles.filterNameText}>
+                          ({filterName})
+                        </Text>
                         <MaterialIcons
                           name="filter-list-alt"
                           style={styles.itemFilterText}
@@ -220,32 +222,31 @@ const PickupHistoryScreen = ({ route }: any) => {
                       </TouchableOpacity>
                     </View>
                     <FlatList
+                      showsVerticalScrollIndicator={false}
                       data={pickupData}
                       renderItem={({ item }: any) => (
                         <Item
-                        name={item?.name}
-                        pickupTiming={`${moment(
-                          item?.deliver?.pickupDate
-                        ).format("DD,  ddd, hh:mm A")}`}
-                        pickAddress={
-                          item?.deliver?.pickupAddress?.fullAddress
-                        }
-                        dropAddress={
-                          item?.deliver?.dropAddress?.fullAddress
-                        }
-                        picklat={item?.deliver?.pickupAddress?.lat}
-                        picklng={item?.deliver?.pickupAddress?.lng}
-                        eventStartDate={item?.eventStartDate}
-                        eventEndDate={item?.eventEndDate}
-                        id={item?.id}
-                        status={item?.status}
-                        droplat={item?.deliver?.dropAddress?.lat}
-                        droplng={item?.deliver?.dropAddress?.lng}
-                        dropTiming={`${moment(
-                          item?.deliver?.dropDate
-                        ).format("DD,  ddd, hh:mm A")}`}
-                        active={item?.active}
-                        fullfilled={item?.fullfilled}
+                          name={item?.name}
+                          pickupTiming={`${moment(
+                            item?.deliver?.pickupDate
+                          ).format("DD,  ddd, hh:mm A")}`}
+                          pickAddress={
+                            item?.deliver?.pickupAddress?.fullAddress
+                          }
+                          dropAddress={item?.deliver?.dropAddress?.fullAddress}
+                          picklat={item?.deliver?.pickupAddress?.lat}
+                          picklng={item?.deliver?.pickupAddress?.lng}
+                          eventStartDate={item?.eventStartDate}
+                          eventEndDate={item?.eventEndDate}
+                          id={item?.id}
+                          status={item?.status}
+                          droplat={item?.deliver?.dropAddress?.lat}
+                          droplng={item?.deliver?.dropAddress?.lng}
+                          dropTiming={`${moment(item?.deliver?.dropDate).format(
+                            "DD,  ddd, hh:mm A"
+                          )}`}
+                          active={item?.active}
+                          fullfilled={item?.fullfilled}
                         />
                       )}
                       keyExtractor={(item): any => {

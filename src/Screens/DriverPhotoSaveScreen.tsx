@@ -107,6 +107,7 @@ const DriverPhotoSaveScreen = ({ route }: any) => {
         );
       } else {
         setLoading(false);
+        console.log("ERROR");
       }
     } catch (error) {
       console.log("ERROR", error);
@@ -119,7 +120,7 @@ const DriverPhotoSaveScreen = ({ route }: any) => {
         <Modal visible={loader} animationType="slide" transparent={true}>
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
-              <ActivityIndicator size={"large"} color="white" />
+              <ActivityIndicator size={"large"} />
             </View>
           </View>
         </Modal>
@@ -149,6 +150,13 @@ const DriverPhotoSaveScreen = ({ route }: any) => {
                 </View>
                 <BurgerIcon />
               </View>
+              <Modal visible={loading} animationType="slide" transparent={true}>
+                <View style={styles.centeredView}>
+                  <View style={styles.modalView}>
+                    <ActivityIndicator size={"large"} />
+                  </View>
+                </View>
+              </Modal>
               <View
                 style={{
                   height: h2dp(35),

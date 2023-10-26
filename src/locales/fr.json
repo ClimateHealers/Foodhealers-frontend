@@ -261,6 +261,22 @@
     "REQUEST": "Demande",
     "ONGOING_PICKUPS": "Ramassages en cours",
     "PICKUP_REQUESTS": "Demandes de ramassage",
-    "PICKUPS": "Ramassages"
+    "PICKUPS": "Ramassages",
+    "PLEASE_ENTER_OTP": "Veuillez entrer le code OTP",
+    "PICKUP_OTP": "Code OTP de collecte",
+    "OTP_HAS_BEEN_GENERATED_FOR_PICKUP": "Le code OTP a été généré pour la collecte.",
+    "PICKEDUP": "Collecté",
+    "DELIVERED": "Livré",
+    "DELIVERY_OTP": "Code OTP de livraison",
+    "OTP_HAS_BEEN_GENERATED_FOR_DELIVERY": "Le code OTP a été généré pour la livraison.",
+    "NUMBER": "Numéro",
+    "PROFILE_UPDATE_SUCCESS": "Mise à jour du profil réussie",
+    "YOUR_PROFILE_HAS_BEEN_UPDATED_SUCCESSFULLY": "Votre profil a été mis à jour avec succès",
+    "PROFILE_NOT_UPDATED": "Profil non mis à jour",
+    "PLEASE_ENTER_VALID_OTP": "Veuillez entrer un OTP valide",
+    "WRONG_OTP": "OTP incorrect",
+    "PICKUP_HISTORY": "Historique des ramassages",
+    "NEW": "Nouveau",
+    "OLD": "Vieux"
   }
 }

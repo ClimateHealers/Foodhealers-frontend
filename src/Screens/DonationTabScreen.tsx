@@ -29,6 +29,7 @@ import { myDonations } from "../redux/actions/myDonations";
 
 const DonationTabScreen = () => {
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [filterName, setFilterName] = useState<string>(`${localized.t("NEW")}`);
   const [donationData, setDonationData]: any[] = useState<[]>([]);
 
   const dispatch = useDispatch();
@@ -57,8 +58,10 @@ const DonationTabScreen = () => {
       const dateB = new Date(b?.createdAt);
 
       if (order === "ASC") {
+        setFilterName(`${localized.t("NEW")}`);
         return dateA?.valueOf() - dateB?.valueOf();
       } else {
+        setFilterName(`${localized.t("OLD")}`);
         return dateB?.valueOf() - dateA?.valueOf();
       }
     });
@@ -291,6 +294,7 @@ const DonationTabScreen = () => {
             onPress={sortByDate}
           >
             <Text style={styles.itemFilterText}>{localized.t("FILTER")}</Text>
+            <Text style={styles.filterNameText}>({filterName})</Text>
             <MaterialIcons
               name="filter-list-alt"
               style={styles.itemFilterText}
@@ -300,6 +304,7 @@ const DonationTabScreen = () => {
         {donationData?.length > 0 ? (
           <View style={{ flex: 1 }}>
             <FlatList
+              showsVerticalScrollIndicator={false}
               data={donationData}
               renderItem={({ item }: any) => (
                 <Item

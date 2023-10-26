@@ -30,11 +30,12 @@ import { getLocation } from "../Components/getCurrentLocation";
 import { allEvents } from "../redux/actions/allEvents";
 import { myEvents } from "../redux/actions/myEvents";
 import { localized } from "../locales/localization";
+import moment from "moment";
 
 const AllEventScreen = () => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [eventData, setEventData]: any = useState<[]>([]);
-
+  const [filterName, setFilterName] = useState<string>(`${localized.t("NEW")}`);
   const dispatch = useDispatch();
 
   const navigation: any = useNavigation();
@@ -55,8 +56,10 @@ const AllEventScreen = () => {
       const dateB = new Date(b?.eventStartDate);
 
       if (order === "ASC") {
+        setFilterName(`${localized.t("NEW")}`);
         return dateA?.valueOf() - dateB?.valueOf();
       } else {
+        setFilterName(`${localized.t("OLD")}`);
         return dateB?.valueOf() - dateA?.valueOf();
       }
     });
@@ -163,6 +166,16 @@ const AllEventScreen = () => {
           </View>
         )}
         <ScrollView showsVerticalScrollIndicator={false}>
+        <Text
+            style={{
+              marginLeft: w2dp(5),
+              fontSize: 16,
+              lineHeight: 30,
+              paddingTop: h2dp(0.5),
+            }}
+          >
+            {moment(eventStartDate).format("MMM DD, YYYY  ddd, hh:mm A")}
+          </Text>
           <Text
             style={{
               marginLeft: w2dp(5),
@@ -170,7 +183,6 @@ const AllEventScreen = () => {
               fontWeight: "500",
               fontSize: 16,
               lineHeight: 30,
-              paddingTop: h2dp(1),
             }}
           >
             {name}
@@ -282,6 +294,7 @@ const AllEventScreen = () => {
               onPress={sortByDate}
             >
               <Text style={styles.itemFilterText}>{localized.t("FILTER")}</Text>
+              <Text style={styles.filterNameText}>({filterName})</Text>
               <MaterialIcons
                 name="filter-list-alt"
                 style={styles.itemFilterText}
@@ -291,6 +304,7 @@ const AllEventScreen = () => {
           {eventData?.length > 0 ? (
             <View style={{ flex: 1 }}>
               <FlatList
+                showsVerticalScrollIndicator={false}
                 data={eventData}
                 renderItem={({ item }: any) => (
                   <Item
