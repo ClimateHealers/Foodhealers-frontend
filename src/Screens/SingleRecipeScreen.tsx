@@ -1,6 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
+import {decode} from "html-entities"
 import React from "react";
 import {
   Image,
@@ -58,7 +59,7 @@ const SingleRecipeScreen = ({ route }: any) => {
                   { alignSelf: "center", justifyContent: "center" },
                 ]}
               >
-                <Text style={styles.itemText}>{recipeData?.recipeName}</Text>
+                <Text style={styles.itemText}>{decode(recipeData?.recipeName, { level: "html5" })}</Text>
               </View>
             </ScrollView>
             <BurgerIcon />

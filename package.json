@@ -50,6 +50,7 @@
     "firebase-auth": "^0.1.2",
     "formik": "^2.4.2",
     "global": "^4.4.0",
+    "html-entities": "^2.4.0",
     "i18n-js": "^4.2.3",
     "jwt-decode": "^3.1.2",
     "moment": "^2.29.4",
