@@ -4,11 +4,20 @@ import { FlipType, SaveFormat, manipulateAsync } from "expo-image-manipulator";
 import * as MediaLibrary from "expo-media-library";
 import * as Permissions from "expo-permissions";
 import React, { useCallback, useRef, useState } from "react";
-import { Button, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  ActivityIndicator,
+  Button,
+  Modal,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { localized } from "../locales/localization";
 
 export default function TakePictureScreen() {
   const [type, setType] = useState(CameraType.front);
+  const [loading, setLoading] = useState(false);
   const [permission, requestPermission] = Camera.useCameraPermissions();
   const [imageUri, setImageUri] = useState<any | null>(null);
   const cameraRef = useRef<Camera | null>(null);
@@ -36,7 +45,7 @@ export default function TakePictureScreen() {
     return (
       <View style={styles.container}>
         <Text style={{ textAlign: "center" }}>
-        {localized.t("WE_NEED_YOUR_PERMISSION_TO_SHOW_THE_CAMERA")}
+          {localized.t("WE_NEED_YOUR_PERMISSION_TO_SHOW_THE_CAMERA")}
         </Text>
         <Button onPress={requestPermission} title="grant permission" />
       </View>
@@ -46,6 +55,7 @@ export default function TakePictureScreen() {
   const takePicture = async () => {
     if (cameraRef?.current) {
       try {
+        setLoading(true);
         const { uri }: CameraCapturedPicture =
           await cameraRef?.current?.takePictureAsync();
         setImageUri(uri);
@@ -61,6 +71,7 @@ export default function TakePictureScreen() {
         navigation.navigate("DriverPhotoSaveScreen", {
           selectedImage: adjustedImage.uri,
         });
+        setLoading(false);
       } catch (error) {
         console.error("Error taking picture:", error);
       }
@@ -75,6 +86,13 @@ export default function TakePictureScreen() {
 
   return (
     <View style={styles.container}>
+      <Modal visible={loading} animationType="slide" transparent={true}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <ActivityIndicator size={"large"} color="white" />
+          </View>
+        </View>
+      </Modal>
       {isFocused && (
         <Camera
           ref={setCameraRef}
@@ -119,5 +137,25 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     color: "white",
+  },
+  centeredView: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
   },
 });

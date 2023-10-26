@@ -4,8 +4,10 @@ import { LinearGradient } from "expo-linear-gradient";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import {
+  ActivityIndicator,
   FlatList,
   Keyboard,
+  Modal,
   ScrollView,
   StatusBar,
   Text,
@@ -31,13 +33,15 @@ import ReactNativeSegmentedControlTab from "react-native-segmented-control-tab";
 import { fetchUser } from "../redux/actions/authAction";
 
 const PickupDetailsScreen = ({ route }: any) => {
-  const { itemTypeId, driverCity } = route?.params;
+  const { itemTypeId } = route?.params;
+  const [loading, setLoading] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [data, setData] = useState<any>();
   const [pickupData, setPickupData]: any[] = useState<[]>([]);
   const dispatch = useDispatch();
 
   const fetchingPickedupData = async () => {
+    setLoading(true);
     const response = await dispatch(
       fetchPickup({ requestTypeId: itemTypeId } as any) as any
     );
@@ -52,7 +56,10 @@ const PickupDetailsScreen = ({ route }: any) => {
       (event: any) => event?.fullfilled === false
     );
     setPickupData(fullfilledRequests);
+    setLoading(false);
   };
+
+  const delivery = data?.address?.city;
 
   const fetchingUserData = async () => {
     const response = await dispatch(fetchUser({} as any) as any);
@@ -94,6 +101,7 @@ const PickupDetailsScreen = ({ route }: any) => {
     if (index === 0) {
       fetchingPickedupData();
     } else if (index === 1) {
+      setLoading(true);
       const response = await dispatch(
         allRequests({ itemTypeId } as any) as any
       );
@@ -105,9 +113,10 @@ const PickupDetailsScreen = ({ route }: any) => {
         (event: any) => event?.active === true
       );
       const pickupLocationAround = verifiedFoodEvents?.filter(
-        (event: any) => event?.deliver?.pickupAddress?.city === data?.address?.city
+        (event: any) => event?.deliver?.pickupAddress?.city === delivery
       );
       setPickupData(pickupLocationAround);
+      setLoading(false);
     }
   };
 
@@ -230,6 +239,17 @@ const PickupDetailsScreen = ({ route }: any) => {
                   </View>
                   <BurgerIcon />
                 </View>
+                <Modal
+                  visible={loading}
+                  animationType="slide"
+                  transparent={true}
+                >
+                  <View style={styles.centeredView}>
+                    <View style={styles.modalView}>
+                      <ActivityIndicator size={"large"} color="white" />
+                    </View>
+                  </View>
+                </Modal>
                 <View style={styles.toggle}>
                   <ReactNativeSegmentedControlTab
                     values={[
@@ -268,6 +288,7 @@ const PickupDetailsScreen = ({ route }: any) => {
                     </View>
                     <View style={{ marginTop: h2dp(3) }}>
                       <FlatList
+                        showsVerticalScrollIndicator={false}
                         data={pickupData}
                         renderItem={({ item }: any) => (
                           <Item

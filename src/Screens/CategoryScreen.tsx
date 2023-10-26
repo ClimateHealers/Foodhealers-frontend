@@ -1,9 +1,9 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import axios from "axios";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useEffect, useState } from "react";
 import {
-  FlatList,
   Image,
   Keyboard,
   SafeAreaView,
@@ -12,7 +12,7 @@ import {
   TextInput,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  View,
+  View
 } from "react-native";
 import { heightPercentageToDP as h2dp } from "react-native-responsive-screen";
 import { useDispatch, useSelector } from "react-redux";
@@ -20,7 +20,6 @@ import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
 import { styles } from "../Components/Styles";
 import { getLocation } from "../Components/getCurrentLocation";
-import axios from "axios";
 import { localized } from "../locales/localization";
 import { VeganRecipesCategory } from "../redux/actions/veganRecipesCategory";
 const CategoryScreen = ({ route }: any) => {
@@ -206,7 +205,7 @@ const CategoryScreen = ({ route }: any) => {
               scrollEventThrottle={400}
             >
               <TouchableOpacity activeOpacity={1}>
-                <View style={[styles.centeredView]}>
+                <View style={[styles.centeredalignView]}>
                   {textChange
                     ? filteredData?.map((recipe: any) => (
                         <View

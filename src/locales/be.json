@@ -274,6 +274,11 @@
     "NUMBER": "নম্বর",
     "PROFILE_UPDATE_SUCCESS": "প্রোফাইল আপডেট সাফল",
     "YOUR_PROFILE_HAS_BEEN_UPDATED_SUCCESSFULLY": "আপনার প্রোফাইল সফলভাবে আপডেট হয়েছে",
-    "PROFILE_NOT_UPDATED": "প্রোফাইল আপডেট হয়নি"
+    "PROFILE_NOT_UPDATED": "প্রোফাইল আপডেট হয়নি",
+    "PLEASE_ENTER_VALID_OTP": "দয়া করে বৈধ OTP দিন",
+    "WRONG_OTP": "ভুল OTP",
+    "PICKUP_HISTORY": "পিকআপ হিস্ট্রি",
+    "NEW": "নতুন",
+    "OLD": "পুরানো"
   }
 }

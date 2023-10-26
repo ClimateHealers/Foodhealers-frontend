@@ -271,6 +271,11 @@
     "NUMBER": "号码",
     "PROFILE_UPDATE_SUCCESS": "个人资料更新成功",
     "YOUR_PROFILE_HAS_BEEN_UPDATED_SUCCESSFULLY": "您的个人资料已成功更新",
-    "PROFILE_NOT_UPDATED": "个人资料未更新"
+    "PROFILE_NOT_UPDATED": "个人资料未更新",
+    "PLEASE_ENTER_VALID_OTP": "请输入有效的OTP",
+    "WRONG_OTP": "错误的OTP",
+    "PICKUP_HISTORY": "提货历史",
+    "NEW": "新的",
+    "OLD": "旧的"
   }
 }

@@ -33,6 +33,7 @@ import { fetchVolunteerAtEvent } from "../redux/actions/volunteerAction";
 
 const VolunteerEventHistoryScreen = ({ route }: any) => {
   const { itemTypeId, title } = route?.params;
+  const [filterName, setFilterName] = useState<string>(`${localized.t("NEW")}`);
   const [volunteerData, setVolunteerData]: any = useState<[]>([]);
   useEffect(() => {
     fetchingVolunteerEventData();
@@ -46,8 +47,10 @@ const VolunteerEventHistoryScreen = ({ route }: any) => {
       const dateB = new Date(b?.fromDate);
 
       if (order === "ASC") {
+        setFilterName(`${localized.t("NEW")}`);
         return dateA?.valueOf() - dateB?.valueOf();
       } else {
+        setFilterName(`${localized.t("OLD")}`);
         return dateB?.valueOf() - dateA?.valueOf();
       }
     });
@@ -213,6 +216,7 @@ const VolunteerEventHistoryScreen = ({ route }: any) => {
                 <Text style={styles.itemFilterText}>
                   {localized.t("FILTER")}
                 </Text>
+                <Text style={styles.filterNameText}>({filterName})</Text>
                 <MaterialIcons
                   name="filter-list-alt"
                   style={styles.itemFilterText}
@@ -221,6 +225,7 @@ const VolunteerEventHistoryScreen = ({ route }: any) => {
             </View>
             <View style={{ flex: 1 }}>
               <FlatList
+                showsVerticalScrollIndicator={false}
                 data={volunteerData}
                 renderItem={({ item }: any) => (
                   <Item

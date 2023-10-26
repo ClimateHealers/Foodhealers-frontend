@@ -146,7 +146,7 @@ const VolunteerThankYouScreen = ({ route }: any) => {
                       })
                     }
                     buttonStyle={styles.buttonMainStyles}
-                    titleStyle={styles.titleMainStyle}
+                    titleStyle={styles.titleStyle}
                   />
                 </View>
               </View>
@@ -161,8 +161,8 @@ const VolunteerThankYouScreen = ({ route }: any) => {
                         title: title,
                       })
                     }
-                    buttonStyle={styles.buttonStyles}
-                    titleStyle={styles.titleMainStyle}
+                    buttonStyle={styles.buttonMainStyles}
+                    titleStyle={styles.titleStyle}
                   />
                 ) : itemTypeId === 2 ? (
                   <PrimaryButton
@@ -174,8 +174,8 @@ const VolunteerThankYouScreen = ({ route }: any) => {
                         title: title,
                       })
                     }
-                    buttonStyle={styles.buttonStyles}
-                    titleStyle={styles.titleMainStyle}
+                    buttonStyle={styles.buttonMainStyles}
+                    titleStyle={styles.titleStyle}
                   />
                 ) : (
                   <PrimaryButton
@@ -187,8 +187,8 @@ const VolunteerThankYouScreen = ({ route }: any) => {
                         title: title,
                       });
                     }}
-                    buttonStyle={styles.buttonStyles}
-                    titleStyle={styles.titleMainStyle}
+                    buttonStyle={styles.buttonMainStyles}
+                    titleStyle={styles.titleStyle}
                   />
                 )}
               </View>

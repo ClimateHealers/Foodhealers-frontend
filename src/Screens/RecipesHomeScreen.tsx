@@ -99,7 +99,7 @@ const RecipesHomeScreen = () => {
               showsVerticalScrollIndicator={false}
             >
               <TouchableOpacity activeOpacity={1}>
-                <View style={[styles.centeredView]}>
+                <View style={[styles.centeredalignView]}>
                   {recipesCategory.map((recipe: any) => (
                     <View
                       key={recipe.id}

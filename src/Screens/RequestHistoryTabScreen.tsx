@@ -10,6 +10,8 @@ import moment from "moment";
 import React, { useCallback, useEffect, useState } from "react";
 import {
   FlatList,
+  ActivityIndicator,
+  Modal,
   ScrollView,
   Text,
   TouchableOpacity,
@@ -29,7 +31,9 @@ import { useFocusEffect } from "@react-navigation/native";
 
 const RequestHistoryTabScreen = ({ route }: any) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [filterName, setFilterName] = useState<string>(`${localized.t("NEW")}`);
   const [requestData, setRequestData]: any[] = useState<[]>([]);
+  const [loading, setLoading] = useState(false);
   const [itemTypeId, setItemTypeId] = useState<number>(1);
   useFocusEffect(
     useCallback(() => {
@@ -45,8 +49,10 @@ const RequestHistoryTabScreen = ({ route }: any) => {
       const dateB = new Date(b?.createdAt);
 
       if (order === "ASC") {
+        setFilterName(`${localized.t("NEW")}`);
         return dateA?.valueOf() - dateB?.valueOf();
       } else {
+        setFilterName(`${localized.t("NEW")}`);
         return dateB?.valueOf() - dateA?.valueOf();
       }
     });
@@ -70,12 +76,14 @@ const RequestHistoryTabScreen = ({ route }: any) => {
       setItemTypeId(1);
       fetchingRequestData();
     } else if (index === 1) {
+      setLoading(true);
       setItemTypeId(2);
       const response = await dispatch(myRequests({ itemTypeId } as any) as any);
       const ApprovedDonation = response?.payload?.requestList?.filter(
         (event: any) => event?.status === "approved"
       );
       setRequestData(ApprovedDonation);
+      setLoading(false);
     }
   };
 
@@ -265,6 +273,13 @@ const RequestHistoryTabScreen = ({ route }: any) => {
           onTabPress={handleSingleIndexSelect}
         />
       </View>
+      <Modal visible={loading} animationType="slide" transparent={true}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <ActivityIndicator size={"large"} />
+          </View>
+        </View>
+      </Modal>
       <View style={styles.itemFilter}>
         <Text style={styles.itemFilterText}>{localized.t("ALL_HISTORY")}</Text>
         <TouchableOpacity
@@ -277,12 +292,14 @@ const RequestHistoryTabScreen = ({ route }: any) => {
           onPress={sortByDate}
         >
           <Text style={styles.itemFilterText}>{localized.t("FILTER")}</Text>
+          <Text style={styles.filterNameText}>({filterName})</Text>
           <MaterialIcons name="filter-list-alt" style={styles.itemFilterText} />
         </TouchableOpacity>
       </View>
       {requestData?.length > 0 ? (
         <View style={{ flex: 1 }}>
           <FlatList
+            showsVerticalScrollIndicator={false}
             data={requestData}
             renderItem={({ item }: any) => (
               <Item

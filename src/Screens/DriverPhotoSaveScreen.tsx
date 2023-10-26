@@ -149,6 +149,13 @@ const DriverPhotoSaveScreen = ({ route }: any) => {
                 </View>
                 <BurgerIcon />
               </View>
+              <Modal visible={loading} animationType="slide" transparent={true}>
+                <View style={styles.centeredView}>
+                  <View style={styles.modalView}>
+                    <ActivityIndicator size={"large"} color="white" />
+                  </View>
+                </View>
+              </Modal>
               <View
                 style={{
                   height: h2dp(35),

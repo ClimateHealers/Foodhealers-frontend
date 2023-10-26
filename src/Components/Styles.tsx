@@ -43,6 +43,11 @@ export const styles = StyleSheet.create({
   centeredView: {
     flex: 1,
     alignItems: "center",
+    justifyContent: "center",
+  },
+  centeredalignView: {
+    flex: 1,
+    alignItems: "center",
   },
   scrollview: {
     height: h2dp(80),
@@ -61,6 +66,12 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     color: "white",
     marginTop: h2dp(1),
+  },
+  filterNameText: {
+    fontSize: 16,
+    color: "white",
+    marginTop: h2dp(1),
+    fontWeight: "bold",
   },
   modalView: {
     margin: 20,
@@ -141,7 +152,7 @@ export const styles = StyleSheet.create({
   },
   item: {
     minHeight: h2dp(10),
-    justifyContent: "center"
+    justifyContent: "center",
   },
   itemText: {
     fontSize: 25,

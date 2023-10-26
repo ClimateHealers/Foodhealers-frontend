@@ -271,6 +271,11 @@
     "NUMBER": "नंबर",
     "PROFILE_UPDATE_SUCCESS": "प्रोफ़ाइल अपडेट सफल",
     "YOUR_PROFILE_HAS_BEEN_UPDATED_SUCCESSFULLY": "आपकी प्रोफ़ाइल सफलतापूर्वक अपडेट की गई है",
-    "PROFILE_NOT_UPDATED": "प्रोफाइल अपडेट नहीं हुई"
+    "PROFILE_NOT_UPDATED": "प्रोफाइल अपडेट नहीं हुई",
+    "PLEASE_ENTER_VALID_OTP": "कृपया वैध OTP दर्ज करें",
+    "WRONG_OTP": "गलत OTP",
+    "PICKUP_HISTORY": "पिकअप हिस्ट्री",
+    "NEW": "नया",
+    "OLD": "पुराना"
   }
 }

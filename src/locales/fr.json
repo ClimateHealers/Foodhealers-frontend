@@ -272,6 +272,11 @@
     "NUMBER": "Numéro",
     "PROFILE_UPDATE_SUCCESS": "Mise à jour du profil réussie",
     "YOUR_PROFILE_HAS_BEEN_UPDATED_SUCCESSFULLY": "Votre profil a été mis à jour avec succès",
-    "PROFILE_NOT_UPDATED": "Profil non mis à jour"
+    "PROFILE_NOT_UPDATED": "Profil non mis à jour",
+    "PLEASE_ENTER_VALID_OTP": "Veuillez entrer un OTP valide",
+    "WRONG_OTP": "OTP incorrect",
+    "PICKUP_HISTORY": "Historique des ramassages",
+    "NEW": "Nouveau",
+    "OLD": "Vieux"
   }
 }

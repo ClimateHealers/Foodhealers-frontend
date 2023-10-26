@@ -29,6 +29,8 @@ import { allEvents } from "../redux/actions/allEvents";
 const VolunteerEventScreen = ({ route }: any) => {
   const { itemTypeId, title, latitude, longitude } = route?.params;
   const [eventData, setEventData]: any[] = useState<[]>([]);
+  
+  const [filterName, setFilterName] = useState<string>(`${localized.t("NEW")}`);
   const dispatch = useDispatch();
   const fetchingEventsData = async () => {
     const response = await dispatch(allEvents({} as any) as any);
@@ -54,8 +56,10 @@ const VolunteerEventScreen = ({ route }: any) => {
       const dateB = new Date(b.eventStartDate);
 
       if (order === "ASC") {
+        setFilterName(`${localized.t("NEW")}`);
         return dateA?.valueOf() - dateB?.valueOf();
       } else {
+        setFilterName(`${localized.t("OLD")}`);
         return dateB?.valueOf() - dateA?.valueOf();
       }
     });
@@ -196,6 +200,7 @@ const VolunteerEventScreen = ({ route }: any) => {
               onPress={sortByDate}
             >
               <Text style={styles.itemFilterText}>{localized.t("FILTER")}</Text>
+              <Text style={styles.filterNameText}>({filterName})</Text>
               <MaterialIcons
                 name="filter-list-alt"
                 style={styles.itemFilterText}
@@ -205,6 +210,7 @@ const VolunteerEventScreen = ({ route }: any) => {
           {eventData?.length > 0 ? (
             <View style={{ flex: 1 }}>
               <FlatList
+                showsVerticalScrollIndicator={false}
                 data={eventData}
                 renderItem={({ item }: any) => (
                   <Item

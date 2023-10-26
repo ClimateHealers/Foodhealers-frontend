@@ -56,8 +56,6 @@ const DriverRequestScreen = ({ route }: any) => {
     setData(data);
   };
 
-  console.log("lnvlkdvfdb", data)
-
   useFocusEffect(
     useCallback(() => {
       fetchingVehiclesData();
@@ -310,7 +308,6 @@ const DriverRequestScreen = ({ route }: any) => {
                     borderRadius: 5,
                     right: 0,
                     marginBottom: h2dp(2),
-                    // width: w2dp(20),
                     paddingHorizontal: w2dp(6),
                   }}
                   titleStyle={{
@@ -351,7 +348,7 @@ const DriverRequestScreen = ({ route }: any) => {
                   })
                 }
                 buttonStyle={{
-                  backgroundColor: "white",
+                  backgroundColor: "#D1D1D6",
                   color: "black",
                   borderRadius: 5,
                   borderColor: "black",

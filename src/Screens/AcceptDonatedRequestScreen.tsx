@@ -48,7 +48,7 @@ const AcceptDonatedRequestScreen = ({ route }: any) => {
   const [showTimePicker, setShowTimePicker] = useState(false);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [countryPhoneCode, setCountryPhoneCode] = useState<string>("");
-  
+
   const phoneCode = countryPhoneCode.toString();
   const [response, setResponse] = useState({
     loading: false,
@@ -57,7 +57,8 @@ const AcceptDonatedRequestScreen = ({ route }: any) => {
   });
   const [selectedTime, setSelectedTime] = useState<Date | any>(new Date());
   const [selectedDate, setSelectedDate] = useState<Date | any>(
-    moment(new Date(requiredDate)).add(2, "hour"));
+    moment(new Date(requiredDate)).add(2, "hour")
+  );
   const [selectedEndDate, setSelectedEndDate] = useState<Date | any>(
     moment().add(1, "hour")
   );

@@ -1,11 +1,17 @@
 import { Ionicons } from "@expo/vector-icons";
-import { CommonActions, useNavigation } from "@react-navigation/native";
-import { LinearGradient } from "expo-linear-gradient";
-import React, { useEffect, useState } from "react";
 import {
+  CommonActions,
+  useFocusEffect,
+  useNavigation,
+} from "@react-navigation/native";
+import { LinearGradient } from "expo-linear-gradient";
+import React, { useCallback, useEffect, useState } from "react";
+import {
+  ActivityIndicator,
   Alert,
   Keyboard,
   Linking,
+  Modal,
   ScrollView,
   Text,
   TouchableWithoutFeedback,
@@ -25,7 +31,10 @@ import { Formik } from "formik";
 import { otpGenerate } from "../redux/actions/optGenerateAction";
 import { TextInput } from "react-native-paper";
 import { useDispatch } from "react-redux";
-import { updatePickupRequest } from "../redux/actions/acceptPickupAction";
+import {
+  fetchPickup,
+  updatePickupRequest,
+} from "../redux/actions/acceptPickupAction";
 import { GenerateOTP } from "../Components/validation";
 
 const PickupConfirmScreen = ({ route }: any) => {
@@ -46,6 +55,7 @@ const PickupConfirmScreen = ({ route }: any) => {
   } = route?.params;
   const navigation: any = useNavigation();
   const [loading, setLoading] = useState(false);
+  const itemTypeId = 4;
   const [otp, setOtp] = useState(false);
   const [response, setResponse] = useState({
     loading: false,
@@ -60,13 +70,15 @@ const PickupConfirmScreen = ({ route }: any) => {
     Keyboard.dismiss();
   };
 
-  useEffect(() => {
-    if (!pickedup) {
-      setOtpType("pickup");
-    } else if (pickedup && !delivered) {
-      setOtpType("drop");
-    }
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      if (!pickedup) {
+        setOtpType("pickup");
+      } else if (pickedup && !delivered) {
+        setOtpType("drop");
+      }
+    }, [])
+  );
 
   const pickNavigationHandler = () => {
     const url = `https://www.google.com/maps/dir/?api=1&destination=${picklat},${picklng}`;
@@ -93,13 +105,20 @@ const PickupConfirmScreen = ({ route }: any) => {
                   name="chevron-back"
                   size={32}
                   color="white"
-                  onPress={() => navigation.goBack()}
+                  onPress={() => {navigation.goBack()}}
                 />
                 <View style={styles.item}>
                   <Text style={styles.itemText}>{localized.t("DRIVE")}</Text>
                 </View>
                 <BurgerIcon />
               </View>
+              <Modal visible={loading} animationType="slide" transparent={true}>
+                <View style={styles.centeredView}>
+                  <View style={styles.modalView}>
+                    <ActivityIndicator size={"large"} />
+                  </View>
+                </View>
+              </Modal>
               <Text
                 style={{
                   fontSize: 26,
@@ -177,9 +196,11 @@ const PickupConfirmScreen = ({ route }: any) => {
                             : `${localized.t("GET_DIRECTIONS")}`
                         }
                         onPress={pickNavigationHandler}
+                        disabled={pickedup}
                         buttonStyle={[
                           styles.buttonStyles,
                           {
+                            marginTop: h2dp(2),
                             marginBottom: h2dp(2),
                           },
                         ]}
@@ -242,9 +263,11 @@ const PickupConfirmScreen = ({ route }: any) => {
                             : `${localized.t("GET_DIRECTIONS")}`
                         }
                         onPress={dropNavigationHandler}
+                        disabled={delivered}
                         buttonStyle={[
                           styles.buttonStyles,
                           {
+                            marginTop: h2dp(2),
                             marginBottom: h2dp(2),
                           },
                         ]}
@@ -313,7 +336,7 @@ const PickupConfirmScreen = ({ route }: any) => {
                                       });
                                       setLoading(false);
                                       {
-                                        pickedup
+                                        !pickedup
                                           ? Alert.alert(
                                               `${localized.t("PICKUP_OTP")}`,
                                               `${localized.t(
@@ -395,6 +418,11 @@ const PickupConfirmScreen = ({ route }: any) => {
                                 message: "",
                                 error: false,
                               });
+                              await dispatch(
+                                fetchPickup({
+                                  requestTypeId: itemTypeId,
+                                } as any) as any
+                              );
                               setLoading(false);
                               Alert.alert(
                                 `${localized.t("SUCCESSFULL")}`,
@@ -403,8 +431,15 @@ const PickupConfirmScreen = ({ route }: any) => {
                                   {
                                     text: `${localized.t("OK")}`,
                                     onPress: () => {
-                                      setOtp(false);
+                                      setOtp(false),
+                                        navigation.navigate(
+                                          "PickupDetailsScreen",
+                                          {
+                                            itemTypeId: 4,
+                                          }
+                                        );
                                     },
+
                                     style: "default",
                                   },
                                 ],
@@ -412,6 +447,12 @@ const PickupConfirmScreen = ({ route }: any) => {
                               );
                             } else {
                               setLoading(false);
+                              Alert.alert(
+                                `${localized.t("WRONG_OTP")}`,
+                                `${localized.t("PLEASE_ENTER_VALID_OTP")}`,
+                                [{ text: `${localized.t("OK")}` }],
+                                { cancelable: false }
+                              );
                               console.log("ERROR");
                             }
                           } catch (err: any) {
@@ -422,7 +463,6 @@ const PickupConfirmScreen = ({ route }: any) => {
                               error: true,
                             });
                             Alert.alert(
-                              // `${localized.t("DONATION_NOT_ADDED")}`,
                               `${localized.t("ERROR")}`,
                               `${err.message}`,
                               [{ text: `${localized.t("OK")}` }],
@@ -448,7 +488,12 @@ const PickupConfirmScreen = ({ route }: any) => {
                               value={values?.otp}
                               placeholder={localized.t("PLEASE_ENTER_OTP")}
                               placeholderTextColor={"black"}
-                              style={[styles.textInput]}
+                              style={[
+                                styles.textInput,
+                                {
+                                  marginTop: h2dp(2),
+                                },
+                              ]}
                             />
                             <Text style={styles.inputError}>{errors?.otp}</Text>
                             <View
@@ -456,12 +501,16 @@ const PickupConfirmScreen = ({ route }: any) => {
                                 display: "flex",
                                 justifyContent: "center",
                                 alignItems: "center",
-                                marginTop: h2dp(1),
                               }}
                             >
                               <PrimaryButton
                                 title={localized.t("SUBMIT")}
-                                buttonStyle={styles.buttonStyles}
+                                buttonStyle={[
+                                  styles.buttonStyles,
+                                  {
+                                    marginTop: h2dp(2),
+                                  },
+                                ]}
                                 titleStyle={styles.titleStyle}
                                 onPress={handleSubmit}
                               />
@@ -470,7 +519,7 @@ const PickupConfirmScreen = ({ route }: any) => {
                         )}
                       </Formik>
                     </View>
-                  )}{" "}
+                  )}
                 </View>
               ) : null}
             </View>

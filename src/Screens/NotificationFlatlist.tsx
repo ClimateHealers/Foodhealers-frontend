@@ -7,8 +7,8 @@ import MaterialIcon from "react-native-vector-icons/MaterialIcons";
 import moment from "moment";
 import { human, material, systemWeights } from "react-native-typography";
 
-const NotificationFlatlist = ({ data }:any) => {
-  const renderItem = ({ item }:any) => {
+const NotificationFlatlist = ({ data }: any) => {
+  const renderItem = ({ item }: any) => {
     return (
       <View>
         <View style={styles.item}>
@@ -30,7 +30,8 @@ const NotificationFlatlist = ({ data }:any) => {
                 flexDirection: "row",
                 justifyContent: "space-between",
                 display: "flex",
-              }}>
+              }}
+            >
               <Text style={[styles.cardText, { width: 150 }]} numberOfLines={1}>
                 {item?.businessRuleViolated
                   ? item.businessRuleViolated.rule.title
@@ -54,6 +55,7 @@ const NotificationFlatlist = ({ data }:any) => {
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
+        showsVerticalScrollIndicator={false}
         data={data}
         renderItem={renderItem}
         keyExtractor={(item) => (item._id ? item._id : item.id)}
@@ -92,4 +94,3 @@ const styles = StyleSheet.create({
   },
 });
 export default NotificationFlatlist;
-
