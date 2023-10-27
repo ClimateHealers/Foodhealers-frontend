@@ -196,7 +196,7 @@ const PickupConfirmScreen = ({ route }: any) => {
                           paddingTop: h2dp(0.5),
                         }}
                       >
-                        {localized.t("PICKUP")}
+                        {localized.t("PICKUP")} :
                       </Text>
 
                       <ScrollView showsVerticalScrollIndicator={false}>
@@ -263,7 +263,7 @@ const PickupConfirmScreen = ({ route }: any) => {
                           paddingTop: h2dp(0.5),
                         }}
                       >
-                        {localized.t("DROPOFF")}
+                        {localized.t("DROPOFF")} :
                       </Text>
 
                       <ScrollView showsVerticalScrollIndicator={false}>
@@ -334,6 +334,13 @@ const PickupConfirmScreen = ({ route }: any) => {
                         <View>
                           {!fullfilled ? (
                             <View>
+                              <Text
+                                style={{
+                                  alignSelf: "center",
+                                  fontSize: h2dp(2.2),
+                                }}
+                              >{pickedup ? `${localized.t("DROPOFF")}` : `${localized.t("PICKUP")}`}
+                              </Text>
                               <PrimaryButton
                                 title={localized.t("GENERATE_OTP")}
                                 onPress={async () => {
