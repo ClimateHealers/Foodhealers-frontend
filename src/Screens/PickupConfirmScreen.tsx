@@ -54,7 +54,6 @@ const PickupConfirmScreen = ({ route }: any) => {
     delivered,
   } = route?.params;
   const navigation: any = useNavigation();
-  const [pickupData, setPickupData]: any[] = useState<[]>([]);
   const [loading, setLoading] = useState(false);
   const itemTypeId = 4;
   const [otp, setOtp] = useState(false);
@@ -63,46 +62,12 @@ const PickupConfirmScreen = ({ route }: any) => {
     error: false,
     message: "",
   });
-  const [otpType, setOtpType] = useState<any>("pickup");
-
-  const fetchingPickedupData = async () => {
-    setLoading(true);
-    const response = await dispatch(
-      fetchPickup({ requestTypeId: itemTypeId } as any) as any
-    );
-    const data = response?.payload?.PickupRequests;
-    const requiredVolunteers = data?.filter(
-      (event: any) => event?.type === "Pickup"
-    );
-    const verifiedFoodEvents = requiredVolunteers?.filter(
-      (event: any) => event?.active === false
-    );
-    const fullfilledRequests = verifiedFoodEvents?.filter(
-      (event: any) => event?.fullfilled === false
-    );
-    const pickedupItem = verifiedFoodEvents?.filter(
-      (event: any) => event?.id === pickupId
-    );
-    setPickupData(pickedupItem);
-    setLoading(false);
-  };
 
   const dispatch = useDispatch();
 
   const handlePressOutside = () => {
     Keyboard.dismiss();
   };
-
-  useFocusEffect(
-    useCallback(() => {
-      fetchingPickedupData();
-      if (pickedup) {
-        setOtpType("drop");
-      } else {
-        setOtpType("pickup");
-      }
-    }, [])
-  );
 
   const pickNavigationHandler = () => {
     const url = `https://www.google.com/maps/dir/?api=1&destination=${picklat},${picklng}`;
