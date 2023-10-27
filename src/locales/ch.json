@@ -276,6 +276,8 @@
     "WRONG_OTP": "错误的OTP",
     "PICKUP_HISTORY": "提货历史",
     "NEW": "新的",
-    "OLD": "旧的"
+    "OLD": "旧的",
+    "VEHICLE_UPDATED_SUCCESSFULLY": "车辆更新成功",
+    "YOUR_VEHICLE_HAS_BEEN_UPDATED_SUCCESSFULLY": "车辆已成功更新"
   }
 }

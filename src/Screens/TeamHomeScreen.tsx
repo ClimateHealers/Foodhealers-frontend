@@ -1,8 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
-import {
-  useFocusEffect,
-  useNavigation
-} from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useCallback, useState } from "react";
 import {
@@ -13,7 +10,7 @@ import {
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  View
+  View,
 } from "react-native";
 import { heightPercentageToDP as h2dp } from "react-native-responsive-screen";
 import { useDispatch } from "react-redux";
@@ -102,32 +99,32 @@ const TeamHomeScreen = ({ route }: any) => {
                       </TouchableOpacity>
                     </View>
                   </View> */}
-                  <View
-                    style={{
-                      marginTop: h2dp(3),
-                      marginBottom: h2dp(3),
-                      position: "relative",
-                    }}
+                  <TouchableOpacity
+                    onPress={() =>
+                      navigation.navigate("RequestFoodHomeScreen", {
+                        itemTypeId: 1,
+                        title: `${localized.t("REQUEST_FOOD")}`,
+                      })
+                    }
                   >
-                    <Image
-                      source={require("../../assets/images/shutterstock_633563996.png")}
-                      style={styles.imageStyle}
-                    />
-                    <View style={styles.title}>
-                      <TouchableOpacity
-                        onPress={() =>
-                          navigation.navigate("RequestFoodHomeScreen", {
-                            itemTypeId: 1,
-                            title: `${localized.t("REQUEST_FOOD")}`,
-                          })
-                        }
-                      >
+                    <View
+                      style={{
+                        marginTop: h2dp(3),
+                        marginBottom: h2dp(3),
+                        position: "relative",
+                      }}
+                    >
+                      <Image
+                        source={require("../../assets/images/shutterstock_633563996.png")}
+                        style={styles.imageStyle}
+                      />
+                      <View style={styles.title}>
                         <Text style={styles.textStyle}>
                           {localized.t("REQUEST_FOOD")}
                         </Text>
-                      </TouchableOpacity>
+                      </View>
                     </View>
-                  </View>
+                  </TouchableOpacity>
                   {/* <View
                     style={{
                       marginBottom: h2dp(3),
@@ -148,31 +145,31 @@ const TeamHomeScreen = ({ route }: any) => {
                       </TouchableOpacity>
                     </View>
                   </View> */}
-                  <View
-                    style={{
-                      marginBottom: h2dp(3),
-                      position: "relative",
-                    }}
+                  <TouchableOpacity
+                    onPress={() =>
+                      navigation.navigate("RequestFoodHomeScreen", {
+                        itemTypeId: 2,
+                        title: `${localized.t("REQUEST_SUPPLIES")}`,
+                      })
+                    }
                   >
-                    <Image
-                      source={require("../../assets/images/Rectangle189.png")}
-                      style={styles.imageStyle}
-                    />
-                    <View style={styles.title}>
-                      <TouchableOpacity
-                        onPress={() =>
-                          navigation.navigate("RequestFoodHomeScreen", {
-                            itemTypeId: 2,
-                            title: `${localized.t("REQUEST_SUPPLIES")}`,
-                          })
-                        }
-                      >
+                    <View
+                      style={{
+                        marginBottom: h2dp(3),
+                        position: "relative",
+                      }}
+                    >
+                      <Image
+                        source={require("../../assets/images/Rectangle189.png")}
+                        style={styles.imageStyle}
+                      />
+                      <View style={styles.title}>
                         <Text style={styles.textStyle}>
                           {localized.t("REQUEST_SUPPLIES")}
                         </Text>
-                      </TouchableOpacity>
+                      </View>
                     </View>
-                  </View>
+                  </TouchableOpacity>
                 </View>
               </TouchableOpacity>
             </ScrollView>

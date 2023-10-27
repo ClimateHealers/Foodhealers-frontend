@@ -329,7 +329,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.5)",
     alignItems: "center",
     width: "100%",
-    height: Platform.OS === "ios" ? h2dp(37) : h2dp(36),
+    height: Platform.OS === "ios" ? h2dp(37) : h2dp(40),
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
   },

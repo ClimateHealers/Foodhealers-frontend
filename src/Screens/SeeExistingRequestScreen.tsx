@@ -378,7 +378,7 @@ const SeeExistingRequestScreen = ({ route }: any) => {
             />
             <View style={styles.item}>
               <Text style={styles.itemText}>
-                {localized.t("EXISTING_FOOD_REQUESTS")}
+                {localized.t("EXISTING")} {localized.t("REQUESTS")}
               </Text>
             </View>
             <BurgerIcon />
@@ -387,7 +387,7 @@ const SeeExistingRequestScreen = ({ route }: any) => {
           <View>
             <View style={styles.itemFilter}>
               <Text style={styles.itemFilterText}>
-                {localized.t("EXISTING_FOOD_REQUESTS")}
+                {localized.t("EXISTING")} {item} {localized.t("DONATIONS")}
               </Text>
               <TouchableOpacity
                 style={{
@@ -409,7 +409,7 @@ const SeeExistingRequestScreen = ({ route }: any) => {
               </TouchableOpacity>
             </View>
             {requestData?.length > 0 ? (
-              <View style={{ height: h2dp(70), marginTop: h2dp(1) }}>
+              <View style={{ height: h2dp(60), marginTop: h2dp(1) }}>
                 <FlatList
                   showsVerticalScrollIndicator={false}
                   data={requestData}

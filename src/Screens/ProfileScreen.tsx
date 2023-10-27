@@ -331,24 +331,24 @@ const ProfileScreen = () => {
                       </View>
                     ) : (
                       <View>
-                        {data?.profilePhoto ? (
-                          <View>
-                            <Image
-                              source={{ uri: data?.profilePhoto }}
-                              style={{ width: hp2dp(20), height: hp2dp(20) }}
-                            />
-                          </View>
-                        ) : (
+                        {!data?.profilePhoto ||
+                        data?.profilePhoto === "Profile Photo not available" ? (
                           <View
                             style={{
                               paddingVertical: hp2dp(2),
-                              paddingHorizontal: wp2dp(5),
                               justifyContent: "center",
                               marginBottom: hp2dp(1),
                               position: "relative",
                             }}
                           >
                             <AntDesign name="user" size={150} color="#B01D19" />
+                          </View>
+                        ) : (
+                          <View>
+                            <Image
+                              source={{ uri: data?.profilePhoto }}
+                              style={{ width: hp2dp(20), height: hp2dp(20) }}
+                            />
                           </View>
                         )}
                       </View>

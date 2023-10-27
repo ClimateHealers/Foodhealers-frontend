@@ -278,6 +278,8 @@
     "WRONG_OTP": "Wrong OTP",
     "PICKUP_HISTORY": "Pickup History",
     "NEW": "New",
-    "OLD": "Old"
+    "OLD": "Old",
+    "VEHICLE_UPDATED_SUCCESSFULLY": "Vehicla Updated Successfully",
+    "YOUR_VEHICLE_HAS_BEEN_UPDATED_SUCCESSFULLY": "Vehicle has been updated successfully."
   }
 }

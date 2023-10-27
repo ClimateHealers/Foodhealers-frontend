@@ -54,6 +54,7 @@ const PickupConfirmScreen = ({ route }: any) => {
     delivered,
   } = route?.params;
   const navigation: any = useNavigation();
+  const [pickupData, setPickupData]: any[] = useState<[]>([]);
   const [loading, setLoading] = useState(false);
   const itemTypeId = 4;
   const [otp, setOtp] = useState(false);
@@ -64,6 +65,28 @@ const PickupConfirmScreen = ({ route }: any) => {
   });
   const [otpType, setOtpType] = useState<any>("pickup");
 
+  const fetchingPickedupData = async () => {
+    setLoading(true);
+    const response = await dispatch(
+      fetchPickup({ requestTypeId: itemTypeId } as any) as any
+    );
+    const data = response?.payload?.PickupRequests;
+    const requiredVolunteers = data?.filter(
+      (event: any) => event?.type === "Pickup"
+    );
+    const verifiedFoodEvents = requiredVolunteers?.filter(
+      (event: any) => event?.active === false
+    );
+    const fullfilledRequests = verifiedFoodEvents?.filter(
+      (event: any) => event?.fullfilled === false
+    );
+    const pickedupItem = verifiedFoodEvents?.filter(
+      (event: any) => event?.id === pickupId
+    );
+    setPickupData(pickedupItem);
+    setLoading(false);
+  };
+
   const dispatch = useDispatch();
 
   const handlePressOutside = () => {
@@ -72,10 +95,11 @@ const PickupConfirmScreen = ({ route }: any) => {
 
   useFocusEffect(
     useCallback(() => {
-      if (!pickedup) {
-        setOtpType("pickup");
-      } else if (pickedup && !delivered) {
+      fetchingPickedupData();
+      if (pickedup) {
         setOtpType("drop");
+      } else {
+        setOtpType("pickup");
       }
     }, [])
   );
@@ -105,7 +129,9 @@ const PickupConfirmScreen = ({ route }: any) => {
                   name="chevron-back"
                   size={32}
                   color="white"
-                  onPress={() => {navigation.goBack()}}
+                  onPress={() => {
+                    navigation.goBack();
+                  }}
                 />
                 <View style={styles.item}>
                   <Text style={styles.itemText}>{localized.t("DRIVE")}</Text>
@@ -320,7 +346,7 @@ const PickupConfirmScreen = ({ route }: any) => {
                                     });
                                     const data = {
                                       requestId: pickupId,
-                                      otpType: otpType,
+                                      otpType: pickedup ? "drop" : "pickup",
                                     };
                                     const res = await dispatch(
                                       otpGenerate(data as any) as any

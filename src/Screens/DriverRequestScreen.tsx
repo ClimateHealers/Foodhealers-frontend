@@ -217,6 +217,13 @@ const DriverRequestScreen = ({ route }: any) => {
                     {isAuthenticated && (
                       <View>
                         <TouchableOpacity
+                          onPress={() => navigation.navigate("HistoryScreen")}
+                        >
+                          <Text style={styles.burgerText}>
+                            {localized.t("HISTORY")}
+                          </Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
                           onPress={() => navigation.navigate("ProfileScreen")}
                         >
                           <Text style={styles.burgerText}>
@@ -244,7 +251,6 @@ const DriverRequestScreen = ({ route }: any) => {
                   backgroundColor: "white",
                   overflow: "hidden",
                   marginBottom: h2dp(3),
-                  borderWidth: 2,
                 }}
               >
                 <TouchableOpacity onPress={openImagePickerAsync}>

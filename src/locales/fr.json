@@ -277,6 +277,8 @@
     "WRONG_OTP": "OTP incorrect",
     "PICKUP_HISTORY": "Historique des ramassages",
     "NEW": "Nouveau",
-    "OLD": "Vieux"
+    "OLD": "Vieux",
+    "VEHICLE_UPDATED_SUCCESSFULLY": "Véhicule mis à jour avec succès",
+    "YOUR_VEHICLE_HAS_BEEN_UPDATED_SUCCESSFULLY": "Le véhicule a été mis à jour avec succès"
   }
 }

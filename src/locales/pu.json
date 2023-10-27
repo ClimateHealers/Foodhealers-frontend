@@ -276,6 +276,8 @@
     "WRONG_OTP": "ਗਲਤ OTP",
     "PICKUP_HISTORY": "ਪਿਕਅੱਪ ਹਿਸਟਰੀ",
     "NEW": "ਨਵਾਂ",
-    "OLD": "ਪੁਰਾਣਾ"
+    "OLD": "ਪੁਰਾਣਾ",
+    "VEHICLE_UPDATED_SUCCESSFULLY": "ਗੱਡੀ ਸਫਲਤਾਪੂਰਵਕ ਅੱਪਡੇਟ ਹੋ ਗਈ ਹੈ",
+    "YOUR_VEHICLE_HAS_BEEN_UPDATED_SUCCESSFULLY": "ਗੱਡੀ ਅੱਪਡੇਟ ਹੋ ਗਈ ਹੈ"
   }
 }

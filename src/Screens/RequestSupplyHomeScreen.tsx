@@ -75,57 +75,57 @@ const RequestSupplyHomeScreen = ({ route }: any) => {
                     </View>
                     <BurgerIcon />
                   </View>
-                  <View
-                    style={{
-                      marginTop: h2dp(3),
-                      marginBottom: h2dp(3),
-                      position: "relative",
-                    }}
+                  <TouchableOpacity
+                    onPress={() =>
+                      navigation.navigate("AddRequestDonationsScreen", {
+                        itemTypeId: itemTypeId,
+                        title: title,
+                      })
+                    }
                   >
-                    <Image
-                      source={require("../../assets/images/Rectangle168.png")}
-                      style={styles.imageStyle}
-                    />
-                    <View style={styles.title}>
-                      <TouchableOpacity
-                        onPress={() =>
-                          navigation.navigate("AddRequestDonationsScreen", {
-                            itemTypeId: itemTypeId,
-                            title: title,
-                          })
-                        }
-                      >
+                    <View
+                      style={{
+                        marginTop: h2dp(3),
+                        marginBottom: h2dp(3),
+                        position: "relative",
+                      }}
+                    >
+                      <Image
+                        source={require("../../assets/images/Rectangle168.png")}
+                        style={styles.imageStyle}
+                      />
+                      <View style={styles.title}>
                         <Text style={styles.textStyle}>
                           {localized.t("REQUEST_NEW")}
                         </Text>
-                      </TouchableOpacity>
+                      </View>
                     </View>
-                  </View>
-                  <View
-                    style={{
-                      marginBottom: h2dp(3),
-                      position: "relative",
-                    }}
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() =>
+                      navigation.navigate("RequestHistoryScreen", {
+                        itemTypeId: itemTypeId,
+                      })
+                    }
                   >
-                    <Image
-                      source={require("../../assets/images/Rectangle187.png")}
-                      style={styles.imageStyle}
-                    />
-                    <View style={styles.title}>
-                      <TouchableOpacity
-                        onPress={() =>
-                          navigation.navigate("RequestHistoryScreen", {
-                            itemTypeId: itemTypeId,
-                          })
-                        }
-                      >
+                    <View
+                      style={{
+                        marginBottom: h2dp(3),
+                        position: "relative",
+                      }}
+                    >
+                      <Image
+                        source={require("../../assets/images/Rectangle187.png")}
+                        style={styles.imageStyle}
+                      />
+                      <View style={styles.title}>
                         <Text style={styles.textStyle}>
                           {/* {localized.t("VOLUNTEER_TO_DRIVE")} */}
                           {localized.t("SEE_ALL_REQUESTS")}
                         </Text>
-                      </TouchableOpacity>
+                      </View>
                     </View>
-                  </View>
+                  </TouchableOpacity>
                 </View>
               </TouchableOpacity>
             </ScrollView>

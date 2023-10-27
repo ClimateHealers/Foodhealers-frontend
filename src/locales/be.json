@@ -279,6 +279,8 @@
     "WRONG_OTP": "ভুল OTP",
     "PICKUP_HISTORY": "পিকআপ হিস্ট্রি",
     "NEW": "নতুন",
-    "OLD": "পুরানো"
+    "OLD": "পুরানো",
+    "VEHICLE_UPDATED_SUCCESSFULLY": "যানবাহন সফলভাবে আপডেট করা হয়েছে",
+    "YOUR_VEHICLE_HAS_BEEN_UPDATED_SUCCESSFULLY": "যানবাহনটি সফলভাবে আপডেট করা হয়েছে"
   }
 }

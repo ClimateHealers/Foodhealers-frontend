@@ -1,8 +1,8 @@
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import moment from "moment";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   ActivityIndicator,
   FlatList,
@@ -67,11 +67,13 @@ const PickupDetailsScreen = ({ route }: any) => {
     setData(data);
   };
 
-  useEffect(() => {
-    fetchingPickedupData();
-    sortByDate();
-    fetchingUserData();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      fetchingPickedupData();
+      sortByDate();
+      fetchingUserData();
+    }, [])
+  );
 
   const [order, setOrder] = useState<"ASC" | "DESC">("ASC");
   const sortByDate = () => {
@@ -163,7 +165,6 @@ const PickupDetailsScreen = ({ route }: any) => {
         <Button
           title={localized.t("DETAILS")}
           onPress={() => {
-            console.log(active);
             active === false
               ? navigation.navigate("PickupConfirmScreen", {
                   pickAddress: pickAddress,

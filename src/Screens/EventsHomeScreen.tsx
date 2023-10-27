@@ -69,36 +69,36 @@ const EventsHomeScreen = () => {
                 </View>
                 <BurgerIcon />
               </View>
-              <View style={{ marginTop: h2dp(1) }}>
-                <Image
-                  source={require("../../assets/images/shutterShock.png")}
-                  style={styles.imageStyle}
-                />
-                <View style={styles.title}>
-                  <TouchableOpacity
-                    onPress={() => navigation.navigate("PostEvent")}
-                  >
+              <TouchableOpacity
+                onPress={() => navigation.navigate("PostEvent")}
+              >
+                <View style={{ marginTop: h2dp(1) }}>
+                  <Image
+                    source={require("../../assets/images/shutterShock.png")}
+                    style={styles.imageStyle}
+                  />
+                  <View style={styles.title}>
                     <Text style={styles.textStyle}>
                       {localized.t("POST_AN_EVENT")}
                     </Text>
-                  </TouchableOpacity>
+                  </View>
                 </View>
-              </View>
-              <View style={{ marginTop: h2dp(5) }}>
-                <Image
-                  source={require("../../assets/images/allEvents.png")}
-                  style={styles.imageStyle}
-                />
-                <View style={styles.title}>
-                  <TouchableOpacity
-                    onPress={() => navigation.navigate("AllEventScreen")}
-                  >
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("AllEventScreen")}
+              >
+                <View style={{ marginTop: h2dp(5) }}>
+                  <Image
+                    source={require("../../assets/images/allEvents.png")}
+                    style={styles.imageStyle}
+                  />
+                  <View style={styles.title}>
                     <Text style={styles.textStyle}>
                       {localized.t("SEE_ALL_EVENTS")}
                     </Text>
-                  </TouchableOpacity>
+                  </View>
                 </View>
-              </View>
+              </TouchableOpacity>
             </View>
           </ScrollView>
         </SafeAreaView>

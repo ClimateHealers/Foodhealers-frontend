@@ -90,7 +90,7 @@ const DriverProfilePhoto = ({ route }: any) => {
                   name="chevron-back"
                   size={32}
                   color="white"
-                  onPress={() => navigation.goBack()}
+                  onPress={() => navigation.navigate("BecomeADriverScreen")}
                 />
                 <View style={styles.item}>
                   <Text style={styles.itemText}>{localized.t("DRIVE")}</Text>
@@ -120,7 +120,6 @@ const DriverProfilePhoto = ({ route }: any) => {
                     <View
                       style={{
                         paddingVertical: h2dp(2),
-                        paddingHorizontal: w2dp(5),
                         justifyContent: "center",
                         marginBottom: h2dp(1),
                       }}
