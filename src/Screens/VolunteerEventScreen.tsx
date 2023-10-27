@@ -29,7 +29,7 @@ import { allEvents } from "../redux/actions/allEvents";
 const VolunteerEventScreen = ({ route }: any) => {
   const { itemTypeId, title, latitude, longitude } = route?.params;
   const [eventData, setEventData]: any[] = useState<[]>([]);
-  
+
   const [filterName, setFilterName] = useState<string>(`${localized.t("NEW")}`);
   const dispatch = useDispatch();
   const fetchingEventsData = async () => {
@@ -236,21 +236,19 @@ const VolunteerEventScreen = ({ route }: any) => {
               />
             </View>
           ) : (
-            <View style={{ marginTop: h2dp(3), alignItems: "center" }}>
-              <Image
-                source={require("../../assets/images/shutterShock.png")}
-                style={styles.imageStyle}
-              />
-              <View style={styles.title}>
-                <TouchableOpacity
-                  onPress={() => navigation.navigate("PostEvent")}
-                >
+            <TouchableOpacity onPress={() => navigation.navigate("PostEvent")}>
+              <View style={{ marginTop: h2dp(3), alignItems: "center" }}>
+                <Image
+                  source={require("../../assets/images/shutterShock.png")}
+                  style={styles.imageStyle}
+                />
+                <View style={styles.title}>
                   <Text style={styles.textStyle}>
                     {localized.t("POST_AN_EVENT")}
                   </Text>
-                </TouchableOpacity>
+                </View>
               </View>
-            </View>
+            </TouchableOpacity>
           )}
         </View>
       </LinearGradient>

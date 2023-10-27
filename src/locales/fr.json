@@ -218,8 +218,8 @@
     "VEHICLE_ADDED_SUCCESSFULLY": "Véhicule ajouté avec succès !",
     "YOUR_VEHICLE_HAS_BEEN_ADDED_SUCCESSFULLY": "Votre véhicule a été ajouté avec succès.",
     "PICKUP_CONFIRMED": "Ramassage confirmé",
-    "PICKUP": "Ramassage :",
-    "DROPOFF": "Dépôt :",
+    "PICKUP": "Ramassage",
+    "DROPOFF": "Dépôt",
     "ADD_MORE": "Ajouter plus",
     "ACCEPT_A_PICKUP_TODAY": "Accepter un ramassage aujourd'hui ?",
     "ADD_NEW_VEHICLE": "Ajouter un nouveau véhicule",
@@ -277,6 +277,8 @@
     "WRONG_OTP": "OTP incorrect",
     "PICKUP_HISTORY": "Historique des ramassages",
     "NEW": "Nouveau",
-    "OLD": "Vieux"
+    "OLD": "Vieux",
+    "VEHICLE_UPDATED_SUCCESSFULLY": "Véhicule mis à jour avec succès",
+    "YOUR_VEHICLE_HAS_BEEN_UPDATED_SUCCESSFULLY": "Le véhicule a été mis à jour avec succès"
   }
 }

@@ -214,7 +214,10 @@ const ProfileScreen = () => {
             {isAuthenticated && (
               <View>
                 <TouchableOpacity
-                  onPress={() => navigation.navigate("HistoryScreen")}
+                  onPress={() => {
+                    navigation.navigate("HistoryScreen");
+                    setMenuOpen(false);
+                  }}
                 >
                   <Text
                     style={{
@@ -228,7 +231,10 @@ const ProfileScreen = () => {
                   </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  onPress={() => navigation.navigate("TeamHomeScreen")}
+                  onPress={() => {
+                    navigation.navigate("TeamHomeScreen");
+                    setMenuOpen(false);
+                  }}
                 >
                   <Text
                     style={{
@@ -239,20 +245,6 @@ const ProfileScreen = () => {
                     }}
                   >
                     {localized.t("TEAM")}
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => navigation.navigate("ProfileScreen")}
-                >
-                  <Text
-                    style={{
-                      padding: 10,
-                      fontSize: 20,
-                      fontWeight: "300",
-                      lineHeight: 27.24,
-                    }}
-                  >
-                    {localized.t("ACCOUNT")}
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -331,24 +323,24 @@ const ProfileScreen = () => {
                       </View>
                     ) : (
                       <View>
-                        {data?.profilePhoto ? (
-                          <View>
-                            <Image
-                              source={{ uri: data?.profilePhoto }}
-                              style={{ width: hp2dp(20), height: hp2dp(20) }}
-                            />
-                          </View>
-                        ) : (
+                        {!data?.profilePhoto ||
+                        data?.profilePhoto === "Profile Photo not available" ? (
                           <View
                             style={{
                               paddingVertical: hp2dp(2),
-                              paddingHorizontal: wp2dp(5),
                               justifyContent: "center",
                               marginBottom: hp2dp(1),
                               position: "relative",
                             }}
                           >
                             <AntDesign name="user" size={150} color="#B01D19" />
+                          </View>
+                        ) : (
+                          <View>
+                            <Image
+                              source={{ uri: data?.profilePhoto }}
+                              style={{ width: hp2dp(20), height: hp2dp(20) }}
+                            />
                           </View>
                         )}
                       </View>

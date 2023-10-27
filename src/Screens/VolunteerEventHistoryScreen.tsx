@@ -230,7 +230,7 @@ const VolunteerEventHistoryScreen = ({ route }: any) => {
                 renderItem={({ item }: any) => (
                   <Item
                     status={item?.event?.status}
-                    id={item.id}
+                    id={item?.id}
                     name={item?.event?.name}
                     address={item?.event?.address?.fullAddress}
                     fromDate={item?.fromDate}

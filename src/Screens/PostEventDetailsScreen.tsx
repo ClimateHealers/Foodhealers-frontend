@@ -19,6 +19,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { getLocation } from "../Components/getCurrentLocation";
 import PrimaryButton from "../Components/PrimaryButton";
 import { localized } from "../locales/localization";
+import { useSelector } from "react-redux";
 
 const PostEventDetailsScreen = ({ route }: any) => {
   const { eventDetails, eventPhotos } = route.params;
@@ -59,6 +60,10 @@ const PostEventDetailsScreen = ({ route }: any) => {
     });
     setMenuOpen(false);
   };
+
+  const isAuthenticated = useSelector(
+    (state: any) => state.auth.data.isAuthenticated
+  );
 
   const epochDate = eventDetails?.eventDate;
   const dateObj = new Date(epochDate * 1000);
@@ -150,6 +155,40 @@ const PostEventDetailsScreen = ({ route }: any) => {
                           {localized.t("FIND_FOOD")}
                         </Text>
                       </TouchableOpacity>
+                      {isAuthenticated && (
+                        <View>
+                          <TouchableOpacity
+                            onPress={() => {
+                              navigation.navigate("HistoryScreen");
+                              setMenuOpen(false);
+                            }}
+                          >
+                            <Text style={styles.burgerText}>
+                              {localized.t("HISTORY")}
+                            </Text>
+                          </TouchableOpacity>
+                          <TouchableOpacity
+                            onPress={() => {
+                              navigation.navigate("TeamHomeScreen");
+                              setMenuOpen(false);
+                            }}
+                          >
+                            <Text style={styles.burgerText}>
+                              {localized.t("TEAM")}
+                            </Text>
+                          </TouchableOpacity>
+                          <TouchableOpacity
+                            onPress={() => {
+                              navigation.navigate("ProfileScreen");
+                              setMenuOpen(false);
+                            }}
+                          >
+                            <Text style={styles.burgerText}>
+                              {localized.t("ACCOUNT")}
+                            </Text>
+                          </TouchableOpacity>
+                        </View>
+                      )}
                     </View>
                   )}
                 </View>
@@ -301,6 +340,12 @@ const styles = StyleSheet.create({
     color: "black",
     borderRadius: 5,
     width: 190,
+  },
+  burgerText: {
+    padding: 10,
+    fontSize: 20,
+    fontWeight: "400",
+    lineHeight: 27.24,
   },
   titleStyle: {
     color: "white",

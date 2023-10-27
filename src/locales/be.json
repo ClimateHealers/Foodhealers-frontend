@@ -218,8 +218,8 @@
     "VEHICLE_ADDED_SUCCESSFULLY": "যানবাহন সফলভাবে যোগ করা হয়েছে!",
     "YOUR_VEHICLE_HAS_BEEN_ADDED_SUCCESSFULLY": "আপনার যানবাহনটি সফলভাবে যোগ করা হয়েছে।",
     "PICKUP_CONFIRMED": "পিকআপ নিশ্চিত",
-    "PICKUP": "পিকআপ :",
-    "DROPOFF": "ড্রপঅফ :",
+    "PICKUP": "পিকআপ",
+    "DROPOFF": "ড্রপঅফ",
     "ADD_MORE": "আরো যোগ করুন",
     "ACCEPT_A_PICKUP_TODAY": "আজ একটি পিকআপ গ্রহণ করতে?",
     "ADD_NEW_VEHICLE": "নতুন যানবাহন যোগ করুন",
@@ -279,6 +279,8 @@
     "WRONG_OTP": "ভুল OTP",
     "PICKUP_HISTORY": "পিকআপ হিস্ট্রি",
     "NEW": "নতুন",
-    "OLD": "পুরানো"
+    "OLD": "পুরানো",
+    "VEHICLE_UPDATED_SUCCESSFULLY": "যানবাহন সফলভাবে আপডেট করা হয়েছে",
+    "YOUR_VEHICLE_HAS_BEEN_UPDATED_SUCCESSFULLY": "যানবাহনটি সফলভাবে আপডেট করা হয়েছে"
   }
 }

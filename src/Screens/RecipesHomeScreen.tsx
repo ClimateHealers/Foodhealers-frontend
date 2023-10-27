@@ -10,11 +10,9 @@ import {
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  View
+  View,
 } from "react-native";
-import {
-  heightPercentageToDP as h2dp
-} from "react-native-responsive-screen";
+import { heightPercentageToDP as h2dp } from "react-native-responsive-screen";
 import { useDispatch, useSelector } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
@@ -101,30 +99,30 @@ const RecipesHomeScreen = () => {
               <TouchableOpacity activeOpacity={1}>
                 <View style={[styles.centeredalignView]}>
                   {recipesCategory.map((recipe: any) => (
-                    <View
-                      key={recipe.id}
-                      style={{
-                        marginBottom: h2dp(3),
-                        position: "relative",
-                      }}
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigation.navigate("CategoryScreen", {
+                          categoryId: recipe?.id,
+                          recipeName: recipe?.name,
+                        })
+                      }
                     >
-                      <Image
-                        source={{ uri: recipe?.categoryImage }}
-                        style={styles.imageStyle}
-                      />
-                      <View style={styles.title}>
-                        <TouchableOpacity
-                          onPress={() =>
-                            navigation.navigate("CategoryScreen", {
-                              categoryId: recipe?.id,
-                              recipeName: recipe?.name,
-                            })
-                          }
-                        >
+                      <View
+                        key={recipe.id}
+                        style={{
+                          marginBottom: h2dp(3),
+                          position: "relative",
+                        }}
+                      >
+                        <Image
+                          source={{ uri: recipe?.categoryImage }}
+                          style={styles.imageStyle}
+                        />
+                        <View style={styles.title}>
                           <Text style={styles.textStyle}>{recipe?.name}</Text>
-                        </TouchableOpacity>
+                        </View>
                       </View>
-                    </View>
+                    </TouchableOpacity>
                   ))}
                 </View>
               </TouchableOpacity>

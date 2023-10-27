@@ -124,7 +124,7 @@ const PickupSelectedDetailsScreen = ({ route }: any) => {
                           paddingTop: h2dp(0.5),
                         }}
                       >
-                        {localized.t("PICKUP")}
+                        {localized.t("PICKUP")} :
                       </Text>
 
                       <ScrollView showsVerticalScrollIndicator={false}>
@@ -170,7 +170,7 @@ const PickupSelectedDetailsScreen = ({ route }: any) => {
                           paddingTop: h2dp(0.5),
                         }}
                       >
-                        {localized.t("DROPOFF")}
+                        {localized.t("DROPOFF")} :
                       </Text>
 
                       <ScrollView showsVerticalScrollIndicator={false}>

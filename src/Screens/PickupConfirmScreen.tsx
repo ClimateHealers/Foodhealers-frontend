@@ -62,23 +62,12 @@ const PickupConfirmScreen = ({ route }: any) => {
     error: false,
     message: "",
   });
-  const [otpType, setOtpType] = useState<any>("pickup");
 
   const dispatch = useDispatch();
 
   const handlePressOutside = () => {
     Keyboard.dismiss();
   };
-
-  useFocusEffect(
-    useCallback(() => {
-      if (!pickedup) {
-        setOtpType("pickup");
-      } else if (pickedup && !delivered) {
-        setOtpType("drop");
-      }
-    }, [])
-  );
 
   const pickNavigationHandler = () => {
     const url = `https://www.google.com/maps/dir/?api=1&destination=${picklat},${picklng}`;
@@ -105,7 +94,9 @@ const PickupConfirmScreen = ({ route }: any) => {
                   name="chevron-back"
                   size={32}
                   color="white"
-                  onPress={() => {navigation.goBack()}}
+                  onPress={() => {
+                    navigation.goBack();
+                  }}
                 />
                 <View style={styles.item}>
                   <Text style={styles.itemText}>{localized.t("DRIVE")}</Text>
@@ -170,7 +161,7 @@ const PickupConfirmScreen = ({ route }: any) => {
                           paddingTop: h2dp(0.5),
                         }}
                       >
-                        {localized.t("PICKUP")}
+                        {localized.t("PICKUP")} :
                       </Text>
 
                       <ScrollView showsVerticalScrollIndicator={false}>
@@ -237,7 +228,7 @@ const PickupConfirmScreen = ({ route }: any) => {
                           paddingTop: h2dp(0.5),
                         }}
                       >
-                        {localized.t("DROPOFF")}
+                        {localized.t("DROPOFF")} :
                       </Text>
 
                       <ScrollView showsVerticalScrollIndicator={false}>
@@ -308,6 +299,13 @@ const PickupConfirmScreen = ({ route }: any) => {
                         <View>
                           {!fullfilled ? (
                             <View>
+                              <Text
+                                style={{
+                                  alignSelf: "center",
+                                  fontSize: h2dp(2.2),
+                                }}
+                              >{pickedup ? `${localized.t("DROPOFF")}` : `${localized.t("PICKUP")}`}
+                              </Text>
                               <PrimaryButton
                                 title={localized.t("GENERATE_OTP")}
                                 onPress={async () => {
@@ -320,7 +318,7 @@ const PickupConfirmScreen = ({ route }: any) => {
                                     });
                                     const data = {
                                       requestId: pickupId,
-                                      otpType: otpType,
+                                      otpType: pickedup ? "drop" : "pickup",
                                     };
                                     const res = await dispatch(
                                       otpGenerate(data as any) as any
@@ -406,7 +404,7 @@ const PickupConfirmScreen = ({ route }: any) => {
                             const data = {
                               otp: otp,
                               requestId: pickupId,
-                              otpType: otpType,
+                              otpType: pickedup ? "drop" : "pickup",
                             };
                             const res = await dispatch(
                               updatePickupRequest(data as any) as any

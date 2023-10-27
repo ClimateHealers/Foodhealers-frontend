@@ -67,7 +67,6 @@ const CategoryScreen = ({ route }: any) => {
   }, []);
 
   const fetchData = async () => {
-
     setLoading(true);
     try {
       setResponse({
@@ -220,40 +219,43 @@ const CategoryScreen = ({ route }: any) => {
                 <View style={[styles.centeredalignView]}>
                   {textChange
                     ? filteredData?.map((recipe: any) => (
-                        <View
-                          key={recipe?.id}
-                          style={{
-                            marginBottom: h2dp(3),
-                            position: "relative",
-                          }}
-                        >
-                          <Image
-                            source={{ uri: recipe?.foodImage }}
-                            style={[
-                              styles.imageStyle,
-                              {
-                                height: h2dp(20),
+                        <TouchableOpacity
+                          onPress={() =>
+                            navigation.navigate("SingleRecipeScreen", {
+                              recipeData: {
+                                recipeImage: recipe?.foodImage,
+                                recipeIngredient: recipe?.ingredients,
+                                recipeName: recipe?.foodName,
+                                recipeInstructions: recipe?.cookingInstructions,
                               },
-                            ]}
-                          />
-                          <View style={styles.title}>
-                            <TouchableOpacity
-                              onPress={() =>
-                                navigation.navigate("SingleRecipeScreen", {
-                                  recipeData: {
-                                    recipeImage: recipe?.foodImage,
-                                    recipeIngredient: recipe?.ingredients,
-                                    recipeName: recipe?.foodName,
-                                    recipeInstructions:
-                                      recipe?.cookingInstructions,
-                                  },
-                                })
-                              }
-                            >
+                            })
+                          }
+                        >
+                          <View
+                            key={recipe?.id}
+                            style={{
+                              marginBottom: h2dp(3),
+                              position: "relative",
+                            }}
+                          >
+                            <Image
+                              source={{ uri: recipe?.foodImage }}
+                              style={[
+                                styles.imageStyle,
+                                {
+                                  height: h2dp(20),
+                                },
+                              ]}
+                            />
+                            <View style={styles.title}>
                               <Text style={styles.textStyle}>
                                 {recipe?.foodName?.length > 25
-                                  ? `${decode(recipe?.foodName, { level: "html5" })?.slice(0, 20)}...`
-                                  : decode(recipe?.foodName, { level: "html5" })}
+                                  ? `${decode(recipe?.foodName, {
+                                      level: "html5",
+                                    })?.slice(0, 20)}...`
+                                  : decode(recipe?.foodName, {
+                                      level: "html5",
+                                    })}
                               </Text>
                               <View
                                 style={{
@@ -277,48 +279,51 @@ const CategoryScreen = ({ route }: any) => {
                                     : recipe?.preparationTime}
                                 </Text>
                               </View>
-                            </TouchableOpacity>
+                            </View>
                           </View>
-                        </View>
+                        </TouchableOpacity>
                       ))
                     : data?.map((recipe: any) => (
-                        <View
-                          style={{
-                            marginBottom: h2dp(3),
-                            position: "relative",
-                          }}
-                          key={recipe?.id}
-                        >
-                          <Image
-                            source={{ uri: recipe?.foodImage }}
-                            style={[
-                              styles.imageStyle,
-                              {
-                                height: h2dp(20),
+                        <TouchableOpacity
+                          onPress={() =>
+                            navigation.navigate("SingleRecipeScreen", {
+                              recipeData: {
+                                recipeImage: recipe?.foodImage,
+                                recipeIngredient: recipe?.ingredients,
+                                recipeName: recipe?.foodName,
+                                recipeInstructions: recipe?.cookingInstructions,
+                                cookingTime: recipe?.preparationTime,
+                                recipeSource: recipe?.recipeSource,
+                                recipeCredits: recipe?.recipeCredits,
                               },
-                            ]}
-                          />
-                          <View style={styles.title}>
-                            <TouchableOpacity
-                              onPress={() =>
-                                navigation.navigate("SingleRecipeScreen", {
-                                  recipeData: {
-                                    recipeImage: recipe?.foodImage,
-                                    recipeIngredient: recipe?.ingredients,
-                                    recipeName: recipe?.foodName,
-                                    recipeInstructions:
-                                      recipe?.cookingInstructions,
-                                    cookingTime: recipe?.preparationTime,
-                                    recipeSource: recipe?.recipeSource,
-                                    recipeCredits: recipe?.recipeCredits,
-                                  },
-                                })
-                              }
-                            >
+                            })
+                          }
+                        >
+                          <View
+                            style={{
+                              marginBottom: h2dp(3),
+                              position: "relative",
+                            }}
+                            key={recipe?.id}
+                          >
+                            <Image
+                              source={{ uri: recipe?.foodImage }}
+                              style={[
+                                styles.imageStyle,
+                                {
+                                  height: h2dp(20),
+                                },
+                              ]}
+                            />
+                            <View style={styles.title}>
                               <Text style={styles.textStyle}>
                                 {recipe?.foodName?.length > 25
-                                  ? `${decode(recipe?.foodName, { level: "html5" })?.slice(0, 20)}...`
-                                  : decode(recipe?.foodName, { level: "html5" })}
+                                  ? `${decode(recipe?.foodName, {
+                                      level: "html5",
+                                    })?.slice(0, 20)}...`
+                                  : decode(recipe?.foodName, {
+                                      level: "html5",
+                                    })}
                               </Text>
                               <View
                                 style={{
@@ -342,9 +347,9 @@ const CategoryScreen = ({ route }: any) => {
                                     : recipe?.preparationTime}
                                 </Text>
                               </View>
-                            </TouchableOpacity>
+                            </View>
                           </View>
-                        </View>
+                        </TouchableOpacity>
                       ))}
                 </View>
               </TouchableOpacity>

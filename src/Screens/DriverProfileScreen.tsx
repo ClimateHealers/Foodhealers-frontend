@@ -40,7 +40,7 @@ const DriverProfileScreen = ({ route }: any) => {
   // const [selectedImage, setSelectedImage] = useState("");
   const [vehicleDetails, setVehicleDetails] = useState<any>();
   const [loading, setLoading] = useState(false);
-  const [ data , setData ]= useState<any>();
+  const [data, setData] = useState<any>();
   const navigation: any = useNavigation<string>();
   const dispatch = useDispatch();
   const isAuthenticated = useSelector(
@@ -50,13 +50,13 @@ const DriverProfileScreen = ({ route }: any) => {
   const fetchingUserData = async () => {
     const response = await dispatch(fetchUser({} as any) as any);
     const data = response?.payload?.userDetails;
-    setData(data)
+    setData(data);
   };
 
   const fetchingVehiclesData = async () => {
     const response = await dispatch(fetchVehicle({} as any) as any);
     const indexLength = response?.payload?.vehicleDetails?.length;
-    const data = response?.payload?.vehicleDetails[indexLength-1];
+    const data = response?.payload?.vehicleDetails[indexLength - 1];
     setVehicleDetails(data);
   };
 
@@ -155,7 +155,7 @@ const DriverProfileScreen = ({ route }: any) => {
                   name="chevron-back"
                   size={32}
                   color="#00693D"
-                  onPress={() => navigation.goBack()}
+                  onPress={() => navigation.navigate("DriverRequestScreen")}
                 />
                 <View style={styles.item}>
                   <Text style={styles.itemText}>
@@ -203,14 +203,30 @@ const DriverProfileScreen = ({ route }: any) => {
                     {isAuthenticated && (
                       <View>
                         <TouchableOpacity
-                          onPress={() => navigation.navigate("ProfileScreen")}
+                          onPress={() => {
+                            navigation.navigate("HistoryScreen");
+                            setMenuOpen(false);
+                          }}
+                        >
+                          <Text style={styles.burgerText}>
+                            {localized.t("HISTORY")}
+                          </Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                          onPress={() => {
+                            navigation.navigate("ProfileScreen");
+                            setMenuOpen(false);
+                          }}
                         >
                           <Text style={styles.burgerText}>
                             {localized.t("ACCOUNT")}
                           </Text>
                         </TouchableOpacity>
                         <TouchableOpacity
-                          onPress={() => navigation.navigate("TeamHomeScreen")}
+                          onPress={() => {
+                            navigation.navigate("TeamHomeScreen");
+                            setMenuOpen(false);
+                          }}
                         >
                           <Text style={styles.burgerText}>
                             {localized.t("TEAM")}
@@ -293,9 +309,11 @@ const DriverProfileScreen = ({ route }: any) => {
             </View>
             <PrimaryButton
               title={localized.t("ACCEPT_RIDES")}
-              onPress={() => navigation.navigate("PickupDetailsScreen",{
-                itemTypeId: 4,
-              })}
+              onPress={() =>
+                navigation.navigate("PickupDetailsScreen", {
+                  itemTypeId: 4,
+                })
+              }
               buttonStyle={[
                 styles.nextButtonStyles,
                 {

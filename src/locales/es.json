@@ -218,8 +218,8 @@
     "VEHICLE_ADDED_SUCCESSFULLY": "¡Vehículo añadido con éxito!",
     "YOUR_VEHICLE_HAS_BEEN_ADDED_SUCCESSFULLY": "Su vehículo ha sido añadido con éxito.",
     "PICKUP_CONFIRMED": "Recogida confirmada",
-    "PICKUP": "Recogida :",
-    "DROPOFF": "Entrega :",
+    "PICKUP": "Recogida",
+    "DROPOFF": "Entrega",
     "ADD_MORE": "Añadir más",
     "ACCEPT_A_PICKUP_TODAY": "¿Aceptar una recogida hoy?",
     "ADD_NEW_VEHICLE": "Agregar un Nuevo Vehículo",
@@ -277,6 +277,8 @@
     "WRONG_OTP": "OTP incorrecto",
     "PICKUP_HISTORY": "Historial de recogidas",
     "NEW": "Nuevo",
-    "OLD": "Viejo"
+    "OLD": "Viejo",
+    "VEHICLE_UPDATED_SUCCESSFULLY": "Vehículo actualizado con éxito",
+    "YOUR_VEHICLE_HAS_BEEN_UPDATED_SUCCESSFULLY": "El vehículo ha sido actualizado con éxito"
   }
 }

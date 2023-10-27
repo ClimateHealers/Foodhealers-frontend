@@ -218,8 +218,8 @@
     "VEHICLE_ADDED_SUCCESSFULLY": "车辆成功添加！",
     "YOUR_VEHICLE_HAS_BEEN_ADDED_SUCCESSFULLY": "您的车辆已成功添加。",
     "PICKUP_CONFIRMED": "接受接送",
-    "PICKUP": "接送 :",
-    "DROPOFF": "送货 :",
+    "PICKUP": "接送",
+    "DROPOFF": "送货",
     "ADD_MORE": "添加更多",
     "ACCEPT_A_PICKUP_TODAY": "今天接收一个取货吗？",
     "ADD_NEW_VEHICLE": "新增车辆",
@@ -276,6 +276,8 @@
     "WRONG_OTP": "错误的OTP",
     "PICKUP_HISTORY": "提货历史",
     "NEW": "新的",
-    "OLD": "旧的"
+    "OLD": "旧的",
+    "VEHICLE_UPDATED_SUCCESSFULLY": "车辆更新成功",
+    "YOUR_VEHICLE_HAS_BEEN_UPDATED_SUCCESSFULLY": "车辆已成功更新"
   }
 }

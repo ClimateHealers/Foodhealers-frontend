@@ -376,7 +376,7 @@ const SeeExistingDonationScreen = ({ route }: any) => {
             />
             <View style={styles.item}>
               <Text style={styles.itemText}>
-                {localized.t("EXISTING")} {item} {localized.t("DONATIONS")}
+                {localized.t("EXISTING")} {localized.t("DONATIONS")}
               </Text>
             </View>
             <BurgerIcon />
@@ -407,7 +407,7 @@ const SeeExistingDonationScreen = ({ route }: any) => {
               </TouchableOpacity>
             </View>
             {donationData.length > 0 ? (
-              <View style={{ height: h2dp(70), marginTop: h2dp(1) }}>
+              <View style={{ height: h2dp(60), marginTop: h2dp(1) }}>
                 <FlatList
                   showsVerticalScrollIndicator={false}
                   data={donationData}
@@ -443,7 +443,7 @@ const SeeExistingDonationScreen = ({ route }: any) => {
             )}
           </View>
           <PrimaryButton
-            title={`Request ${item}`}
+            title={`${localized.t("REQUEST")} ${item}`}
             onPress={() =>
               navigation.navigate("AddRequestDonationsScreen", {
                 itemTypeId: itemTypeId,
