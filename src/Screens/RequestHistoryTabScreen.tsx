@@ -65,7 +65,7 @@ const RequestHistoryTabScreen = ({ route }: any) => {
   const fetchingRequestData = async () => {
     const response = await dispatch(myRequests({ itemTypeId } as any) as any);
     const ApprovedDonation = response?.payload?.requestList?.filter(
-      (event: any) => event?.status === "approved"
+      (event: any) => event?.type === "Food"
     );
     setRequestData(ApprovedDonation);
   };
@@ -80,7 +80,7 @@ const RequestHistoryTabScreen = ({ route }: any) => {
       setItemTypeId(2);
       const response = await dispatch(myRequests({ itemTypeId } as any) as any);
       const ApprovedDonation = response?.payload?.requestList?.filter(
-        (event: any) => event?.status === "approved"
+        (event: any) => event?.type === "Supplies"
       );
       setRequestData(ApprovedDonation);
       setLoading(false);
