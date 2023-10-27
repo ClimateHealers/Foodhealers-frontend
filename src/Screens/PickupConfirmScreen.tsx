@@ -439,7 +439,7 @@ const PickupConfirmScreen = ({ route }: any) => {
                             const data = {
                               otp: otp,
                               requestId: pickupId,
-                              otpType: otpType,
+                              otpType: pickedup ? "drop" : "pickup",
                             };
                             const res = await dispatch(
                               updatePickupRequest(data as any) as any
