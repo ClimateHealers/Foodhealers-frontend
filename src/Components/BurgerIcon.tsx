@@ -71,21 +71,29 @@ const BurgerIcon = () => {
           {isAuthenticated && (
             <View>
               <TouchableOpacity
-                onPress={() => navigation.navigate("HistoryScreen")}
+                onPress={() => {
+                  navigation.navigate("HistoryScreen");
+                  setMenuOpen(false);
+                }}
               >
                 <Text style={styles.burgerText}>{localized.t("HISTORY")}</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => navigation.navigate("TeamHomeScreen")}
+                onPress={() => {
+                  navigation.navigate("TeamHomeScreen");
+                  setMenuOpen(false);
+                }}
               >
                 <Text style={styles.burgerText}>{localized.t("TEAM")}</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => navigation.navigate("ProfileScreen")}
+                onPress={() => {
+                  navigation.navigate("ProfileScreen");
+                  setMenuOpen(false);
+                }}
               >
                 <Text style={styles.burgerText}>{localized.t("ACCOUNT")}</Text>
               </TouchableOpacity>
-              
             </View>
           )}
         </View>
