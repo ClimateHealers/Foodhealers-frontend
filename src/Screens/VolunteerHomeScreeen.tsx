@@ -1,7 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import {
   Image,
   Keyboard,
@@ -26,9 +26,12 @@ const VolunteerHomeScreen = ({ route }: any) => {
   const [recipeData, setRecipeData] = useState<[]>([]);
   const [events, setEvents] = useState<[]>([]);
   const navigation: any = useNavigation();
+  const [menuClose, setMenuOpen] = useState(false);
   const dispatch = useDispatch();
   const eventsScheduled = events?.length;
   const [data, setData] = useState<any>();
+
+  const menuRef = useRef(null);
 
   const fetchRecipesCategories = async () => {
     const response = await dispatch(VeganRecipesCategory(1 as any) as any);
@@ -46,9 +49,11 @@ const VolunteerHomeScreen = ({ route }: any) => {
     const data = response?.payload?.userDetails;
     setData(data);
   };
-
+  
   const handlePressOutside = () => {
     Keyboard.dismiss();
+    setMenuOpen(!menuClose);
+    console.log("jhvcgfxf", menuClose);
   };
 
   useFocusEffect(
@@ -78,7 +83,7 @@ const VolunteerHomeScreen = ({ route }: any) => {
               <View style={styles.item}>
                 <Text style={styles.itemText}>{localized.t("HOME")}</Text>
               </View>
-              <BurgerIcon />
+              <BurgerIcon onOutsidePress={handlePressOutside} menuClose={menuClose} />
             </View>
             <ScrollView
               keyboardShouldPersistTaps="handled"

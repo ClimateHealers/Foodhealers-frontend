@@ -1,20 +1,25 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { Text, TouchableOpacity, View } from "react-native";
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { getLocation } from "../Components/getCurrentLocation";
 import { styles } from "./Styles";
 import { localized } from "../locales/localization";
 
-const BurgerIcon = () => {
+const BurgerIcon = ({ menuClose, onOutsidePress }: any) => {
   const [menuOpen, setMenuOpen] = useState(false);
+  let [menutoggle, setToggle] = useState(menuClose);
   const navigation: any = useNavigation();
   const isAuthenticated = useSelector(
     (state: any) => state.auth.data.isAuthenticated
   );
 
-  const handleMenuItemPress = (item: any) => {
+  menutoggle = menuClose;
+
+  console.log("kvndsnvdsnvkds", menuClose, menutoggle);
+
+  const handleMenuItemPress = () => {
     setMenuOpen(false);
     if (isAuthenticated) {
       navigation.navigate("HomeScreen");
@@ -22,7 +27,7 @@ const BurgerIcon = () => {
       navigation.navigate("SignupScreen");
     }
   };
-  const findFoodMenuItemPress = (item: any) => {
+  const findFoodMenuItemPress = () => {
     getLocation().then((res) => {
       if (res) {
         navigation?.navigate("MapScreen", {
@@ -49,7 +54,7 @@ const BurgerIcon = () => {
           right: 0,
         }}
       />
-      {menuOpen && (
+      {menuOpen && menutoggle && (
         <View
           style={{
             position: "absolute",
@@ -62,12 +67,12 @@ const BurgerIcon = () => {
             zIndex: 1,
           }}
         >
-          <TouchableOpacity onPress={() => handleMenuItemPress("Home")}>
+          {/* <TouchableOpacity onPress={() => handleMenuItemPress("Home")}>
             <Text style={styles.burgerText}>{localized.t("HOME")}</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => findFoodMenuItemPress("Find Food")}>
             <Text style={styles.burgerText}>{localized.t("FIND_FOOD")}</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           {isAuthenticated && (
             <View>
               <TouchableOpacity
