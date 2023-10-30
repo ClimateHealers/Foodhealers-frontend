@@ -278,6 +278,7 @@
     "NEW": "नया",
     "OLD": "पुराना",
     "VEHICLE_UPDATED_SUCCESSFULLY": "वाहन सफलतापूर्वक अपडेट हो गया है",
-    "YOUR_VEHICLE_HAS_BEEN_UPDATED_SUCCESSFULLY": "वाहन अपडेट हो गया है"
+    "YOUR_VEHICLE_HAS_BEEN_UPDATED_SUCCESSFULLY": "वाहन अपडेट हो गया है",
+    "VEHICLE_NOT_ADDED": "वाहन नहीं जोड़ा गया"
   }
 }

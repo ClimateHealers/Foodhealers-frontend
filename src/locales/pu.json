@@ -278,6 +278,7 @@
     "NEW": "ਨਵਾਂ",
     "OLD": "ਪੁਰਾਣਾ",
     "VEHICLE_UPDATED_SUCCESSFULLY": "ਗੱਡੀ ਸਫਲਤਾਪੂਰਵਕ ਅੱਪਡੇਟ ਹੋ ਗਈ ਹੈ",
-    "YOUR_VEHICLE_HAS_BEEN_UPDATED_SUCCESSFULLY": "ਗੱਡੀ ਅੱਪਡੇਟ ਹੋ ਗਈ ਹੈ"
+    "YOUR_VEHICLE_HAS_BEEN_UPDATED_SUCCESSFULLY": "ਗੱਡੀ ਅੱਪਡੇਟ ਹੋ ਗਈ ਹੈ",
+    "VEHICLE_NOT_ADDED": "ਗੱਡੀ ਨਹੀਂ ਜੋੜੀ ਗਈ"
   }
 }

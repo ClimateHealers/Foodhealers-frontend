@@ -21,7 +21,6 @@ import SelectDropdown from "react-native-select-dropdown";
 import { useDispatch, useSelector } from "react-redux";
 import PrimaryButton from "../Components/PrimaryButton";
 import { localized } from "../locales/localization";
-import { myTheme } from "../myTheme";
 import { myDonations } from "../redux/actions/myDonations";
 import { volunteerHistory } from "../redux/actions/volunteerHistoryAction";
 import { setLanguage } from "../redux/reducers/langReducer";
@@ -70,9 +69,9 @@ const HomeScreen = ({ route }: any) => {
       const getUserLocation = async () => {
         setLoading(true);
         try {
-          const data1 = await fetchingDonationData();
-          const data2 = await fetchingvolunteerHistory();
-          const data3 = await fetchingUserData();
+          await fetchingDonationData();
+          await fetchingvolunteerHistory();
+          await fetchingUserData();
           const response = await axios.get("http://ipinfo.io/json");
           const { loc } = response?.data;
           const [latitude, longitude] = loc
@@ -115,19 +114,7 @@ const HomeScreen = ({ route }: any) => {
       longitude: long,
     });
   };
-  const appLoader = (loader: any) => {
-    return (
-      <View style={styles.centeredView}>
-        <Modal visible={loader} animationType="slide" transparent={true}>
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <ActivityIndicator size={"large"} />
-            </View>
-          </View>
-        </Modal>
-      </View>
-    );
-  };
+
   const postEvent = () => {
     if (data.token) {
       navigation.navigate("EventsHomeScreen");
@@ -196,7 +183,6 @@ const HomeScreen = ({ route }: any) => {
               }}
             />
           </View>
-          <View style={{ flex: 1 }}>{appLoader(loc == true)}</View>
           <Modal visible={loading} animationType="slide" transparent={true}>
             <View style={styles.centeredView}>
               <View style={styles.modalView}>
@@ -208,7 +194,10 @@ const HomeScreen = ({ route }: any) => {
             <PrimaryButton
               title={localized.t("FIND_FOOD")}
               onPress={navigateToMapScreen}
-              buttonStyle={myTheme.Button.buttonStyle}
+              buttonStyle={[
+                styles.postEventButton,
+                { backgroundColor: "#5FBB3F", marginTop: h2dp(4) },
+              ]}
               titleStyle={styles.titleStyle}
             />
             <PrimaryButton
@@ -262,48 +251,49 @@ const HomeScreen = ({ route }: any) => {
               }}
               titleStyle={styles.titleStyle}
             />
-            {data?.user?.name ? (
-              ""
-            ) : (
-              <Text
-                style={{
-                  color: "white",
-                  fontSize: 18,
-                  marginBottom: 5,
-                  fontFamily: "OpenSans-Regular",
-                }}
-              >
-                {localized.t("ALREADY_HAVE_AN_ACCOUNT")}
-              </Text>
-            )}
-
-            {data?.user?.name ? (
-              <Text
-                style={{
-                  color: "white",
-                  fontSize: 18,
-                  fontFamily: "OpenSans-bold",
-                }}
-              >
-                {localized.t("WELCOME")}{" "}
-                {data?.user?.name ? userData?.name : ""}
-              </Text>
-            ) : (
-              <TouchableOpacity
-                onPress={() => navigation.navigate("LoginScreen")}
-              >
+            <View style={{ marginBottom: h2dp(6) }}>
+              {data?.user?.name ? (
                 <Text
                   style={{
                     color: "white",
                     fontSize: 18,
-                    textDecorationLine: "underline",
-                    fontFamily: "OpenSans-Bold",
+                    marginBottom: h2dp(4),
+                    fontFamily: "OpenSans-bold",
                   }}
                 >
-                  {localized.t("SIGN_IN")}
+                  {localized.t("WELCOME")}{" "}
+                  {data?.user?.name ? userData?.name : ""}
                 </Text>
-              </TouchableOpacity>
-            )}
+              ) : (
+                <View>
+                  <Text
+                    style={{
+                      color: "white",
+                      fontSize: 18,
+                      marginBottom: h2dp(1.5),
+                      fontFamily: "OpenSans-Regular",
+                    }}
+                  >
+                    {localized.t("ALREADY_HAVE_AN_ACCOUNT")}
+                  </Text>
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate("LoginScreen")}
+                  >
+                    <Text
+                      style={{
+                        color: "white",
+                        fontSize: 18,
+                        textDecorationLine: "underline",
+                        fontFamily: "OpenSans-Bold",
+                        alignSelf: "center",
+                      }}
+                    >
+                      {localized.t("SIGN_IN")}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              )}
+            </View>
           </View>
         </ImageBackground>
       </View>
@@ -329,37 +319,16 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.5)",
     alignItems: "center",
     width: "100%",
-    height: Platform.OS === "ios" ? h2dp(37) : h2dp(40),
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
-  },
-  Headers: {
-    width: 350,
-    fontSize: 40,
-    color: "white",
-    textAlign: "center",
-  },
-  findFoodButton: {
-    backgroundColor: "#5FBB3F",
-    color: "black",
-    borderRadius: 5,
-    width: 190,
-    marginBottom: 20,
-    marginTop: 40,
   },
   postEventButton: {
     backgroundColor: "white",
     color: "black",
     borderRadius: 5,
-    marginBottom: 20,
+    marginBottom: h2dp(2),
     minWidth: 190,
-    maxHeight: 50,
-  },
-  content: {
-    color: "white",
-    fontSize: 20,
-    fontWeight: "bold",
-    zIndex: 1,
+    maxHeight: h2dp(4.5),
   },
   dropdownContainer: {
     position: "absolute",
@@ -371,14 +340,14 @@ const styles = StyleSheet.create({
     color: "black",
     fontSize: 22,
     fontWeight: "200",
-    lineHeight: 35,
+    lineHeight: h2dp(3.2),
     fontFamily: "OpenSans-bold",
   },
   centeredView: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 22,
+    marginTop: h2dp(2.2),
   },
   modalView: {
     margin: 20,

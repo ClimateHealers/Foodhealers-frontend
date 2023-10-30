@@ -70,6 +70,7 @@ export default function TakePictureScreen() {
         MediaLibrary.saveToLibraryAsync(adjustedImage.uri);
         navigation.navigate("DriverPhotoSaveScreen", {
           selectedImage: adjustedImage.uri,
+          fromCameraRoll : false,
         });
         setLoading(false);
       } catch (error) {

@@ -59,6 +59,7 @@ const DriverProfilePhoto = ({ route }: any) => {
         const singlePhoto = result?.assets[0]?.uri;
         navigation.navigate("DriverPhotoSaveScreen", {
           selectedImage: singlePhoto,
+          fromCameraRoll : true,
         });
       }
     } else if (!res.granted) {

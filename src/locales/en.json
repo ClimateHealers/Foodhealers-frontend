@@ -279,7 +279,8 @@
     "PICKUP_HISTORY": "Pickup History",
     "NEW": "New",
     "OLD": "Old",
-    "VEHICLE_UPDATED_SUCCESSFULLY": "Vehicla Updated Successfully",
-    "YOUR_VEHICLE_HAS_BEEN_UPDATED_SUCCESSFULLY": "Vehicle has been updated successfully."
+    "VEHICLE_UPDATED_SUCCESSFULLY": "Vehicle Updated Successfully",
+    "YOUR_VEHICLE_HAS_BEEN_UPDATED_SUCCESSFULLY": "Vehicle has been updated successfully.",
+    "VEHICLE_NOT_ADDED": "Vehicle Not Added"
   }
 }
