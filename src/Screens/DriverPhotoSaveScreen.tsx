@@ -28,7 +28,7 @@ import { styles } from "../Components/Styles";
 import { updatePhoto } from "../redux/actions/authAction";
 
 const DriverPhotoSaveScreen = ({ route }: any) => {
-  const { selectedImage } = route?.params;
+  const { selectedImage, fromCameraRoll } = route?.params;
   const [selectedImage1, setSelectedImage1] = useState(selectedImage);
   const [loading, setLoading] = useState(false);
   const date = new Date().getTime();
@@ -114,20 +114,6 @@ const DriverPhotoSaveScreen = ({ route }: any) => {
     }
   };
 
-  const appLoader = (loader: any) => {
-    return (
-      <View style={styles.centeredView}>
-        <Modal visible={loader} animationType="slide" transparent={true}>
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <ActivityIndicator size={"large"} />
-            </View>
-          </View>
-        </Modal>
-      </View>
-    );
-  };
-
   return (
     <TouchableWithoutFeedback onPress={handlePressOutside}>
       <LinearGradient
@@ -185,7 +171,7 @@ const DriverPhotoSaveScreen = ({ route }: any) => {
                 onPress={navigateToProfileScreen}
               />
               <PrimaryButton
-                title={localized.t("RETAKE")}
+                title={fromCameraRoll ? localized.t("TAKE_PHOTO") : localized.t("RETAKE")}
                 buttonStyle={styles.buttonHistoryStyles}
                 titleStyle={styles.titleMainStyle}
                 onPress={() => navigation.navigate("TakePictureScreen")}

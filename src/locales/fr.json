@@ -279,6 +279,7 @@
     "NEW": "Nouveau",
     "OLD": "Vieux",
     "VEHICLE_UPDATED_SUCCESSFULLY": "Véhicule mis à jour avec succès",
-    "YOUR_VEHICLE_HAS_BEEN_UPDATED_SUCCESSFULLY": "Le véhicule a été mis à jour avec succès"
+    "YOUR_VEHICLE_HAS_BEEN_UPDATED_SUCCESSFULLY": "Le véhicule a été mis à jour avec succès",
+    "VEHICLE_NOT_ADDED": "Véhicule non ajouté"
   }
 }

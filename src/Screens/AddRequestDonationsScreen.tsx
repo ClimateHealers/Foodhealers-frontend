@@ -253,7 +253,6 @@ const AddRequestDonationsScreen = ({ route }: any) => {
                     <GooglePlacesAutocomplete
                       placeholder={localized.t("ADDRESS")}
                       fetchDetails={true}
-                      keepResultsAfterBlur={true}
                       listViewDisplayed="auto"
                       textInputProps={{ placeholderTextColor: "#000000" }}
                       query={{
@@ -310,7 +309,6 @@ const AddRequestDonationsScreen = ({ route }: any) => {
                           color: "black",
                           height: 50,
                           backgroundColor: "white",
-                          paddingLeft: 16,
                         },
                         predefinedPlacesDescription: {
                           color: "#FFFFFF",

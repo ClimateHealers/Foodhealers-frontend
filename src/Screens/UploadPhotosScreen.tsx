@@ -120,20 +120,6 @@ const UploadPhotosScreen = ({ route }: any) => {
     }
   };
 
-  const appLoader = (loader: any) => {
-    return (
-      <View style={styles.centeredView}>
-        <Modal visible={loader} animationType="slide" transparent={true}>
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <ActivityIndicator size={"large"} />
-            </View>
-          </View>
-        </Modal>
-      </View>
-    );
-  };
-
   return (
     <TouchableWithoutFeedback onPress={() => setMenuOpen(false)}>
       <LinearGradient

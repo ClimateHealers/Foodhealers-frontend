@@ -110,6 +110,7 @@ const DriverProfileScreen = ({ route }: any) => {
         const singlePhoto = result.assets[0].uri;
         navigation.navigate("DriverPhotoSaveScreen", {
           selectedImage: singlePhoto,
+          fromCameraRoll : false
         });
       }
     } else if (!res.granted) {
@@ -124,20 +125,6 @@ const DriverProfileScreen = ({ route }: any) => {
         { cancelable: true }
       );
     }
-  };
-
-  const appLoader = (loader: any) => {
-    return (
-      <View style={styles.centeredView}>
-        <Modal visible={loader} animationType="slide" transparent={true}>
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <ActivityIndicator size={"large"} />
-            </View>
-          </View>
-        </Modal>
-      </View>
-    );
   };
 
   return (
@@ -159,8 +146,6 @@ const DriverProfileScreen = ({ route }: any) => {
                 />
                 <View style={styles.item}>
                   <Text style={styles.itemText}>
-                    {/* {localized.t("POST_AN_EVENT")} */}
-                    {/* {localized.t("DRIVE")} */}
                   </Text>
                 </View>
                 <MaterialCommunityIcons
