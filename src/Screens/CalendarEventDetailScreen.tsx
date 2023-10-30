@@ -232,12 +232,14 @@ const CalendarEventDetailScreen = ({ route }: any) => {
               />
 
               <PrimaryButton
-                disabled={!volunteersRequired || eventDetails?.status === "Rejected"}
+                disabled={
+                  !volunteersRequired || eventDetails?.status === "Rejected"
+                }
                 title={`${localized.t("VOLUNTEER")}`}
                 onPress={() =>
                   navigation.navigate("AddVolunteerToEventScreen", {
                     id: eventDetails.id,
-                    title: "Volunteer at an event",
+                    title: `${localized.t("VOLUNTEER_AT_EVENT")}`,
                     itemTypeId: 3,
                     longitude: longitude,
                     latitude: latitude,

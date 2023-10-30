@@ -81,7 +81,7 @@ const EventDetailsScreen = ({ route }: any) => {
       Alert.alert(error.message);
     }
   };
-
+  const volunteersRequired = eventDetails?.requiredVolunteers;
   const expired = moment(eventDetails?.eventEndDate).isBefore(moment());
   return (
     <TouchableWithoutFeedback onPress={handlePressOutside}>
@@ -208,7 +208,7 @@ const EventDetailsScreen = ({ route }: any) => {
                     <Text style={styles.boldText}>
                       {localized.t("VOLUNTEERS_REQUIRED")}:{" "}
                       <Text style={styles.cardText}>
-                        {eventDetails?.volunteers}
+                        {eventDetails?.requiredVolunteers}
                       </Text>
                     </Text>
 
@@ -237,6 +237,26 @@ const EventDetailsScreen = ({ route }: any) => {
                       : `${localized.t("GET_DIRECTIONS")}`
                   }
                   onPress={navigationHandler}
+                  buttonStyle={styles.buttonStyles}
+                  titleStyle={styles.titleStyle}
+                />
+
+                <PrimaryButton
+                  disabled={
+                    !volunteersRequired || eventDetails?.status === "Rejected"
+                  }
+                  title={`${localized.t("VOLUNTEER")}`}
+                  onPress={() =>
+                    navigation.navigate("AddVolunteerToEventScreen", {
+                      id: eventDetails.id,
+                      title: `${localized.t("VOLUNTEER_AT_EVENT")}`,
+                      itemTypeId: 3,
+                      longitude: eventDetails?.address?.lng,
+                      latitude: eventDetails?.address?.lat,
+                      eventStartDate: eventDetails?.eventStartDate,
+                      eventEndDate: eventDetails?.eventEndDate,
+                    })
+                  }
                   buttonStyle={styles.buttonStyles}
                   titleStyle={styles.titleStyle}
                 />

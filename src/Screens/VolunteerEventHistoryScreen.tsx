@@ -5,10 +5,10 @@ import {
   Ionicons,
   MaterialIcons,
 } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import moment from "moment";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   FlatList,
   Keyboard,
@@ -35,10 +35,12 @@ const VolunteerEventHistoryScreen = ({ route }: any) => {
   const { itemTypeId, title } = route?.params;
   const [filterName, setFilterName] = useState<string>(`${localized.t("NEW")}`);
   const [volunteerData, setVolunteerData]: any = useState<[]>([]);
-  useEffect(() => {
-    fetchingVolunteerEventData();
-    sortByDate();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      fetchingVolunteerEventData();
+      sortByDate();
+    }, [])
+  );
 
   const [order, setOrder] = useState<"ASC" | "DESC">("ASC");
   const sortByDate = () => {
@@ -63,7 +65,10 @@ const VolunteerEventHistoryScreen = ({ route }: any) => {
 
   const fetchingVolunteerEventData = async () => {
     const response = await dispatch(fetchVolunteerAtEvent({} as any) as any);
-    setVolunteerData(response?.payload?.volunteerHistory);
+    const filteredData = response?.payload?.volunteerHistory?.filter(
+      (event: any) => event?.event?.active === true
+    );
+    setVolunteerData(filteredData);
   };
 
   const navigation: any = useNavigation();
@@ -199,45 +204,41 @@ const VolunteerEventHistoryScreen = ({ route }: any) => {
             </View>
             <BurgerIcon />
           </View>
-          <View>
-            <View style={styles.itemFilter}>
-              <Text style={styles.itemFilterText}>
-                {localized.t("ALL_HISTORY")}
-              </Text>
-              <TouchableOpacity
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-                onPress={sortByDate}
-              >
-                <Text style={styles.itemFilterText}>
-                  {localized.t("FILTER")}
-                </Text>
-                <Text style={styles.filterNameText}>({filterName})</Text>
-                <MaterialIcons
-                  name="filter-list-alt"
-                  style={styles.itemFilterText}
-                />
-              </TouchableOpacity>
-            </View>
-            <View style={{ flex: 1 }}>
-              <FlatList
-                showsVerticalScrollIndicator={false}
-                data={volunteerData}
-                renderItem={({ item }: any) => (
-                  <Item
-                    status={item?.event?.status}
-                    id={item?.id}
-                    name={item?.event?.name}
-                    address={item?.event?.address?.fullAddress}
-                    fromDate={item?.fromDate}
-                  />
-                )}
+          <View style={styles.itemFilter}>
+            <Text style={styles.itemFilterText}>
+              {localized.t("ALL_HISTORY")}
+            </Text>
+            <TouchableOpacity
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+              onPress={sortByDate}
+            >
+              <Text style={styles.itemFilterText}>{localized.t("FILTER")}</Text>
+              <Text style={styles.filterNameText}>({filterName})</Text>
+              <MaterialIcons
+                name="filter-list-alt"
+                style={styles.itemFilterText}
               />
-            </View>
+            </TouchableOpacity>
+          </View>
+          <View style={{ flex: 1 }}>
+            <FlatList
+              showsVerticalScrollIndicator={false}
+              data={volunteerData}
+              renderItem={({ item }: any) => (
+                <Item
+                  status={item?.event?.status}
+                  id={item?.id}
+                  name={item?.event?.name}
+                  address={item?.event?.address?.fullAddress}
+                  fromDate={item?.fromDate}
+                />
+              )}
+            />
           </View>
         </View>
       </LinearGradient>

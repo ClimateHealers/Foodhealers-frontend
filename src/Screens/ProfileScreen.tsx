@@ -9,7 +9,10 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-
+import {
+  heightPercentageToDP as h2dp,
+  widthPercentageToDP as w2dp,
+} from "react-native-responsive-screen";
 import {
   AntDesign,
   Ionicons,
@@ -155,7 +158,7 @@ const ProfileScreen = () => {
     } else if (!res.granted) {
       Alert.alert(
         `${localized.t("MEDIA_LIBRARY_ACCESS")}`,
-        `${localized.t("FOODHEALERS_APP_NEEDS_PHOTOLIBRARY.")}`,
+        `${localized.t("FOODHEALERS_APP_NEEDS_PHOTOLIBRARY")}`,
         [
           {
             text: `${localized.t("OK")}`,
@@ -176,7 +179,7 @@ const ProfileScreen = () => {
           <View
             style={{
               position: "absolute",
-              right: wp2dp("12"),
+              right: wp2dp(8.5),
               top: Platform.OS === "ios" ? hp2dp(8) : hp2dp(6),
               backgroundColor: "white",
               borderColor: "black",

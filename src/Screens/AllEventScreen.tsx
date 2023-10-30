@@ -215,6 +215,7 @@ const AllEventScreen = () => {
                 long: long,
                 eventPhoto: eventPhoto,
                 requiredVolunteers: requiredVolunteers,
+                status: status,
               },
             })
           }

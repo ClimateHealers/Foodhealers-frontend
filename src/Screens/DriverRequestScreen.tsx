@@ -136,7 +136,7 @@ const DriverRequestScreen = ({ route }: any) => {
     } else if (!res.granted) {
       Alert.alert(
         `${localized.t("MEDIA_LIBRARY_ACCESS")}`,
-        `${localized.t("FOODHEALERS_APP_NEEDS_PHOTOLIBRARY.")}`,
+        `${localized.t("FOODHEALERS_APP_NEEDS_PHOTOLIBRARY")}`,
         [
           {
             text: `${localized.t("OK")}`,
@@ -191,8 +191,8 @@ const DriverRequestScreen = ({ route }: any) => {
                   <View
                     style={{
                       position: "absolute",
-                      right: 40,
-                      top: 65,
+                      right: w2dp(8.5),
+                      top: h2dp(5.5),
                       backgroundColor: "white",
                       borderColor: "black",
                       borderWidth: 0.5,
@@ -217,21 +217,30 @@ const DriverRequestScreen = ({ route }: any) => {
                     {isAuthenticated && (
                       <View>
                         <TouchableOpacity
-                          onPress={() => {navigation.navigate("HistoryScreen"), setMenuOpen(false)}}
+                          onPress={() => {
+                            navigation.navigate("HistoryScreen"),
+                              setMenuOpen(false);
+                          }}
                         >
                           <Text style={styles.burgerText}>
                             {localized.t("HISTORY")}
                           </Text>
                         </TouchableOpacity>
                         <TouchableOpacity
-                          onPress={() => {navigation.navigate("ProfileScreen"); setMenuOpen(false)}}
+                          onPress={() => {
+                            navigation.navigate("ProfileScreen");
+                            setMenuOpen(false);
+                          }}
                         >
                           <Text style={styles.burgerText}>
                             {localized.t("ACCOUNT")}
                           </Text>
                         </TouchableOpacity>
                         <TouchableOpacity
-                          onPress={() => {navigation.navigate("TeamHomeScreen"); setMenuOpen(false)}}
+                          onPress={() => {
+                            navigation.navigate("TeamHomeScreen");
+                            setMenuOpen(false);
+                          }}
                         >
                           <Text style={styles.burgerText}>
                             {localized.t("TEAM")}
@@ -319,7 +328,7 @@ const DriverRequestScreen = ({ route }: any) => {
                   titleStyle={{
                     color: "black",
                     fontSize: 18,
-                    lineHeight: 20,
+                    // lineHeight: 20,
                     fontFamily: "OpenSans-Regular",
                   }}
                 />

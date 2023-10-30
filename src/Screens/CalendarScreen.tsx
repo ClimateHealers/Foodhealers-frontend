@@ -77,7 +77,6 @@ const CalendarScreen = ({ route }: any) => {
                   }}
                   style={{
                     borderRadius: 10,
-                    height: h2dp(35),
                   }}
                   markedDates={{
                     [date]: {

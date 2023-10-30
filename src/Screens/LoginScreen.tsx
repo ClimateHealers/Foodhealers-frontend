@@ -117,8 +117,8 @@ const LoginScreen = () => {
               <View
                 style={{
                   position: "absolute",
-                  right: 60,
-                  top: 125,
+                  right: w2dp(14),
+                  top: h2dp(12),
                   backgroundColor: "white",
                   borderColor: "white",
                   borderRadius: 5,

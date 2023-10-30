@@ -64,6 +64,9 @@ const HomeScreen = ({ route }: any) => {
     setSelectedLanguage(selectedLanguage);
   };
 
+  const line_height_multiplier = 1.5;
+  const default_font_size = 13;
+
   useFocusEffect(
     useCallback(() => {
       const getUserLocation = async () => {
@@ -340,7 +343,6 @@ const styles = StyleSheet.create({
     color: "black",
     fontSize: 22,
     fontWeight: "200",
-    lineHeight: h2dp(3.2),
     fontFamily: "OpenSans-bold",
   },
   centeredView: {

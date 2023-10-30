@@ -114,13 +114,13 @@ const SignupScreen = () => {
               <View
                 style={{
                   position: "absolute",
-                  right: 60,
+                  right: w2dp(8.5),
                   top: Platform.OS === "ios" ? h2dp(12.5) : h2dp(9),
                   backgroundColor: "white",
                   borderColor: "white",
-                  height: 100,
+                  borderWidth: 0.5,
                   borderRadius: 5,
-                  zIndex: 9999,
+                  zIndex: 1,
                 }}
               >
                 <TouchableOpacity onPress={() => handleMenuItemPress("Home")}>

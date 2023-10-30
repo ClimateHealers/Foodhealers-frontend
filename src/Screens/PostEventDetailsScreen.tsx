@@ -14,7 +14,10 @@ import {
   View,
 } from "react-native";
 import { Divider } from "react-native-paper";
-import { heightPercentageToDP as h2dp } from "react-native-responsive-screen";
+import {
+  heightPercentageToDP as h2dp,
+  widthPercentageToDP as w2dp,
+} from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { getLocation } from "../Components/getCurrentLocation";
 import PrimaryButton from "../Components/PrimaryButton";
@@ -117,14 +120,12 @@ const PostEventDetailsScreen = ({ route }: any) => {
                     <View
                       style={{
                         position: "absolute",
-                        right: 60,
-                        top: 70,
+                        right: w2dp(8.5),
+                        top: h2dp(5.5),
                         backgroundColor: "white",
                         borderColor: "white",
                         borderRadius: 5,
-                        height: 100,
-                        width: 100,
-                        zIndex: 9999,
+                        zIndex: 1,
                       }}
                     >
                       <TouchableOpacity

@@ -204,10 +204,30 @@ export const AddRequest = Yup.object().shape({
 });
 
 export const adddVehicle = Yup.object().shape({
-  carModel: Yup.string().required(`${localized.t("THIS_FIELD_IS_REQUIRED")}`),
-  carMake: Yup.string().required(`${localized.t("THIS_FIELD_IS_REQUIRED")}`),
-  carColor: Yup.string().required(`${localized.t("THIS_FIELD_IS_REQUIRED")}`),
-  licencePlate: Yup.string().required(`${localized.t("THIS_FIELD_IS_REQUIRED")}`),
+  carModel: Yup.string()
+    .required(`${localized.t("THIS_FIELD_IS_REQUIRED")}`)
+    .matches(/^[^\W\s]{1,10}$/, {
+      message: `${localized.t("THIS_FIELD_IS_REQUIRED")}`,
+      excludeEmptyString: true,
+    }),
+  carMake: Yup.string()
+    .required(`${localized.t("THIS_FIELD_IS_REQUIRED")}`)
+    .matches(/^(?![\W\d])[^\s]{1,10}$/, {
+      message: `${localized.t("THIS_FIELD_IS_REQUIRED")}`,
+      excludeEmptyString: true,
+    }),
+  carColor: Yup.string()
+    .required(`${localized.t("THIS_FIELD_IS_REQUIRED")}`)
+    .matches(/^(?![\W\d])[^\s]{1,10}$/, {
+      message: `${localized.t("THIS_FIELD_IS_REQUIRED")}`,
+      excludeEmptyString: true,
+    }),
+  licencePlate: Yup.string()
+    .required(`${localized.t("THIS_FIELD_IS_REQUIRED")}`)
+    .matches(/^(?![\s-])[\w\s-]+$/, {
+      message: `${localized.t("THIS_FIELD_IS_REQUIRED")}`,
+      excludeEmptyString: true,
+    }),
 });
 
 export const GenerateOTP = Yup.object().shape({
@@ -217,4 +237,4 @@ export const GenerateOTP = Yup.object().shape({
       message: `${localized.t("Only numbers are allowed")}`,
       excludeEmptyString: true,
     }),
-  });
+});

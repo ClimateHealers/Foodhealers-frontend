@@ -112,6 +112,7 @@ const SingleEventDetails = ({ route }: any) => {
   };
 
   const expired = moment(eventDetails?.eventEndDate).isBefore(moment());
+  const approved = eventDetails?.status === "approved";
   return (
     <TouchableWithoutFeedback onPress={handlePressOutside}>
       <LinearGradient
@@ -270,7 +271,7 @@ const SingleEventDetails = ({ route }: any) => {
                   }}
                 >
                   <PrimaryButton
-                    disabled={expired}
+                    disabled={expired || !approved}
                     title={
                       expired
                         ? `${localized.t("EVENT_EXPIRED")}`
@@ -279,7 +280,7 @@ const SingleEventDetails = ({ route }: any) => {
                     onPress={() =>
                       navigation.navigate("AddVolunteerToEventScreen", {
                         id: eventDetails.id,
-                        title: "Volunteer at an event",
+                        title: `${localized.t("VOLUNTEER_AT_EVENT")}`,
                         itemTypeId: 3,
                         longitude: eventDetails.longitude,
                         latitude: eventDetails.latitude,

@@ -275,45 +275,41 @@ const VolunteerDonationHistoryScreen = ({ route }: any) => {
             </View>
             <BurgerIcon />
           </View>
-          <View>
-            <View style={styles.itemFilter}>
-              <Text style={styles.itemFilterText}>
-                {localized.t("ALL_HISTORY")}
-              </Text>
-              <TouchableOpacity
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-                onPress={sortByDate}
-              >
-                <Text style={styles.itemFilterText}>
-                  {localized.t("FILTER")}
-                </Text>
-                <Text style={styles.filterNameText}>({filterName})</Text>
-                <MaterialIcons
-                  name="filter-list-alt"
-                  style={styles.itemFilterText}
-                />
-              </TouchableOpacity>
-            </View>
-            <FlatList
-              showsVerticalScrollIndicator={false}
-              data={donationData}
-              renderItem={({ item }: any) => (
-                <Item
-                  status={item?.status}
-                  donationType={item?.donationType}
-                  id={item.id}
-                  foodItem={`${item?.foodItem}  (${item?.quantity})`}
-                  delivery={item?.delivery?.pickupAddress?.fullAddress}
-                  createdAt={item?.createdAt}
-                />
-              )}
-            />
+          <View style={styles.itemFilter}>
+            <Text style={styles.itemFilterText}>
+              {localized.t("ALL_HISTORY")}
+            </Text>
+            <TouchableOpacity
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+              onPress={sortByDate}
+            >
+              <Text style={styles.itemFilterText}>{localized.t("FILTER")}</Text>
+              <Text style={styles.filterNameText}>({filterName})</Text>
+              <MaterialIcons
+                name="filter-list-alt"
+                style={styles.itemFilterText}
+              />
+            </TouchableOpacity>
           </View>
+          <FlatList
+            showsVerticalScrollIndicator={false}
+            data={donationData}
+            renderItem={({ item }: any) => (
+              <Item
+                status={item?.status}
+                donationType={item?.donationType}
+                id={item.id}
+                foodItem={`${item?.foodItem}  (${item?.quantity})`}
+                delivery={item?.delivery?.pickupAddress?.fullAddress}
+                createdAt={item?.createdAt}
+              />
+            )}
+          />
         </View>
       </LinearGradient>
     </TouchableWithoutFeedback>
