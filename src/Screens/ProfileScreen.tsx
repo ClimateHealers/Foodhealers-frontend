@@ -186,6 +186,7 @@ const ProfileScreen = () => {
               borderWidth: 0.5,
               borderRadius: 5,
               zIndex: 9999,
+              flex: 2,
             }}
           >
             <TouchableOpacity onPress={() => handleMenuItemPress("Home")}>

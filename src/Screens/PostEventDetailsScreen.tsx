@@ -126,6 +126,7 @@ const PostEventDetailsScreen = ({ route }: any) => {
                         borderColor: "white",
                         borderRadius: 5,
                         zIndex: 1,
+                        flex: 2,
                       }}
                     >
                       <TouchableOpacity

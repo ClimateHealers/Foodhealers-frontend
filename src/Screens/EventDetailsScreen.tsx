@@ -63,7 +63,7 @@ const EventDetailsScreen = ({ route }: any) => {
   const formattedEndTime = moment(EndTime).format("h:mm a");
 
   const navigationHandler = () => {
-    const url = `https://www.google.com/maps/dir/?api=1&origin=${lat},${lng}&destination=${eventDetails?.address?.lat},${eventDetails?.address?.lng}`;
+    const url = `https://www.google.com/maps/dir/?api=1&destination=${eventDetails?.address?.lat},${eventDetails?.address?.lng}`;
     Linking.openURL(url);
   };
   const onShare = async () => {

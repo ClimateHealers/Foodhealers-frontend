@@ -1,25 +1,19 @@
 import { Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useState } from "react";
 import {
-  ImageBackground,
   Platform,
   SafeAreaView,
   StyleSheet,
   Text,
-  TouchableOpacity,
-  View,
+  View
 } from "react-native";
-import { widthPercentageToDP as wp2dp } from "react-native-responsive-screen";
-import { material, systemWeights } from "react-native-typography";
-import { useSelector } from "react-redux";
-import BurgerIcon from "../Components/BurgerIcon";
 import {
   heightPercentageToDP as h2dp,
-  widthPercentageToDP as w2dp,
+  widthPercentageToDP as w2dp, widthPercentageToDP as wp2dp
 } from "react-native-responsive-screen";
-import { useNavigation } from "@react-navigation/native";
-import { getLocation } from "../Components/getCurrentLocation";
+import { systemWeights } from "react-native-typography";
 import { localized } from "../locales/localization";
 
 export default function NotificationScreen() {

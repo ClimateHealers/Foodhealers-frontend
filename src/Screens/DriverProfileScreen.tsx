@@ -168,6 +168,7 @@ const DriverProfileScreen = ({ route }: any) => {
                       borderWidth: 0.5,
                       borderRadius: 5,
                       zIndex: 1,
+                      flex: 2,
                     }}
                   >
                     <TouchableOpacity

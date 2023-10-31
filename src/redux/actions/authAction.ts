@@ -1,7 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import API from "../../Utils/APIUtils";
-import { setAuthToken } from "../reducers/authreducers";
 
 interface SignupData {
   tokenId: string;
@@ -80,8 +79,8 @@ export const login = createAsyncThunk<LoginData, LoginData>(
           const newToken = await refreshToken().then((res) =>
             JSON.stringify(res)
           );
-          const parsedToken = JSON.parse(newToken);
-          dispatch(setAuthToken(parsedToken));
+          // const parsedToken = JSON.parse(newToken);
+          // dispatch(setAuthToken(parsedToken));
         }
       });
       return result?.data;

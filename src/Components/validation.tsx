@@ -67,7 +67,7 @@ export const postEventSchema = Yup.object().shape({
   served: Yup.string()
     .required(`${localized.t("THIS_FIELD_IS_REQUIRED")}`)
     .min(
-      6,
+      5,
       ({ min }) =>
         `${localized.t("THIS_FIELD_MUST_BE_AT_LEAST")} ${min} ${localized.t(
           "CHARACTERS"
@@ -107,7 +107,7 @@ export const AddDonations = Yup.object().shape({
       excludeEmptyString: true,
     })
     .min(
-      6,
+      5,
       ({ min }) =>
         `${localized.t("THIS_FIELD_MUST_BE_AT_LEAST")} ${min} ${localized.t(
           "CHARACTERS"
@@ -132,7 +132,7 @@ export const addVolunteer = Yup.object().shape({
       excludeEmptyString: true,
     })
     .min(
-      6,
+      5,
       ({ min }) =>
         `${localized.t("THIS_FIELD_MUST_BE_AT_LEAST")} ${min} ${localized.t(
           "CHARACTERS"
@@ -166,7 +166,7 @@ export const addDriver = Yup.object().shape({
       excludeEmptyString: true,
     })
     .min(
-      6,
+      5,
       ({ min }) =>
         `${localized.t("THIS_FIELD_MUST_BE_AT_LEAST")} ${min} ${localized.t(
           "CHARACTERS"
@@ -195,7 +195,7 @@ export const AddRequest = Yup.object().shape({
       excludeEmptyString: true,
     })
     .min(
-      6,
+      5,
       ({ min }) =>
         `${localized.t("THIS_FIELD_MUST_BE_AT_LEAST")} ${min} ${localized.t(
           "CHARACTERS"
@@ -206,26 +206,26 @@ export const AddRequest = Yup.object().shape({
 export const adddVehicle = Yup.object().shape({
   carModel: Yup.string()
     .required(`${localized.t("THIS_FIELD_IS_REQUIRED")}`)
-    .matches(/^[^\W\s]{1,10}$/, {
-      message: `${localized.t("THIS_FIELD_IS_REQUIRED")}`,
+    .matches(/^(?!\s)[A-Za-z0-9 ]{1,20}$/, {
+      message: `${localized.t("Please enter valid model")}`,
       excludeEmptyString: true,
     }),
   carMake: Yup.string()
     .required(`${localized.t("THIS_FIELD_IS_REQUIRED")}`)
-    .matches(/^(?![\W\d])[^\s]{1,10}$/, {
-      message: `${localized.t("THIS_FIELD_IS_REQUIRED")}`,
+    .matches(/^(?!\s)[A-Za-z ]{1,20}$/, {
+      message: `${localized.t("Please enter valid make")}`,
       excludeEmptyString: true,
     }),
   carColor: Yup.string()
     .required(`${localized.t("THIS_FIELD_IS_REQUIRED")}`)
-    .matches(/^(?![\W\d])[^\s]{1,10}$/, {
-      message: `${localized.t("THIS_FIELD_IS_REQUIRED")}`,
+    .matches(/^(?!\s)[A-Za-z ]{1,20}$/, {
+      message: `${localized.t("Please enter valid color")}`,
       excludeEmptyString: true,
     }),
   licencePlate: Yup.string()
     .required(`${localized.t("THIS_FIELD_IS_REQUIRED")}`)
-    .matches(/^(?![\s-])[\w\s-]+$/, {
-      message: `${localized.t("THIS_FIELD_IS_REQUIRED")}`,
+    .matches(/^(?![\W\d])[^\s]{1,10}$/, {
+      message: `${localized.t("Please enter valid licensePlate")}`,
       excludeEmptyString: true,
     }),
 });
