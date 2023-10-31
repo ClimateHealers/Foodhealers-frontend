@@ -75,7 +75,10 @@ const WeekScreen = ({ route }: any) => {
   const currentDate = moment(new Date()).format("YYYY-MM-DD");
 
   const startDate = moment(new Date(currentDate)).utc().unix();
-  const endDate = moment(new Date(currentDate)).add(23.99, "hours").utc().unix();
+  const endDate = moment(new Date(currentDate))
+    .add(23.99, "hours")
+    .utc()
+    .unix();
 
   const oneWeek = moment(new Date().setHours(23, 59, 59, 0))
     .add(6, "d")

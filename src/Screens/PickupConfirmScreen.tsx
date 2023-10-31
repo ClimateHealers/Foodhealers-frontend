@@ -95,7 +95,9 @@ const PickupConfirmScreen = ({ route }: any) => {
                   size={32}
                   color="white"
                   onPress={() => {
-                    navigation.goBack();
+                    navigation.navigate("PickupDetailsScreen", {
+                      itemTypeId: 4,
+                    });
                   }}
                 />
                 <View style={styles.item}>
@@ -304,7 +306,10 @@ const PickupConfirmScreen = ({ route }: any) => {
                                   alignSelf: "center",
                                   fontSize: h2dp(2.2),
                                 }}
-                              >{pickedup ? `${localized.t("DROPOFF")}` : `${localized.t("PICKUP")}`}
+                              >
+                                {pickedup
+                                  ? `${localized.t("DROPOFF")}`
+                                  : `${localized.t("PICKUP")}`}
                               </Text>
                               <PrimaryButton
                                 title={localized.t("GENERATE_OTP")}

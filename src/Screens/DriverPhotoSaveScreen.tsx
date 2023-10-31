@@ -60,7 +60,7 @@ const DriverPhotoSaveScreen = ({ route }: any) => {
     } else if (!res.granted) {
       Alert.alert(
         `${localized.t("MEDIA_LIBRARY_ACCESS")}`,
-        `${localized.t("FOODHEALERS_APP_NEEDS_PHOTOLIBRARY.")}`,
+        `${localized.t("FOODHEALERS_APP_NEEDS_PHOTOLIBRARY")}`,
         [
           {
             text: `${localized.t("OK")}`,

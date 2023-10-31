@@ -116,7 +116,7 @@ const DriverProfileScreen = ({ route }: any) => {
     } else if (!res.granted) {
       Alert.alert(
         `${localized.t("MEDIA_LIBRARY_ACCESS")}`,
-        `${localized.t("FOODHEALERS_APP_NEEDS_PHOTOLIBRARY.")}`,
+        `${localized.t("FOODHEALERS_APP_NEEDS_PHOTOLIBRARY")}`,
         [
           {
             text: `${localized.t("OK")}`,
@@ -145,8 +145,7 @@ const DriverProfileScreen = ({ route }: any) => {
                   onPress={() => navigation.navigate("DriverRequestScreen")}
                 />
                 <View style={styles.item}>
-                  <Text style={styles.itemText}>
-                  </Text>
+                  <Text style={styles.itemText}></Text>
                 </View>
                 <MaterialCommunityIcons
                   name="menu"
@@ -162,13 +161,14 @@ const DriverProfileScreen = ({ route }: any) => {
                   <View
                     style={{
                       position: "absolute",
-                      right: 40,
-                      top: 65,
+                      right: w2dp(8.5),
+                      top: h2dp(5.5),
                       backgroundColor: "white",
                       borderColor: "black",
                       borderWidth: 0.5,
                       borderRadius: 5,
                       zIndex: 1,
+                      flex: 2,
                     }}
                   >
                     <TouchableOpacity

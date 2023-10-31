@@ -1,5 +1,9 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import {
+  heightPercentageToDP as h2dp,
+  widthPercentageToDP as w2dp,
+} from "react-native-responsive-screen";
 import { Text, TouchableOpacity, View } from "react-native";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
@@ -53,13 +57,14 @@ const BurgerIcon = () => {
         <View
           style={{
             position: "absolute",
-            right: 40,
-            top: 65,
+            right: w2dp(8.5),
+            top: h2dp(5.5),
             backgroundColor: "white",
             borderColor: "black",
             borderWidth: 0.5,
             borderRadius: 5,
             zIndex: 1,
+            flex: 2,
           }}
         >
           <TouchableOpacity onPress={() => handleMenuItemPress("Home")}>

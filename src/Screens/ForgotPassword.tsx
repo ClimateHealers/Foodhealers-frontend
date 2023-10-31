@@ -103,7 +103,9 @@ function ForgotPassword() {
                     setLoading(false);
                     Alert.alert(
                       `${localized.t("RESET_LINK_SENT_SUCCESSFULLY")}`,
-                      `${localized.t("WE_HAVE_SUCCESSFULLY_SENT_THE_RESET_LINK_TO_THE_REGISTERED_EMAIL")}`,
+                      `${localized.t(
+                        "WE_HAVE_SUCCESSFULLY_SENT_THE_RESET_LINK_TO_THE_REGISTERED_EMAIL"
+                      )}`,
                       [
                         {
                           text: `${localized.t("OK")}`,

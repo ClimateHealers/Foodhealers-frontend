@@ -64,6 +64,9 @@ const HomeScreen = ({ route }: any) => {
     setSelectedLanguage(selectedLanguage);
   };
 
+  const line_height_multiplier = 1.5;
+  const default_font_size = 13;
+
   useFocusEffect(
     useCallback(() => {
       const getUserLocation = async () => {
@@ -269,7 +272,7 @@ const HomeScreen = ({ route }: any) => {
                   <Text
                     style={{
                       color: "white",
-                      fontSize: 18,
+                      fontSize: h2dp(1.8),
                       marginBottom: h2dp(1.5),
                       fontFamily: "OpenSans-Regular",
                     }}
@@ -282,7 +285,7 @@ const HomeScreen = ({ route }: any) => {
                     <Text
                       style={{
                         color: "white",
-                        fontSize: 18,
+                        fontSize: h2dp(1.8),
                         textDecorationLine: "underline",
                         fontFamily: "OpenSans-Bold",
                         alignSelf: "center",
@@ -328,7 +331,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginBottom: h2dp(2),
     minWidth: 190,
-    maxHeight: h2dp(4.5),
+    maxHeight: h2dp(6),
   },
   dropdownContainer: {
     position: "absolute",
@@ -340,7 +343,6 @@ const styles = StyleSheet.create({
     color: "black",
     fontSize: 22,
     fontWeight: "200",
-    lineHeight: h2dp(3.2),
     fontFamily: "OpenSans-bold",
   },
   centeredView: {
@@ -367,19 +369,23 @@ const styles = StyleSheet.create({
   dropdown1BtnStyle: {
     marginTop: 15,
     width: "30%",
-    height: 50,
+    height: h2dp(5),
     backgroundColor: "#FFF",
     borderRadius: 5,
     borderWidth: 1,
     borderColor: "#D1D1D6",
   },
-  dropdown1BtnTxtStyle: { color: "#B50000", textAlign: "left", fontSize: 14 },
+  dropdown1BtnTxtStyle: {
+    color: "#B50000",
+    textAlign: "left",
+    fontSize: h2dp(1.4),
+  },
   dropdown1DropdownStyle: {
     backgroundColor: "#EFEFEF",
     color: "black",
     borderRadius: 4,
     height: 180,
-    fontSize: 14,
+    fontSize: h2dp(1.4),
     borderColor: "blue",
   },
   dropdown1RowStyle: {
