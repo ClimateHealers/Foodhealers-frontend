@@ -195,6 +195,7 @@ const VolunteerTabScreen = () => {
                 long: long,
                 eventPhoto: eventPhoto,
                 requiredVolunteers: requiredVolunteers,
+                status: status
               },
             })
           }

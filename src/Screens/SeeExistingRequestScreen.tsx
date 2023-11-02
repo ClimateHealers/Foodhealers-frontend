@@ -37,6 +37,7 @@ import { allRequests } from "../redux/actions/allRequests";
 const SeeExistingRequestScreen = ({ route }: any) => {
   const { itemTypeId, title, latitude, longitude } = route?.params;
   const [item, setItem] = useState<string>("");
+  const [menuClose, setMenuOpen] = useState(false);
   const [filterName, setFilterName] = useState<string>(`${localized.t("NEW")}`);
   const [requestData, setRequestData]: any = useState<[]>([]);
   const userDetails = useSelector((state: any) => state.auth);
@@ -101,6 +102,7 @@ const SeeExistingRequestScreen = ({ route }: any) => {
 
   const handlePressOutside = () => {
     Keyboard.dismiss();
+    setMenuOpen(!menuClose);
   };
 
   const Item = ({
@@ -381,7 +383,10 @@ const SeeExistingRequestScreen = ({ route }: any) => {
                 {localized.t("EXISTING")} {localized.t("REQUESTS")}
               </Text>
             </View>
-            <BurgerIcon />
+            <BurgerIcon
+              onOutsidePress={handlePressOutside}
+              menuClose={menuClose}
+            />
           </View>
 
           <View>

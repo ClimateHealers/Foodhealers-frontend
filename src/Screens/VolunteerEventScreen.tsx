@@ -142,6 +142,7 @@ const VolunteerEventScreen = ({ route }: any) => {
                 requiredVolunteers: requiredVolunteers,
                 latitude: latitude,
                 longitude: longitude,
+                status: status,
               },
             })
           }

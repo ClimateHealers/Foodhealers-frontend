@@ -67,6 +67,8 @@ const AddDonationsScreen = ({ route }: any) => {
   };
   const navigation: any = useNavigation();
 
+  const { routes } = navigation.getState();
+
   const handleDateChange = (date: any) => {
     setSelectedDate(date);
     if (selectedDate > selectedEndDate) {
@@ -97,7 +99,14 @@ const AddDonationsScreen = ({ route }: any) => {
                   name="chevron-back"
                   size={32}
                   color="white"
-                  onPress={() => navigation.goBack()}
+                  onPress={() =>
+                    navigation.navigate("SeeExistingRequestScreen", {
+                      latitude: latitude,
+                      longitude: longitude,
+                      itemTypeId: itemTypeId,
+                      title: title,
+                    })
+                  }
                 />
                 <View style={styles.item}>
                   <Text style={styles.itemText}>{title}</Text>

@@ -35,6 +35,8 @@ import { postRequest } from "../redux/actions/myRequests";
 
 const AddRequestDonationsScreen = ({ route }: any) => {
   const { itemTypeId, title } = route?.params;
+  const menuItem = "Team";
+  const [menuClose, setMenuOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [langOpen, setlangOpen] = useState(false);
   const [showDatePicker, setShowDatePicker] = useState(false);
@@ -63,7 +65,7 @@ const AddRequestDonationsScreen = ({ route }: any) => {
   const eventDateTime = moment(selectedDate).utc().unix();
 
   const handlePressOutside = () => {
-    setlangOpen(false);
+    setMenuOpen(!menuClose);
     Keyboard.dismiss();
   };
   const navigation: any = useNavigation();
@@ -103,7 +105,10 @@ const AddRequestDonationsScreen = ({ route }: any) => {
                 <View style={styles.item}>
                   <Text style={styles.itemText}>{title}</Text>
                 </View>
-                <BurgerIcon />
+                <BurgerIcon 
+                  onOutsidePress={handlePressOutside}
+                  menuClose={menuClose}
+                  menuItem={menuItem}/>
               </View>
               <Modal visible={loading} animationType="slide" transparent={true}>
                 <View style={styles.centeredView}>

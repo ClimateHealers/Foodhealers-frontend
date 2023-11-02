@@ -24,6 +24,8 @@ import { VeganRecipesCategory } from "../redux/actions/veganRecipesCategory";
 const TeamHomeScreen = ({ route }: any) => {
   const [recipeData, setRecipeData] = useState<[]>([]);
   const [events, setEvents] = useState<[]>([]);
+  const menuItem = "Team";
+  const [menuClose, setMenuOpen] = useState(false);
   const navigation: any = useNavigation();
   const dispatch = useDispatch();
   const eventsScheduled = events?.length;
@@ -41,6 +43,7 @@ const TeamHomeScreen = ({ route }: any) => {
 
   const handlePressOutside = () => {
     Keyboard.dismiss();
+    setMenuOpen(!menuClose);
   };
 
   useFocusEffect(
@@ -72,7 +75,9 @@ const TeamHomeScreen = ({ route }: any) => {
                     <View style={styles.item}>
                       <Text style={styles.itemText}>{localized.t("TEAM")}</Text>
                     </View>
-                    <BurgerIcon />
+                    <BurgerIcon onOutsidePress={handlePressOutside}
+                  menuClose={menuClose}
+                  menuItem={menuItem}/>
                   </View>
                   {/* <View
                     style={{

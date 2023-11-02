@@ -11,9 +11,10 @@ import { getLocation } from "../Components/getCurrentLocation";
 import { styles } from "./Styles";
 import { localized } from "../locales/localization";
 
-const BurgerIcon = () => {
+const BurgerIcon = ({ menuClose, onOutsidePress, menuItem }: any) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const navigation: any = useNavigation();
+  let [menutoggle, setToggle] = useState(menuClose);
   const isAuthenticated = useSelector(
     (state: any) => state.auth.data.isAuthenticated
   );
@@ -70,35 +71,50 @@ const BurgerIcon = () => {
           <TouchableOpacity onPress={() => handleMenuItemPress("Home")}>
             <Text style={styles.burgerText}>{localized.t("HOME")}</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => findFoodMenuItemPress("Find Food")}>
-            <Text style={styles.burgerText}>{localized.t("FIND_FOOD")}</Text>
-          </TouchableOpacity>
+          {menuItem !== "Find Food" ? (
+            <TouchableOpacity
+              onPress={() => findFoodMenuItemPress("Find Food")}
+            >
+              <Text style={styles.burgerText}>{localized.t("FIND_FOOD")}</Text>
+            </TouchableOpacity>
+          ) : null}
+
           {isAuthenticated && (
             <View>
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate("HistoryScreen");
-                  setMenuOpen(false);
-                }}
-              >
-                <Text style={styles.burgerText}>{localized.t("HISTORY")}</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate("TeamHomeScreen");
-                  setMenuOpen(false);
-                }}
-              >
-                <Text style={styles.burgerText}>{localized.t("TEAM")}</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate("ProfileScreen");
-                  setMenuOpen(false);
-                }}
-              >
-                <Text style={styles.burgerText}>{localized.t("ACCOUNT")}</Text>
-              </TouchableOpacity>
+              {menuItem !== "History" ? (
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate("HistoryScreen");
+                    setMenuOpen(false);
+                  }}
+                >
+                  <Text style={styles.burgerText}>
+                    {localized.t("HISTORY")}
+                  </Text>
+                </TouchableOpacity>
+              ) : null}
+              {menuItem !== "Team" ? (
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate("TeamHomeScreen");
+                    setMenuOpen(false);
+                  }}
+                >
+                  <Text style={styles.burgerText}>{localized.t("TEAM")}</Text>
+                </TouchableOpacity>
+              ) : null}
+              {menuItem !== "Account" ? (
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate("ProfileScreen");
+                    setMenuOpen(false);
+                  }}
+                >
+                  <Text style={styles.burgerText}>
+                    {localized.t("ACCOUNT")}
+                  </Text>
+                </TouchableOpacity>
+              ) : null}
             </View>
           )}
         </View>

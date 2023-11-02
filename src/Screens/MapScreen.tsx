@@ -35,7 +35,8 @@ import { setLanguage } from "../redux/reducers/langReducer";
 
 const MapScreen = ({ route }: any) => {
   const { latitude, longitude } = route.params;
-
+  const menuItem = "Find Food";
+  const [menuClose, setMenuOpen] = useState(false);
   const startDate = moment(new Date().setHours(0, 0, 0, 0)).utc().unix();
   const endDate = moment(new Date().setHours(23, 59, 59, 0))
     .add(6, "d")
@@ -60,7 +61,6 @@ const MapScreen = ({ route }: any) => {
     { id: 8, label: "Spanish", value: "es" },
   ]);
   const [events, setEvents] = useState<[]>([]);
-  const [menuOpen, setMenuOpen] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState(localized.locale);
   const [address, setAddress] = useState<any>();
   const [lat, setLat] = useState<any>();
@@ -97,7 +97,7 @@ const MapScreen = ({ route }: any) => {
   const handlePressOutside = () => {
     setlangOpen(false);
     Keyboard.dismiss();
-    setMenuOpen(false);
+    setMenuOpen(!menuClose);
   };
 
   const clickHandler = () => {
@@ -196,7 +196,11 @@ const MapScreen = ({ route }: any) => {
                     {localized.t("FIND_FOOD")}
                   </Text>
                 </View>
-                <BurgerIcon />
+                <BurgerIcon
+                  onOutsidePress={handlePressOutside}
+                  menuClose={menuClose}
+                  menuItem={menuItem}
+                />
               </View>
 
               <GooglePlacesAutocomplete
@@ -302,9 +306,14 @@ const MapScreen = ({ route }: any) => {
                 }}
               />
 
-              <View style={[styles.mapContainer, {
-                marginHorizontal: w2dp(-4),
-              }]}>
+              <View
+                style={[
+                  styles.mapContainer,
+                  {
+                    marginHorizontal: w2dp(-4),
+                  },
+                ]}
+              >
                 <MapView
                   ref={mapRef}
                   provider={"google"}
@@ -396,8 +405,7 @@ const MapScreen = ({ route }: any) => {
                 )}
 
                 {emptyEvents ? (
-                  <View
-                  >
+                  <View>
                     <PrimaryButton
                       title={localized.t("HOME")}
                       buttonStyle={styles.buttonStyles}

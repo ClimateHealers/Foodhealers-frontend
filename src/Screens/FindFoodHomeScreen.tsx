@@ -1,8 +1,7 @@
-import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
-import moment from "moment";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   Dimensions,
   Image,
@@ -16,18 +15,16 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
+import MapView, { Marker } from "react-native-maps";
 import {
   heightPercentageToDP as h2dp,
   widthPercentageToDP as w2dp,
 } from "react-native-responsive-screen";
-import { useDispatch, useSelector } from "react-redux";
-import { getLocation } from "../Components/getCurrentLocation";
-import { localized } from "../locales/localization";
-import PrimaryButton from "../Components/PrimaryButton";
-import MapView, { Marker } from "react-native-maps";
-import { VeganRecipesCategories } from "../redux/actions/veganRecipes";
-import FoodhealersHeader from "../Components/FoodhealersHeader";
+import { useDispatch } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
+import FoodhealersHeader from "../Components/FoodhealersHeader";
+import { localized } from "../locales/localization";
+import { VeganRecipesCategories } from "../redux/actions/veganRecipes";
 
 const FindFoodHomeScreen = ({ route }: any) => {
   const {
@@ -41,22 +38,18 @@ const FindFoodHomeScreen = ({ route }: any) => {
     lng,
     address,
   } = route.params;
-
+  const menuItem = "Find Food";
+  const [menuClose, setMenuOpen] = useState(false);
   const { width, height } = Dimensions.get("window");
   const navigation: any = useNavigation();
   const ASPECT_RATIO = width / height;
   const LATITUDE_DELTA = 0.0922;
   const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
   const [langOpen, setlangOpen] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
   const [events, setEvents] = useState<[]>([]);
 
   const mapRef = useRef<any>(null);
   const dispatch = useDispatch();
-
-  const isAuthenticated = useSelector(
-    (state: any) => state?.auth?.data?.isAuthenticated
-  );
 
   const focusMarker = () => {
     if (mapRef.current) {
@@ -87,31 +80,9 @@ const FindFoodHomeScreen = ({ route }: any) => {
   const handlePressOutside = () => {
     setlangOpen(false);
     Keyboard.dismiss();
-    setMenuOpen(false);
+    setMenuOpen(!menuClose);
   };
-
-  const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
-  };
-
-  const handleMenuItemPress = (item: any) => {
-    setMenuOpen(false);
-    if (isAuthenticated) {
-      navigation.navigate("HomeScreen");
-    } else {
-      navigation.navigate("SignupScreen");
-    }
-  };
-  const findFoodMenuItemPress = (item: any) => {
-    getLocation().then((location: any) => {
-      if (location) {
-        navigation?.navigate("MapScreen", {
-          location: location,
-        });
-      }
-    });
-    setMenuOpen(false);
-  };
+  
   const clickHandler = () => {
     navigation.navigate("WeekScreen", {
       currentlatitude: currentlat,
@@ -145,7 +116,10 @@ const FindFoodHomeScreen = ({ route }: any) => {
               <View style={styles.item}>
                 <Text style={styles.itemText}>{localized.t("FIND_FOOD")}</Text>
               </View>
-              <BurgerIcon />
+              <BurgerIcon 
+                  onOutsidePress={handlePressOutside}
+                  menuClose={menuClose}
+                  menuItem={menuItem}/>
             </View>
             <TouchableOpacity
               style={[styles.touchableView]}
