@@ -113,6 +113,7 @@ const SingleEventDetails = ({ route }: any) => {
 
   const expired = moment(eventDetails?.eventEndDate).isBefore(moment());
   const approved = eventDetails?.status === "approved";
+  console.log("jsbsjdbj", approved);
   return (
     <TouchableWithoutFeedback onPress={handlePressOutside}>
       <LinearGradient

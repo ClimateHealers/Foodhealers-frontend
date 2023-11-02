@@ -41,6 +41,8 @@ const UpdateProfileScreen = ({ route }: any) => {
     state,
     zipCode,
   } = route?.params;
+  const menuItem = "Account";
+  const [menuClose, setMenuOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [response, setResponse] = useState({
     loading: false,
@@ -60,6 +62,7 @@ const UpdateProfileScreen = ({ route }: any) => {
 
   const handlePressOutside = () => {
     Keyboard.dismiss();
+    setMenuOpen(!menuClose);
   };
   const navigation: any = useNavigation();
 
@@ -97,7 +100,11 @@ const UpdateProfileScreen = ({ route }: any) => {
                     {localized.t("PROFILE_UPDATE")}
                   </Text>
                 </View>
-                <BurgerIcon />
+                <BurgerIcon
+                  onOutsidePress={handlePressOutside}
+                  menuClose={menuClose}
+                  menuItem={menuItem}
+                />
               </View>
               <Modal visible={loading} animationType="slide" transparent={true}>
                 <View style={styles.centeredView}>

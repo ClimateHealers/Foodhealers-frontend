@@ -37,6 +37,8 @@ import ReactNativeSegmentedControlTab from "react-native-segmented-control-tab";
 const RequestHistoryScreen = ({ route }: any) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const { itemTypeId, title } = route?.params;
+  const menuItem = "Team";
+  const [menuClose, setMenuOpen] = useState(false);
   const [filterName, setFilterName] = useState<string>(`${localized.t("NEW")}`);
   const [requestData, setRequestData]: any = useState<[]>([]);
   useEffect(() => {
@@ -85,6 +87,7 @@ const RequestHistoryScreen = ({ route }: any) => {
 
   const handlePressOutside = () => {
     Keyboard.dismiss();
+    setMenuOpen(!menuClose);
   };
 
   const handleSingleIndexSelect = async (index: any) => {
@@ -300,7 +303,11 @@ const RequestHistoryScreen = ({ route }: any) => {
                 {localized.t("REQUESTS_HISTORY")}
               </Text>
             </View>
-            <BurgerIcon />
+            <BurgerIcon
+              onOutsidePress={handlePressOutside}
+              menuClose={menuClose}
+              menuItem={menuItem}
+            />
           </View>
           <View style={styles.toggle}>
             <ReactNativeSegmentedControlTab

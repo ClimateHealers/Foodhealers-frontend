@@ -1,3 +1,4 @@
+import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useState } from "react";
@@ -14,57 +15,20 @@ import {
 } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { SceneMap, TabBar, TabView } from "react-native-tab-view";
-import { useDispatch } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
-import { getLocation } from "../Components/getCurrentLocation";
-import { localized } from "../locales/localization";
-import DonationTabScreen from "./DonationTabScreen";
-import VolunteerTabScreen from "./VolunteerTabScreen";
-import { Ionicons } from "@expo/vector-icons";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
-import RequestHistoryTabScreen from "./RequestHistoryTabScreen";
+import { localized } from "../locales/localization";
 import DonationHistoryTabScreen from "./DonationHistoryTabScreen";
+import RequestHistoryTabScreen from "./RequestHistoryTabScreen";
 
 const HistoryScreen = ({ route }: any) => {
   const navigation: any = useNavigation();
-  const [loading, setLoading] = useState(false);
-
-  const [langOpen, setlangOpen] = useState(false);
-  const [lang, setLang] = useState([
-    { id: 1, label: "French", value: "fr" },
-    { id: 2, label: "Hindi", value: "hi" },
-    { id: 3, label: "Bengali", value: "be" },
-    { id: 4, label: "Chinese", value: "ch" },
-    { id: 5, label: "Mandarin", value: "ma" },
-    { id: 6, label: "Punjabi", value: "pu" },
-    { id: 7, label: "English", value: "en" },
-    { id: 8, label: "Spanish", value: "es" },
-  ]);
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [selectedLanguage, setSelectedLanguage] = useState(localized.locale);
-  const dispatch = useDispatch();
-  const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
-  };
+  const menuItem = "History";
+  const [menuClose, setMenuOpen] = useState(false);
 
   const handlePressOutside = () => {
-    setlangOpen(false);
+    setMenuOpen(!menuClose);
     Keyboard.dismiss();
-  };
-  const handleMenuItemPress = (item: any) => {
-    setMenuOpen(false);
-    navigation.navigate("HomeScreen");
-  };
-  const findFoodMenuItemPress = (item: any) => {
-    getLocation().then((res) => {
-      if (res) {
-        navigation?.navigate("MapScreen", {
-          latitude: res?.latitude,
-          longitude: res?.longitude,
-        });
-      }
-    });
-    setMenuOpen(false);
   };
 
   const FirstRoute = () => <DonationHistoryTabScreen />;
@@ -104,7 +68,11 @@ const HistoryScreen = ({ route }: any) => {
                     {localized.t("HISTORY")}
                   </Text>
                 </View>
-                <BurgerIcon />
+                <BurgerIcon
+                  onOutsidePress={handlePressOutside}
+                  menuClose={menuClose}
+                  menuItem={menuItem}
+                />
               </View>
               <TabView
                 navigationState={{ index, routes }}

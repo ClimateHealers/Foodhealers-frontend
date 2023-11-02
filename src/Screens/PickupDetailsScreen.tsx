@@ -259,7 +259,7 @@ const PickupDetailsScreen = ({ route }: any) => {
                     ]}
                     selectedIndex={selectedIndex}
                     tabsContainerStyle={{
-                      width: w2dp(50),
+                      width: w2dp(90),
                       height: h2dp(6),
                     }}
                     tabTextStyle={{

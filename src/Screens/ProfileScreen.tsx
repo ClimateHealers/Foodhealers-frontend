@@ -8,6 +8,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Linking,
 } from "react-native";
 import {
   heightPercentageToDP as h2dp,
@@ -25,7 +26,7 @@ import {
 } from "@react-navigation/core";
 import Constants from "expo-constants";
 import { LinearGradient } from "expo-linear-gradient";
-import { Divider } from "react-native-elements";
+import { Button, Divider } from "react-native-elements";
 import { Badge } from "react-native-paper";
 import {
   heightPercentageToDP as hp2dp,
@@ -529,6 +530,25 @@ const ProfileScreen = () => {
             <Text style={styles.appVersion}>
               {localized.t("APP_VERSION")} {appVersion}
             </Text>
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "center",
+                alignContent: "center",
+              }}
+            >
+              <Text style={styles.support}>
+                Contact us for support : 
+              </Text>
+              <Text style={{textDecorationLine: "underline", color: "white", marginLeft: wp2dp(1)}} onPress={() =>
+                  Linking.openURL(
+                    'mailto:support@climatehealers.org',
+                  )
+                }>
+                support@climatehealers.org
+              </Text>
+            </View>
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -628,7 +648,13 @@ const styles = StyleSheet.create({
     color: "white",
   },
   appVersion: {
-    paddingTop: hp2dp(8),
+    paddingTop: hp2dp(5),
+    fontSize: 15,
+    textAlign: "center",
+    color: "white",
+    marginBottom: hp2dp(2),
+  },
+  support: {
     fontSize: 15,
     textAlign: "center",
     color: "white",
