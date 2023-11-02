@@ -15,7 +15,6 @@ const BurgerIcon = ({ menuClose, onOutsidePress, menuItem }: any) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const navigation: any = useNavigation();
   let [menutoggle, setToggle] = useState(menuClose);
-  // console.log("kvndsnvdsnvkds", menuClose, menutoggle);
   const isAuthenticated = useSelector(
     (state: any) => state.auth.data.isAuthenticated
   );

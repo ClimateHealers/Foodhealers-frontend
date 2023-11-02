@@ -103,7 +103,6 @@ const SeeExistingRequestScreen = ({ route }: any) => {
   const handlePressOutside = () => {
     Keyboard.dismiss();
     setMenuOpen(!menuClose);
-    console.log("jhvcgfxf", menuClose);
   };
 
   const Item = ({
