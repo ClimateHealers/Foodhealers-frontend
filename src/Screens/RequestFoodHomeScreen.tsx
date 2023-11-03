@@ -23,6 +23,8 @@ import { VeganRecipesCategory } from "../redux/actions/veganRecipesCategory";
 
 const RequestFoodHomeScreen = ({ route }: any) => {
   const { itemTypeId, title } = route?.params;
+  const menuItem = "Team";
+  const [menuClose, setMenuOpen] = useState(false);
   const [recipeData, setRecipeData] = useState<[]>([]);
   const [events, setEvents] = useState<[]>([]);
   const navigation: any = useNavigation();
@@ -42,6 +44,7 @@ const RequestFoodHomeScreen = ({ route }: any) => {
 
   const handlePressOutside = () => {
     Keyboard.dismiss();
+    setMenuOpen(!menuClose);
   };
 
   useFocusEffect(
@@ -73,7 +76,11 @@ const RequestFoodHomeScreen = ({ route }: any) => {
                     <View style={styles.item}>
                       <Text style={styles.itemText}>{title}</Text>
                     </View>
-                    <BurgerIcon />
+                    <BurgerIcon
+                      onOutsidePress={handlePressOutside}
+                      menuClose={menuClose}
+                      menuItem={menuItem}
+                    />
                   </View>
                   <TouchableOpacity
                     onPress={() =>

@@ -1,7 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
-import React from "react";
+import React, { useState } from "react";
 import {
   Keyboard,
   ScrollView,
@@ -24,9 +24,12 @@ import moment from "moment";
 const RequestCreatedScreen = ({ route }: any) => {
   const { itemTypeId, title, foodItem, quantity, address, eventDateTime } = route?.params;
   const navigation: any = useNavigation();
+  const menuItem = "Team";
+  const [menuClose, setMenuOpen] = useState(false);
 
   const handlePressOutside = () => {
     Keyboard.dismiss();
+    setMenuOpen(!menuClose);
   };
   var t = new Date();
   t.setSeconds(eventDateTime);
@@ -52,7 +55,10 @@ const RequestCreatedScreen = ({ route }: any) => {
                 <View style={styles.item}>
                   <Text style={styles.itemText}>{title}</Text>
                 </View>
-                <BurgerIcon />
+                <BurgerIcon 
+                  onOutsidePress={handlePressOutside}
+                  menuClose={menuClose}
+                  menuItem={menuItem}/>
               </View>
               <View style={{ height: h2dp(25), marginTop: h2dp(5) }}>
                 <View style={[styles.cardContainer, { width: w2dp(85) }]}>

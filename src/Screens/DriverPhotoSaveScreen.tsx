@@ -28,7 +28,7 @@ import { styles } from "../Components/Styles";
 import { updatePhoto } from "../redux/actions/authAction";
 
 const DriverPhotoSaveScreen = ({ route }: any) => {
-  const { selectedImage } = route?.params;
+  const { selectedImage, fromCameraRoll } = route?.params;
   const [selectedImage1, setSelectedImage1] = useState(selectedImage);
   const [loading, setLoading] = useState(false);
   const date = new Date().getTime();
@@ -60,7 +60,7 @@ const DriverPhotoSaveScreen = ({ route }: any) => {
     } else if (!res.granted) {
       Alert.alert(
         `${localized.t("MEDIA_LIBRARY_ACCESS")}`,
-        `${localized.t("FOODHEALERS_APP_NEEDS_PHOTOLIBRARY.")}`,
+        `${localized.t("FOODHEALERS_APP_NEEDS_PHOTOLIBRARY")}`,
         [
           {
             text: `${localized.t("OK")}`,
@@ -112,20 +112,6 @@ const DriverPhotoSaveScreen = ({ route }: any) => {
     } catch (error) {
       console.log("ERROR", error);
     }
-  };
-
-  const appLoader = (loader: any) => {
-    return (
-      <View style={styles.centeredView}>
-        <Modal visible={loader} animationType="slide" transparent={true}>
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <ActivityIndicator size={"large"} />
-            </View>
-          </View>
-        </Modal>
-      </View>
-    );
   };
 
   return (
@@ -185,7 +171,7 @@ const DriverPhotoSaveScreen = ({ route }: any) => {
                 onPress={navigateToProfileScreen}
               />
               <PrimaryButton
-                title={localized.t("RETAKE")}
+                title={fromCameraRoll ? localized.t("TAKE_PHOTO") : localized.t("RETAKE")}
                 buttonStyle={styles.buttonHistoryStyles}
                 titleStyle={styles.titleMainStyle}
                 onPress={() => navigation.navigate("TakePictureScreen")}

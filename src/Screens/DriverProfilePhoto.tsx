@@ -59,12 +59,13 @@ const DriverProfilePhoto = ({ route }: any) => {
         const singlePhoto = result?.assets[0]?.uri;
         navigation.navigate("DriverPhotoSaveScreen", {
           selectedImage: singlePhoto,
+          fromCameraRoll: true,
         });
       }
     } else if (!res.granted) {
       Alert.alert(
         `${localized.t("MEDIA_LIBRARY_ACCESS")}`,
-        `${localized.t("FOODHEALERS_APP_NEEDS_PHOTOLIBRARY.")}`,
+        `${localized.t("FOODHEALERS_APP_NEEDS_PHOTOLIBRARY")}`,
         [
           {
             text: `${localized.t("OK")}`,
@@ -124,7 +125,7 @@ const DriverProfilePhoto = ({ route }: any) => {
                         marginBottom: h2dp(1),
                       }}
                     >
-                      <AntDesign name="user" size={150} color="#B01D19" />
+                      <AntDesign name="user" size={130} color="#B01D19" />
                     </View>
                   )}
                 </TouchableOpacity>

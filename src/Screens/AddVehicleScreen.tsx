@@ -198,7 +198,7 @@ const AddVehicleScreen = ({ route }: any) => {
                       error: true,
                     });
                     Alert.alert(
-                      `${localized.t("VOLUNTEER_NOT_ADDED")}`,
+                      `${localized.t("VEHICLE_NOT_ADDED")}`,
                       `${err.message}`,
                       [{ text: `${localized.t("OK")}` }],
                       { cancelable: false }

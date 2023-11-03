@@ -8,8 +8,12 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Linking,
 } from "react-native";
-
+import {
+  heightPercentageToDP as h2dp,
+  widthPercentageToDP as w2dp,
+} from "react-native-responsive-screen";
 import {
   AntDesign,
   Ionicons,
@@ -22,7 +26,7 @@ import {
 } from "@react-navigation/core";
 import Constants from "expo-constants";
 import { LinearGradient } from "expo-linear-gradient";
-import { Divider } from "react-native-elements";
+import { Button, Divider } from "react-native-elements";
 import { Badge } from "react-native-paper";
 import {
   heightPercentageToDP as hp2dp,
@@ -155,7 +159,7 @@ const ProfileScreen = () => {
     } else if (!res.granted) {
       Alert.alert(
         `${localized.t("MEDIA_LIBRARY_ACCESS")}`,
-        `${localized.t("FOODHEALERS_APP_NEEDS_PHOTOLIBRARY.")}`,
+        `${localized.t("FOODHEALERS_APP_NEEDS_PHOTOLIBRARY")}`,
         [
           {
             text: `${localized.t("OK")}`,
@@ -176,13 +180,14 @@ const ProfileScreen = () => {
           <View
             style={{
               position: "absolute",
-              right: wp2dp("12"),
+              right: wp2dp(8.5),
               top: Platform.OS === "ios" ? hp2dp(8) : hp2dp(6),
               backgroundColor: "white",
               borderColor: "black",
               borderWidth: 0.5,
               borderRadius: 5,
               zIndex: 9999,
+              flex: 2,
             }}
           >
             <TouchableOpacity onPress={() => handleMenuItemPress("Home")}>
@@ -525,6 +530,25 @@ const ProfileScreen = () => {
             <Text style={styles.appVersion}>
               {localized.t("APP_VERSION")} {appVersion}
             </Text>
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "center",
+                alignContent: "center",
+              }}
+            >
+              <Text style={styles.support}>
+                Contact us for support : 
+              </Text>
+              <Text style={{textDecorationLine: "underline", color: "white", marginLeft: wp2dp(1)}} onPress={() =>
+                  Linking.openURL(
+                    'mailto:support@climatehealers.org',
+                  )
+                }>
+                support@climatehealers.org
+              </Text>
+            </View>
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -624,7 +648,13 @@ const styles = StyleSheet.create({
     color: "white",
   },
   appVersion: {
-    paddingTop: hp2dp(8),
+    paddingTop: hp2dp(5),
+    fontSize: 15,
+    textAlign: "center",
+    color: "white",
+    marginBottom: hp2dp(2),
+  },
+  support: {
     fontSize: 15,
     textAlign: "center",
     color: "white",

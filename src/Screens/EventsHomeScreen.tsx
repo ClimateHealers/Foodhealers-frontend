@@ -20,31 +20,12 @@ import { styles } from "../Components/Styles";
 import { localized } from "../locales/localization";
 
 const EventsHomeScreen = () => {
-  const [selectedLanguage, setSelectedLanguage] = useState(localized.locale);
-  const [langOpen, setlangOpen] = useState(false);
-  const [lang, setLang] = useState([
-    { id: 1, label: "Bengali", value: "be" },
-    { id: 2, label: "Chinese", value: "ch" },
-    { id: 3, label: "English", value: "en" },
-    { id: 4, label: "French", value: "fr" },
-    { id: 5, label: "Hindi", value: "hi" },
-    { id: 6, label: "Mandarin", value: "ma" },
-    { id: 7, label: "Punjabi", value: "pu" },
-    { id: 8, label: "Spanish", value: "es" },
-  ]);
 
   const handlePressOutside = () => {
-    setlangOpen(false);
     Keyboard.dismiss();
   };
 
   const navigation: any = useNavigation<string>();
-
-  const changeLanguage = (itemValue: any, index: any) => {
-    const selectedLanguage = lang[index].value;
-    localized.locale = selectedLanguage;
-    setSelectedLanguage(selectedLanguage);
-  };
 
   return (
     <TouchableWithoutFeedback onPress={handlePressOutside}>

@@ -68,10 +68,28 @@ const VolunteerThankYouScreen = ({ route }: any) => {
                   name="chevron-back"
                   size={32}
                   color="white"
-                  onPress={() => navigation.navigate("VolunteerHomeScreen", {
-                    latitude: latitude,
-                    longitude: longitude,
-                  })}
+                  onPress={() => {
+                    itemTypeId === 1
+                      ? navigation.navigate("AddDonationsScreen", {
+                          itemTypeId: itemTypeId,
+                          title: title,
+                          latitude: latitude,
+                          longitude: longitude,
+                        })
+                      : itemTypeId === 2
+                      ? navigation.navigate("AddDonationsScreen", {
+                          itemTypeId: itemTypeId,
+                          title: title,
+                          latitude: latitude,
+                          longitude: longitude,
+                        })
+                      : navigation.navigate("VolunteerEventScreen", {
+                          itemTypeId: itemTypeId,
+                          title: title,
+                          latitude: latitude,
+                          longitude: longitude,
+                        });
+                  }}
                 />
                 <View style={styles.item}>
                   <Text style={styles.itemText}>{title}</Text>

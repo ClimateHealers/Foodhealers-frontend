@@ -30,7 +30,19 @@ import { localized } from "../locales/localization";
 import { fetchUser, updateProfile } from "../redux/actions/authAction";
 
 const UpdateProfileScreen = ({ route }: any) => {
-  const {name, phoneNumber, email, lat, long, volunteerFullAddress, city, state, zipCode } = route?.params;
+  const {
+    name,
+    phoneNumber,
+    email,
+    lat,
+    long,
+    volunteerFullAddress,
+    city,
+    state,
+    zipCode,
+  } = route?.params;
+  const menuItem = "Account";
+  const [menuClose, setMenuOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [response, setResponse] = useState({
     loading: false,
@@ -50,6 +62,7 @@ const UpdateProfileScreen = ({ route }: any) => {
 
   const handlePressOutside = () => {
     Keyboard.dismiss();
+    setMenuOpen(!menuClose);
   };
   const navigation: any = useNavigation();
 
@@ -87,7 +100,11 @@ const UpdateProfileScreen = ({ route }: any) => {
                     {localized.t("PROFILE_UPDATE")}
                   </Text>
                 </View>
-                <BurgerIcon />
+                <BurgerIcon
+                  onOutsidePress={handlePressOutside}
+                  menuClose={menuClose}
+                  menuItem={menuItem}
+                />
               </View>
               <Modal visible={loading} animationType="slide" transparent={true}>
                 <View style={styles.centeredView}>
@@ -218,9 +235,7 @@ const UpdateProfileScreen = ({ route }: any) => {
                       onBlur={handleBlur("name")}
                       value={values?.name}
                       placeholder={
-                        name
-                          ? name
-                          : `${localized.t("VOLUNTEER_NAME")}`
+                        name ? name : `${localized.t("VOLUNTEER_NAME")}`
                       }
                       placeholderTextColor={"black"}
                       style={styles.textInput}
@@ -230,9 +245,7 @@ const UpdateProfileScreen = ({ route }: any) => {
                       onChangeText={handleChange("email")}
                       onBlur={handleBlur("email")}
                       value={values?.email?.toLocaleLowerCase()}
-                      placeholder={
-                        email ? email : localized.t("EMAIL")
-                      }
+                      placeholder={email ? email : localized.t("EMAIL")}
                       placeholderTextColor={"black"}
                       style={styles.textInput}
                     />
@@ -244,7 +257,6 @@ const UpdateProfileScreen = ({ route }: any) => {
                           : `${localized.t("ADDRESS")}`
                       }
                       fetchDetails={true}
-                      keepResultsAfterBlur={true}
                       listViewDisplayed="auto"
                       textInputProps={{ placeholderTextColor: "#000000" }}
                       query={{
@@ -300,7 +312,6 @@ const UpdateProfileScreen = ({ route }: any) => {
                           color: "black",
                           height: 50,
                           backgroundColor: "white",
-                          paddingLeft: 16,
                         },
                         predefinedPlacesDescription: {
                           color: "#FFFFFF",
@@ -328,11 +339,7 @@ const UpdateProfileScreen = ({ route }: any) => {
                           onChangeText={handleChange("city")}
                           onBlur={handleBlur("city")}
                           value={values?.city}
-                          placeholder={
-                            city
-                              ? city
-                              : localized.t("CITY")
-                          }
+                          placeholder={city ? city : localized.t("CITY")}
                           placeholderTextColor={"black"}
                           style={[
                             styles.textInput,
@@ -351,11 +358,7 @@ const UpdateProfileScreen = ({ route }: any) => {
                           onChangeText={handleChange("state")}
                           onBlur={handleBlur("state")}
                           value={values?.state}
-                          placeholder={
-                            state
-                              ? state
-                              : localized.t("STATE")
-                          }
+                          placeholder={state ? state : localized.t("STATE")}
                           placeholderTextColor={"black"}
                           style={[
                             styles.textInput,
@@ -372,9 +375,7 @@ const UpdateProfileScreen = ({ route }: any) => {
                         value={values?.zipCode}
                         keyboardType="numeric"
                         placeholder={
-                          zipCode
-                            ? zipCode
-                            : localized.t("ZIP_CODE")
+                          zipCode ? zipCode : localized.t("ZIP_CODE")
                         }
                         placeholderTextColor={"black"}
                         style={[styles.textInput]}

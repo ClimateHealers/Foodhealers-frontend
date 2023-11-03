@@ -20,6 +20,7 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
+  Modal
 } from "react-native";
 import { Button } from "react-native-elements";
 import {
@@ -32,14 +33,16 @@ import FoodhealersHeader from "../Components/FoodhealersHeader";
 import PrimaryButton from "../Components/PrimaryButton";
 import { styles } from "../Components/Styles";
 import { localized } from "../locales/localization";
-import { allRequests } from "../redux/actions/allRequests";
 import { allDonations } from "../redux/actions/allDonations";
+import { ActivityIndicator } from "react-native-paper";
 
 const SeeExistingDonationScreen = ({ route }: any) => {
-  const { itemTypeId, title } = route?.params;
+  const { itemTypeId, title, latitude, longitude } = route?.params;
   const [item, setItem] = useState<string>("");
+  const menuItem = "Team";
+  const [menuClose, setMenuOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [filterName, setFilterName] = useState<string>(`${localized.t("NEW")}`);
-  const [showDialog, setShowDialog] = useState<boolean>(true);
   const [donationData, setDonationData]: any = useState<[]>([]);
   const userDetails = useSelector((state: any) => state.auth);
   const { data } = userDetails;
@@ -69,6 +72,7 @@ const SeeExistingDonationScreen = ({ route }: any) => {
 
   const dispatch = useDispatch();
   const fetchingRequestData = async () => {
+    setLoading(true);
     const response = await dispatch(allDonations({ itemTypeId } as any) as any);
     if (itemTypeId === 1) {
       const filtereddonationData = response?.payload?.AllDonations.filter(
@@ -79,9 +83,10 @@ const SeeExistingDonationScreen = ({ route }: any) => {
         (event: any) => event?.status === "approved"
       );
       const filterNotme = ApprovedDonation.filter(
-        (event: any) => event?.createdBy?.id != data?.user?.id
+        (event: any) => event?.donatedBy?.id != data?.user?.id
       );
       setDonationData(filterNotme);
+      setLoading(false);
     } else if (itemTypeId === 2) {
       const filtereddonationData = response?.payload?.AllDonations.filter(
         (event: any) => event?.donationType === "Supplies"
@@ -94,8 +99,10 @@ const SeeExistingDonationScreen = ({ route }: any) => {
         (event: any) => event?.createdBy?.id != data?.user?.id
       );
       setDonationData(filterNotme);
+      setLoading(false);
     } else {
       setDonationData(response?.payload?.AllDonations);
+      setLoading(false);
     }
   };
 
@@ -103,6 +110,7 @@ const SeeExistingDonationScreen = ({ route }: any) => {
 
   const handlePressOutside = () => {
     Keyboard.dismiss();
+    setMenuOpen(!menuClose);
   };
 
   const Item = ({
@@ -330,6 +338,8 @@ const SeeExistingDonationScreen = ({ route }: any) => {
                       foodItem: foodItem,
                       requiredDate: requiredDate,
                       id: id,
+                      latitude: latitude,
+                      longitude: longitude,
                     });
                   },
                   style: "default",
@@ -379,9 +389,19 @@ const SeeExistingDonationScreen = ({ route }: any) => {
                 {localized.t("EXISTING")} {localized.t("DONATIONS")}
               </Text>
             </View>
-            <BurgerIcon />
+            <BurgerIcon
+              onOutsidePress={handlePressOutside}
+              menuClose={menuClose}
+              menuItem={menuItem}
+            />
           </View>
-
+          <Modal visible={loading} animationType="slide" transparent={true}>
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                <ActivityIndicator size={"large"} />
+              </View>
+            </View>
+          </Modal>
           <View>
             <View style={styles.itemFilter}>
               <Text style={styles.itemFilterText}>

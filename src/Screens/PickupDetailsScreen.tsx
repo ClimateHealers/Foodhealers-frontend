@@ -231,7 +231,7 @@ const PickupDetailsScreen = ({ route }: any) => {
                     name="chevron-back"
                     size={32}
                     color="white"
-                    onPress={() => navigation.goBack()}
+                    onPress={() => navigation.navigate("DriverRequestScreen")}
                   />
                   <View style={styles.item}>
                     <Text style={styles.itemText}>
@@ -259,7 +259,7 @@ const PickupDetailsScreen = ({ route }: any) => {
                     ]}
                     selectedIndex={selectedIndex}
                     tabsContainerStyle={{
-                      width: w2dp(50),
+                      width: w2dp(90),
                       height: h2dp(6),
                     }}
                     tabTextStyle={{
