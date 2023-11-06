@@ -205,6 +205,7 @@ const MapScreen = ({ route }: any) => {
 
               <GooglePlacesAutocomplete
                 placeholder={localized.t("ADDRESS_OR_NEAREST_CROSS_STREETS")}
+                listHoverColor="red"
                 onPress={async (data, details) => {
                   setAddress(details);
                   setLat(details?.geometry?.location?.lat);
@@ -287,7 +288,7 @@ const MapScreen = ({ route }: any) => {
                   listView: {
                     width: "100%",
                     borderRadius: 3,
-                    zIndex: 100,
+                    // zIndex: 100,
                   },
                   row: {
                     height: 40,

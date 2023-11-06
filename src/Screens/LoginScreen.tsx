@@ -123,7 +123,6 @@ const LoginScreen = () => {
                   borderColor: "white",
                   borderRadius: 5,
                   zIndex: 9999,
-                  flex: 2,
                 }}
               >
                 <TouchableOpacity onPress={() => handleMenuItemPress("Home")}>

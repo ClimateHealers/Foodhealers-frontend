@@ -180,14 +180,13 @@ const ProfileScreen = () => {
           <View
             style={{
               position: "absolute",
-              right: wp2dp(8.5),
+              right: wp2dp(10.5),
               top: Platform.OS === "ios" ? hp2dp(8) : hp2dp(6),
               backgroundColor: "white",
               borderColor: "black",
               borderWidth: 0.5,
               borderRadius: 5,
               zIndex: 9999,
-              flex: 2,
             }}
           >
             <TouchableOpacity onPress={() => handleMenuItemPress("Home")}>
@@ -566,6 +565,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     width: "100%",
+    zIndex: 1,
   },
   item: {
     marginRight: wp2dp(5),
@@ -712,17 +712,15 @@ const styles = StyleSheet.create({
 
   modalView: {
     margin: 20,
-    backgroundColor: "white",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
     borderRadius: 20,
-    padding: 25,
+    padding: 35,
     alignItems: "center",
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 2,
     },
-    height: hp2dp("23%"),
-    width: wp2dp("50%"),
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,

@@ -53,7 +53,6 @@ const VolunteerHomeScreen = ({ route }: any) => {
   const handlePressOutside = () => {
     Keyboard.dismiss();
     setMenuOpen(!menuClose);
-    console.log("jhvcgfxf", menuClose);
   };
 
   useFocusEffect(

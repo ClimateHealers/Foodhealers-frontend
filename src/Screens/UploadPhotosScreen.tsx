@@ -1,7 +1,6 @@
 import {
   AntDesign,
-  Ionicons,
-  MaterialCommunityIcons,
+  Ionicons
 } from "@expo/vector-icons";
 import { CommonActions, useNavigation } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
@@ -9,35 +8,29 @@ import { LinearGradient } from "expo-linear-gradient";
 import * as MediaLibrary from "expo-media-library";
 import React, { useState } from "react";
 import {
-  ActivityIndicator,
   Alert,
   Keyboard,
-  Linking,
-  Modal,
-  Platform,
   ScrollView,
-  StyleSheet,
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  View,
+  View
 } from "react-native";
 
 import { SafeAreaView } from "react-native-safe-area-context";
 import { localized } from "../locales/localization";
-import * as Permissions from "expo-permissions";
 
-import { removeAuthData } from "../redux/actions/authAction";
 import {
   heightPercentageToDP as h2dp,
   widthPercentageToDP as w2dp,
 } from "react-native-responsive-screen";
 import { useDispatch, useSelector } from "react-redux";
-import { getLocation } from "../Components/getCurrentLocation";
-import { logOut } from "../redux/reducers/authreducers";
-import { styles } from "../Components/Styles";
-import FoodhealersHeader from "../Components/FoodhealersHeader";
 import BurgerIcon from "../Components/BurgerIcon";
+import FoodhealersHeader from "../Components/FoodhealersHeader";
+import { styles } from "../Components/Styles";
+import { getLocation } from "../Components/getCurrentLocation";
+import { removeAuthData } from "../redux/actions/authAction";
+import { logOut } from "../redux/reducers/authreducers";
 
 const UploadPhotosScreen = ({ route }: any) => {
   const { eventFormData } = route.params;

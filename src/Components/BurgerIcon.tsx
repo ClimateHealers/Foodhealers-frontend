@@ -50,7 +50,7 @@ const BurgerIcon = ({ menuClose, onOutsidePress, menuItem }: any) => {
         color="white"
         onPress={() => toggleMenu()}
         style={{
-          zIndex: 9999,
+          zIndex: 2,
           right: 0,
         }}
       />
