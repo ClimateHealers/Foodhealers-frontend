@@ -67,8 +67,8 @@ const CategoryScreen = ({ route }: any) => {
   }, []);
 
   const fetchData = async () => {
-    setLoading(true);
     try {
+      setLoading(true);
       setResponse({
         loading: true,
         message: "",
@@ -108,6 +108,7 @@ const CategoryScreen = ({ route }: any) => {
         error: true,
       });
     }
+    setLoading(false);
   };
 
   const toggleMenu = () => {

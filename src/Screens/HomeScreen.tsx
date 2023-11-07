@@ -90,8 +90,8 @@ const HomeScreen = ({ route }: any) => {
           return null;
         }
       };
-      setLoading(true);
       getUserLocation();
+      setLoading(false);
     }, [])
   );
 

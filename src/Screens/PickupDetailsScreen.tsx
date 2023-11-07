@@ -41,7 +41,6 @@ const PickupDetailsScreen = ({ route }: any) => {
   const dispatch = useDispatch();
 
   const fetchingPickedupData = async () => {
-    setLoading(true);
     const response = await dispatch(
       fetchPickup({ requestTypeId: itemTypeId } as any) as any
     );
@@ -56,7 +55,6 @@ const PickupDetailsScreen = ({ route }: any) => {
       (event: any) => event?.fullfilled === false
     );
     setPickupData(fullfilledRequests);
-    setLoading(false);
   };
 
   const delivery = data?.address?.city;
@@ -103,7 +101,6 @@ const PickupDetailsScreen = ({ route }: any) => {
     if (index === 0) {
       fetchingPickedupData();
     } else if (index === 1) {
-      setLoading(true);
       const response = await dispatch(
         allRequests({ itemTypeId } as any) as any
       );
@@ -118,7 +115,6 @@ const PickupDetailsScreen = ({ route }: any) => {
         (event: any) => event?.deliver?.pickupAddress?.city === delivery
       );
       setPickupData(pickupLocationAround);
-      setLoading(false);
     }
   };
 

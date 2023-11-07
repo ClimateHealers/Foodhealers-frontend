@@ -72,7 +72,6 @@ const SeeExistingDonationScreen = ({ route }: any) => {
 
   const dispatch = useDispatch();
   const fetchingRequestData = async () => {
-    setLoading(true);
     const response = await dispatch(allDonations({ itemTypeId } as any) as any);
     if (itemTypeId === 1) {
       const filtereddonationData = response?.payload?.AllDonations.filter(
@@ -86,7 +85,6 @@ const SeeExistingDonationScreen = ({ route }: any) => {
         (event: any) => event?.donatedBy?.id != data?.user?.id
       );
       setDonationData(filterNotme);
-      setLoading(false);
     } else if (itemTypeId === 2) {
       const filtereddonationData = response?.payload?.AllDonations.filter(
         (event: any) => event?.donationType === "Supplies"
@@ -99,10 +97,8 @@ const SeeExistingDonationScreen = ({ route }: any) => {
         (event: any) => event?.createdBy?.id != data?.user?.id
       );
       setDonationData(filterNotme);
-      setLoading(false);
     } else {
       setDonationData(response?.payload?.AllDonations);
-      setLoading(false);
     }
   };
 

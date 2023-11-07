@@ -28,7 +28,7 @@ const VolunteerHomeScreen = ({ route }: any) => {
   const navigation: any = useNavigation();
   const [menuClose, setMenuOpen] = useState(false);
   const dispatch = useDispatch();
-  const eventsScheduled = events?.length;
+  const eventsScheduled = events?.length > 0 ? events?.length : 0;
   const [data, setData] = useState<any>();
 
   const menuRef = useRef(null);
@@ -49,7 +49,7 @@ const VolunteerHomeScreen = ({ route }: any) => {
     const data = response?.payload?.userDetails;
     setData(data);
   };
-  
+
   const handlePressOutside = () => {
     Keyboard.dismiss();
     setMenuOpen(!menuClose);
@@ -82,7 +82,10 @@ const VolunteerHomeScreen = ({ route }: any) => {
               <View style={styles.item}>
                 <Text style={styles.itemText}>{localized.t("HOME")}</Text>
               </View>
-              <BurgerIcon onOutsidePress={handlePressOutside} menuClose={menuClose} />
+              <BurgerIcon
+                onOutsidePress={handlePressOutside}
+                menuClose={menuClose}
+              />
             </View>
             <ScrollView
               keyboardShouldPersistTaps="handled"
