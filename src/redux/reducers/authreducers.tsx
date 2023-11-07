@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { login } from "../actions/authAction";
+import { login, getExpoPushToken } from "../actions/authAction";
 
 const initialState = {
   data: {
@@ -7,6 +7,7 @@ const initialState = {
   },
   error: null,
   loading: false,
+  expoPushToken: {},
 };
 
 const authSlice = createSlice({
@@ -28,12 +29,15 @@ const authSlice = createSlice({
       })
       .addCase(login.fulfilled, (state, action) => {
         state.loading = false;
-        state.data = action.payload;
+        state.data = action?.payload;
         state.error = null;
       })
       .addCase(login.rejected, (state) => {
         state.loading = false;
         state.error = null;
+      })
+      .addCase(getExpoPushToken.fulfilled, (state, action) => {
+        state.expoPushToken = action?.payload;
       });
   },
 });

@@ -63,6 +63,8 @@ const ProfileScreen = () => {
     (state: any) => state.auth.data.isAuthenticated
   );
 
+  const expoPushToken = useSelector((state: any) => state?.auth?.expoPushToken?.expoPushToken);
+
   const fetchingUserData = async () => {
     const response = await dispatch(fetchUser({} as any) as any);
     const data = response?.payload?.userDetails;
@@ -537,14 +539,17 @@ const ProfileScreen = () => {
                 alignContent: "center",
               }}
             >
-              <Text style={styles.support}>
-                Contact us for support : 
-              </Text>
-              <Text style={{textDecorationLine: "underline", color: "white", marginLeft: wp2dp(1)}} onPress={() =>
-                  Linking.openURL(
-                    'mailto:support@climatehealers.org',
-                  )
-                }>
+              <Text style={styles.support}>Contact us for support :</Text>
+              <Text
+                style={{
+                  textDecorationLine: "underline",
+                  color: "white",
+                  marginLeft: wp2dp(1),
+                }}
+                onPress={() =>
+                  Linking.openURL("mailto:support@climatehealers.org")
+                }
+              >
                 support@climatehealers.org
               </Text>
             </View>

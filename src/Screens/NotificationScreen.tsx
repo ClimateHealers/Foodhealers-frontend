@@ -45,7 +45,7 @@ export default function NotificationScreen() {
                   color: "white",
                 }}
               >
-                `${localized.t("COMING_SOON")}`!
+                {localized.t("COMING_SOON")}
               </Text>
             </View>
           }
