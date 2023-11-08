@@ -35,16 +35,19 @@ export default function NotificationScreen() {
   }, []);
   const sortById = () => {
     const postListFiltered = [...notificationData].sort((a: any, b: any) => {
-      console.log("jbfjdsbjs", a.id - b.id);
-      return a.id - b.id;
+      const dateA = new Date(a?.createdAt);
+      const dateB = new Date(b?.createdAt);
+      console.log("jhsbcjhsv", a.createdAt);
+        return dateB?.valueOf() - dateA?.valueOf();
     });
     setNotificationData(postListFiltered);
   };
+  console.log("kdcbjsdbv", notificationData);
 
   const dispatch = useDispatch();
   const fetchingNotificationsData = async () => {
     const response = await dispatch(notfifications({} as any) as any);
-    console.log("kjnckjsdvnkd", response?.payload);
+    console.log("kjnckjsdvnkd", response?.payload?.notifications);
     setNotificationData(response?.payload?.notifications);
   };
 
@@ -142,37 +145,35 @@ export default function NotificationScreen() {
               menuClose={menuClose}
             />
           </View>
-          <View>
-            {notificationData?.length > 0 ? (
-              <View style={{ height: h2dp(60), marginTop: h2dp(1) }}>
-                <FlatList
-                  showsVerticalScrollIndicator={false}
-                  data={notificationData}
-                  renderItem={({ item }: any) => (
-                    <Item
-                      title={item.title}
-                      message={item?.message}
-                      requiredDate={item?.createdAt}
-                    />
-                  )}
-                />
-              </View>
-            ) : (
-              <View
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  marginTop: h2dp(10),
-                  marginBottom: h2dp(10),
-                }}
-              >
-                <Text style={styles.itemText}>
-                  {localized.t("NOTHING_TO_SHOW")}
-                </Text>
-              </View>
-            )}
-          </View>
+          {notificationData?.length > 0 ? (
+            <View style={{ flex: 1 }}>
+              <FlatList
+                showsVerticalScrollIndicator={false}
+                data={notificationData}
+                renderItem={({ item }: any) => (
+                  <Item
+                    title={item.title}
+                    message={item?.message}
+                    requiredDate={item?.createdAt}
+                  />
+                )}
+              />
+            </View>
+          ) : (
+            <View
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                marginTop: h2dp(10),
+                marginBottom: h2dp(10),
+              }}
+            >
+              <Text style={styles.itemText}>
+                {localized.t("NOTHING_TO_SHOW")}
+              </Text>
+            </View>
+          )}
         </SafeAreaView>
       </LinearGradient>
     </TouchableWithoutFeedback>
