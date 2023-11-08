@@ -180,7 +180,7 @@ const AcceptDonatedRequestScreen = ({ route }: any) => {
                       itemName: foodItem,
                       quantity: quantity,
                       phoneNumber: phoneNumber,
-                      requiredDate: eventDateTime,
+                      requiredDate: selectedDate,
                       lat: lat,
                       lng: long,
                       fullAddress: address,
