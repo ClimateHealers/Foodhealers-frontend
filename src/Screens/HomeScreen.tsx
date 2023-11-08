@@ -25,7 +25,7 @@ import { myDonations } from "../redux/actions/myDonations";
 import { volunteerHistory } from "../redux/actions/volunteerHistoryAction";
 import { setLanguage } from "../redux/reducers/langReducer";
 import axios from "axios";
-import { fetchUser } from "../redux/actions/authAction";
+import { fetchUser, getExpoPushToken } from "../redux/actions/authAction";
 import { allRequests } from "../redux/actions/allRequests";
 
 const HomeScreen = ({ route }: any) => {
@@ -75,6 +75,7 @@ const HomeScreen = ({ route }: any) => {
           await fetchingDonationData();
           await fetchingvolunteerHistory();
           await fetchingUserData();
+          await getPushToken();
           const response = await axios.get("http://ipinfo.io/json");
           const { loc } = response?.data;
           const [latitude, longitude] = loc
@@ -90,8 +91,8 @@ const HomeScreen = ({ route }: any) => {
           return null;
         }
       };
-      setLoading(true);
       getUserLocation();
+      setLoading(false);
     }, [])
   );
 
@@ -109,6 +110,10 @@ const HomeScreen = ({ route }: any) => {
     const response = await dispatch(fetchUser({} as any) as any);
     const data = response?.payload?.userDetails;
     setData(data);
+  };
+
+  const getPushToken = async () => {
+    await dispatch(getExpoPushToken({} as any) as any);
   };
 
   const navigateToMapScreen = () => {

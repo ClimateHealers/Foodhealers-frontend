@@ -30,7 +30,7 @@ import PrimaryButton from "../Components/PrimaryButton";
 import { signupSchema } from "../Components/validation";
 import { auth } from "../firebase/firebaseConfig";
 import { localized } from "../locales/localization";
-import { login, registerUser } from "../redux/actions/authAction";
+import { login, registerUser, updateExpoPushToken } from "../redux/actions/authAction";
 import { setLanguage } from "../redux/reducers/langReducer";
 import * as Notifications from "expo-notifications";
 import Constants from "expo-constants";
@@ -121,7 +121,6 @@ const SignupScreen = () => {
                   borderWidth: 0.5,
                   borderRadius: 5,
                   zIndex: 1,
-                  flex: 2,
                 }}
               >
                 <TouchableOpacity onPress={() => handleMenuItemPress("Home")}>
@@ -226,6 +225,37 @@ const SignupScreen = () => {
                     if (response.payload.success) {
                       const loginResponse = await dispatch(login(data) as any);
                       if (loginResponse?.payload?.isAuthenticated) {
+                        const getExpoPushToken = async () => {
+                          const token =
+                            await Notifications.getExpoPushTokenAsync({
+                              projectId:
+                                Constants?.manifest?.extra?.eas?.projectID,
+                            });
+                          const data = {
+                            expoPushToken: token?.data,
+                          };
+                          dispatch(updateExpoPushToken(data) as any).then(
+                            (res: any) => {
+                              if (!res?.payload?.success) {
+                                Alert.alert(
+                                  `${localized.t("ALERT")}`,
+                                  "Failed to generate push token",
+                                  [
+                                    {
+                                      text: `${localized.t("CANCEL")}`,
+                                      onPress: () => {},
+                                      style: "cancel",
+                                    },
+                                  ],
+                                  { cancelable: true }
+                                );
+                              } else {
+                                console.log("Success");
+                              }
+                            }
+                          );
+                        };
+                        getExpoPushToken();
                         navigation.navigate("HomeScreen", {
                           data: loginResponse?.payload?.user,
                         });

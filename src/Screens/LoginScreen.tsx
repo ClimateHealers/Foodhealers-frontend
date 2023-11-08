@@ -30,7 +30,11 @@ import PrimaryButton from "../Components/PrimaryButton";
 import { loginSchema } from "../Components/validation";
 import { auth } from "../firebase/firebaseConfig";
 import { localized } from "../locales/localization";
-import { login } from "../redux/actions/authAction";
+import {
+  getExpoPushToken,
+  login,
+  updateExpoPushToken,
+} from "../redux/actions/authAction";
 import { setLanguage } from "../redux/reducers/langReducer";
 import * as Notifications from "expo-notifications";
 import Constants from "expo-constants";
@@ -123,7 +127,6 @@ const LoginScreen = () => {
                   borderColor: "white",
                   borderRadius: 5,
                   zIndex: 9999,
-                  flex: 2,
                 }}
               >
                 <TouchableOpacity onPress={() => handleMenuItemPress("Home")}>
@@ -242,6 +245,37 @@ const LoginScreen = () => {
                             { cancelable: true }
                           );
                         } else {
+                          const getExpoPushToken = async () => {
+                            const token =
+                              await Notifications.getExpoPushTokenAsync({
+                                projectId:
+                                  Constants?.manifest?.extra?.eas?.projectID,
+                              });
+                            const data = {
+                              expoPushToken: token?.data,
+                            };
+                            dispatch(updateExpoPushToken(data) as any).then(
+                              (res: any) => {
+                                if (!res?.payload?.success) {
+                                  Alert.alert(
+                                    `${localized.t("ALERT")}`,
+                                    "Failed to generate push token",
+                                    [
+                                      {
+                                        text: `${localized.t("CANCEL")}`,
+                                        onPress: () => {},
+                                        style: "cancel",
+                                      },
+                                    ],
+                                    { cancelable: true }
+                                  );
+                                } else {
+                                  console.log("Success");
+                                }
+                              }
+                            );
+                          };
+                          getExpoPushToken();
                           navigation.dispatch(
                             CommonActions.reset({
                               index: 0,

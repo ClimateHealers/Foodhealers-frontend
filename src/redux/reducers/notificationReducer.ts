@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { allEvents } from "../actions/allEvents";
-import { notfifications} from "../actions/notificationAction";
+import { notfifications } from "../actions/notificationAction";
 
 const initialState = {
   data: {},

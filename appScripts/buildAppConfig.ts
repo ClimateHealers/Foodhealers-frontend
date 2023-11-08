@@ -52,7 +52,7 @@ const appConfig = {
       },
     },
     android: {
-      versionCode: 12,
+      versionCode: 13,
       permissions: [
         "android.permission.ACCESS_COARSE_LOCATION",
         "android.permission.ACCESS_FINE_LOCATION",

@@ -19,6 +19,7 @@ import {
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
+  ActivityIndicator,
   View,
   Modal
 } from "react-native";
@@ -34,7 +35,6 @@ import PrimaryButton from "../Components/PrimaryButton";
 import { styles } from "../Components/Styles";
 import { localized } from "../locales/localization";
 import { allDonations } from "../redux/actions/allDonations";
-import { ActivityIndicator } from "react-native-paper";
 
 const SeeExistingDonationScreen = ({ route }: any) => {
   const { itemTypeId, title, latitude, longitude } = route?.params;
@@ -72,7 +72,6 @@ const SeeExistingDonationScreen = ({ route }: any) => {
 
   const dispatch = useDispatch();
   const fetchingRequestData = async () => {
-    setLoading(true);
     const response = await dispatch(allDonations({ itemTypeId } as any) as any);
     if (itemTypeId === 1) {
       const filtereddonationData = response?.payload?.AllDonations.filter(
@@ -86,7 +85,6 @@ const SeeExistingDonationScreen = ({ route }: any) => {
         (event: any) => event?.donatedBy?.id != data?.user?.id
       );
       setDonationData(filterNotme);
-      setLoading(false);
     } else if (itemTypeId === 2) {
       const filtereddonationData = response?.payload?.AllDonations.filter(
         (event: any) => event?.donationType === "Supplies"
@@ -99,10 +97,8 @@ const SeeExistingDonationScreen = ({ route }: any) => {
         (event: any) => event?.createdBy?.id != data?.user?.id
       );
       setDonationData(filterNotme);
-      setLoading(false);
     } else {
       setDonationData(response?.payload?.AllDonations);
-      setLoading(false);
     }
   };
 
@@ -398,7 +394,7 @@ const SeeExistingDonationScreen = ({ route }: any) => {
           <Modal visible={loading} animationType="slide" transparent={true}>
             <View style={styles.centeredView}>
               <View style={styles.modalView}>
-                <ActivityIndicator size={"large"} />
+                <ActivityIndicator size={"large"}/>
               </View>
             </View>
           </Modal>

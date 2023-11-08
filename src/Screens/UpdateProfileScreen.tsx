@@ -67,13 +67,10 @@ const UpdateProfileScreen = ({ route }: any) => {
   const navigation: any = useNavigation();
 
   useEffect(() => {
-    setLoading(true);
     fetchingUserData()
       .then(() => {
-        setLoading(false);
       })
       .catch((err) => {
-        setLoading(false);
         console.log("Error in fetchingUserData: ", err);
       });
   }, []);

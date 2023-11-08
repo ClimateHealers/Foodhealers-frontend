@@ -364,7 +364,7 @@ const RequestHistoryScreen = ({ route }: any) => {
                     type={item?.type}
                     id={item.id}
                     foodItem={`${item?.foodItem}  (${item?.quantity})`}
-                    delivery={item?.createdBy?.address?.fullAddress}
+                    delivery={item?.deliver?.dropAddress?.fullAddress}
                     requiredDate={item?.requiredDate}
                   />
                 )}

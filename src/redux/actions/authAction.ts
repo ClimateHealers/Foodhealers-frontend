@@ -27,6 +27,14 @@ interface updatePhoto {
   file: [];
 }
 
+interface UpdateExpoToken {
+  expoPushToken : string;
+}
+
+interface getExpoPushToken {
+  tokenId: string;
+}
+
 export const registerUser = createAsyncThunk<SignupData, SignupData>(
   "auth/register",
   async (userData: SignupData, { rejectWithValue }: any) => {
@@ -166,6 +174,44 @@ export const deleteUser = createAsyncThunk<DeleteUser,DeleteUser >(
     }
   }
 )
+
+export const updateExpoPushToken = createAsyncThunk<UpdateExpoToken, UpdateExpoToken>(
+  "auth/updateExpoPushToken",
+  async (userData: UpdateExpoToken, { rejectWithValue, getState }: any) => {
+    try {
+      const token = getState()?.auth?.data?.token;
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Token ${token}`,
+        },
+      };
+      const result = await API.put("v1/api/expo-push-token/", userData, config);
+      return result?.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
+
+export const getExpoPushToken = createAsyncThunk<getExpoPushToken, getExpoPushToken>(
+  "getExpoPushToken",
+  async (_, thunkAPI: any) => {
+    try {
+        const token = thunkAPI.getState().auth.data.token;
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Token ${token}`,
+        },
+      };
+      const result = await API.get("v1/api/expo-push-token/", config);
+      return result?.data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error?.response?.data?.message);
+    }
+  }
+);
 
 //Async storage
 

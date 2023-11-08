@@ -1,13 +1,13 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import API from "../../Utils/APIUtils";
 
-export interface AllEvents {
+export interface GetNotifications {
   token: string;
 }
 
 
-export const notfifications= createAsyncThunk<AllEvents, AllEvents>(
-  "notfificationEvents",
+export const notfifications= createAsyncThunk<GetNotifications, GetNotifications>(
+  "notfifications",
   async (_, thunkAPI: any) => {
     try {
         const token = thunkAPI.getState().auth.data.token;
@@ -17,7 +17,7 @@ export const notfifications= createAsyncThunk<AllEvents, AllEvents>(
           Authorization: `Token ${token}`,
         },
       };
-      const result = await API.get("v1/api/notifications/", config);
+      const result = await API.get("v1/api/volunteer-notifications/", config);
       return result?.data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error?.response?.data?.message);
