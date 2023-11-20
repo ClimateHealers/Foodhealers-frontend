@@ -182,7 +182,8 @@
     "YOU_HAVE_BEEN_SUCCESSFULLY_ADDED_TO_VOLUNTEER":"ਤੁਸੀਂ ਇਸ ਈਵੈਂਟ ਵਿੱਚ ਸੇਵਾਦਾਰ ਵਜੋਂ ਸਫਲਤਾਪੂਰਵਕ ਸ਼ਾਮਿਲ ਹੋ ਗਏ ਹੋ।",
     "VOLUNTEER_NOT_ADDED":"ਸੇਵਾਦਾਰ ਨਹੀਂ ਜੋੜਿਆ ਗਿਆ।",
     "YOU_CANT_SELECT_A_TIME_BEFORE":"ਤੁਸੀਂ ਇਸ ਤੋਂ ਪਹਿਲਾਂ ਕੋਈ ਸਮਾਂ ਚੁਣ ਨਹੀਂ ਸਕਦੇ",
-    "DONATION_ADDED_SUCCESSFULLY_THAN_YOU_FOR_DONATION":"ਦਾਨ ਸਫਲਤਾਪੂਰਵਕ ਜੋੜਿਆ ਗਿਆ ਹੈ, ਤੁਹਾਡੇ ਡੋਨੇਸ਼ਨ ਲਈ ਧੰਨਵਾਦ!",
+    "DONATION_ADDED_SUCCESSFULLY":"ਦਾਨ ਸਫਲਤਾਪੂਰਵਕ ਜੋੜਿਆ ਗਿਆ ਹੈ",
+    "THAN_YOU_FOR_DONATION":"ਤੁਹਾਡੇ ਡੋਨੇਸ਼ਨ ਲਈ ਧੰਨਵਾਦ!",
     "WH_HAVE_SUCCESSFULLY_ADDED_YOUR_DONATION":" ਅਸੀਂ ਤੁਹਾਡੇ ਡੋਨੇਸ਼ਨ ਨੂੰ ਸਫਲਤਾਪੂਰਵਕ ਜੋੜ ਲਿਆ ਹੈ।",
     "DONATION_NOT_ADDED":"ਡੋਨੇਸ਼ਨ ਨਹੀਂ ਜੋੜਿਆ ਗਿਆ ਹੈ।",
     "PLEASE_ENTER_THE_FULL_ADDRESS":"ਕਿਰਪਾ ਕਰਕੇ ਪੂਰਾ ਪਤਾ ਦਰਜ ਕਰੋ।",
@@ -279,6 +280,18 @@
     "OLD": "ਪੁਰਾਣਾ",
     "VEHICLE_UPDATED_SUCCESSFULLY": "ਗੱਡੀ ਸਫਲਤਾਪੂਰਵਕ ਅੱਪਡੇਟ ਹੋ ਗਈ ਹੈ",
     "YOUR_VEHICLE_HAS_BEEN_UPDATED_SUCCESSFULLY": "ਗੱਡੀ ਅੱਪਡੇਟ ਹੋ ਗਈ ਹੈ",
-    "VEHICLE_NOT_ADDED": "ਗੱਡੀ ਨਹੀਂ ਜੋੜੀ ਗਈ"
+    "VEHICLE_NOT_ADDED": "ਗੱਡੀ ਨਹੀਂ ਜੋੜੀ ਗਈ",
+    "PLEASE_ENTER_VALID_MODEL": "ਕਿਰਪਾ ਕਰਕੇ ਵੈਧ ਮਾਡਲ ਦਰਜ ਕਰੋ",
+    "PLEASE_ENTER_VALID_MAKE": "ਕਿਰਪਾ ਕਰਕੇ ਵੈਧ ਬਣਾਉਣ ਦਰਜ ਕਰੋ",
+    "PLEASE_ENTER_VALID_COLOR": "ਕਿਰਪਾ ਕਰਕੇ ਵੈਧ ਰੰਗ ਦਰਜ ਕਰੋ",
+    "PLEASE_ENTER_VALID_LICENSEPLATE": "ਕਿਰਪਾ ਕਰਕੇ ਵੈਧ ਲਾਇਸੰਸ ਪਲੇਟ ਦਰਜ ਕਰੋ",
+    "ONLY_NUMBERS_ARE_ALLOWED": "ਕੇਵਲ ਅੰਕਾਂ ਦੀ ਇਜਾਜ਼ਤ ਹੈ",
+    "VEHICLE_MAKE": "ਵਾਹਨ ਬਣਾਉਣ ਵਾਲਾ",
+    "VEHICLE_MODEL": "ਵਾਹਨ ਮਾਡਲ",
+    "VEHICLE_COLOR": "ਵਾਹਨ ਰੰਗ",
+    "LICENSE_PLATE_NUMBER": "ਲਾਇਸੰਸ ਪਲੇਟ ਨੰਬਰ",
+    "RECIPE": "ਰੈਸਿਪੀ",
+    "IN_TRANSIT": "ਟ੍ਰਾਂਜ਼ਿਟ ਵਿੱਚ",
+    "ACCEPTED": "ਸਵੀਕ੃ਤ"
   }
 }

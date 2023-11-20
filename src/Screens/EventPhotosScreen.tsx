@@ -4,7 +4,6 @@ import { LinearGradient } from "expo-linear-gradient";
 import React, { useState } from "react";
 import {
   Image,
-  Keyboard,
   Modal,
   ScrollView,
   Text,
@@ -16,61 +15,21 @@ import { Button } from "react-native-elements";
 import Spinner from "react-native-loading-spinner-overlay";
 import { heightPercentageToDP as h2dp } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
 import PrimaryButton from "../Components/PrimaryButton";
 import { styles } from "../Components/Styles";
-import { getLocation } from "../Components/getCurrentLocation";
-import { removeAuthData } from "../redux/actions/authAction";
-import { postEvent } from "../redux/actions/postEventaction";
-import { logOut } from "../redux/reducers/authreducers";
 import { localized } from "../locales/localization";
+import { postEvent } from "../redux/actions/postEventaction";
 
 const EventPhotosScreen = ({ route }: any) => {
   const { eventPhotos, eventFormData, singlePhoto } = route.params;
-
-  const isAuthenticated = useSelector(
-    (state: any) => state.auth.data.isAuthenticated
-  );
   const dispatch = useDispatch();
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState(false);
   const [showDialog, setShowDialog] = useState<boolean>(false);
   const navigation: any = useNavigation<string>();
-
-  const handlePressOutside = () => {
-    Keyboard.dismiss();
-  };
-
-  const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
-  };
-  const handleMenuItemPress = (item: any) => {
-    setMenuOpen(false);
-    navigation.navigate("HomeScreen");
-  };
-  const findFoodMenuItemPress = (item: any) => {
-    getLocation().then((res) => {
-      if (res) {
-        navigation?.navigate("MapScreen", {
-          latitude: res?.latitude,
-          longitude: res?.longitude,
-        });
-      }
-    });
-    setMenuOpen(false);
-  };
-  const logout = async (item: any) => {
-    await dispatch(logOut({} as any) as any);
-    await removeAuthData();
-    navigation.dispatch(
-      CommonActions.reset({
-        index: 0,
-        routes: [{ name: "LoginScreen" }],
-      })
-    );
-  };
 
   const submitEvent = () => {
     setShowDialog(true);
@@ -101,19 +60,9 @@ const EventPhotosScreen = ({ route }: any) => {
       if (response?.payload?.success === true) {
         setLoading(false);
         setShowDialog(false);
-        navigation.dispatch(
-          CommonActions.reset({
-            index: 0,
-            routes: [
-              {
-                name: "AllEventScreen",
-                params: {
-                  fromEventPhotosScreen: true
-                },
-              },
-            ],
-          })
-        );
+        navigation.navigate("AllEventScreen", {
+          fromEventPhotosScreen: true,
+        });
       } else {
         setLoading(false);
         setShowDialog(false);

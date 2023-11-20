@@ -48,7 +48,6 @@ const AcceptDonatedRequestScreen = ({ route }: any) => {
   const [showTimePicker, setShowTimePicker] = useState(false);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [countryPhoneCode, setCountryPhoneCode] = useState<string>("");
-
   const phoneCode = countryPhoneCode.toString();
   const [response, setResponse] = useState({
     loading: false,
@@ -180,7 +179,7 @@ const AcceptDonatedRequestScreen = ({ route }: any) => {
                       itemName: foodItem,
                       quantity: quantity,
                       phoneNumber: phoneNumber,
-                      requiredDate: selectedDate,
+                      dropDate: eventDateTime,
                       lat: lat,
                       lng: long,
                       fullAddress: address,
@@ -208,23 +207,13 @@ const AcceptDonatedRequestScreen = ({ route }: any) => {
                           {
                             text: `${localized.t("OK")}`,
                             onPress: () =>
-                              navigation.dispatch(
-                                CommonActions.reset({
-                                  index: 0,
-                                  routes: [
-                                    {
-                                      name: "RequestCreatedScreen",
-                                      params: {
-                                        itemTypeId: itemTypeId,
-                                        title: title,
-                                        address: address,
-                                        eventDateTime: eventDateTime,
-                                        foodItem: foodItem,
-                                      },
-                                    },
-                                  ],
-                                })
-                              ),
+                              navigation.navigate("RequestCreatedScreen", {
+                                itemTypeId: itemTypeId,
+                                title: title,
+                                address: address,
+                                eventDateTime: selectedDate,
+                                foodItem: foodItem,
+                              }),
                           },
                         ],
                         { cancelable: false }

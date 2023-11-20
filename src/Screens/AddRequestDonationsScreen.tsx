@@ -105,10 +105,11 @@ const AddRequestDonationsScreen = ({ route }: any) => {
                 <View style={styles.item}>
                   <Text style={styles.itemText}>{title}</Text>
                 </View>
-                <BurgerIcon 
+                <BurgerIcon
                   onOutsidePress={handlePressOutside}
                   menuClose={menuClose}
-                  menuItem={menuItem}/>
+                  menuItem={menuItem}
+                />
               </View>
               <Modal visible={loading} animationType="slide" transparent={true}>
                 <View style={styles.centeredView}>
@@ -180,24 +181,14 @@ const AddRequestDonationsScreen = ({ route }: any) => {
                           {
                             text: `${localized.t("OK")}`,
                             onPress: () =>
-                              navigation.dispatch(
-                                CommonActions.reset({
-                                  index: 0,
-                                  routes: [
-                                    {
-                                      name: "RequestCreatedScreen",
-                                      params: {
-                                        itemTypeId: itemTypeId,
-                                        title: title,
-                                        address: address,
-                                        eventDateTime: selectedDate,
-                                        foodItem: foodItem,
-                                        quantity: quantity,
-                                      },
-                                    },
-                                  ],
-                                })
-                              ),
+                              navigation.navigate("RequestCreatedScreen", {
+                                itemTypeId: itemTypeId,
+                                title: title,
+                                address: address,
+                                eventDateTime: selectedDate,
+                                foodItem: foodItem,
+                                quantity: quantity,
+                              }),
                           },
                         ],
                         { cancelable: false }

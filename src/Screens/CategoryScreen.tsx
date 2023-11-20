@@ -203,6 +203,7 @@ const CategoryScreen = ({ route }: any) => {
               />
             </View>
             <ScrollView
+              showsVerticalScrollIndicator={false}
               onScroll={(e) => {
                 const { layoutMeasurement, contentOffset, contentSize } =
                   e.nativeEvent;

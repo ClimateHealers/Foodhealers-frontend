@@ -63,6 +63,20 @@ const PickupConfirmScreen = ({ route }: any) => {
     message: "",
   });
 
+  useFocusEffect(
+    useCallback(() => {
+      const { routes } = navigation.getState();
+      const filteredRoutes = routes.filter(
+        (route: any) => route.name !== "PickupSelectedDetailsScreen"
+      );
+
+      navigation.reset({
+        index: filteredRoutes.length - 2,
+        routes: filteredRoutes,
+      });
+    }, [])
+  );
+
   const dispatch = useDispatch();
 
   const handlePressOutside = () => {
@@ -114,7 +128,7 @@ const PickupConfirmScreen = ({ route }: any) => {
               </Modal>
               <Text
                 style={{
-                  fontSize: 26,
+                  fontSize: h2dp(2.6),
                   alignSelf: "center",
                 }}
               >
@@ -135,8 +149,8 @@ const PickupConfirmScreen = ({ route }: any) => {
                     <Text
                       style={{
                         marginLeft: w2dp(3),
-                        fontSize: 16,
-                        lineHeight: 30,
+                        fontSize: h2dp(1.6),
+                        // lineHeight: 30,
                         fontWeight: "500",
                         paddingTop: h2dp(0.5),
                         alignSelf: "center",
@@ -157,8 +171,8 @@ const PickupConfirmScreen = ({ route }: any) => {
                       <Text
                         style={{
                           marginLeft: w2dp(3),
-                          fontSize: 16,
-                          lineHeight: 30,
+                          fontSize: h2dp(1.6),
+                          // lineHeight: 30,
                           fontWeight: "500",
                           paddingTop: h2dp(0.5),
                         }}
@@ -170,8 +184,8 @@ const PickupConfirmScreen = ({ route }: any) => {
                         <Text
                           style={{
                             marginLeft: w2dp(3),
-                            fontSize: 16,
-                            lineHeight: 30,
+                            fontSize: h2dp(1.6),
+                            // lineHeight: 30,
                             paddingTop: h2dp(0.5),
                             marginRight: w2dp(3),
                           }}
@@ -204,8 +218,8 @@ const PickupConfirmScreen = ({ route }: any) => {
                     <Text
                       style={{
                         marginLeft: w2dp(3),
-                        fontSize: 16,
-                        lineHeight: 30,
+                        fontSize: h2dp(1.6),
+                        // lineHeight: 30,
                         fontWeight: "500",
                         paddingTop: h2dp(0.5),
                         alignSelf: "center",
@@ -224,8 +238,8 @@ const PickupConfirmScreen = ({ route }: any) => {
                       <Text
                         style={{
                           marginLeft: w2dp(3),
-                          fontSize: 16,
-                          lineHeight: 30,
+                          fontSize: h2dp(1.6),
+                          // lineHeight: 30,
                           fontWeight: "500",
                           paddingTop: h2dp(0.5),
                         }}
@@ -237,8 +251,8 @@ const PickupConfirmScreen = ({ route }: any) => {
                         <Text
                           style={{
                             marginLeft: w2dp(3),
-                            fontSize: 16,
-                            lineHeight: 30,
+                            fontSize: h2dp(1.6),
+                            // lineHeight: 30,
                             paddingTop: h2dp(0.5),
                             marginRight: w2dp(3),
                           }}

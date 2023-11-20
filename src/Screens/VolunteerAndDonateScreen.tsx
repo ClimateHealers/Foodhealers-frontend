@@ -102,7 +102,9 @@ const VolunteerAndDonateScreen = ({ route }: any) => {
                     {localized.t("VOLUNTEER")}
                   </Text>
                 </View>
-                <BurgerIcon />
+                {/* <View style={styles.burgerIconContainer}> */}
+                  <BurgerIcon />
+                {/* </View> */}
               </View>
               <TabView
                 navigationState={{ index, routes }}
@@ -153,6 +155,12 @@ const styles = StyleSheet.create({
     fontSize: 25,
     color: "white",
     marginTop: h2dp(3),
+  },
+  burgerIconContainer: {
+    position: "absolute",
+    top: 0,
+    right: 0,
+    zIndex: 10, // Set a higher zIndex
   },
   card: {
     backgroundColor: "white",

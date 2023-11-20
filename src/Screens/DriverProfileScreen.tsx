@@ -9,35 +9,32 @@ import { LinearGradient } from "expo-linear-gradient";
 import * as MediaLibrary from "expo-media-library";
 import React, { useEffect, useState } from "react";
 import {
-  ActivityIndicator,
   Alert,
   Image,
   Keyboard,
-  Modal,
   ScrollView,
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  View,
+  View
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { localized } from "../locales/localization";
 import {
   heightPercentageToDP as h2dp,
   widthPercentageToDP as w2dp,
 } from "react-native-responsive-screen";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
 import PrimaryButton from "../Components/PrimaryButton";
 import { styles } from "../Components/Styles";
 import { getLocation } from "../Components/getCurrentLocation";
+import { localized } from "../locales/localization";
 import { fetchVehicle } from "../redux/actions/addVehicle";
 import { fetchUser } from "../redux/actions/authAction";
 
 const DriverProfileScreen = ({ route }: any) => {
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const [loc, setLoc] = useState(false);
-  // const [selectedImage, setSelectedImage] = useState("");
   const [vehicleDetails, setVehicleDetails] = useState<any>();
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<any>();
@@ -63,6 +60,15 @@ const DriverProfileScreen = ({ route }: any) => {
   useEffect(() => {
     fetchingVehiclesData();
     fetchingUserData();
+    const { routes } = navigation.getState();
+      const filteredRoutes = routes.filter(
+        (route: any) => route.name !== "AddRequestDonationsScreen" && route.name !== "DriverPhotoSaveScreen"
+      );
+
+      navigation.reset({
+        index: filteredRoutes.length - 2,
+        routes: filteredRoutes,
+      });
   }, []);
 
   const handleMenuItemPress = (item: any) => {

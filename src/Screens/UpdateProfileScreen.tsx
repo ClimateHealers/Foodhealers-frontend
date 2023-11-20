@@ -3,7 +3,6 @@ import { CommonActions, useNavigation } from "@react-navigation/native";
 import Constants from "expo-constants";
 import { LinearGradient } from "expo-linear-gradient";
 import { Formik } from "formik";
-import moment from "moment";
 import React, { useEffect, useRef, useState } from "react";
 import {
   ActivityIndicator,
@@ -20,7 +19,7 @@ import { Text, TextInput } from "react-native-paper";
 import PhoneInput from "react-native-phone-number-input";
 import { heightPercentageToDP as h2dp } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
 import PrimaryButton from "../Components/PrimaryButton";
@@ -68,8 +67,7 @@ const UpdateProfileScreen = ({ route }: any) => {
 
   useEffect(() => {
     fetchingUserData()
-      .then(() => {
-      })
+      .then(() => {})
       .catch((err) => {
         console.log("Error in fetchingUserData: ", err);
       });
@@ -171,17 +169,7 @@ const UpdateProfileScreen = ({ route }: any) => {
                         [
                           {
                             text: "OK",
-                            onPress: () =>
-                              navigation.dispatch(
-                                CommonActions.reset({
-                                  index: 0,
-                                  routes: [
-                                    {
-                                      name: "ProfileScreen",
-                                    },
-                                  ],
-                                })
-                              ),
+                            onPress: () => navigation.navigate("ProfileScreen"),
                           },
                         ],
                         { cancelable: false }

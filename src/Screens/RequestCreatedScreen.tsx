@@ -1,7 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import {
   Keyboard,
   ScrollView,
@@ -22,17 +22,32 @@ import { localized } from "../locales/localization";
 import moment from "moment";
 
 const RequestCreatedScreen = ({ route }: any) => {
-  const { itemTypeId, title, foodItem, quantity, address, eventDateTime } = route?.params;
+  const { itemTypeId, title, foodItem, quantity, address, eventDateTime } =
+    route?.params;
   const navigation: any = useNavigation();
   const menuItem = "Team";
   const [menuClose, setMenuOpen] = useState(false);
+
+  useFocusEffect(
+    useCallback(() => {
+      const { routes } = navigation.getState();
+      const filteredRoutes = routes.filter(
+        (route: any) => route.name !== "AddRequestDonationsScreen"
+      );
+
+      navigation.reset({
+        index: filteredRoutes.length - 2,
+        routes: filteredRoutes,
+      });
+    }, [])
+  );
 
   const handlePressOutside = () => {
     Keyboard.dismiss();
     setMenuOpen(!menuClose);
   };
-  var t = new Date();
-  t.setSeconds(eventDateTime);
+  var t = new Date(eventDateTime);
+  t.toISOString();
   const formatted = moment(t).format("MMM DD, YYYY  ddd, hh:mm A");
 
   return (
@@ -55,10 +70,11 @@ const RequestCreatedScreen = ({ route }: any) => {
                 <View style={styles.item}>
                   <Text style={styles.itemText}>{title}</Text>
                 </View>
-                <BurgerIcon 
+                <BurgerIcon
                   onOutsidePress={handlePressOutside}
                   menuClose={menuClose}
-                  menuItem={menuItem}/>
+                  menuItem={menuItem}
+                />
               </View>
               <View style={{ height: h2dp(25), marginTop: h2dp(5) }}>
                 <View style={[styles.cardContainer, { width: w2dp(85) }]}>

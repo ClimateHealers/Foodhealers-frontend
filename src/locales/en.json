@@ -225,7 +225,6 @@
     "ADD_NEW_VEHICLE": "Add New Vehicle",
     "UPDATE": "Update",
     "REQUEST_ADDED_SUCCESSFULLY": "Request Added Successfully.",
-    "We have successfully added your request": "We have successfully added your request.",
     "REQUEST_NOT_ADDED": "Request not added",
     "YOU_CANT_SELECT_A_TIME_AFTER": "You can't select a time after",
     "DRIVER_NOT_ADDED": "Driver not added",
@@ -281,6 +280,18 @@
     "OLD": "Old",
     "VEHICLE_UPDATED_SUCCESSFULLY": "Vehicle Updated Successfully",
     "YOUR_VEHICLE_HAS_BEEN_UPDATED_SUCCESSFULLY": "Vehicle has been updated successfully.",
-    "VEHICLE_NOT_ADDED": "Vehicle Not Added"
+    "VEHICLE_NOT_ADDED": "Vehicle Not Added",
+    "PLEASE_ENTER_VALID_MODEL": "Please enter valid model",
+    "PLEASE_ENTER_VALID_MAKE": "Please enter valid make",
+    "PLEASE_ENTER_VALID_COLOR": "Please enter valid color",
+    "PLEASE_ENTER_VALID_LICENSEPLATE": "Please enter valid licensePlate",
+    "ONLY_NUMBERS_ARE_ALLOWED": "Only numbers are allowed",
+    "VEHICLE_MAKE": "Vehicle make",
+    "VEHICLE_MODEL": "Vehicle model",
+    "VEHICLE_COLOR": "Vehicle color",
+    "LICENSE_PLATE_NUMBER": "License plate Number",
+    "RECIPE": "Recipe",
+    "IN_TRANSIT": "In Transit",
+    "ACCEPTED": "Accepted"
   }
 }

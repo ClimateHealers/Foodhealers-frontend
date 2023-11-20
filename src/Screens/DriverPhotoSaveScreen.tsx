@@ -90,17 +90,7 @@ const DriverPhotoSaveScreen = ({ route }: any) => {
           [
             {
               text: `${localized.t("OK")}`,
-              onPress: () =>
-                navigation.dispatch(
-                  CommonActions.reset({
-                    index: 0,
-                    routes: [
-                      {
-                        name: "DriverProfileScreen",
-                      },
-                    ],
-                  })
-                ),
+              onPress: () => navigation.navigate("DriverProfileScreen"),
             },
           ],
           { cancelable: false }
@@ -171,7 +161,11 @@ const DriverPhotoSaveScreen = ({ route }: any) => {
                 onPress={navigateToProfileScreen}
               />
               <PrimaryButton
-                title={fromCameraRoll ? localized.t("TAKE_PHOTO") : localized.t("RETAKE")}
+                title={
+                  fromCameraRoll
+                    ? localized.t("TAKE_PHOTO")
+                    : localized.t("RETAKE")
+                }
                 buttonStyle={styles.buttonHistoryStyles}
                 titleStyle={styles.titleMainStyle}
                 onPress={() => navigation.navigate("TakePictureScreen")}

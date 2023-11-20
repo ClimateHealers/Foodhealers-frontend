@@ -164,20 +164,9 @@ const AddDriverScreen = ({ route }: any) => {
                         [
                           {
                             text: "OK",
-                            onPress: () =>
-                              navigation.dispatch(
-                                CommonActions.reset({
-                                  index: 0,
-                                  routes: [
-                                    {
-                                      name: "AddVehicleScreen",
-                                      params: {
-                                        newVehicle: false,
-                                      },
-                                    },
-                                  ],
-                                })
-                              ),
+                            onPress: () => navigation.navigate("AddVehicleScreen",{
+                              newVehicle: false,
+                            })
                           },
                         ],
                         { cancelable: false }

@@ -1,8 +1,14 @@
-import { Ionicons } from "@expo/vector-icons";
-import { CommonActions, useNavigation } from "@react-navigation/native";
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+import {
+  CommonActions,
+  useFocusEffect,
+  useNavigation,
+  useRoute,
+  useNavigationState,
+} from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Formik } from "formik";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
@@ -14,7 +20,10 @@ import {
   View,
 } from "react-native";
 import { Text, TextInput } from "react-native-paper";
-import { heightPercentageToDP as h2dp } from "react-native-responsive-screen";
+import {
+  heightPercentageToDP as h2dp,
+  widthPercentageToDP as w2dp,
+} from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
@@ -29,23 +38,63 @@ import {
   updateVehicle,
 } from "../redux/actions/addVehicle";
 import { addDriver, adddVehicle } from "../Components/validation";
+import SelectDropdown from "react-native-select-dropdown";
 
 const UpdateVehicleScreen = ({ route }: any) => {
-  const { id, model, make, vehicleColour, plateNumber } = route?.params;
+  const { id } = route?.params;
   const [loading, setLoading] = useState(false);
   const [vehicleDetails, setVehicleDetails] = useState<any>();
+  const [vehicleData, setVehicleData] = useState<any>();
+  const [selectedVehicle, setSelectedVehicle] = useState<any>();
   const [response, setResponse] = useState({
     loading: false,
     error: false,
     message: "",
   });
 
+  const navigation: any = useNavigation();
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchingVehiclesData();
+    }, [])
+  );
+
+  const initialValue = {
+    carModel: vehicleDetails?.model,
+    carColor: vehicleDetails?.vehicleColour,
+    licencePlate: vehicleDetails?.plateNumber,
+    carMake: vehicleDetails?.make,
+  };
+
+  const fetchingVehiclesData = async () => {
+    setLoading(true);
+    const response = await dispatch(fetchVehicle({} as any) as any);
+    const filteredVehicle = response?.payload?.vehicleDetails?.filter(
+      (event: any) => event.id === id
+    );
+    setVehicleDetails(filteredVehicle[0]);
+    const data = response?.payload?.vehicleDetails;
+    setVehicleData(data);
+    setLoading(false);
+  };
+
   const dispatch = useDispatch();
 
   const handlePressOutside = () => {
     Keyboard.dismiss();
   };
-  const navigation: any = useNavigation();
+
+  const changeVehicle = async (itemValue: any, index: any) => {
+    setLoading(true);
+    let selectedVehicleID = vehicleData[index]?.make;
+    setSelectedVehicle(selectedVehicleID);
+    const response = await dispatch(fetchVehicle({} as any) as any);
+    const filteredVehicle = response?.payload?.vehicleDetails[index];
+    setVehicleDetails(filteredVehicle);
+    setLoading(false);
+  };
+
   return (
     <TouchableWithoutFeedback onPress={handlePressOutside}>
       <LinearGradient
@@ -54,7 +103,6 @@ const UpdateVehicleScreen = ({ route }: any) => {
       >
         <SafeAreaView>
           <ScrollView keyboardShouldPersistTaps="handled">
-            <StatusBar animated={true} backgroundColor="auto" />
             <View style={styles.container}>
               <FoodhealersHeader />
               <View
@@ -85,12 +133,9 @@ const UpdateVehicleScreen = ({ route }: any) => {
               </Modal>
               <Formik
                 validationSchema={adddVehicle}
-                initialValues={{
-                  carModel: model,
-                  carColor: vehicleColour,
-                  licencePlate: plateNumber,
-                  carMake: make,
-                }}
+                isInitialValid
+                enableReinitialize
+                initialValues={initialValue}
                 onSubmit={async ({
                   carModel,
                   carColor,
@@ -134,16 +179,7 @@ const UpdateVehicleScreen = ({ route }: any) => {
                           {
                             text: "OK",
                             onPress: () =>
-                              navigation.dispatch(
-                                CommonActions.reset({
-                                  index: 0,
-                                  routes: [
-                                    {
-                                      name: "DriverRequestScreen",
-                                    },
-                                  ],
-                                })
-                              ),
+                              navigation.navigate("DriverRequestScreen"),
                           },
                         ],
                         { cancelable: false }
@@ -208,7 +244,7 @@ const UpdateVehicleScreen = ({ route }: any) => {
                           onChangeText={handleChange("carMake")}
                           onBlur={handleBlur("carMake")}
                           value={values.carMake}
-                          placeholder={"Car make"}
+                          placeholder={vehicleDetails?.make}
                           placeholderTextColor={"black"}
                           style={[
                             styles.textInput,
@@ -228,7 +264,7 @@ const UpdateVehicleScreen = ({ route }: any) => {
                           onChangeText={handleChange("carModel")}
                           onBlur={handleBlur("carModel")}
                           value={values?.carModel}
-                          placeholder={"Car model"}
+                          placeholder={vehicleDetails?.model}
                           placeholderTextColor={"black"}
                           style={[
                             styles.textInput,
@@ -244,7 +280,7 @@ const UpdateVehicleScreen = ({ route }: any) => {
                       onChangeText={handleChange("carColor")}
                       onBlur={handleBlur("carColor")}
                       value={values.carColor}
-                      placeholder={"Car color"}
+                      placeholder={vehicleDetails?.vehicleColour}
                       placeholderTextColor={"black"}
                       style={[styles.textInput]}
                     />
@@ -255,7 +291,7 @@ const UpdateVehicleScreen = ({ route }: any) => {
                         onChangeText={handleChange("licencePlate")}
                         onBlur={handleBlur("licencePlate")}
                         value={values?.licencePlate}
-                        placeholder={"Licence plate Number"}
+                        placeholder={vehicleDetails?.plateNumber}
                         placeholderTextColor={"black"}
                         style={[
                           styles.textInput,
@@ -274,6 +310,50 @@ const UpdateVehicleScreen = ({ route }: any) => {
                         marginTop: h2dp(1),
                       }}
                     >
+                      <SelectDropdown
+                        buttonStyle={{
+                          width: w2dp(50),
+                          height: h2dp(5),
+                          backgroundColor: "#FFF",
+                          borderRadius: 5,
+                          borderWidth: 1,
+                          borderColor: "#D1D1D6",
+                        }}
+                        buttonTextStyle={styles.dropdown1BtnTxtStyle}
+                        renderDropdownIcon={() => {
+                          return (
+                            <MaterialIcons
+                              name="keyboard-arrow-down"
+                              size={18}
+                              color="#B50000"
+                            />
+                          );
+                        }}
+                        dropdownStyle={styles.dropdown1DropdownStyle}
+                        rowStyle={styles.dropdown1RowStyle}
+                        rowTextStyle={{
+                          color: "black",
+                          textAlign: "center",
+                          fontSize: 16,
+                        }}
+                        data={
+                          vehicleData &&
+                          vehicleData.map((dd: any) => {
+                            return (
+                              dd?.make +
+                              " " +
+                              dd?.model +
+                              "  " +
+                              dd?.plateNumber
+                            );
+                          })
+                        }
+                        onSelect={changeVehicle}
+                        defaultButtonText={selectedVehicle?.toUpperCase()}
+                        rowTextForSelection={(item, index) => {
+                          return item;
+                        }}
+                      />
                       <PrimaryButton
                         title={localized.t("UPDATE")}
                         buttonStyle={styles.nextButtonStyles}
@@ -285,9 +365,9 @@ const UpdateVehicleScreen = ({ route }: any) => {
                         buttonStyle={styles.nextButtonStyles}
                         titleStyle={styles.titleStyle}
                         onPress={() => {
-                          navigation.navigate("AddVehicleScreen",{
+                          navigation.navigate("AddVehicleScreen", {
                             newVehicle: true,
-                          })
+                          });
                         }}
                       />
                     </View>

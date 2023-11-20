@@ -64,8 +64,7 @@ const BurgerIcon = ({ menuClose, onOutsidePress, menuItem }: any) => {
             borderColor: "black",
             borderWidth: 0.5,
             borderRadius: 5,
-            zIndex: 1,
-            flex: 2,
+            zIndex: 10,
           }}
         >
           <TouchableOpacity onPress={() => handleMenuItemPress("Home")}>
