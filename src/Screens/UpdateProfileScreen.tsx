@@ -72,6 +72,7 @@ const UpdateProfileScreen = ({ route }: any) => {
         console.log("Error in fetchingUserData: ", err);
       });
   }, []);
+  
   return (
     <TouchableWithoutFeedback onPress={handlePressOutside}>
       <LinearGradient
