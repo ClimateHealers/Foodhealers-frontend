@@ -4,7 +4,6 @@ import { LinearGradient } from "expo-linear-gradient";
 import {decode} from "html-entities"
 import React from "react";
 import {
-  Image,
   Keyboard,
   Linking,
   SafeAreaView,
@@ -22,6 +21,12 @@ import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
 import { styles } from "../Components/Styles";
 import { localized } from "../locales/localization";
+import * as WebBrowser from 'expo-web-browser';
+import { Image } from 'expo-image';
+
+const blurhash =
+  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
+
 
 const SingleRecipeScreen = ({ route }: any) => {
   const { recipeData } = route.params;
@@ -75,6 +80,9 @@ const SingleRecipeScreen = ({ route }: any) => {
                     height: h2dp(30),
                     borderRadius: 10,
                   }}
+                  placeholder={blurhash}
+                  contentFit="cover"
+                  transition={1000}
                 />
               </TouchableOpacity>
               <TouchableOpacity activeOpacity={1}>
