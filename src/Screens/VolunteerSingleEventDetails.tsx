@@ -118,7 +118,11 @@ const VolunteerSingleEventDetails = ({ route }: any) => {
   const onShare = async () => {
     try {
       const result = await Share.share({
-        message: `https://play.google.com/store/apps/details?id=com.foodhealers.climatehealers`,
+        message: `I'm Volunteering for ${eventDetails?.name}.
+
+From ${moment(eventDetails?.eventStartDate).format("D MMM, ddd")} around ${formattedStartTime} onwards at ${eventDetails?.address}
+
+Join me using https://play.google.com/store/apps/details?id=com.foodhealers.climatehealers.`,
         url: "https://play.google.com/store/apps/details?id=com.foodhealers.climatehealers",
       });
       if (result.action === Share.sharedAction) {
@@ -335,11 +339,11 @@ const VolunteerSingleEventDetails = ({ route }: any) => {
                       onPress={() => {
                         volunteerNumber
                           ? navigation.navigate("AllVolunteersScreen", {
-                              eventId: eventDetails?.id,
-                              title: `${localized.t("VOLUNTEER_AT_EVENT")}`,
-                              itemTypeId: 3,
-                              eventVolunteersData: eventVolunteersData,
-                            })
+                            eventId: eventDetails?.id,
+                            title: `${localized.t("VOLUNTEER_AT_EVENT")}`,
+                            itemTypeId: 3,
+                            eventVolunteersData: eventVolunteersData,
+                          })
                           : null;
                       }}
                       buttonStyle={styles.buttonStyles}
