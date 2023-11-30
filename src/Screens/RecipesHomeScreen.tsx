@@ -3,7 +3,6 @@ import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useEffect, useState } from "react";
 import {
-  Image,
   Keyboard,
   SafeAreaView,
   ScrollView,
@@ -20,6 +19,11 @@ import { styles } from "../Components/Styles";
 import { getLocation } from "../Components/getCurrentLocation";
 import { localized } from "../locales/localization";
 import { VeganRecipesCategories } from "../redux/actions/veganRecipes";
+import { Image } from 'expo-image';
+
+const blurhash =
+  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
+
 
 const RecipesHomeScreen = () => {
   const [langOpen, setlangOpen] = useState(false);
@@ -117,6 +121,9 @@ const RecipesHomeScreen = () => {
                         <Image
                           source={{ uri: recipe?.categoryImage }}
                           style={styles.imageStyle}
+                          placeholder={blurhash}
+                          contentFit="cover"
+                          transition={1000}
                         />
                         <View style={styles.title}>
                           <Text style={styles.textStyle}>{recipe?.name}</Text>
