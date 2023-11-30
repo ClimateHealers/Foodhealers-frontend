@@ -314,7 +314,7 @@ const SeeExistingDonationScreen = ({ route }: any) => {
           <Modal visible={loading} animationType="slide" transparent={true}>
             <View style={styles.centeredView}>
               <View style={styles.modalView}>
-                <ActivityIndicator size={"large"} />
+                <ActivityIndicator size={"large"}/>
               </View>
             </View>
           </Modal>
