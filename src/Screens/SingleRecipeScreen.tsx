@@ -173,7 +173,8 @@ const SingleRecipeScreen = ({ route }: any) => {
                     {localized.t("SOURCE")} :{" "}
                     <Text
                       style={styles.underlineTextStyle}
-                      onPress={() => Linking.openURL(recipeData?.recipeSource)}
+                      // onPress={() => Linking.openURL(recipeData?.recipeSource)}
+                      onPress={() => WebBrowser.openBrowserAsync(recipeData?.recipeSource)}
                     >
                       {recipeData?.recipeSource}
                     </Text>
