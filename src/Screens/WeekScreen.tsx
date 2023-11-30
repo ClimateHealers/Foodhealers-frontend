@@ -405,7 +405,7 @@ const WeekScreen = ({ route }: any) => {
                       title={localized.t("SELECTED_LOCATION")}
                     >
                       <Image
-                        source={require("../../assets/currentLocationPin.png")}
+                        source={require("../../assets/newCurrentLocationPin.png")}
                         style={styles.markerIcon}
                       />
                     </Marker>
@@ -435,7 +435,7 @@ const WeekScreen = ({ route }: any) => {
                             {marker?.name}
                           </Text>
                           <Image
-                            source={require("../../assets/eventLocationPin.png")}
+                            source={require("../../assets/newEventLocationPin.png")}
                             style={styles.markerIcon}
                           />
                         </View>
