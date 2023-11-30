@@ -27,6 +27,7 @@ import SelectDropdown from "react-native-select-dropdown";
 import { useDispatch, useSelector } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
+import mapStyle from "../Components/MapStyle";
 import { styles } from "../Components/Styles";
 import { localized } from "../locales/localization";
 import { findFood } from "../redux/actions/findFoodaction";
@@ -392,6 +393,7 @@ const WeekScreen = ({ route }: any) => {
                     marginHorizontal: w2dp(-4),
                   }}
                   showsUserLocation={true}
+                  customMapStyle={mapStyle}
                 >
                   {address ? (
                     <Marker
@@ -435,7 +437,7 @@ const WeekScreen = ({ route }: any) => {
                             {marker?.name}
                           </Text>
                           <Image
-                            source={require("../../assets/newEventLocationPin.png")}
+                            source={require("../../assets/lastEventLocationPin.png")}
                             style={styles.markerIcon}
                           />
                         </View>
