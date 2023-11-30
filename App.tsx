@@ -4,7 +4,7 @@ import * as Device from "expo-device";
 import * as Font from "expo-font";
 import * as Notifications from "expo-notifications";
 import React, { useEffect, useRef, useState } from "react";
-import { Alert, Linking, LogBox, Platform, StyleSheet } from "react-native";
+import { Alert, Linking, LogBox, Platform, StyleSheet, Text, TextInput } from "react-native";
 import { ThemeProvider } from "react-native-elements";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
@@ -12,6 +12,12 @@ import Navigation from "./src/Navigation";
 import SplashScreen from "./src/Screens/SplashScreen";
 import { customFonts } from "./src/font";
 import { persistor, store } from "./src/redux/store";
+import { Text as TextRN} from "react-native-paper";
+
+// fix Font scaling React-Native-Paper TextInput Component
+// https://stackoverflow.com/questions/65192622/initializing-text-defaultprops-with-typescript
+if ((TextRN as any).defaultProps == null) (TextRN as any).defaultProps = {};
+(TextRN as any).defaultProps.allowFontScaling = false; 
 
 LogBox.ignoreLogs(["Warning: ..."]);
 LogBox.ignoreAllLogs();
@@ -72,6 +78,16 @@ export default function App() {
       }
     };
     requestPermissionsAsync();
+
+    // React-native Text Component
+    if ((Text as any).defaultProps == null) (Text as any).defaultProps = {};
+    (Text as any).defaultProps.allowFontScaling = false; 
+
+    // React-native TextInput Component
+    if ((TextInput as any).defaultProps == null) (TextInput as any).defaultProps = {};
+    (TextInput as any).defaultProps.allowFontScaling = false; 
+
+
   }, []);
 
   const sendPushNotification = async (expoPushToken: any) => {
