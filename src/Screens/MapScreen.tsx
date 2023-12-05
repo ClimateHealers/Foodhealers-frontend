@@ -1,14 +1,16 @@
 import { MaterialIcons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import Constants from "expo-constants";
 import { LinearGradient } from "expo-linear-gradient";
 import moment from "moment";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
+  ActivityIndicator,
   Alert,
   Dimensions,
   Keyboard,
   Linking,
+  Modal,
   Platform,
   ScrollView,
   Text,
@@ -33,6 +35,7 @@ import { styles } from "../Components/Styles";
 import { localized } from "../locales/localization";
 import { findFood } from "../redux/actions/findFoodaction";
 import { setLanguage } from "../redux/reducers/langReducer";
+import * as Location from "expo-location";
 
 const MapScreen = ({ route }: any) => {
   const { latitude, longitude } = route.params;
@@ -49,6 +52,7 @@ const MapScreen = ({ route }: any) => {
   const ASPECT_RATIO = width / height;
   const LATITUDE_DELTA = 0.0922;
   const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
+  const [location, setLocation] = useState([{}]);
 
   const [langOpen, setlangOpen] = useState(false);
   const [lang, setLang] = useState([
@@ -63,6 +67,7 @@ const MapScreen = ({ route }: any) => {
   ]);
   const [events, setEvents] = useState<[]>([]);
   const [selectedLanguage, setSelectedLanguage] = useState(localized.locale);
+  const [currentLocation, setCurrentLocation] = useState<any>("");
   const [address, setAddress] = useState<any>();
   const [lat, setLat] = useState<any>();
   const [long, setLong] = useState<any>();
@@ -72,6 +77,7 @@ const MapScreen = ({ route }: any) => {
   const [state, setState] = useState<any>("");
   const [postalCode, setPostalCode] = useState<string>("");
   const [emptyEvents, setEmptyEvents] = useState<boolean>(false);
+  const [loading, setLoading] = useState(false);
 
   const mapRef = useRef<any>(null);
 
@@ -82,7 +88,10 @@ const MapScreen = ({ route }: any) => {
 
   const focusMarker = () => {
     if (mapRef.current) {
-      const markerCoordinate = { latitude: lat, longitude: long };
+      const markerCoordinate = {
+        latitude: lat ? lat : latitude,
+        longitude: long ? long : longitude,
+      };
 
       const region = {
         latitude: markerCoordinate.latitude,
@@ -92,6 +101,46 @@ const MapScreen = ({ route }: any) => {
       };
 
       mapRef.current.animateToRegion(region, 2000);
+    }
+  };
+
+  const getAddressFromCoordinates = async (latitude: any, longitude: any) => {
+    try {
+      const response = await fetch(
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${API_KEY}`
+      );
+      const json = await response.json();
+      setCurrentLocation(json.results[0]?.formatted_address);
+      setAddress(json.results[0]?.formatted_address);
+      const findFoodData = {
+        lat: latitude ? latitude : 0,
+        lng: longitude ? longitude : 0,
+        alt: 0,
+        eventStartDate: startDate ? startDate : 0,
+        fullAddress: json.results[0]?.formatted_address,
+        city: city,
+        state: state,
+        postalCode: postalCode ? Number(postalCode) : 0,
+
+        eventEndDate: endDate ? endDate : 0,
+      };
+      const res = await dispatch(findFood(findFoodData as any) as any);
+      const foodEvents = res?.payload?.results?.foodEvents;
+      const verifiedFoodEvents = foodEvents?.filter(
+        (event: any) => event.status === "approved"
+      );
+      if (verifiedFoodEvents?.length > 0) {
+        setEvents(verifiedFoodEvents);
+        setEmptyEvents(false);
+        setButtonVisibility(true);
+        setLoading(false);
+      } else {
+        setEmptyEvents(true);
+        setLoading(false);
+      }
+    } catch (error) {
+      setLoading(false);
+      console.error(error);
     }
   };
 
@@ -121,6 +170,40 @@ const MapScreen = ({ route }: any) => {
     localized.locale = selectedLanguage;
     setSelectedLanguage(selectedLanguage);
   };
+
+  useFocusEffect(
+    useCallback(() => {
+      const getUserLocation = async () => {
+        try {
+          setLoading(true);
+          let { status } = await Location.requestForegroundPermissionsAsync();
+          if (status !== "granted") {
+            return;
+          }
+
+          let location: any = await Location.getCurrentPositionAsync({
+            accuracy: Location.Accuracy.Balanced,
+            timeInterval: 5,
+          });
+          setLat(location?.coords?.latitude);
+          setLong(location?.coords?.longitude);
+
+          await getAddressFromCoordinates(
+            location?.coords?.latitude,
+            location?.coords?.longitude
+          );
+          setLoading(false);
+        } catch (error) {
+          console.error("Error fetching user location", error);
+          setLoading(false);
+          return null;
+        }
+        setLoading(false);
+      };
+      getUserLocation();
+      setLoading(false);
+    }, [])
+  );
 
   useEffect(() => {
     if (lat && long) {
@@ -203,9 +286,19 @@ const MapScreen = ({ route }: any) => {
                   menuItem={menuItem}
                 />
               </View>
-
+              <Modal visible={loading} animationType="slide" transparent={true}>
+                <View style={styles.centeredView}>
+                  <View style={styles.modalView}>
+                    <ActivityIndicator size={"large"} />
+                  </View>
+                </View>
+              </Modal>
               <GooglePlacesAutocomplete
-                placeholder={localized.t("ADDRESS_OR_NEAREST_CROSS_STREETS")}
+                placeholder={
+                  emptyEvents
+                    ? localized.t("ADDRESS_OR_NEAREST_CROSS_STREETS")
+                    : `${currentLocation?.slice(0, 50)}...`
+                }
                 listHoverColor="red"
                 onPress={async (data, details) => {
                   setAddress(details);

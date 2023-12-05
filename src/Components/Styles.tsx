@@ -40,6 +40,12 @@ export const styles = StyleSheet.create({
     zIndex: 1,
     marginBottom: h2dp(1),
   },
+  profileDetailsText2: {
+    paddingLeft: 5,
+    marginTop: -2,
+    fontSize: h2dp(2),
+    color: "white",
+  },
   centeredView: {
     flex: 1,
     alignItems: "center",

@@ -1,8 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import axios from "axios";
-import { decode } from "html-entities";
 import { LinearGradient } from "expo-linear-gradient";
+import { decode } from "html-entities";
 import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
@@ -23,6 +22,7 @@ import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
 import { styles } from "../Components/Styles";
 import { getLocation } from "../Components/getCurrentLocation";
+import API from "../Utils/APIUtils";
 import { localized } from "../locales/localization";
 import { VeganRecipesCategory } from "../redux/actions/veganRecipesCategory";
 const CategoryScreen = ({ route }: any) => {
@@ -40,7 +40,7 @@ const CategoryScreen = ({ route }: any) => {
   const [searchText, setSearchText] = useState("");
   const [filteredData, setFilteredData] = useState([]);
   const [textChange, setTextChange] = useState(false);
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(2);
   const [loading, setLoading] = useState(false);
   const [hasMoreData, setHasMoreData] = useState(true);
 
@@ -75,26 +75,18 @@ const CategoryScreen = ({ route }: any) => {
         error: false,
       });
 
-      axios
-        .get(`https://api.climatehealers.com/v1/api/recipe/2/?page=${page}`)
+      API.get(`v1/api/recipe/${categoryId}/?page=${page}`)
         .then((response) => {
-          const newData = response?.data?.results?.recipeList;
-          setData((prevData: any[]) => [
-            ...prevData,
-            ...response.data?.results?.recipeList,
-          ]);
-          setLoading(false);
-          if (response.data.length > 0) {
+          if (response?.data?.results?.recipeList?.length > 0) {
             setData((prevData: any[]) => [
               ...prevData,
-              ...JSON.stringify(response.data),
+              ...response.data?.results?.recipeList,
             ]);
             setPage(page + 1);
+            setLoading(false);
           } else {
             setHasMoreData(false);
           }
-
-          setLoading(false);
         })
         .catch((error) => {
           console.error(error);
@@ -250,11 +242,21 @@ const CategoryScreen = ({ route }: any) => {
                               ]}
                             />
                             <View style={styles.title}>
-                              <Text style={styles.textStyle}>
+                              <Text
+                                style={[
+                                  styles.textStyle,
+                                  {
+                                    textTransform: "capitalize",
+                                  },
+                                ]}
+                              >
                                 {recipe?.foodName?.length > 25
-                                  ? `${decode(recipe?.foodName, {
-                                      level: "html5",
-                                    })?.slice(0, 20)}...`
+                                  ? `${decode(
+                                      (recipe?.foodName).toLowerCase(),
+                                      {
+                                        level: "html5",
+                                      }
+                                    )?.slice(0, 20)}...`
                                   : decode(recipe?.foodName, {
                                       level: "html5",
                                     })}

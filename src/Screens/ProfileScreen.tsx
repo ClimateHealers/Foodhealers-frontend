@@ -267,8 +267,15 @@ const ProfileScreen = () => {
         )}
         <View style={styles.row}>
           <View
-            style={{ height: 100, justifyContent: "center", width: wp2dp(25) }}
-          ></View>
+            style={{ height: 100, justifyContent: "center", width: wp2dp(20) }}
+          >
+            <Ionicons
+              name="chevron-back"
+              size={32}
+              color="white"
+              onPress={() => navigation.navigate("HomeScreen")}
+            />
+          </View>
           <View style={{ height: 100, justifyContent: "center" }}>
             <Text style={styles.itemText}>{localized.t("ACCOUNT")}</Text>
           </View>
@@ -295,14 +302,14 @@ const ProfileScreen = () => {
                 size={28}
               />
             </TouchableOpacity>
-            <View style={styles.item}>
-              <MaterialCommunityIcons
-                name="menu"
-                size={40}
-                color="white"
-                onPress={toggleMenu}
-              />
-            </View>
+            {/* <View style={styles.item}> */}
+            <MaterialCommunityIcons
+              name="menu"
+              size={40}
+              color="white"
+              onPress={toggleMenu}
+            />
+            {/* </View> */}
           </View>
         </View>
         <ScrollView
@@ -568,6 +575,27 @@ const ProfileScreen = () => {
                 support@climatehealers.org
               </Text>
             </View>
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "center",
+                alignContent: "center",
+              }}
+            >
+              <Text
+                style={{
+                  textDecorationLine: "underline",
+                  color: "white",
+                  fontSize: h2dp(1.5),
+                  marginLeft: wp2dp(1),
+                  marginRight: w2dp(4),
+                }}
+                onPress={() => navigation.navigate("LicenseScreen")}
+              >
+                Open-Source Licences
+              </Text>
+            </View>
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -584,7 +612,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    width: "100%",
+    marginHorizontal: w2dp(2),
+    // width: "100%",
     zIndex: 1,
   },
   item: {

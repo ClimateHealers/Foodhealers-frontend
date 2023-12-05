@@ -65,6 +65,7 @@ import PickupHistoryScreen from "./Screens/PickupHistoryScreen";
 import HistoryScreen from "./Screens/HistoryScreen";
 import UpdateVehicleScreen from "./Screens/UpdateVehicleScreen";
 import UpdateProfileScreen from "./Screens/UpdateProfileScreen";
+import LicenseScreen from "./Screens/LicenseScreen";
 
 const Navigation = () => {
   const Stack = createNativeStackNavigator();
@@ -398,6 +399,11 @@ const Navigation = () => {
           <Stack.Screen
             name="UpdateProfileScreen"
             component={UpdateProfileScreen}
+            options={{ title: "", header: () => null }}
+          />
+          <Stack.Screen
+            name="LicenseScreen"
+            component={LicenseScreen}
             options={{ title: "", header: () => null }}
           />
         </Stack.Navigator>
