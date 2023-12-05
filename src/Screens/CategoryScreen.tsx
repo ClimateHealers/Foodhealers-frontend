@@ -207,7 +207,7 @@ const CategoryScreen = ({ route }: any) => {
                   fetchData();
                 }
               }}
-              scrollEventThrottle={400}
+              scrollEventThrottle={100}
             >
               <TouchableOpacity activeOpacity={1}>
                 <View style={[styles.centeredalignView]}>
@@ -320,7 +320,14 @@ const CategoryScreen = ({ route }: any) => {
                               ]}
                             />
                             <View style={styles.title}>
-                              <Text style={styles.textStyle}>
+                              <Text
+                                style={[
+                                  styles.textStyle,
+                                  {
+                                    textTransform: "capitalize",
+                                  },
+                                ]}
+                              >
                                 {recipe?.foodName?.length > 25
                                   ? `${decode(recipe?.foodName, {
                                       level: "html5",
