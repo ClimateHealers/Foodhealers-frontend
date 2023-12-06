@@ -57,6 +57,9 @@ const RecipesHomeScreen = () => {
     fetchRecipesCategories();
   }, []);
 
+  
+  const token = useSelector((state: any) => state.auth.data.token);
+
   const isAuthenticated = useSelector(
     (state: any) => state?.auth?.data?.isAuthenticated
   );
@@ -98,10 +101,6 @@ const RecipesHomeScreen = () => {
         message: "",
         error: false,
       });
-
-      const token = useSelector(
-        (state: any) => state.auth.data.token
-      );
 
       const config = {
         headers: {
