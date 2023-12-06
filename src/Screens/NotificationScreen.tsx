@@ -2,7 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import moment from "moment";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   ActivityIndicator,
   FlatList,
@@ -37,6 +37,7 @@ export default function NotificationScreen() {
   const [notificationData, setNotificationData]: any = useState<[]>([]);
   const [data, setData]: any = useState<[]>([]);
   const [displayData, setDisplayData] = useState(false);
+  const [modalData, setModalData]: any = useState<[]>([]);
 
   const menuItem = "Account";
 
@@ -47,6 +48,10 @@ export default function NotificationScreen() {
       setLoading(false);
     }, [])
   );
+
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [menuClose]);
 
   const dispatch = useDispatch();
   const fetchingNotificationsData = async () => {
@@ -62,9 +67,13 @@ export default function NotificationScreen() {
     setNotificationData(postListFiltered);
   };
 
+  const modalDisplayData = async (id: any) => {
+    const response = notificationData?.filter((event: any) => event.id === id);
+    setModalData(response[0]);
+  };
   const handlePressOutside = () => {
     Keyboard.dismiss();
-    setMenuOpen(!menuClose);
+    setMenuOpen(false);
   };
 
   const toggleDisplay = () => {
@@ -74,10 +83,7 @@ export default function NotificationScreen() {
   const Item = ({ title, message, requiredDate, id, is_unread }: any) => (
     <TouchableOpacity
       onPress={async () => {
-        const data = {
-          notificationId: id,
-        };
-        const res = await dispatch(putNotifications(data as any) as any);
+        modalDisplayData(id);
         toggleDisplay();
       }}
     >
@@ -142,7 +148,42 @@ export default function NotificationScreen() {
           >
             {title}
           </Text>
+        </ScrollView>
+      </View>
+    </TouchableOpacity>
+  );
 
+  return (
+    <TouchableWithoutFeedback onPress={handlePressOutside}>
+      <LinearGradient
+        colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
+        style={styles.background}
+      >
+        <SafeAreaView style={styles.container}>
+          <FoodhealersHeader />
+          <View style={styles.root}>
+            <Ionicons
+              name="chevron-back"
+              size={32}
+              color="white"
+              onPress={() => navigation.goBack()}
+            />
+            <View style={styles.item}>
+              <Text style={styles.itemText}>{"Notifications"}</Text>
+            </View>
+            <BurgerIcon
+              onOutsidePress={handlePressOutside}
+              menuClose={menuClose}
+              menuItem={menuItem}
+            />
+          </View>
+          <Modal visible={loading} animationType="slide" transparent={true}>
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                <ActivityIndicator size={"large"} />
+              </View>
+            </View>
+          </Modal>
           <Modal
             visible={displayData}
             onRequestClose={() => setDisplayData(false)}
@@ -183,7 +224,9 @@ export default function NotificationScreen() {
                       marginRight: w2dp(3),
                     }}
                   >
-                    {moment(requiredDate).format("MMM DD, YYYY  ddd, hh:mm A")}
+                    {moment(modalData?.createdAt).format(
+                      "MMM DD, YYYY  ddd, hh:mm A"
+                    )}
                   </Text>
                   <View
                     style={{
@@ -205,7 +248,7 @@ export default function NotificationScreen() {
                         marginRight: w2dp(3),
                       }}
                     >
-                      {moment(new Date(requiredDate)).fromNow()}
+                      {moment(new Date(modalData?.createdAt)).fromNow()}
                     </Text>
                   </View>
                 </View>
@@ -217,7 +260,7 @@ export default function NotificationScreen() {
                     lineHeight: 30,
                   }}
                 >
-                  {title}
+                  {modalData?.title}
                 </Text>
                 <Text
                   style={{
@@ -229,7 +272,7 @@ export default function NotificationScreen() {
                     marginRight: w2dp(3),
                   }}
                 >
-                  {message}
+                  {modalData?.message}
                 </Text>
                 <View
                   style={{
@@ -254,42 +297,6 @@ export default function NotificationScreen() {
                     }}
                   />
                 </View>
-              </View>
-            </View>
-          </Modal>
-        </ScrollView>
-      </View>
-    </TouchableOpacity>
-  );
-
-  return (
-    <TouchableWithoutFeedback onPress={handlePressOutside}>
-      <LinearGradient
-        colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
-        style={styles.background}
-      >
-        <SafeAreaView style={styles.container}>
-          <FoodhealersHeader />
-          <View style={styles.root}>
-            <Ionicons
-              name="chevron-back"
-              size={32}
-              color="white"
-              onPress={() => navigation.goBack()}
-            />
-            <View style={styles.item}>
-              <Text style={styles.itemText}>{"Notifications"}</Text>
-            </View>
-            <BurgerIcon
-              onOutsidePress={handlePressOutside}
-              menuClose={menuClose}
-              menuItem={menuItem}
-            />
-          </View>
-          <Modal visible={loading} animationType="slide" transparent={true}>
-            <View style={styles.centeredView}>
-              <View style={styles.modalView}>
-                <ActivityIndicator size={"large"} />
               </View>
             </View>
           </Modal>
