@@ -236,6 +236,9 @@ const RecipesHomeScreen = () => {
                             }}
                           >
                             <Image
+                              placeholder={blurhash}
+                              contentFit="cover"
+                              transition={1000}
                               source={{ uri: recipe?.foodImage }}
                               style={[
                                 styles.imageStyle,

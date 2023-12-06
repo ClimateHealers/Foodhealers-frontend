@@ -2,10 +2,10 @@ import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { decode } from "html-entities";
+import { Image } from "expo-image";
 import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
-  Image,
   Keyboard,
   Modal,
   SafeAreaView,
@@ -25,6 +25,10 @@ import { getLocation } from "../Components/getCurrentLocation";
 import API from "../Utils/APIUtils";
 import { localized } from "../locales/localization";
 import { VeganRecipesCategory } from "../redux/actions/veganRecipesCategory";
+
+const blurhash =
+  "|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[";
+
 const CategoryScreen = ({ route }: any) => {
   const { categoryId, recipeName } = route.params;
   const [response, setResponse] = useState({
@@ -233,6 +237,9 @@ const CategoryScreen = ({ route }: any) => {
                             }}
                           >
                             <Image
+                              placeholder={blurhash}
+                              contentFit="cover"
+                              transition={1000}
                               source={{ uri: recipe?.foodImage }}
                               style={[
                                 styles.imageStyle,
@@ -311,6 +318,9 @@ const CategoryScreen = ({ route }: any) => {
                             key={recipe?.id}
                           >
                             <Image
+                              placeholder={blurhash}
+                              contentFit="cover"
+                              transition={1000}
                               source={{ uri: recipe?.foodImage }}
                               style={[
                                 styles.imageStyle,
