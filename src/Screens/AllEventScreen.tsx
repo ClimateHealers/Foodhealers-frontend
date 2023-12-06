@@ -11,10 +11,12 @@ import moment from "moment";
 import React, { useEffect, useState } from "react";
 import {
   FlatList,
+  Keyboard,
   ScrollView,
   Text,
   TouchableOpacity,
-  View
+  TouchableWithoutFeedback,
+  View,
 } from "react-native";
 import { Button } from "react-native-elements";
 import {
@@ -33,6 +35,7 @@ import { myEvents } from "../redux/actions/myEvents";
 const AllEventScreen = () => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [eventData, setEventData]: any = useState<[]>([]);
+  const [menuClose, setMenuOpen] = useState(false);
   const [filterName, setFilterName] = useState<string>(`${localized.t("NEW")}`);
   const dispatch = useDispatch();
 
@@ -76,6 +79,11 @@ const AllEventScreen = () => {
     setEventData(postListFiltered);
     const newOrder = order === "ASC" ? "DESC" : "ASC";
     setOrder(newOrder);
+  };
+
+  const handlePressOutside = () => {
+    Keyboard.dismiss();
+    setMenuOpen(!menuClose);
   };
 
   const handleSingleIndexSelect = async (index: any) => {
@@ -249,7 +257,7 @@ const AllEventScreen = () => {
   );
 
   return (
-    <>
+    <TouchableWithoutFeedback onPress={handlePressOutside}>
       <LinearGradient
         colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
         style={styles.background}
@@ -268,7 +276,10 @@ const AllEventScreen = () => {
                 {localized.t("SEE_ALL_EVENTS")}
               </Text>
             </View>
-            <BurgerIcon />
+            <BurgerIcon
+              onOutsidePress={handlePressOutside}
+              menuClose={menuClose}
+            />
           </View>
           <View style={styles.toggle}>
             <SegmentedControlTab
@@ -352,7 +363,7 @@ const AllEventScreen = () => {
           )}
         </View>
       </LinearGradient>
-    </>
+    </TouchableWithoutFeedback>
   );
 };
 

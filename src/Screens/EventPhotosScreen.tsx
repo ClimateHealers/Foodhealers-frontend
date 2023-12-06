@@ -4,6 +4,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import React, { useState } from "react";
 import {
   Image,
+  Keyboard,
   Modal,
   ScrollView,
   Text,
@@ -26,8 +27,8 @@ import { postEvent } from "../redux/actions/postEventaction";
 const EventPhotosScreen = ({ route }: any) => {
   const { eventPhotos, eventFormData, singlePhoto } = route.params;
   const dispatch = useDispatch();
-  const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState(false);
+  const [menuClose, setMenuOpen] = useState(false);
   const [showDialog, setShowDialog] = useState<boolean>(false);
   const navigation: any = useNavigation<string>();
 
@@ -72,8 +73,13 @@ const EventPhotosScreen = ({ route }: any) => {
     }
   };
 
+  const handlePressOutside = () => {
+    Keyboard.dismiss();
+    setMenuOpen(!menuClose);
+  };
+
   return (
-    <TouchableWithoutFeedback onPress={() => setMenuOpen(false)}>
+    <TouchableWithoutFeedback onPress={() => handlePressOutside()}>
       <LinearGradient
         colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
         style={styles.background}
@@ -94,7 +100,10 @@ const EventPhotosScreen = ({ route }: any) => {
                     {localized.t("POST_AN_EVENT")}
                   </Text>
                 </View>
-                <BurgerIcon />
+                <BurgerIcon
+                  onOutsidePress={handlePressOutside}
+                  menuClose={menuClose}
+                />
               </View>
               <Modal
                 visible={showDialog}

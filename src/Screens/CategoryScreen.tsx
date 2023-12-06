@@ -37,7 +37,7 @@ const CategoryScreen = ({ route }: any) => {
   });
 
   const [langOpen, setlangOpen] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [menuClose, setMenuOpen] = useState(false);
   const [data, setData] = useState<any>([]);
   const [recipeCat, setRecipeCat] = useState<any>([]);
   const [searchText, setSearchText] = useState("");
@@ -106,33 +106,10 @@ const CategoryScreen = ({ route }: any) => {
     setLoading(false);
   };
 
-  const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
-  };
-
-  const handleMenuItemPress = (item: any) => {
-    setMenuOpen(false);
-    if (isAuthenticated) {
-      navigation.navigate("HomeScreen");
-    } else {
-      navigation.navigate("SignupScreen");
-    }
-  };
-  const findFoodMenuItemPress = (item: any) => {
-    getLocation().then((location: any) => {
-      if (location) {
-        navigation?.navigate("MapScreen", {
-          location: location,
-        });
-      }
-    });
-    setMenuOpen(false);
-  };
-
   const handlePressOutside = () => {
     setlangOpen(false);
     Keyboard.dismiss();
-    setMenuOpen(false);
+    setMenuOpen(!menuClose);
   };
 
   const handleSearchTextChange = (text: any) => {
@@ -166,7 +143,10 @@ const CategoryScreen = ({ route }: any) => {
                   <Text style={styles.itemText}>{recipeName}</Text>
                 </View>
               </ScrollView>
-              <BurgerIcon />
+              <BurgerIcon
+                onOutsidePress={handlePressOutside}
+                menuClose={menuClose}
+              />
             </View>
             <Modal visible={loading} animationType="slide" transparent={true}>
               <View style={styles.centeredView}>

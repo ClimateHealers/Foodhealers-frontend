@@ -33,6 +33,7 @@ import { myDonations } from "../redux/actions/myDonations";
 
 const VolunteerDonationHistoryScreen = ({ route }: any) => {
   const { itemTypeId, title } = route?.params;
+  const [menuClose, setMenuOpen] = useState(false);
   const [filterName, setFilterName] = useState<string>(`${localized.t("NEW")}`);
   const [donationData, setDonationData]: any = useState<[]>([]);
   useEffect(() => {
@@ -81,6 +82,7 @@ const VolunteerDonationHistoryScreen = ({ route }: any) => {
 
   const handlePressOutside = () => {
     Keyboard.dismiss();
+    setMenuOpen(!menuClose);
   };
 
   const Item = ({
@@ -397,7 +399,10 @@ const VolunteerDonationHistoryScreen = ({ route }: any) => {
                 {localized.t("DONATION_HISTORY")}
               </Text>
             </View>
-            <BurgerIcon />
+            <BurgerIcon
+              onOutsidePress={handlePressOutside}
+              menuClose={menuClose}
+            />
           </View>
           <View style={styles.itemFilter}>
             <Text style={styles.itemFilterText}>

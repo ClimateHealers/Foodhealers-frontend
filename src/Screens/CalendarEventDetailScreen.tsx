@@ -31,7 +31,7 @@ import { localized } from "../locales/localization";
 const CalendarEventDetailScreen = ({ route }: any) => {
   const { eventDetails, latitude, longitude } = route.params;
   const navigation: any = useNavigation();
-
+  const [menuClose, setMenuOpen] = useState(false);
   const [langOpen, setlangOpen] = useState(false);
   const [lang, setLang] = useState([
     { id: 1, label: "French", value: "fr" },
@@ -43,7 +43,6 @@ const CalendarEventDetailScreen = ({ route }: any) => {
     { id: 7, label: "English", value: "en" },
     { id: 8, label: "Spanish", value: "es" },
   ]);
-  const [menuOpen, setMenuOpen] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState(localized.locale);
 
   const dispatch = useDispatch();
@@ -51,6 +50,7 @@ const CalendarEventDetailScreen = ({ route }: any) => {
   const handlePressOutside = () => {
     setlangOpen(false);
     Keyboard.dismiss();
+    setMenuOpen(!menuClose)
   };
 
   const changeLanguage = (itemValue: any, index: any) => {
@@ -74,7 +74,9 @@ const CalendarEventDetailScreen = ({ route }: any) => {
       const result = await Share.share({
         message: `I'm attending ${eventDetails?.name} Event.
 
-From ${moment(eventDetails?.eventStartDate).format("D MMM, ddd")} around ${formattedStartTime} onwards at ${eventDetails?.address}
+From ${moment(eventDetails?.eventStartDate).format(
+          "D MMM, ddd"
+        )} around ${formattedStartTime} onwards at ${eventDetails?.address}
 
 Join me using https://play.google.com/store/apps/details?id=com.foodhealers.climatehealers.`,
         url: "https://play.google.com/store/apps/details?id=com.foodhealers.climatehealers",
@@ -115,7 +117,10 @@ Join me using https://play.google.com/store/apps/details?id=com.foodhealers.clim
                     {localized.t("FIND_FOOD")}
                   </Text>
                 </View>
-                <BurgerIcon />
+                <BurgerIcon
+                  onOutsidePress={handlePressOutside}
+                  menuClose={menuClose}
+                />
               </View>
               <View
                 style={[

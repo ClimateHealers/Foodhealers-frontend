@@ -42,6 +42,7 @@ import SelectDropdown from "react-native-select-dropdown";
 
 const UpdateVehicleScreen = ({ route }: any) => {
   const { id } = route?.params;
+  const [menuClose, setMenuOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [vehicleDetails, setVehicleDetails] = useState<any>();
   const [vehicleData, setVehicleData] = useState<any>();
@@ -83,6 +84,7 @@ const UpdateVehicleScreen = ({ route }: any) => {
 
   const handlePressOutside = () => {
     Keyboard.dismiss();
+    setMenuOpen(!menuClose);
   };
 
   const changeVehicle = async (itemValue: any, index: any) => {
@@ -122,7 +124,10 @@ const UpdateVehicleScreen = ({ route }: any) => {
                 <View style={styles.item}>
                   <Text style={styles.itemText}>{localized.t("DRIVE")}</Text>
                 </View>
-                <BurgerIcon />
+                <BurgerIcon
+                  onOutsidePress={handlePressOutside}
+                  menuClose={menuClose}
+                />
               </View>
               <Modal visible={loading} animationType="slide" transparent={true}>
                 <View style={styles.centeredView}>

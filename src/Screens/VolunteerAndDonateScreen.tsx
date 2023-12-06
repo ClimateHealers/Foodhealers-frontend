@@ -38,31 +38,14 @@ const VolunteerAndDonateScreen = ({ route }: any) => {
     { id: 7, label: "English", value: "en" },
     { id: 8, label: "Spanish", value: "es" },
   ]);
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [menuClose, setMenuOpen] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState(localized.locale);
   const dispatch = useDispatch();
-  const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
-  };
 
   const handlePressOutside = () => {
     setlangOpen(false);
     Keyboard.dismiss();
-  };
-  const handleMenuItemPress = (item: any) => {
-    setMenuOpen(false);
-    navigation.navigate("HomeScreen");
-  };
-  const findFoodMenuItemPress = (item: any) => {
-    getLocation().then((res) => {
-      if (res) {
-        navigation?.navigate("MapScreen", {
-          latitude: res?.latitude,
-          longitude: res?.longitude,
-        });
-      }
-    });
-    setMenuOpen(false);
+    setMenuOpen(!menuClose);
   };
 
   const FirstRoute = () => <DonationTabScreen />;
@@ -103,7 +86,10 @@ const VolunteerAndDonateScreen = ({ route }: any) => {
                   </Text>
                 </View>
                 {/* <View style={styles.burgerIconContainer}> */}
-                  <BurgerIcon />
+                <BurgerIcon
+                  onOutsidePress={handlePressOutside}
+                  menuClose={menuClose}
+                />
                 {/* </View> */}
               </View>
               <TabView

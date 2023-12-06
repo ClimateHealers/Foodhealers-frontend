@@ -5,19 +5,23 @@ import {
   widthPercentageToDP as w2dp,
 } from "react-native-responsive-screen";
 import { Text, TouchableOpacity, View } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { getLocation } from "../Components/getCurrentLocation";
 import { styles } from "./Styles";
 import { localized } from "../locales/localization";
 
 const BurgerIcon = ({ menuClose, onOutsidePress, menuItem }: any) => {
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(menuClose);
   const navigation: any = useNavigation();
-  let [menutoggle, setToggle] = useState(menuClose);
+  const burgerRef = useRef<View>(null);
   const isAuthenticated = useSelector(
     (state: any) => state.auth.data.isAuthenticated
   );
+
+  useEffect(() => {
+    setMenuOpen(false)
+  }, [menuClose]);
 
   const handleMenuItemPress = (item: any) => {
     setMenuOpen(false);
@@ -27,6 +31,7 @@ const BurgerIcon = ({ menuClose, onOutsidePress, menuItem }: any) => {
       navigation.navigate("SignupScreen");
     }
   };
+
   const findFoodMenuItemPress = (item: any) => {
     getLocation().then((res) => {
       if (res) {
@@ -56,6 +61,7 @@ const BurgerIcon = ({ menuClose, onOutsidePress, menuItem }: any) => {
       />
       {menuOpen && (
         <View
+          ref={burgerRef}
           style={{
             position: "absolute",
             right: w2dp(8.5),

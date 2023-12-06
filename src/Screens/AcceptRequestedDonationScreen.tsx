@@ -46,6 +46,7 @@ const AcceptRequestedDonationScreen = ({ route }: any) => {
   const [loading, setLoading] = useState(false);
   const [langOpen, setlangOpen] = useState(false);
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const [menuClose, setMenuOpen] = useState(false);
   const [countryPhoneCode, setCountryPhoneCode] = useState<string>("");
   const phoneCode = countryPhoneCode.toString();
   const [response, setResponse] = useState({
@@ -83,6 +84,7 @@ const AcceptRequestedDonationScreen = ({ route }: any) => {
   const handlePressOutside = () => {
     setlangOpen(false);
     Keyboard.dismiss();
+    setMenuOpen(!menuClose);
   };
   const navigation: any = useNavigation();
 
@@ -133,7 +135,10 @@ const AcceptRequestedDonationScreen = ({ route }: any) => {
                 <View style={styles.item}>
                   <Text style={styles.itemText}>{title}</Text>
                 </View>
-                <BurgerIcon />
+                <BurgerIcon
+                  onOutsidePress={handlePressOutside}
+                  menuClose={menuClose}
+                />
               </View>
               <Modal visible={loading} animationType="slide" transparent={true}>
                 <View style={styles.centeredView}>

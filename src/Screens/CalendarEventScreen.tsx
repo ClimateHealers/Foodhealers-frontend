@@ -37,7 +37,7 @@ const CalendarEventScreen = ({ route }: any) => {
   const formattedDate = moment(selectedDate).format("DD MMM");
   const monthHeader = moment(selectedDate).format("MMM");
 
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [menuClose, setMenuOpen] = useState(false);
 
   const isAuthenticated = useSelector(
     (state: any) => state?.auth?.data?.isAuthenticated
@@ -45,30 +45,7 @@ const CalendarEventScreen = ({ route }: any) => {
 
   const handlePressOutside = () => {
     Keyboard.dismiss();
-    setMenuOpen(false);
-  };
-
-  const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
-  };
-
-  const handleMenuItemPress = (item: any) => {
-    setMenuOpen(false);
-    if (isAuthenticated) {
-      navigation.navigate("HomeScreen");
-    } else {
-      navigation.navigate("SignupScreen");
-    }
-  };
-  const findFoodMenuItemPress = (item: any) => {
-    getLocation().then((location: any) => {
-      if (location) {
-        navigation?.navigate("MapScreen", {
-          location: location,
-        });
-      }
-    });
-    setMenuOpen(false);
+    setMenuOpen(!menuClose);
   };
 
   const navigateToDetailScreen = () => {
@@ -100,7 +77,10 @@ const CalendarEventScreen = ({ route }: any) => {
             <View style={styles.item}>
               <Text style={styles.itemText}>{localized.t("FOOD_EVENTS")}</Text>
             </View>
-            <BurgerIcon />
+            <BurgerIcon
+              onOutsidePress={handlePressOutside}
+              menuClose={menuClose}
+            />
           </View>
 
           <View style={styles.subHeader}>

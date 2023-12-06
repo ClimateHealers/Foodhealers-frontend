@@ -39,6 +39,7 @@ const PickupSelectedDetailsScreen = ({ route }: any) => {
     pickedup,
     delivered,
   } = route?.params;
+  const [menuClose, setMenuOpen] = useState(false);
 
   const [loading, setLoading] = useState(false);
   const [response, setResponse] = useState({
@@ -51,6 +52,7 @@ const PickupSelectedDetailsScreen = ({ route }: any) => {
 
   const handlePressOutside = () => {
     Keyboard.dismiss();
+    setMenuOpen(!menuClose);
   };
 
   return (
@@ -73,7 +75,10 @@ const PickupSelectedDetailsScreen = ({ route }: any) => {
                 <View style={styles.item}>
                   <Text style={styles.itemText}>{localized.t("DRIVE")}</Text>
                 </View>
-                <BurgerIcon />
+                <BurgerIcon
+                  onOutsidePress={handlePressOutside}
+                  menuClose={menuClose}
+                />
               </View>
               <Text
                 style={{

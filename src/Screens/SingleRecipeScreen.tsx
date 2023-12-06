@@ -2,7 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { decode } from "html-entities";
-import React from "react";
+import React, { useState } from "react";
 import {
   Keyboard,
   Linking,
@@ -28,6 +28,7 @@ const blurhash = "LBE~3[-;j[oy_MoMfQj[offQfQfQ";
 
 const SingleRecipeScreen = ({ route }: any) => {
   const { recipeData } = route.params;
+  const [menuClose, setMenuOpen] = useState(false);
 
   const ingredients = recipeData?.recipeIngredient
     .replace(/\[|\]|'/g, "")
@@ -38,6 +39,7 @@ const SingleRecipeScreen = ({ route }: any) => {
 
   const handlePressOutside = () => {
     Keyboard.dismiss();
+    setMenuOpen(!menuClose);
   };
 
   return (
@@ -68,7 +70,10 @@ const SingleRecipeScreen = ({ route }: any) => {
                 <Text style={styles.itemText}>{localized.t("RECIPE")}</Text>
               </View>
             </ScrollView>
-            <BurgerIcon />
+            <BurgerIcon
+              onOutsidePress={handlePressOutside}
+              menuClose={menuClose}
+            />
           </View>
           <View>
             <Text

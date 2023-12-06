@@ -73,7 +73,7 @@ export default function NotificationScreen() {
   };
   const handlePressOutside = () => {
     Keyboard.dismiss();
-    setMenuOpen(false);
+    setMenuOpen(!menuClose);
   };
 
   const toggleDisplay = () => {

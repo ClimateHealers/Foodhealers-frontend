@@ -29,7 +29,7 @@ const blurhash = "LBE~3[-;j[oy_MoMfQj[offQfQfQ";
 
 const RecipesHomeScreen = () => {
   const [langOpen, setlangOpen] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [menuClose, setMenuOpen] = useState(false);
   const [recipesCategory, setRecipeData] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [textChange, setTextChange] = useState(false);
@@ -62,33 +62,10 @@ const RecipesHomeScreen = () => {
     (state: any) => state?.auth?.data?.isAuthenticated
   );
 
-  const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
-  };
-
-  const handleMenuItemPress = (item: any) => {
-    setMenuOpen(false);
-    if (isAuthenticated) {
-      navigation.navigate("HomeScreen");
-    } else {
-      navigation.navigate("SignupScreen");
-    }
-  };
-  const findFoodMenuItemPress = (item: any) => {
-    getLocation().then((location: any) => {
-      if (location) {
-        navigation?.navigate("MapScreen", {
-          location: location,
-        });
-      }
-    });
-    setMenuOpen(false);
-  };
-
   const handlePressOutside = () => {
     setlangOpen(false);
     Keyboard.dismiss();
-    setMenuOpen(false);
+    setMenuOpen(!menuClose);
   };
 
   const fetchData = async () => {
@@ -170,7 +147,10 @@ const RecipesHomeScreen = () => {
               <View style={styles.item}>
                 <Text style={styles.itemText}>{localized.t("RECIPES")}</Text>
               </View>
-              <BurgerIcon />
+              <BurgerIcon
+                onOutsidePress={handlePressOutside}
+                menuClose={menuClose}
+              />
             </View>
             <View
               style={[

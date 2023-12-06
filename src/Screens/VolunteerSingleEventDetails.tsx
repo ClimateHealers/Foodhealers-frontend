@@ -35,6 +35,7 @@ const VolunteerSingleEventDetails = ({ route }: any) => {
   const { eventDetails } = route.params;
   const navigation: any = useNavigation();
 
+  const [menuClose, setMenuOpen] = useState(false);
   const [langOpen, setlangOpen] = useState(false);
   const [eventVolunteersData, setEventVolunteersData] = useState<[]>([]);
   const [lang, setLang] = useState([
@@ -47,31 +48,12 @@ const VolunteerSingleEventDetails = ({ route }: any) => {
     { id: 7, label: "English", value: "en" },
     { id: 8, label: "Spanish", value: "es" },
   ]);
-  const [menuOpen, setMenuOpen] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState(localized.locale);
-
-  const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
-  };
 
   const handlePressOutside = () => {
     setlangOpen(false);
     Keyboard.dismiss();
-  };
-  const handleMenuItemPress = (item: any) => {
-    setMenuOpen(false);
-    navigation.navigate("HomeScreen");
-  };
-  const findFoodMenuItemPress = (item: any) => {
-    getLocation().then((res) => {
-      if (res) {
-        navigation?.navigate("MapScreen", {
-          latitude: res?.latitude,
-          longitude: res?.longitude,
-        });
-      }
-    });
-    setMenuOpen(false);
+    setMenuOpen(!menuClose);
   };
 
   const dispatch = useDispatch();
@@ -120,7 +102,9 @@ const VolunteerSingleEventDetails = ({ route }: any) => {
       const result = await Share.share({
         message: `I'm Volunteering for ${eventDetails?.name}.
 
-From ${moment(eventDetails?.eventStartDate).format("D MMM, ddd")} around ${formattedStartTime} onwards at ${eventDetails?.address}
+From ${moment(eventDetails?.eventStartDate).format(
+          "D MMM, ddd"
+        )} around ${formattedStartTime} onwards at ${eventDetails?.address}
 
 Join me using https://play.google.com/store/apps/details?id=com.foodhealers.climatehealers.`,
         url: "https://play.google.com/store/apps/details?id=com.foodhealers.climatehealers",
@@ -159,7 +143,10 @@ Join me using https://play.google.com/store/apps/details?id=com.foodhealers.clim
                 <View style={styles.item}>
                   <Text style={styles.itemText}>{eventDetails.name}</Text>
                 </View>
-                <BurgerIcon />
+                <BurgerIcon
+                  onOutsidePress={handlePressOutside}
+                  menuClose={menuClose}
+                />
               </View>
               <View
                 style={[
@@ -339,11 +326,11 @@ Join me using https://play.google.com/store/apps/details?id=com.foodhealers.clim
                       onPress={() => {
                         volunteerNumber
                           ? navigation.navigate("AllVolunteersScreen", {
-                            eventId: eventDetails?.id,
-                            title: `${localized.t("VOLUNTEER_AT_EVENT")}`,
-                            itemTypeId: 3,
-                            eventVolunteersData: eventVolunteersData,
-                          })
+                              eventId: eventDetails?.id,
+                              title: `${localized.t("VOLUNTEER_AT_EVENT")}`,
+                              itemTypeId: 3,
+                              eventVolunteersData: eventVolunteersData,
+                            })
                           : null;
                       }}
                       buttonStyle={styles.buttonStyles}

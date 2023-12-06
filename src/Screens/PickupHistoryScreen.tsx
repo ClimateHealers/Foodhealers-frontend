@@ -29,6 +29,7 @@ import { fetchPickup } from "../redux/actions/acceptPickupAction";
 
 const PickupHistoryScreen = ({ route }: any) => {
   const { itemTypeId } = route?.params;
+  const [menuClose, setMenuOpen] = useState(false);
   const [pickupData, setPickupData]: any[] = useState<[]>([]);
   const [filterName, setFilterName] = useState<string>(`${localized.t("NEW")}`);
   const dispatch = useDispatch();
@@ -78,6 +79,7 @@ const PickupHistoryScreen = ({ route }: any) => {
 
   const handlePressOutside = () => {
     Keyboard.dismiss();
+    setMenuOpen(!menuClose);
   };
 
   const Item = ({
@@ -194,7 +196,10 @@ const PickupHistoryScreen = ({ route }: any) => {
                       {localized.t("PICKUP_HISTORY")}
                     </Text>
                   </View>
-                  <BurgerIcon />
+                  <BurgerIcon
+                    onOutsidePress={handlePressOutside}
+                    menuClose={menuClose}
+                  />
                 </View>
                 {pickupData?.length > 0 ? (
                   <View>

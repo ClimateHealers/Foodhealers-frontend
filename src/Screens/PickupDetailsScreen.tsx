@@ -35,6 +35,7 @@ import { fetchUser } from "../redux/actions/authAction";
 const PickupDetailsScreen = ({ route }: any) => {
   const { itemTypeId } = route?.params;
   const [loading, setLoading] = useState(false);
+  const [menuClose, setMenuOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [data, setData] = useState<any>();
   const [pickupData, setPickupData]: any[] = useState<[]>([]);
@@ -94,6 +95,7 @@ const PickupDetailsScreen = ({ route }: any) => {
 
   const handlePressOutside = () => {
     Keyboard.dismiss();
+    setMenuOpen(!menuClose);
   };
 
   const handleSingleIndexSelect = async (index: any) => {
@@ -234,7 +236,10 @@ const PickupDetailsScreen = ({ route }: any) => {
                       {localized.t("PICKUPS")}
                     </Text>
                   </View>
-                  <BurgerIcon />
+                  <BurgerIcon
+                    onOutsidePress={handlePressOutside}
+                    menuClose={menuClose}
+                  />
                 </View>
                 <Modal
                   visible={loading}

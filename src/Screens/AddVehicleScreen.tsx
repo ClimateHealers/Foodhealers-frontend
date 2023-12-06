@@ -32,6 +32,7 @@ import { addDriver, adddVehicle } from "../Components/validation";
 const AddVehicleScreen = ({ route }: any) => {
   const { newVehicle } = route?.params;
   const [loading, setLoading] = useState(false);
+  const [menuClose, setMenuOpen] = useState(false);
   const [response, setResponse] = useState({
     loading: false,
     error: false,
@@ -56,6 +57,7 @@ const AddVehicleScreen = ({ route }: any) => {
 
   const handlePressOutside = () => {
     Keyboard.dismiss();
+    setMenuOpen(!menuClose);
   };
   const navigation: any = useNavigation();
   return (
@@ -90,7 +92,10 @@ const AddVehicleScreen = ({ route }: any) => {
                 <View style={styles.item}>
                   <Text style={styles.itemText}>{localized.t("DRIVE")}</Text>
                 </View>
-                <BurgerIcon />
+                <BurgerIcon
+                  onOutsidePress={handlePressOutside}
+                  menuClose={menuClose}
+                />
               </View>
               <Modal visible={loading} animationType="slide" transparent={true}>
                 <View style={styles.centeredView}>

@@ -25,20 +25,18 @@ import { localized } from "../locales/localization";
 const VolunteerThankYouScreen = ({ route }: any) => {
   const { id, itemTypeId, title, latitude, longitude } = route?.params;
   const userDetails = useSelector((state: any) => state.auth);
+  const [menuClose, setMenuOpen] = useState(false);
   const navigation: any = useNavigation();
   const { data } = userDetails;
-
-  const [menuOpen, setMenuOpen] = useState(false);
-
-  const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
-  };
 
   useFocusEffect(
     useCallback(() => {
       const { routes } = navigation.getState();
       const filteredRoutes = routes.filter(
-        (route: any) => route.name !== "AddDonationsScreen" && route.name !== 'AcceptRequestedDonationScreen' && route.name !== 'AddVolunteerToEventScreen'
+        (route: any) =>
+          route.name !== "AddDonationsScreen" &&
+          route.name !== "AcceptRequestedDonationScreen" &&
+          route.name !== "AddVolunteerToEventScreen"
       );
 
       navigation.reset({
@@ -50,21 +48,7 @@ const VolunteerThankYouScreen = ({ route }: any) => {
 
   const handlePressOutside = () => {
     Keyboard.dismiss();
-  };
-  const handleMenuItemPress = (item: any) => {
-    setMenuOpen(false);
-    navigation.navigate("HomeScreen");
-  };
-  const findFoodMenuItemPress = (item: any) => {
-    getLocation().then((res) => {
-      if (res) {
-        navigation?.navigate("MapScreen", {
-          latitude: res?.latitude,
-          longitude: res?.longitude,
-        });
-      }
-    });
-    setMenuOpen(false);
+    setMenuOpen(!menuClose);
   };
 
   return (
@@ -108,7 +92,10 @@ const VolunteerThankYouScreen = ({ route }: any) => {
                 <View style={styles.item}>
                   <Text style={styles.itemText}>{title}</Text>
                 </View>
-                <BurgerIcon />
+                <BurgerIcon
+                  onOutsidePress={handlePressOutside}
+                  menuClose={menuClose}
+                />
               </View>
               <View
                 style={[

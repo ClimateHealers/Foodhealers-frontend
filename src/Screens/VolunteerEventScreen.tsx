@@ -7,18 +7,16 @@ import {
   FlatList,
   Keyboard,
   ScrollView,
-  StatusBar,
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  View,
+  View
 } from "react-native";
 import { Button, Image } from "react-native-elements";
 import {
   heightPercentageToDP as h2dp,
   widthPercentageToDP as w2dp,
 } from "react-native-responsive-screen";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
@@ -29,6 +27,7 @@ import { allEvents } from "../redux/actions/allEvents";
 const VolunteerEventScreen = ({ route }: any) => {
   const { itemTypeId, title, latitude, longitude } = route?.params;
   const [eventData, setEventData]: any[] = useState<[]>([]);
+  const [menuClose, setMenuOpen] = useState(false);
 
   const [filterName, setFilterName] = useState<string>(`${localized.t("NEW")}`);
   const dispatch = useDispatch();
@@ -72,6 +71,7 @@ const VolunteerEventScreen = ({ route }: any) => {
 
   const handlePressOutside = () => {
     Keyboard.dismiss();
+    setMenuOpen(!menuClose);
   };
 
   const Item = ({
@@ -187,7 +187,10 @@ const VolunteerEventScreen = ({ route }: any) => {
                   : `${localized.t("POST_AN_EVENT")}`}
               </Text>
             </View>
-            <BurgerIcon />
+            <BurgerIcon
+              onOutsidePress={handlePressOutside}
+              menuClose={menuClose}
+            />
           </View>
           <View style={styles.itemFilter}>
             <Text style={styles.itemFilterText}>{localized.t("EVENTS")}</Text>

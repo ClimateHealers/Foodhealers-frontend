@@ -14,9 +14,8 @@ import {
   StatusBar,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  View
+  View,
 } from "react-native";
-
 
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { Text, TextInput } from "react-native-paper";
@@ -35,7 +34,7 @@ import { getLocation } from "../Components/getCurrentLocation";
 const PostEvent = () => {
   const [loading, setLoading] = useState(false);
   const [langOpen, setlangOpen] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [menuClose, setMenuOpen] = useState(false);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showEndDatePicker, setShowEndDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
@@ -70,9 +69,11 @@ const PostEvent = () => {
   const eventDateTime = moment(selectedDate).utc().unix();
 
   const eventEndDateTime = moment(selectedEndDate).utc().unix();
+  
   const handlePressOutside = () => {
     setlangOpen(false);
     Keyboard.dismiss();
+    setMenuOpen(!menuClose);
   };
   const navigation: any = useNavigation();
 
@@ -132,25 +133,6 @@ const PostEvent = () => {
     localized.locale = selectedLanguage;
     setSelectedLanguage(selectedLanguage);
   };
-  const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
-  };
-  const handleMenuItemPress = (item: any) => {
-    setMenuOpen(false);
-    navigation.navigate("HomeScreen");
-  };
-  const findFoodMenuItemPress = (item: any) => {
-    getLocation().then((res) => {
-      if (res) {
-        navigation?.navigate("MapScreen", {
-          latitude: res?.latitude,
-          longitude: res?.longitude,
-        });
-      }
-    });
-
-    setMenuOpen(false);
-  };
 
   useEffect(() => {
     setSelectedEndDate(moment(selectedDate).add(1, "hour"));
@@ -179,7 +161,10 @@ const PostEvent = () => {
                     {localized.t("POST_AN_EVENT")}
                   </Text>
                 </View>
-                <BurgerIcon />
+                <BurgerIcon
+                  onOutsidePress={handlePressOutside}
+                  menuClose={menuClose}
+                />
               </View>
               <Modal visible={loading} animationType="slide" transparent={true}>
                 <View style={styles.centeredView}>

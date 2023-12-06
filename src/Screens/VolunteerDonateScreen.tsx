@@ -26,19 +26,16 @@ const VolunteerDonateScreen = ({ route }: any) => {
   const navigation: any = useNavigation();
 
   const [langOpen, setlangOpen] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [menuClose, setMenuOpen] = useState(false);
   const { width: screenWidth } = Dimensions.get("window");
   const [activeSlide, setActiveSlide] = useState(0);
-
-  const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
-  };
 
   const sliderRef: any = useRef(null);
 
   const handlePressOutside = () => {
     setlangOpen(false);
     Keyboard.dismiss();
+    setMenuOpen(!menuClose);
   };
   const cardData = [
     {
@@ -57,7 +54,9 @@ const VolunteerDonateScreen = ({ route }: any) => {
     },
     {
       id: 3,
-      title: `${localized.t("REQUEST")} ${localized.t("FOOD")}/${localized.t("SUPPLIES")}`,
+      title: `${localized.t("REQUEST")} ${localized.t("FOOD")}/${localized.t(
+        "SUPPLIES"
+      )}`,
       image: require("../../assets/images/requestFoodSupplies.png"),
       itemTypeId: 3,
       navigation: "TeamHomeScreen",
@@ -157,7 +156,10 @@ const VolunteerDonateScreen = ({ route }: any) => {
                     {localized.t("VOLUNTEER")}
                   </Text>
                 </View>
-                <BurgerIcon />
+                <BurgerIcon
+                  onOutsidePress={handlePressOutside}
+                  menuClose={menuClose}
+                />
               </View>
               <View style={{ marginHorizontal: "-4%" }}>
                 <Carousel

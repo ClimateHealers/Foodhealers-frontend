@@ -16,7 +16,7 @@ import {
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  View
+  View,
 } from "react-native";
 import {
   heightPercentageToDP as h2dp,
@@ -61,14 +61,16 @@ const DriverProfileScreen = ({ route }: any) => {
     fetchingVehiclesData();
     fetchingUserData();
     const { routes } = navigation.getState();
-      const filteredRoutes = routes.filter(
-        (route: any) => route.name !== "AddRequestDonationsScreen" && route.name !== "DriverPhotoSaveScreen"
-      );
+    const filteredRoutes = routes.filter(
+      (route: any) =>
+        route.name !== "AddRequestDonationsScreen" &&
+        route.name !== "DriverPhotoSaveScreen"
+    );
 
-      navigation.reset({
-        index: filteredRoutes.length - 2,
-        routes: filteredRoutes,
-      });
+    navigation.reset({
+      index: filteredRoutes.length - 2,
+      routes: filteredRoutes,
+    });
   }, []);
 
   const handleMenuItemPress = (item: any) => {
@@ -97,6 +99,7 @@ const DriverProfileScreen = ({ route }: any) => {
 
   const handlePressOutside = () => {
     Keyboard.dismiss();
+    setMenuOpen(false);
   };
 
   const openImagePickerAsync = async () => {
@@ -116,7 +119,7 @@ const DriverProfileScreen = ({ route }: any) => {
         const singlePhoto = result.assets[0].uri;
         navigation.navigate("DriverPhotoSaveScreen", {
           selectedImage: singlePhoto,
-          fromCameraRoll : false
+          fromCameraRoll: false,
         });
       }
     } else if (!res.granted) {

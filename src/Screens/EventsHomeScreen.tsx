@@ -20,9 +20,10 @@ import { styles } from "../Components/Styles";
 import { localized } from "../locales/localization";
 
 const EventsHomeScreen = () => {
-
+  const [menuClose, setMenuOpen] = useState(false);
   const handlePressOutside = () => {
     Keyboard.dismiss();
+    setMenuOpen(!menuClose);
   };
 
   const navigation: any = useNavigation<string>();
@@ -48,7 +49,10 @@ const EventsHomeScreen = () => {
                 <View style={styles.item}>
                   <Text style={styles.itemText}>{localized.t("EVENTS")}</Text>
                 </View>
-                <BurgerIcon />
+                <BurgerIcon
+                  onOutsidePress={handlePressOutside}
+                  menuClose={menuClose}
+                />
               </View>
               <TouchableOpacity
                 onPress={() => navigation.navigate("PostEvent")}

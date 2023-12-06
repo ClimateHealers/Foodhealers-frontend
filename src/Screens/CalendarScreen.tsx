@@ -25,7 +25,7 @@ const CalendarScreen = ({ route }: any) => {
   const { latitude, longitude } = route?.params;
   const navigation: any = useNavigation();
 
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [menuClose, setMenuOpen] = useState(false);
   const [date, setDate] = useState<any>();
 
   const dispatch = useDispatch();
@@ -34,7 +34,7 @@ const CalendarScreen = ({ route }: any) => {
 
   const handlePressOutside = () => {
     Keyboard.dismiss();
-    setMenuOpen(false);
+    setMenuOpen(!menuClose);
   };
 
   return (
@@ -60,7 +60,10 @@ const CalendarScreen = ({ route }: any) => {
                     {localized.t("MY_CALENDAR")}
                   </Text>
                 </View>
-                <BurgerIcon />
+                <BurgerIcon
+                  onOutsidePress={handlePressOutside}
+                  menuClose={menuClose}
+                />
               </View>
               <View
                 style={[
@@ -92,9 +95,7 @@ const CalendarScreen = ({ route }: any) => {
 
                       const selectedDate = new Date(day.dateString);
 
-                      const startDate = moment(selectedDate)
-                        .utc()
-                        .unix();
+                      const startDate = moment(selectedDate).utc().unix();
                       const endDate = moment(selectedDate)
                         .add(23.99, "hour")
                         .utc()

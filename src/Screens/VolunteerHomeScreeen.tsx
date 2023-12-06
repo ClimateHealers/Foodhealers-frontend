@@ -52,7 +52,7 @@ const VolunteerHomeScreen = ({ route }: any) => {
 
   const handlePressOutside = () => {
     Keyboard.dismiss();
-    setMenuOpen(false);
+    setMenuOpen(!menuClose);
   };
 
   useFocusEffect(
@@ -82,11 +82,11 @@ const VolunteerHomeScreen = ({ route }: any) => {
               <View style={styles.item}>
                 <Text style={styles.itemText}>{localized.t("HOME")}</Text>
               </View>
-              <BurgerIcon
-                style={{ zIndex: 10 }}
-                onOutsidePress={handlePressOutside}
-                menuClose={menuClose}
-              />
+                <BurgerIcon
+                  style={{ zIndex: 10 }}
+                  onOutsidePress={handlePressOutside}
+                  menuClose={menuClose}
+                />
             </View>
             <ScrollView
               keyboardShouldPersistTaps="handled"

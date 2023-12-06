@@ -31,10 +31,12 @@ const AllVolunteersScreen = ({ route }: any) => {
   const { title, itemTypeId, eventId, eventVolunteersData } = route?.params;
   const [loading, setLoading] = useState(false);
   const phoneInput = useRef<PhoneInput>(null);
+  const [menuClose, setMenuOpen] = useState(false);
   const [activeSlide, setActiveSlide] = useState(0);
   const { width: screenWidth } = Dimensions.get("window");
   const handlePressOutside = () => {
     Keyboard.dismiss();
+    setMenuOpen(!menuClose);
   };
   const sliderRef: any = useRef(null);
   const navigation: any = useNavigation();
@@ -299,7 +301,10 @@ const AllVolunteersScreen = ({ route }: any) => {
                 <View style={styles.item}>
                   <Text style={styles.itemText}>{title}</Text>
                 </View>
-                <BurgerIcon />
+                <BurgerIcon
+                  onOutsidePress={handlePressOutside}
+                  menuClose={menuClose}
+                />
               </View>
               <Modal visible={loading} animationType="slide" transparent={true}>
                 <View style={styles.centeredView}>
