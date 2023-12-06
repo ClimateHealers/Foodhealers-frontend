@@ -294,7 +294,12 @@ const SeeExistingRequestScreen = ({ route }: any) => {
               name="chevron-back"
               size={32}
               color="white"
-              onPress={() => navigation.goBack()}
+              onPress={() => navigation.navigate("VolunteerDonateScreen", {
+                latitude: latitude,
+                longitude: longitude,
+                itemTypeId: itemTypeId,
+                title: title,
+              })}
             />
             <View style={styles.item}>
               <Text style={styles.itemText}>
