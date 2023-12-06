@@ -25,8 +25,7 @@ import { VeganAllRecipes } from "../redux/actions/veganRecipesCategory";
 import { decode } from "html-entities";
 import API from "../Utils/APIUtils";
 
-const blurhash =
-  "|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[";
+const blurhash = "LBE~3[-;j[oy_MoMfQj[offQfQfQ";
 
 const RecipesHomeScreen = () => {
   const [langOpen, setlangOpen] = useState(false);
@@ -57,7 +56,6 @@ const RecipesHomeScreen = () => {
     fetchRecipesCategories();
   }, []);
 
-  
   const token = useSelector((state: any) => state.auth.data.token);
 
   const isAuthenticated = useSelector(

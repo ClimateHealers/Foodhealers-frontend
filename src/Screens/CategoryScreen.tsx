@@ -26,8 +26,7 @@ import API from "../Utils/APIUtils";
 import { localized } from "../locales/localization";
 import { VeganRecipesCategory } from "../redux/actions/veganRecipesCategory";
 
-const blurhash =
-  "|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[";
+const blurhash = "LBE~3[-;j[oy_MoMfQj[offQfQfQ";
 
 const CategoryScreen = ({ route }: any) => {
   const { categoryId, recipeName } = route.params;

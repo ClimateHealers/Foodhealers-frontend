@@ -21,12 +21,10 @@ import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
 import { styles } from "../Components/Styles";
 import { localized } from "../locales/localization";
-import * as WebBrowser from 'expo-web-browser';
-import { Image } from 'expo-image';
+import * as WebBrowser from "expo-web-browser";
+import { Image } from "expo-image";
 
-const blurhash =
-  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
-
+const blurhash = "LBE~3[-;j[oy_MoMfQj[offQfQfQ";
 
 const SingleRecipeScreen = ({ route }: any) => {
   const { recipeData } = route.params;
@@ -196,7 +194,9 @@ const SingleRecipeScreen = ({ route }: any) => {
                     <Text
                       style={styles.underlineTextStyle}
                       // onPress={() => Linking.openURL(recipeData?.recipeSource)}
-                      onPress={() => WebBrowser.openBrowserAsync(recipeData?.recipeSource)}
+                      onPress={() =>
+                        WebBrowser.openBrowserAsync(recipeData?.recipeSource)
+                      }
                     >
                       {recipeData?.recipeSource}
                     </Text>
