@@ -47,13 +47,14 @@ import {
 } from "../redux/actions/authAction";
 import { logOut } from "../redux/reducers/authreducers";
 import { localized } from "../locales/localization";
+import { notfifications } from "../redux/actions/notificationAction";
 
 const ProfileScreen = () => {
-  const [imagePickerVisible, setImagePickerVisible] = useState(false);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const [alert, setAlert] = useState(false);
+  const [notificationData, setNotificationData] = useState<any>();
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const [data, setData] = useState<any>();
   let date = new Date().getTime();
@@ -63,7 +64,9 @@ const ProfileScreen = () => {
     (state: any) => state.auth.data.isAuthenticated
   );
 
-  const expoPushToken = useSelector((state: any) => state?.auth?.expoPushToken?.expoPushToken);
+  const expoPushToken = useSelector(
+    (state: any) => state?.auth?.expoPushToken?.expoPushToken
+  );
 
   const fetchingUserData = async () => {
     const response = await dispatch(fetchUser({} as any) as any);
@@ -108,16 +111,21 @@ const ProfileScreen = () => {
       })
     );
   };
+  const fetchingNotificationsData = async () => {
+    const response = await dispatch(notfifications({} as any) as any);
+    const filterRead = response?.payload?.notifications?.filter(
+      (event: any) => event?.is_unread === true
+    );
+
+    setNotificationData(filterRead?.length);
+  };
 
   useFocusEffect(
     useCallback(() => {
       fetchingUserData();
+      fetchingNotificationsData();
     }, [])
   );
-
-  const navigationHandler = () => {
-    navigation.navigate("DeleteAccount");
-  };
 
   const openImagePickerAsync = async () => {
     const res = await MediaLibrary.requestPermissionsAsync();
@@ -195,7 +203,7 @@ const ProfileScreen = () => {
               <Text
                 style={{
                   padding: 10,
-                  fontSize: 20,
+                  fontSize: h2dp(2),
                   fontWeight: "300",
                   lineHeight: 27.24,
                 }}
@@ -209,7 +217,7 @@ const ProfileScreen = () => {
               <Text
                 style={{
                   padding: 10,
-                  fontSize: 20,
+                  fontSize: h2dp(2),
                   fontWeight: "300",
                   lineHeight: 27.24,
                 }}
@@ -228,7 +236,7 @@ const ProfileScreen = () => {
                   <Text
                     style={{
                       padding: 10,
-                      fontSize: 20,
+                      fontSize: h2dp(2),
                       fontWeight: "300",
                       lineHeight: 27.24,
                     }}
@@ -245,7 +253,7 @@ const ProfileScreen = () => {
                   <Text
                     style={{
                       padding: 10,
-                      fontSize: 20,
+                      fontSize: h2dp(2),
                       fontWeight: "300",
                       lineHeight: 27.24,
                     }}
@@ -259,8 +267,15 @@ const ProfileScreen = () => {
         )}
         <View style={styles.row}>
           <View
-            style={{ height: 100, justifyContent: "center", width: wp2dp(25) }}
-          ></View>
+            style={{ height: 100, justifyContent: "center", width: wp2dp(20) }}
+          >
+            <Ionicons
+              name="chevron-back"
+              size={32}
+              color="white"
+              onPress={() => navigation.navigate("HomeScreen")}
+            />
+          </View>
           <View style={{ height: 100, justifyContent: "center" }}>
             <Text style={styles.itemText}>{localized.t("ACCOUNT")}</Text>
           </View>
@@ -277,7 +292,9 @@ const ProfileScreen = () => {
               }}
               style={styles.circleAvatar}
             >
-              <Badge style={styles.notificatioAvatarLogo}>0</Badge>
+              <Badge style={styles.notificatioAvatarLogo}>
+                {notificationData}
+              </Badge>
 
               <Ionicons
                 name="md-notifications-outline"
@@ -285,17 +302,20 @@ const ProfileScreen = () => {
                 size={28}
               />
             </TouchableOpacity>
-            <View style={styles.item}>
-              <MaterialCommunityIcons
-                name="menu"
-                size={40}
-                color="white"
-                onPress={toggleMenu}
-              />
-            </View>
+            {/* <View style={styles.item}> */}
+            <MaterialCommunityIcons
+              name="menu"
+              size={40}
+              color="white"
+              onPress={toggleMenu}
+            />
+            {/* </View> */}
           </View>
         </View>
-        <ScrollView style={styles.ScrollView}>
+        <ScrollView
+          style={styles.ScrollView}
+          showsVerticalScrollIndicator={false}
+        >
           <View>
             <View>
               <View
@@ -379,7 +399,7 @@ const ProfileScreen = () => {
                   }}
                   titleStyle={{
                     color: "black",
-                    fontSize: 18,
+                    fontSize: h2dp(1.8),
                     lineHeight: 20,
                     fontFamily: "OpenSans-Regular",
                   }}
@@ -490,7 +510,7 @@ const ProfileScreen = () => {
                       {localized.t("NUMBER")}
                     </Text>
                     <Text style={[styles.profileDetailsText2]}>
-                      {data?.phoneNumber}
+                      {data?.phoneNumber ? data.phoneNumber : "N/A"}
                     </Text>
                   </View>
                 </View>
@@ -544,13 +564,36 @@ const ProfileScreen = () => {
                 style={{
                   textDecorationLine: "underline",
                   color: "white",
+                  fontSize: h2dp(1.5),
                   marginLeft: wp2dp(1),
+                  marginRight: w2dp(4),
                 }}
                 onPress={() =>
                   Linking.openURL("mailto:support@climatehealers.org")
                 }
               >
                 support@climatehealers.org
+              </Text>
+            </View>
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "center",
+                alignContent: "center",
+              }}
+            >
+              <Text
+                style={{
+                  textDecorationLine: "underline",
+                  color: "white",
+                  fontSize: h2dp(1.5),
+                  marginLeft: wp2dp(1),
+                  marginRight: w2dp(4),
+                }}
+                onPress={() => navigation.navigate("LicenseScreen")}
+              >
+                Open-Source Licences
               </Text>
             </View>
           </View>
@@ -569,7 +612,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    width: "100%",
+    marginHorizontal: w2dp(2),
+    // width: "100%",
     zIndex: 1,
   },
   item: {
@@ -578,7 +622,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   itemText: {
-    fontSize: 25,
+    fontSize: h2dp(2.5),
     color: "white",
   },
   mainContainer: {
@@ -631,12 +675,12 @@ const styles = StyleSheet.create({
   profileDetailsText2: {
     paddingLeft: 5,
     marginTop: -2,
-    fontSize: 20,
+    fontSize: h2dp(2),
     color: "white",
   },
   profileDetailsText3: {
     ...systemWeights.regular,
-    fontSize: 15,
+    fontSize: h2dp(1.5),
     paddingLeft: 5,
     color: "white",
   },
@@ -648,19 +692,19 @@ const styles = StyleSheet.create({
   },
   profileDetailsText1: {
     paddingTop: 8,
-    fontSize: 25,
+    fontSize: h2dp(2.5),
     textAlign: "center",
     color: "white",
   },
   appVersion: {
     paddingTop: hp2dp(5),
-    fontSize: 15,
+    fontSize: h2dp(1.5),
     textAlign: "center",
     color: "white",
     marginBottom: hp2dp(2),
   },
   support: {
-    fontSize: 15,
+    fontSize: h2dp(1.5),
     textAlign: "center",
     color: "white",
     marginBottom: hp2dp(3),
@@ -688,8 +732,8 @@ const styles = StyleSheet.create({
   },
   titleStyle: {
     color: "white",
-    fontSize: 26,
-    lineHeight: 35,
+    fontSize: h2dp(2.6),
+    // lineHeight: h35,
     fontFamily: "OpenSans-Regular",
   },
   verifyContainer: {
@@ -762,7 +806,7 @@ const styles = StyleSheet.create({
     ...systemWeights.regular,
     paddingRight: 5,
     color: "red",
-    fontSize: 12,
+    fontSize: h2dp(1.2),
   },
   circleAvatar: {
     borderRadius: 50,

@@ -24,15 +24,14 @@ import {
   heightPercentageToDP as h2dp,
   widthPercentageToDP as w2dp,
 } from "react-native-responsive-screen";
-import { SafeAreaView } from "react-native-safe-area-context";
+import ReactNativeSegmentedControlTab from "react-native-segmented-control-tab";
 import { useDispatch } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
 import { styles } from "../Components/Styles";
 import { localized } from "../locales/localization";
-import { myRequests } from "../redux/actions/myRequests";
 import { allRequests } from "../redux/actions/allRequests";
-import ReactNativeSegmentedControlTab from "react-native-segmented-control-tab";
+import { myRequests } from "../redux/actions/myRequests";
 
 const RequestHistoryScreen = ({ route }: any) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -120,10 +119,19 @@ const RequestHistoryScreen = ({ route }: any) => {
     }
   };
 
-  const Item = ({ foodItem, status, delivery, requiredDate, type }: any) => (
+  const Item = ({
+    foodItem,
+    status,
+    delivery,
+    requiredDate,
+    type,
+    delivered,
+    driver,
+    pickupDate,
+  }: any) => (
     <TouchableOpacity activeOpacity={1}>
       <View style={styles.cardContainer}>
-        {status === "approved" ? (
+        {delivered === true ? (
           <View>
             {type === "Supplies" ? (
               <MaterialCommunityIcons
@@ -156,7 +164,130 @@ const RequestHistoryScreen = ({ route }: any) => {
             <Text
               style={{
                 marginLeft: h2dp(1.5),
-                fontSize: 11,
+                fontSize: h2dp(1.1),
+                color: "green",
+                marginTop: h2dp(0.5),
+              }}
+            >
+              {localized.t("DELIVERED")}
+            </Text>
+          </View>
+        ) : driver !== "Driver not specified" ? (
+          <View>
+            {type === "Supplies" ? (
+              <MaterialCommunityIcons
+                name="truck-outline"
+                size={24}
+                color="black"
+                style={{
+                  marginLeft: h2dp(2.3),
+                }}
+              />
+            ) : (
+              <Entypo
+                name="bowl"
+                size={24}
+                color="black"
+                style={{
+                  marginLeft: h2dp(2.5),
+                }}
+              />
+            )}
+            <FontAwesome
+              name="clock-o"
+              size={24}
+              color="#f2db0a"
+              style={{
+                marginLeft: h2dp(2.3),
+                marginTop: h2dp(1.5),
+              }}
+            />
+            <Text
+              style={{
+                marginLeft: h2dp(1.5),
+                fontSize: h2dp(1.1),
+                color: "#f2db0a",
+                marginTop: h2dp(0.5),
+              }}
+            >
+              {localized.t("IN_TRANSIT")}
+            </Text>
+          </View>
+        ) : pickupDate !== "Pickup date not specified" ? (
+          <View>
+            {type === "Supplies" ? (
+              <MaterialCommunityIcons
+                name="truck-outline"
+                size={24}
+                color="black"
+                style={{
+                  marginLeft: h2dp(2.3),
+                }}
+              />
+            ) : (
+              <Entypo
+                name="bowl"
+                size={24}
+                color="black"
+                style={{
+                  marginLeft: h2dp(2.5),
+                }}
+              />
+            )}
+            <AntDesign
+              name="checkcircleo"
+              size={24}
+              color="green"
+              style={{
+                marginLeft: h2dp(2.5),
+                marginTop: h2dp(1.5),
+              }}
+            />
+            <Text
+              style={{
+                marginLeft: h2dp(1.5),
+                fontSize: h2dp(1.1),
+                color: "green",
+                marginTop: h2dp(0.5),
+              }}
+            >
+              {localized.t("ACCEPTED")}
+            </Text>
+          </View>
+        ) : status === "approved" ? (
+          <View>
+            {type === "Supplies" ? (
+              <MaterialCommunityIcons
+                name="truck-outline"
+                size={24}
+                color="black"
+                style={{
+                  marginLeft: h2dp(2.3),
+                }}
+              />
+            ) : (
+              <Entypo
+                name="bowl"
+                size={24}
+                color="black"
+                style={{
+                  marginLeft: h2dp(2.5),
+                }}
+              />
+            )}
+            <AntDesign
+              name="checkcircleo"
+              size={24}
+              color="green"
+              style={{
+                marginLeft: h2dp(2.5),
+                marginTop: h2dp(1.5),
+              }}
+            />
+            <Text
+              style={{
+                marginLeft: h2dp(1.5),
+                fontSize: h2dp(1.1),
                 color: "green",
                 marginTop: h2dp(0.5),
               }}
@@ -197,7 +328,7 @@ const RequestHistoryScreen = ({ route }: any) => {
             <Text
               style={{
                 marginLeft: h2dp(1.5),
-                fontSize: 11,
+                fontSize: h2dp(1.1),
                 color: "#f2db0a",
                 marginTop: h2dp(0.5),
               }}
@@ -235,7 +366,7 @@ const RequestHistoryScreen = ({ route }: any) => {
             <Text
               style={{
                 marginLeft: h2dp(1.5),
-                fontSize: 11,
+                fontSize: h2dp(1.1),
                 color: "red",
                 marginTop: h2dp(0.5),
               }}
@@ -366,6 +497,9 @@ const RequestHistoryScreen = ({ route }: any) => {
                     foodItem={`${item?.foodItem}  (${item?.quantity})`}
                     delivery={item?.deliver?.dropAddress?.fullAddress}
                     requiredDate={item?.requiredDate}
+                    delivered={item?.deliver?.delivered}
+                    driver={item?.deliver?.driver}
+                    pickupDate={item?.deliver?.pickupDate}
                   />
                 )}
               />

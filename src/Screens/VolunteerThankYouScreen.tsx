@@ -1,7 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import {
   Keyboard,
   ScrollView,
@@ -33,6 +33,20 @@ const VolunteerThankYouScreen = ({ route }: any) => {
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
+
+  useFocusEffect(
+    useCallback(() => {
+      const { routes } = navigation.getState();
+      const filteredRoutes = routes.filter(
+        (route: any) => route.name !== "AddDonationsScreen" && route.name !== 'AcceptRequestedDonationScreen' && route.name !== 'AddVolunteerToEventScreen'
+      );
+
+      navigation.reset({
+        index: filteredRoutes.length - 2,
+        routes: filteredRoutes,
+      });
+    }, [])
+  );
 
   const handlePressOutside = () => {
     Keyboard.dismiss();

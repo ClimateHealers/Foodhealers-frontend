@@ -182,7 +182,8 @@
     "YOU_HAVE_BEEN_SUCCESSFULLY_ADDED_TO_VOLUNTEER":"आपको इस घड़ी में स्वयंसेवक बनाने में सफलता हुई है।",
     "VOLUNTEER_NOT_ADDED":"स्वयंसेवक नहीं जोड़ा गया है।",
     "YOU_CANT_SELECT_A_TIME_BEFORE":"आप इससे पहले कोई समय नहीं चुन सकते",
-    "DONATION_ADDED_SUCCESSFULLY_THAN_YOU_FOR_DONATION":"दान सफलतापूर्वक जोड़ा गया है, आपके दान के लिए धन्यवाद!",
+    "DONATION_ADDED_SUCCESSFULLY": "दान सफलतापूर्वक जोड़ा गया है",
+    "THAN_YOU_FOR_DONATION":"आपके दान के लिए धन्यवाद!",
     "WH_HAVE_SUCCESSFULLY_ADDED_YOUR_DONATION":"हमने आपके दान को सफलतापूर्वक जोड़ दिया है।",
     "DONATION_NOT_ADDED":"दान नहीं जोड़ा गया है।",
     "PLEASE_ENTER_THE_FULL_ADDRESS":"कृपया पूरा पता दर्ज करें।",
@@ -279,6 +280,18 @@
     "OLD": "पुराना",
     "VEHICLE_UPDATED_SUCCESSFULLY": "वाहन सफलतापूर्वक अपडेट हो गया है",
     "YOUR_VEHICLE_HAS_BEEN_UPDATED_SUCCESSFULLY": "वाहन अपडेट हो गया है",
-    "VEHICLE_NOT_ADDED": "वाहन नहीं जोड़ा गया"
+    "VEHICLE_NOT_ADDED": "वाहन नहीं जोड़ा गया",
+    "PLEASE_ENTER_VALID_MODEL": "कृपया वैध मॉडल दर्ज करें",
+    "PLEASE_ENTER_VALID_MAKE": "कृपया वैध मेक दर्ज करें",
+    "PLEASE_ENTER_VALID_COLOR": "कृपया वैध रंग दर्ज करें",
+    "PLEASE_ENTER_VALID_LICENSEPLATE": "कृपया वैध लाइसेंस प्लेट दर्ज करें",
+    "ONLY_NUMBERS_ARE_ALLOWED": "केवल संख्याएं अनुमति दी जाती हैं",
+    "VEHICLE_MAKE": "वाहन निर्माता",
+    "VEHICLE_MODEL": "वाहन मॉडल",
+    "VEHICLE_COLOR": "वाहन का रंग",
+    "LICENSE_PLATE_NUMBER": "लाइसेंस प्लेट नंबर",
+    "RECIPE": "रेसिपी",
+    "IN_TRANSIT": "ट्रांजिट में",
+    "ACCEPTED": "स्वीकृत"
   }
 }

@@ -23,6 +23,7 @@ import {
 import { useDispatch } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
+import mapStyle from "../Components/MapStyle";
 import { localized } from "../locales/localization";
 import { VeganRecipesCategories } from "../redux/actions/veganRecipes";
 
@@ -143,6 +144,7 @@ const FindFoodHomeScreen = ({ route }: any) => {
                     longitudeDelta: LONGITUDE_DELTA,
                   }}
                   showsUserLocation={true}
+                  customMapStyle={mapStyle}
                 >
                   <Marker
                     pinColor="#FC5A56"
@@ -155,7 +157,7 @@ const FindFoodHomeScreen = ({ route }: any) => {
                     title={localized.t("SELECTED_LOCATION")}
                   >
                     <Image
-                      source={require("../../assets/currentLocationPin.png")}
+                      source={require("../../assets/newCurrentLocationPin.png")}
                       style={styles.markerIcon}
                     />
                   </Marker>
@@ -184,7 +186,7 @@ const FindFoodHomeScreen = ({ route }: any) => {
                             {marker?.name}
                           </Text>
                           <Image
-                            source={require("../../assets/eventLocationPin.png")}
+                            source={require("../../assets/lastEventLocationPin.png")}
                             style={styles.markerIcon}
                           />
                         </View>

@@ -37,7 +37,7 @@ const PickupSelectedDetailsScreen = ({ route }: any) => {
     active,
     fullfilled,
     pickedup,
-    delivered
+    delivered,
   } = route?.params;
 
   const [loading, setLoading] = useState(false);
@@ -201,9 +201,11 @@ const PickupSelectedDetailsScreen = ({ route }: any) => {
                       error: false,
                     });
                     const data = {
-                      requestId: pickupId
+                      requestId: pickupId,
                     };
-                    const res = await dispatch(acceptPickup(data as any) as any);
+                    const res = await dispatch(
+                      acceptPickup(data as any) as any
+                    );
                     if (res?.payload?.success == true) {
                       setLoading(false);
                       setResponse({
@@ -221,31 +223,21 @@ const PickupSelectedDetailsScreen = ({ route }: any) => {
                           {
                             text: "OK",
                             onPress: () =>
-                              navigation.dispatch(
-                                CommonActions.reset({
-                                  index: 0,
-                                  routes: [
-                                    {
-                                      name: "PickupConfirmScreen",
-                                      params: {
-                                        pickAddress: pickAddress,
-                                        pickupTiming: pickupTiming,
-                                        picklat: picklat,
-                                        picklng: picklng,
-                                        droplat: droplat,
-                                        droplng: droplng,
-                                        dropTiming: dropTiming,
-                                        dropAddress: dropAddress,
-                                        pickupId: pickupId,
-                                        active: active,
-                                        fullfilled: fullfilled,
-                                        pickedup: pickedup,
-                                        delivered: delivered
-                                      }
-                                    },
-                                  ],
-                                })
-                              ),
+                              navigation.navigate("PickupConfirmScreen", {
+                                pickAddress: pickAddress,
+                                pickupTiming: pickupTiming,
+                                picklat: picklat,
+                                picklng: picklng,
+                                droplat: droplat,
+                                droplng: droplng,
+                                dropTiming: dropTiming,
+                                dropAddress: dropAddress,
+                                pickupId: pickupId,
+                                active: active,
+                                fullfilled: fullfilled,
+                                pickedup: pickedup,
+                                delivered: delivered,
+                              }),
                           },
                         ],
                         { cancelable: false }

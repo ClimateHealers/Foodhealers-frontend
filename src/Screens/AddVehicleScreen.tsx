@@ -1,8 +1,12 @@
 import { Ionicons } from "@expo/vector-icons";
-import { CommonActions, useNavigation } from "@react-navigation/native";
+import {
+  CommonActions,
+  useFocusEffect,
+  useNavigation,
+} from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Formik } from "formik";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
@@ -34,6 +38,20 @@ const AddVehicleScreen = ({ route }: any) => {
     message: "",
   });
 
+  useFocusEffect(
+    useCallback(() => {
+      const { routes } = navigation.getState();
+      const filteredRoutes = routes.filter(
+        (route: any) => route.name !== "AddDriverScreen"
+      );
+
+      navigation.reset({
+        index: filteredRoutes.length - 2,
+        routes: filteredRoutes,
+      });
+    }, [])
+  );
+
   const dispatch = useDispatch();
 
   const handlePressOutside = () => {
@@ -63,7 +81,11 @@ const AddVehicleScreen = ({ route }: any) => {
                   name="chevron-back"
                   size={32}
                   color="white"
-                  onPress={() => newVehicle ? navigation.navigate("DriverRequestScreen") : navigation.navigate("BecomeADriverScreen")}
+                  onPress={() =>
+                    newVehicle
+                      ? navigation.navigate("DriverRequestScreen")
+                      : navigation.navigate("BecomeADriverScreen")
+                  }
                 />
                 <View style={styles.item}>
                   <Text style={styles.itemText}>{localized.t("DRIVE")}</Text>
@@ -126,16 +148,7 @@ const AddVehicleScreen = ({ route }: any) => {
                             {
                               text: "OK",
                               onPress: () => {
-                                navigation.dispatch(
-                                  CommonActions.reset({
-                                    index: 0,
-                                    routes: [
-                                      {
-                                        name: "DriverRequestScreen",
-                                      },
-                                    ],
-                                  })
-                                );
+                                navigation.navigate("DriverRequestScreen");
                               },
                             },
                           ],
@@ -160,16 +173,7 @@ const AddVehicleScreen = ({ route }: any) => {
                             {
                               text: "OK",
                               onPress: () => {
-                                navigation.dispatch(
-                                  CommonActions.reset({
-                                    index: 0,
-                                    routes: [
-                                      {
-                                        name: "DriverProfilePhoto",
-                                      },
-                                    ],
-                                  })
-                                );
+                                navigation.navigate("DriverProfilePhoto");
                               },
                             },
                           ],
@@ -235,7 +239,7 @@ const AddVehicleScreen = ({ route }: any) => {
                           onChangeText={handleChange("carMake")}
                           onBlur={handleBlur("carMake")}
                           value={values.carMake}
-                          placeholder={"Car make"}
+                          placeholder={localized.t("VEHICLE_MAKE")}
                           placeholderTextColor={"black"}
                           style={styles.textInput}
                         />
@@ -251,7 +255,7 @@ const AddVehicleScreen = ({ route }: any) => {
                           onChangeText={handleChange("carModel")}
                           onBlur={handleBlur("carModel")}
                           value={values?.carModel}
-                          placeholder={"Car model"}
+                          placeholder={localized.t("VEHICLE_MODEL")}
                           placeholderTextColor={"black"}
                           style={styles.textInput}
                         />
@@ -264,7 +268,7 @@ const AddVehicleScreen = ({ route }: any) => {
                       onChangeText={handleChange("carColor")}
                       onBlur={handleBlur("carColor")}
                       value={values.carColor}
-                      placeholder={"Car color"}
+                      placeholder={localized.t("VEHICLE_COLOR")}
                       placeholderTextColor={"black"}
                       style={styles.textInput}
                     />
@@ -274,7 +278,7 @@ const AddVehicleScreen = ({ route }: any) => {
                         onChangeText={handleChange("licencePlate")}
                         onBlur={handleBlur("licencePlate")}
                         value={values?.licencePlate}
-                        placeholder={"Licence plate Number"}
+                        placeholder={localized.t("LICENSE_PLATE_NUMBER")}
                         placeholderTextColor={"black"}
                         style={[styles.textInput]}
                       />

@@ -92,13 +92,17 @@ const DonationHistoryTabScreen = () => {
     status,
     delivery,
     createdAt,
+    pickupDate,
     donationType,
+    dropDate,
+    delivered,
+    driver,
     donatedBy,
     quantity,
   }: any) => (
     <TouchableOpacity activeOpacity={1}>
       <View style={styles.cardContainer}>
-        {status === "approved" ? (
+        {delivered === true ? (
           <View>
             {donationType === "Supplies" ? (
               <MaterialCommunityIcons
@@ -131,7 +135,130 @@ const DonationHistoryTabScreen = () => {
             <Text
               style={{
                 marginLeft: h2dp(1.5),
-                fontSize: 11,
+                fontSize: h2dp(1.1),
+                color: "green",
+                marginTop: h2dp(0.5),
+              }}
+            >
+              {localized.t("DELIVERED")}
+            </Text>
+          </View>
+        ) : driver !== "Driver not specified" ? (
+          <View>
+            {donationType === "Supplies" ? (
+              <MaterialCommunityIcons
+                name="truck-outline"
+                size={24}
+                color="black"
+                style={{
+                  marginLeft: h2dp(2.3),
+                }}
+              />
+            ) : (
+              <Entypo
+                name="bowl"
+                size={24}
+                color="black"
+                style={{
+                  marginLeft: h2dp(2.5),
+                }}
+              />
+            )}
+            <FontAwesome
+              name="clock-o"
+              size={24}
+              color="#f2db0a"
+              style={{
+                marginLeft: h2dp(2.3),
+                marginTop: h2dp(1.5),
+              }}
+            />
+            <Text
+              style={{
+                marginLeft: h2dp(1.5),
+                fontSize: h2dp(1.1),
+                color: "#f2db0a",
+                marginTop: h2dp(0.5),
+              }}
+            >
+              {localized.t("IN_TRANSIT")}
+            </Text>
+          </View>
+        ) : dropDate !== "Drop date not specified" ? (
+          <View>
+            {donationType === "Supplies" ? (
+              <MaterialCommunityIcons
+                name="truck-outline"
+                size={24}
+                color="black"
+                style={{
+                  marginLeft: h2dp(2.3),
+                }}
+              />
+            ) : (
+              <Entypo
+                name="bowl"
+                size={24}
+                color="black"
+                style={{
+                  marginLeft: h2dp(2.5),
+                }}
+              />
+            )}
+            <AntDesign
+              name="checkcircleo"
+              size={24}
+              color="green"
+              style={{
+                marginLeft: h2dp(2.5),
+                marginTop: h2dp(1.5),
+              }}
+            />
+            <Text
+              style={{
+                marginLeft: h2dp(1.5),
+                fontSize: h2dp(1.1),
+                color: "green",
+                marginTop: h2dp(0.5),
+              }}
+            >
+              {localized.t("ACCEPTED")}
+            </Text>
+          </View>
+        ) : status === "approved" ? (
+          <View>
+            {donationType === "Supplies" ? (
+              <MaterialCommunityIcons
+                name="truck-outline"
+                size={24}
+                color="black"
+                style={{
+                  marginLeft: h2dp(2.3),
+                }}
+              />
+            ) : (
+              <Entypo
+                name="bowl"
+                size={24}
+                color="black"
+                style={{
+                  marginLeft: h2dp(2.5),
+                }}
+              />
+            )}
+            <AntDesign
+              name="checkcircleo"
+              size={24}
+              color="green"
+              style={{
+                marginLeft: h2dp(2.5),
+                marginTop: h2dp(1.5),
+              }}
+            />
+            <Text
+              style={{
+                marginLeft: h2dp(1.5),
+                fontSize: h2dp(1.1),
                 color: "green",
                 marginTop: h2dp(0.5),
               }}
@@ -172,7 +299,7 @@ const DonationHistoryTabScreen = () => {
             <Text
               style={{
                 marginLeft: h2dp(1.5),
-                fontSize: 11,
+                fontSize: h2dp(1.1),
                 color: "#f2db0a",
                 marginTop: h2dp(0.5),
               }}
@@ -210,7 +337,7 @@ const DonationHistoryTabScreen = () => {
             <Text
               style={{
                 marginLeft: h2dp(1.5),
-                fontSize: 11,
+                fontSize: h2dp(1.1),
                 color: "red",
                 marginTop: h2dp(0.5),
               }}
@@ -228,7 +355,7 @@ const DonationHistoryTabScreen = () => {
               paddingTop: h2dp(0.5),
             }}
           >
-            {moment(createdAt).format("MMM DD, YYYY  ddd, hh:mm A")}
+            {moment(pickupDate).format("MMM DD, YYYY  ddd, hh:mm A")}
           </Text>
           <Text
             style={{
@@ -317,10 +444,14 @@ const DonationHistoryTabScreen = () => {
                 <Item
                   donationType={item?.donationType}
                   status={item?.status}
+                  pickupDate={item?.delivery?.pickupDate}
                   foodItem={`${item?.foodItem}  (${item?.quantity})`}
                   delivery={item?.delivery?.pickupAddress?.fullAddress}
                   createdAt={item?.createdAt}
                   donatedBy={item?.donatedBy?.name}
+                  delivered={item?.delivery?.delivered}
+                  driver={item?.delivery?.driver}
+                  dropDate={item?.delivery?.dropDate}
                 />
               )}
               keyExtractor={(item: any) => item?.id}

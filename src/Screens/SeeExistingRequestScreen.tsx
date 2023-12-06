@@ -118,135 +118,52 @@ const SeeExistingRequestScreen = ({ route }: any) => {
   }: any) => (
     <TouchableOpacity activeOpacity={1}>
       <View style={styles.cardContainer}>
-        {status === "approved" ? (
-          <View>
-            {type === "Supplies" ? (
-              <MaterialCommunityIcons
-                name="truck-outline"
-                size={24}
-                color="black"
-                style={{
-                  marginLeft: h2dp(2.3),
-                }}
-              />
-            ) : (
-              <Entypo
-                name="bowl"
-                size={24}
-                color="black"
-                style={{
-                  marginLeft: h2dp(2.5),
-                }}
-              />
-            )}
-            <AntDesign
-              name="checkcircleo"
+        <View>
+          {type === "Supplies" ? (
+            <MaterialCommunityIcons
+              name="truck-outline"
               size={24}
-              color="green"
-              style={{
-                marginLeft: h2dp(2.5),
-                marginTop: h2dp(1.5),
-              }}
-            />
-            <Text
-              style={{
-                marginLeft: h2dp(1.5),
-                fontSize: 11,
-                color: "green",
-                marginTop: h2dp(0.5),
-              }}
-            >
-              {localized.t("APPROVED")}
-            </Text>
-          </View>
-        ) : status === "pending" ? (
-          <View>
-            {type === "Supplies" ? (
-              <MaterialCommunityIcons
-                name="truck-outline"
-                size={24}
-                color="black"
-                style={{
-                  marginLeft: h2dp(2.3),
-                }}
-              />
-            ) : (
-              <Entypo
-                name="bowl"
-                size={24}
-                color="black"
-                style={{
-                  marginLeft: h2dp(2.5),
-                }}
-              />
-            )}
-            <FontAwesome
-              name="clock-o"
-              size={24}
-              color="#f2db0a"
+              color="black"
               style={{
                 marginLeft: h2dp(2.3),
-                marginTop: h2dp(1.5),
               }}
             />
-            <Text
-              style={{
-                marginLeft: h2dp(1.5),
-                fontSize: 11,
-                color: "#f2db0a",
-                marginTop: h2dp(0.5),
-              }}
-            >
-              {localized.t("PENDING")}
-            </Text>
-          </View>
-        ) : (
-          <View>
-            {type === "Supplies" ? (
-              <MaterialCommunityIcons
-                name="truck-outline"
-                size={24}
-                color="black"
-                style={{
-                  marginLeft: h2dp(2.3),
-                  // ,
-                }}
-              />
-            ) : (
-              <Entypo
-                name="bowl"
-                size={24}
-                color="black"
-                style={{
-                  marginLeft: h2dp(2.5),
-                  // ,
-                }}
-              />
-            )}
-            <Feather
-              name="x-circle"
+          ) : (
+            <Entypo
+              name="bowl"
               size={24}
-              color="red"
-              style={{ marginLeft: h2dp(2.3), marginTop: h2dp(1.5) }}
-            />
-            <Text
+              color="black"
               style={{
-                marginLeft: h2dp(1.5),
-                fontSize: 11,
-                color: "red",
-                marginTop: h2dp(0.5),
+                marginLeft: h2dp(2.5),
               }}
-            >
-              {localized.t("REJECTED")}
-            </Text>
-          </View>
-        )}
+            />
+          )}
+          <AntDesign
+            name="checkcircleo"
+            size={24}
+            color="green"
+            style={{
+              marginLeft: h2dp(2.5),
+              marginTop: h2dp(1.5),
+            }}
+          />
+          <Text
+            style={{
+              marginLeft: h2dp(1.5),
+              fontSize: h2dp(1.1),
+              color: "green",
+              marginTop: h2dp(0.5),
+            }}
+          >
+            {localized.t("APPROVED")}
+          </Text>
+        </View>
 
         <ScrollView showsVerticalScrollIndicator={false}>
           <Text
             style={{
               marginLeft: w2dp(3),
-              fontSize: 16,
+              fontSize: h2dp(1.6),
               lineHeight: 30,
               paddingTop: h2dp(0.5),
             }}
@@ -257,7 +174,7 @@ const SeeExistingRequestScreen = ({ route }: any) => {
             style={{
               marginLeft: w2dp(3),
               fontWeight: "500",
-              fontSize: 16,
+              fontSize: h2dp(1.6),
               lineHeight: 30,
               paddingTop: h2dp(0.7),
             }}
@@ -268,7 +185,7 @@ const SeeExistingRequestScreen = ({ route }: any) => {
             style={{
               marginLeft: w2dp(3),
               fontWeight: "300",
-              fontSize: 16,
+              fontSize: h2dp(1.6),
               lineHeight: 20,
               paddingBottom: h2dp(1),
             }}
@@ -297,7 +214,7 @@ const SeeExistingRequestScreen = ({ route }: any) => {
               style={{
                 marginLeft: w2dp(2),
                 fontWeight: "300",
-                fontSize: 16,
+                fontSize: h2dp(1.6),
                 lineHeight: 20,
                 paddingBottom: h2dp(1),
               }}
@@ -357,6 +274,7 @@ const SeeExistingRequestScreen = ({ route }: any) => {
           titleStyle={{
             color: "black",
             fontWeight: "300",
+            fontSize: h2dp(1.6),
           }}
         />
       </View>
@@ -376,7 +294,12 @@ const SeeExistingRequestScreen = ({ route }: any) => {
               name="chevron-back"
               size={32}
               color="white"
-              onPress={() => navigation.goBack()}
+              onPress={() => navigation.navigate("VolunteerDonateScreen", {
+                latitude: latitude,
+                longitude: longitude,
+                itemTypeId: itemTypeId,
+                title: title,
+              })}
             />
             <View style={styles.item}>
               <Text style={styles.itemText}>

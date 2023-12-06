@@ -91,19 +91,19 @@ export const AddDonations = Yup.object().shape({
   phoneNumber: Yup.string()
     .required(`${localized.t("THIS_FIELD_IS_REQUIRED")}`)
     .matches(/^[0-9]+$/, {
-      message: `${localized.t("Only numbers are allowed")}`,
+      message: `${localized.t("ONLY_NUMBERS_ARE_ALLOWED")}`,
       excludeEmptyString: true,
     }),
   flatNo: Yup.string()
     .required(`${localized.t("THIS_FIELD_IS_REQUIRED")}`)
     .matches(/^[0-9]+$/, {
-      message: `${localized.t("Only numbers are allowed")}`,
+      message: `${localized.t("ONLY_NUMBERS_ARE_ALLOWED")}`,
       excludeEmptyString: true,
     }),
   zipCode: Yup.string()
     .required(`${localized.t("THIS_FIELD_IS_REQUIRED")}`)
     .matches(/^[0-9]+$/, {
-      message: `${localized.t("Only numbers are allowed")}`,
+      message: `${localized.t("ONLY_NUMBERS_ARE_ALLOWED")}`,
       excludeEmptyString: true,
     })
     .min(
@@ -122,13 +122,13 @@ export const addVolunteer = Yup.object().shape({
   phoneNumber: Yup.string()
     .required(`${localized.t("THIS_FIELD_IS_REQUIRED")}`)
     .matches(/^[0-9]+$/, {
-      message: `${localized.t("Only numbers are allowed")}`,
+      message: `${localized.t("ONLY_NUMBERS_ARE_ALLOWED")}`,
       excludeEmptyString: true,
     }),
   zipCode: Yup.string()
     .required(`${localized.t("THIS_FIELD_IS_REQUIRED")}`)
     .matches(/^[0-9]+$/, {
-      message: `${localized.t("Only numbers are allowed")}`,
+      message: `${localized.t("ONLY_NUMBERS_ARE_ALLOWED")}`,
       excludeEmptyString: true,
     })
     .min(
@@ -156,13 +156,13 @@ export const addDriver = Yup.object().shape({
   phoneNumber: Yup.string()
     .required(`${localized.t("THIS_FIELD_IS_REQUIRED")}`)
     .matches(/^[0-9]+$/, {
-      message: `${localized.t("Only numbers are allowed")}`,
+      message: `${localized.t("ONLY_NUMBERS_ARE_ALLOWED")}`,
       excludeEmptyString: true,
     }),
   zipCode: Yup.string()
     .required(`${localized.t("THIS_FIELD_IS_REQUIRED")}`)
     .matches(/^[0-9]+$/, {
-      message: `${localized.t("Only numbers are allowed")}`,
+      message: `${localized.t("ONLY_NUMBERS_ARE_ALLOWED")}`,
       excludeEmptyString: true,
     })
     .min(
@@ -185,13 +185,13 @@ export const AddRequest = Yup.object().shape({
   phoneNumber: Yup.string()
     .required(`${localized.t("THIS_FIELD_IS_REQUIRED")}`)
     .matches(/^[0-9]+$/, {
-      message: `${localized.t("Only numbers are allowed")}`,
+      message: `${localized.t("ONLY_NUMBERS_ARE_ALLOWED")}`,
       excludeEmptyString: true,
     }),
   zipCode: Yup.string()
     .required(`${localized.t("THIS_FIELD_IS_REQUIRED")}`)
     .matches(/^[0-9]+$/, {
-      message: `${localized.t("Only numbers are allowed")}`,
+      message: `${localized.t("ONLY_NUMBERS_ARE_ALLOWED")}`,
       excludeEmptyString: true,
     })
     .min(
@@ -207,25 +207,25 @@ export const adddVehicle = Yup.object().shape({
   carModel: Yup.string()
     .required(`${localized.t("THIS_FIELD_IS_REQUIRED")}`)
     .matches(/^(?!\s)[A-Za-z0-9 ]{1,20}$/, {
-      message: `${localized.t("Please enter valid model")}`,
+      message: `${localized.t("PLEASE_ENTER_VALID_MODEL")}`,
       excludeEmptyString: true,
     }),
   carMake: Yup.string()
     .required(`${localized.t("THIS_FIELD_IS_REQUIRED")}`)
     .matches(/^(?!\s)[A-Za-z ]{1,20}$/, {
-      message: `${localized.t("Please enter valid make")}`,
+      message: `${localized.t("PLEASE_ENTER_VALID_MAKE")}`,
       excludeEmptyString: true,
     }),
   carColor: Yup.string()
     .required(`${localized.t("THIS_FIELD_IS_REQUIRED")}`)
     .matches(/^(?!\s)[A-Za-z ]{1,20}$/, {
-      message: `${localized.t("Please enter valid color")}`,
+      message: `${localized.t("PLEASE_ENTER_VALID_COLOR")}`,
       excludeEmptyString: true,
     }),
   licencePlate: Yup.string()
     .required(`${localized.t("THIS_FIELD_IS_REQUIRED")}`)
     .matches(/^(?![\W\d])[^\s]{1,10}$/, {
-      message: `${localized.t("Please enter valid licensePlate")}`,
+      message: `${localized.t("PLEASE_ENTER_VALID_LICENSEPLATE")}`,
       excludeEmptyString: true,
     }),
 });
@@ -234,7 +234,7 @@ export const GenerateOTP = Yup.object().shape({
   otp: Yup.string()
     .required(`${localized.t("THIS_FIELD_IS_REQUIRED")}`)
     .matches(/^[0-9]+$/, {
-      message: `${localized.t("Only numbers are allowed")}`,
+      message: `${localized.t("ONLY_NUMBERS_ARE_ALLOWED")}`,
       excludeEmptyString: true,
     }),
 });

@@ -120,7 +120,6 @@ const RequestSupplyHomeScreen = ({ route }: any) => {
                       />
                       <View style={styles.title}>
                         <Text style={styles.textStyle}>
-                          {/* {localized.t("VOLUNTEER_TO_DRIVE")} */}
                           {localized.t("SEE_ALL_REQUESTS")}
                         </Text>
                       </View>

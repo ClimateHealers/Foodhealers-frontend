@@ -280,6 +280,18 @@
     "OLD": "Viejo",
     "VEHICLE_UPDATED_SUCCESSFULLY": "Vehículo actualizado con éxito",
     "YOUR_VEHICLE_HAS_BEEN_UPDATED_SUCCESSFULLY": "El vehículo ha sido actualizado con éxito",
-    "VEHICLE_NOT_ADDED": "Vehículo no agregado"
+    "VEHICLE_NOT_ADDED": "Vehículo no agregado",
+    "PLEASE_ENTER_VALID_MODEL": "Por favor, introduzca un modelo válido",
+    "PLEASE_ENTER_VALID_MAKE": "Por favor, introduzca una marca válida",
+    "PLEASE_ENTER_VALID_COLOR": "Por favor, introduzca un color válido",
+    "PLEASE_ENTER_VALID_LICENSEPLATE": "Por favor, introduzca una placa de matrícula válida",
+    "ONLY_NUMBERS_ARE_ALLOWED": "Solo se permiten números",
+    "VEHICLE_MAKE": "Marca del vehículo",
+    "VEHICLE_MODEL": "Modelo del vehículo",
+    "VEHICLE_COLOR": "Color del vehículo",
+    "LICENSE_PLATE_NUMBER": "Número de placa de matrícula",
+    "RECIPE": "Receta",
+    "IN_TRANSIT": "En tránsito",
+    "ACCEPTED": "Aceptado"
   }
 }

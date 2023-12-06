@@ -225,7 +225,6 @@
     "ADD_NEW_VEHICLE": "নতুন যানবাহন যোগ করুন",
     "UPDATE": "হালনাগাদ করুন",
     "REQUEST_ADDED_SUCCESSFULLY": "অনুরোধ সফলভাবে যোগ হয়েছে",
-    "We have successfully added your request": "আমরা আপনার অনুরোধটি সফলভাবে যোগ করেছি",
     "REQUEST_NOT_ADDED": "অনুরোধ যোগ করা হয়নি",
     "YOU_CANT_SELECT_A_TIME_AFTER": "পরের সময় নির্বাচন করতে পারবেন না",
     "DRIVER_NOT_ADDED": "চালক যোগ করা হয়নি",
@@ -242,7 +241,6 @@
     "PICKUP_COMPLETED": "পিকআপ সম্পন্ন",
     "GENERATE_OTP": "OTP তৈরি করুন",
     "PICKUP_DELIVERED": "পিকআপ ডেলিভার করা হয়েছে",
-    "Thank You": "ধন্যবাদ",
     "YOU_HAVE_DELIVERED_THE_PICKUP": "আপনি পিকআপ ডেলিভার করেছেন",
     "SUCCESSFULL": "সাফল",
     "OTP_SUCCESS": "OTP সাফলভাবে সম্পন্ন",
@@ -282,6 +280,18 @@
     "OLD": "পুরানো",
     "VEHICLE_UPDATED_SUCCESSFULLY": "যানবাহন সফলভাবে আপডেট করা হয়েছে",
     "YOUR_VEHICLE_HAS_BEEN_UPDATED_SUCCESSFULLY": "যানবাহনটি সফলভাবে আপডেট করা হয়েছে",
-    "VEHICLE_NOT_ADDED": "যানবাহন যোগ করা হয়নি"
+    "VEHICLE_NOT_ADDED": "যানবাহন যোগ করা হয়নি",
+    "PLEASE_ENTER_VALID_MODEL": "দয়া করে বৈধ মডেল দিন",
+    "PLEASE_ENTER_VALID_MAKE": "দয়া করে বৈধ তৈরি দিন",
+    "PLEASE_ENTER_VALID_COLOR": "দয়া করে বৈধ রঙ দিন",
+    "PLEASE_ENTER_VALID_LICENSEPLATE": "দয়া করে বৈধ লাইসেন্স প্লেট দিন",
+    "ONLY_NUMBERS_ARE_ALLOWED": "কেবল সংখ্যা অনুমতি আছে",
+    "VEHICLE_MAKE": "যানবাহন তৈরি",
+    "VEHICLE_MODEL": "যানবাহন মডেল",
+    "VEHICLE_COLOR": "যানবাহনের রঙ",
+    "LICENSE_PLATE_NUMBER": "লাইসেন্স প্লেট নম্বর",
+    "RECIPE": "রেসিপি",
+    "IN_TRANSIT": "পথে",
+    "ACCEPTED": "গৃহীত"
   }
 }

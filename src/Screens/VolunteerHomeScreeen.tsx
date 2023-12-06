@@ -52,7 +52,7 @@ const VolunteerHomeScreen = ({ route }: any) => {
 
   const handlePressOutside = () => {
     Keyboard.dismiss();
-    setMenuOpen(!menuClose);
+    setMenuOpen(false);
   };
 
   useFocusEffect(
@@ -83,6 +83,7 @@ const VolunteerHomeScreen = ({ route }: any) => {
                 <Text style={styles.itemText}>{localized.t("HOME")}</Text>
               </View>
               <BurgerIcon
+                style={{ zIndex: 10 }}
                 onOutsidePress={handlePressOutside}
                 menuClose={menuClose}
               />
@@ -257,15 +258,13 @@ const VolunteerHomeScreen = ({ route }: any) => {
                     </View>
                   </TouchableOpacity>
                 </ScrollView>
-                <TouchableOpacity>
-                  <View style={{ marginTop: h2dp(4) }}>
-                    <Image
-                      source={require("../../assets/images/map.png")}
-                      style={styles.mapImage}
-                    />
-                  </View>
-                </TouchableOpacity>
-                <View style={{ marginVertical: h2dp(3) }}>
+                <View style={{ marginTop: h2dp(4) }}>
+                  <Image
+                    source={require("../../assets/images/map.png")}
+                    style={styles.mapImage}
+                  />
+                </View>
+                <View style={{ marginVertical: h2dp(4) }}>
                   <Text style={styles.mapContent}>{eventsScheduled}</Text>
                   <Text style={styles.mapContent}>
                     {localized.t("EVENTS_SCHEDULED")}

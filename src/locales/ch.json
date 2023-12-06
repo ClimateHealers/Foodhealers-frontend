@@ -240,6 +240,7 @@
     "REQUESTS": "请求",
     "PICKUP_COMPLETED": "提取已完成",
     "GENERATE_OTP": "生成OTP",
+    "PICKUP_DELIVERED": "取件已交付",
     "YOU_HAVE_DELIVERED_THE_PICKUP": "您已送达提取",
     "SUCCESSFULL": "成功",
     "OTP_SUCCESS": "OTP成功",
@@ -279,6 +280,18 @@
     "OLD": "旧的",
     "VEHICLE_UPDATED_SUCCESSFULLY": "车辆更新成功",
     "YOUR_VEHICLE_HAS_BEEN_UPDATED_SUCCESSFULLY": "车辆已成功更新",
-    "VEHICLE_NOT_ADDED": "车辆未添加"
+    "VEHICLE_NOT_ADDED": "车辆未添加",
+    "PLEASE_ENTER_VALID_MODEL": "请输入有效的型号",
+    "PLEASE_ENTER_VALID_MAKE": "请输入有效的制造商",
+    "PLEASE_ENTER_VALID_COLOR": "请输入有效的颜色",
+    "PLEASE_ENTER_VALID_LICENSEPLATE": "请输入有效的车牌号",
+    "ONLY_NUMBERS_ARE_ALLOWED": "只允许输入数字",
+    "VEHICLE_MAKE": "车辆制造商",
+    "VEHICLE_MODEL": "车辆型号",
+    "VEHICLE_COLOR": "车辆颜色",
+    "LICENSE_PLATE_NUMBER": "车牌号码",
+    "RECIPE": "食谱",
+    "IN_TRANSIT": "运输中",
+    "ACCEPTED": "已接受"
   }
 }

@@ -213,22 +213,12 @@ const AcceptRequestedDonationScreen = ({ route }: any) => {
                           {
                             text: `${localized.t("OK")}`,
                             onPress: () =>
-                              navigation.dispatch(
-                                CommonActions.reset({
-                                  index: 0,
-                                  routes: [
-                                    {
-                                      name: "VolunteerThankYouScreen",
-                                      params: {
-                                        itemTypeId: itemTypeId,
-                                        title: title,
-                                        latitude: latitude,
-                                        longitude: longitude,
-                                      },
-                                    },
-                                  ],
-                                })
-                              ),
+                              navigation.navigate("VolunteerThankYouScreen", {
+                                itemTypeId: itemTypeId,
+                                title: title,
+                                latitude: latitude,
+                                longitude: longitude,
+                              }),
                           },
                         ],
                         { cancelable: false }

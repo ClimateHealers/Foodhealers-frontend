@@ -40,6 +40,12 @@ export const styles = StyleSheet.create({
     zIndex: 1,
     marginBottom: h2dp(1),
   },
+  profileDetailsText2: {
+    paddingLeft: 5,
+    marginTop: -2,
+    fontSize: h2dp(2),
+    color: "white",
+  },
   centeredView: {
     flex: 1,
     alignItems: "center",
@@ -99,6 +105,7 @@ export const styles = StyleSheet.create({
     alignSelf: "center",
     width: w2dp(70),
     marginTop: h2dp(5),
+    fontSize: h2dp(2),
   },
   nextButtonStyles: {
     backgroundColor: "#FC5A56",
@@ -110,7 +117,7 @@ export const styles = StyleSheet.create({
   },
   titleStyle: {
     color: "white",
-    fontSize: 26,
+    fontSize: h2dp(2.6),
     fontWeight: "400",
     lineHeight: 35,
     fontFamily: "OpenSans-Regular",
@@ -155,7 +162,7 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
   },
   itemText: {
-    fontSize: 25,
+    fontSize: h2dp(2.5),
     color: "white",
   },
   itemTextDriver: {
@@ -309,7 +316,7 @@ export const styles = StyleSheet.create({
   },
   titleMainStyle: {
     color: "black",
-    fontSize: 26,
+    fontSize: h2dp(2.6),
     lineHeight: 35,
     fontFamily: "OpenSans-Regular",
   },
@@ -334,6 +341,14 @@ export const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.5)",
     paddingHorizontal: w2dp(4),
   },
+
+  burgerIconContainer: {
+    position: "absolute",
+    // top: 0,
+    right: 0,
+    zIndex: 10, // Set a higher zIndex
+  },
+
   modalContent: {
     backgroundColor: "rgba(0,0,0,0.5)",
     paddingHorizontal: 20,

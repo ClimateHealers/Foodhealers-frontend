@@ -44,38 +44,6 @@ const UploadPhotosScreen = ({ route }: any) => {
   const isAuthenticated = useSelector(
     (state: any) => state.auth.data.isAuthenticated
   );
-  const handlePressOutside = () => {
-    Keyboard.dismiss();
-  };
-
-  const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
-  };
-  const handleMenuItemPress = (item: any) => {
-    setMenuOpen(false);
-    navigation.navigate("HomeScreen");
-  };
-  const findFoodMenuItemPress = (item: any) => {
-    getLocation().then((res) => {
-      if (res) {
-        navigation?.navigate("MapScreen", {
-          latitude: res?.latitude,
-          longitude: res?.longitude,
-        });
-      }
-    });
-    setMenuOpen(false);
-  };
-  const logout = async (item: any) => {
-    await dispatch(logOut({} as any) as any);
-    await removeAuthData();
-    navigation.dispatch(
-      CommonActions.reset({
-        index: 0,
-        routes: [{ name: "LoginScreen" }],
-      })
-    );
-  };
 
   const openImagePickerAsync = async () => {
     const res = await MediaLibrary.requestPermissionsAsync();

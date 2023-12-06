@@ -72,7 +72,12 @@ const CalendarEventDetailScreen = ({ route }: any) => {
   const onShare = async () => {
     try {
       const result = await Share.share({
-        message: `Coming soon!`,
+        message: `I'm attending ${eventDetails?.name} Event.
+
+From ${moment(eventDetails?.eventStartDate).format("D MMM, ddd")} around ${formattedStartTime} onwards at ${eventDetails?.address}
+
+Join me using https://play.google.com/store/apps/details?id=com.foodhealers.climatehealers.`,
+        url: "https://play.google.com/store/apps/details?id=com.foodhealers.climatehealers",
       });
       if (result.action === Share.sharedAction) {
         if (result.activityType) {

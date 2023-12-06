@@ -1,11 +1,10 @@
 import {
-  AntDesign,
   Ionicons,
-  MaterialCommunityIcons,
+  MaterialCommunityIcons
 } from "@expo/vector-icons";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import {
   Alert,
   Image,
@@ -19,12 +18,12 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { localized } from "../locales/localization";
 
+import * as ImagePicker from "expo-image-picker";
+import * as MediaLibrary from "expo-media-library";
 import {
   heightPercentageToDP as h2dp,
   widthPercentageToDP as w2dp,
 } from "react-native-responsive-screen";
-import * as MediaLibrary from "expo-media-library";
-import * as ImagePicker from "expo-image-picker";
 import { useDispatch, useSelector } from "react-redux";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
 import PrimaryButton from "../Components/PrimaryButton";
@@ -60,6 +59,17 @@ const DriverRequestScreen = ({ route }: any) => {
     useCallback(() => {
       fetchingVehiclesData();
       fetchingUserData();
+      const { routes } = navigation.getState();
+      const filteredRoutes = routes.filter(
+        (route: any) =>
+          route.name !== "UpdateVehicleScreen" &&
+          route.name !== "AddVehicleScreen"
+      );
+
+      navigation.reset({
+        index: filteredRoutes.length - 2,
+        routes: filteredRoutes,
+      });
     }, [])
   );
 

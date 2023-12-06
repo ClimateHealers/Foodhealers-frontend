@@ -7,14 +7,14 @@ import {
 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
+import moment from "moment";
 import React, { useEffect, useState } from "react";
 import {
   FlatList,
-  SafeAreaView,
   ScrollView,
   Text,
   TouchableOpacity,
-  View,
+  View
 } from "react-native";
 import { Button } from "react-native-elements";
 import {
@@ -26,11 +26,9 @@ import { useDispatch } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
 import { styles } from "../Components/Styles";
-import { getLocation } from "../Components/getCurrentLocation";
+import { localized } from "../locales/localization";
 import { allEvents } from "../redux/actions/allEvents";
 import { myEvents } from "../redux/actions/myEvents";
-import { localized } from "../locales/localization";
-import moment from "moment";
 
 const AllEventScreen = () => {
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -47,6 +45,18 @@ const AllEventScreen = () => {
   useEffect(() => {
     fetchingEventData();
     sortByDate();
+    const { routes } = navigation.getState();
+    const filteredRoutes = routes.filter(
+      (route: any) =>
+        route.name !== "EventPhotosScreen" &&
+        route.name !== "PostEvent" &&
+        route.name !== "UploadPhotosScreen"
+    );
+
+    navigation.reset({
+      index: filteredRoutes.length - 4,
+      routes: filteredRoutes,
+    });
   }, []);
 
   const [order, setOrder] = useState<"ASC" | "DESC">("ASC");
@@ -166,7 +176,7 @@ const AllEventScreen = () => {
           </View>
         )}
         <ScrollView showsVerticalScrollIndicator={false}>
-        <Text
+          <Text
             style={{
               marginLeft: w2dp(5),
               fontSize: 16,

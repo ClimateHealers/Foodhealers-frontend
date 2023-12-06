@@ -71,7 +71,10 @@ const AddVolunteerToEvent = ({ route }: any) => {
     moment().add(1, "hour")
   );
 
-  const minDate = moment(selectedDate).utc().unix() - moment(selectedTime).utc().unix() > 0 ? eventStartDate : selectedTime;
+  const minDate =
+    moment(selectedDate).utc().unix() - moment(selectedTime).utc().unix() > 0
+      ? eventStartDate
+      : selectedTime;
   const userDetails = useSelector((state: any) => state.auth);
   const { data } = userDetails;
   const eventDateTime = moment(selectedDate).utc().unix();
@@ -112,8 +115,9 @@ const AddVolunteerToEvent = ({ route }: any) => {
     if (moment(endDate).isBefore(moment(selectedDate))) {
       Alert.alert(
         `${localized.t("ALERT")}`,
-        `${localized.t("YOU_CANT_SELECT_A_TIME_BEFORE")} ${moment(selectedDate)
-          .format("MMM DD, YYYY hh:mm A")}`
+        `${localized.t("YOU_CANT_SELECT_A_TIME_BEFORE")} ${moment(
+          selectedDate
+        ).format("MMM DD, YYYY hh:mm A")}`
       );
     } else {
       setSelectedEndDate(endDate);
@@ -240,23 +244,13 @@ const AddVolunteerToEvent = ({ route }: any) => {
                           {
                             text: `${localized.t("OK")}`,
                             onPress: () =>
-                              navigation.dispatch(
-                                CommonActions.reset({
-                                  index: 0,
-                                  routes: [
-                                    {
-                                      name: "VolunteerThankYouScreen",
-                                      params: {
-                                        id: id,
-                                        itemTypeId: itemTypeId,
-                                        title: title,
-                                        logitude: longitude,
-                                        latitude: latitude,
-                                      },
-                                    },
-                                  ],
-                                })
-                              ),
+                              navigation.navigate("VolunteerThankYouScreen", {
+                                id: id,
+                                itemTypeId: itemTypeId,
+                                title: title,
+                                logitude: longitude,
+                                latitude: latitude,
+                              }),
                           },
                         ],
                         { cancelable: false }

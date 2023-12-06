@@ -1,7 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
-import {decode} from "html-entities"
+import { decode } from "html-entities";
 import React from "react";
 import {
   Keyboard,
@@ -11,7 +11,7 @@ import {
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  View
+  View,
 } from "react-native";
 import {
   heightPercentageToDP as h2dp,
@@ -50,7 +50,15 @@ const SingleRecipeScreen = ({ route }: any) => {
       >
         <SafeAreaView style={styles.container}>
           <FoodhealersHeader />
-          <View style={styles.root}>
+          <View
+            style={[
+              styles.root,
+              {
+                marginTop: h2dp(3),
+                marginBottom: h2dp(2),
+              },
+            ]}
+          >
             <Ionicons
               name="chevron-back"
               size={32}
@@ -58,18 +66,30 @@ const SingleRecipeScreen = ({ route }: any) => {
               onPress={() => navigation.goBack()}
             />
             <ScrollView showsVerticalScrollIndicator={false}>
-              <View
-                style={[
-                  styles.item,
-                  { alignSelf: "center", justifyContent: "center" },
-                ]}
-              >
-                <Text style={styles.itemText}>{decode(recipeData?.recipeName, { level: "html5" })}</Text>
+              <View style={[{ alignSelf: "center", justifyContent: "center" }]}>
+                <Text style={styles.itemText}>{localized.t("RECIPE")}</Text>
               </View>
             </ScrollView>
             <BurgerIcon />
           </View>
-          <ScrollView keyboardShouldPersistTaps="always">
+          <View>
+            <Text
+              style={{
+                alignSelf: "center",
+                display: "flex",
+                justifyContent: "center",
+                fontSize: h2dp(3),
+                color: "white",
+                marginBottom: h2dp(3),
+              }}
+            >
+              {decode(recipeData?.recipeName, { level: "html5" })}
+            </Text>
+          </View>
+          <ScrollView
+            keyboardShouldPersistTaps="always"
+            showsVerticalScrollIndicator={false}
+          >
             <View>
               <TouchableOpacity activeOpacity={1}>
                 <Image
@@ -85,6 +105,7 @@ const SingleRecipeScreen = ({ route }: any) => {
                   transition={1000}
                 />
               </TouchableOpacity>
+
               <TouchableOpacity activeOpacity={1}>
                 <View
                   style={{
@@ -96,12 +117,13 @@ const SingleRecipeScreen = ({ route }: any) => {
                 >
                   <View
                     style={{
-                      justifyContent: "center",}}
+                      justifyContent: "center",
+                    }}
                   >
                     <Text
                       style={{
                         color: "white",
-                        fontSize: h2dp(3),
+                        fontSize: h2dp(2.5),
                       }}
                     >
                       {localized.t("COOKING_TIME")}
@@ -138,7 +160,7 @@ const SingleRecipeScreen = ({ route }: any) => {
                   <Text
                     style={{
                       color: "white",
-                      fontSize: h2dp(3),
+                      fontSize: h2dp(2.5),
                       marginBottom: h2dp(2),
                     }}
                   >
