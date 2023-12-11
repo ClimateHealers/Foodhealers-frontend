@@ -166,7 +166,7 @@ export default function NotificationScreen() {
               name="chevron-back"
               size={32}
               color="white"
-              onPress={() => navigation.goBack()}
+              onPress={() => {navigation.goBack(), handlePressOutside()}}
             />
             <View style={styles.item}>
               <Text style={styles.itemText}>{"Notifications"}</Text>

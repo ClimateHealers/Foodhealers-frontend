@@ -116,14 +116,15 @@ const VolunteerDonateScreen = ({ route }: any) => {
               </Text>
               <PrimaryButton
                 title={localized.t("SELECT")}
-                onPress={() =>
+                onPress={() => {
+                  handlePressOutside(),
                   navigation.navigate(item?.navigation, {
                     itemTypeId: item?.itemTypeId,
                     title: item?.title,
                     latitude: latitude,
                     longitude: longitude,
                   })
-                }
+                }}
                 buttonStyle={styles.buttonStyles}
                 titleStyle={styles.titleStyle}
               />
@@ -149,7 +150,7 @@ const VolunteerDonateScreen = ({ route }: any) => {
                   name="chevron-back"
                   size={32}
                   color="white"
-                  onPress={() => navigation.goBack()}
+                  onPress={() => {navigation.goBack(),handlePressOutside()}}
                 />
                 <View style={styles.item}>
                   <Text style={styles.itemText}>

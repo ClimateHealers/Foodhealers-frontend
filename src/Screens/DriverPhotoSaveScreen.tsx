@@ -121,7 +121,7 @@ const DriverPhotoSaveScreen = ({ route }: any) => {
                   name="chevron-back"
                   size={32}
                   color="white"
-                  onPress={() => navigation.navigate("DriverProfilePhoto")}
+                  onPress={() => {navigation.navigate("DriverProfilePhoto"),handlePressOutside()}}
                 />
                 <View style={styles.item}>
                   <Text style={styles.itemText}>{localized.t("DRIVE")}</Text>
@@ -173,7 +173,7 @@ const DriverPhotoSaveScreen = ({ route }: any) => {
                 }
                 buttonStyle={styles.buttonHistoryStyles}
                 titleStyle={styles.titleMainStyle}
-                onPress={() => navigation.navigate("TakePictureScreen")}
+                onPress={() => {navigation.navigate("TakePictureScreen"), handlePressOutside()}}
               />
               <PrimaryButton
                 title={localized.t("CHOOSE_FROM_CAMERA_ROLL")}

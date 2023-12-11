@@ -106,7 +106,7 @@ Join me using https://play.google.com/store/apps/details?id=com.foodhealers.clim
                   name="chevron-back"
                   size={32}
                   color="white"
-                  onPress={() => navigation.goBack()}
+                  onPress={() => {navigation.goBack(),handlePressOutside()}}
                 />
                 <View style={styles.item}>
                   <Text style={styles.itemText}>
@@ -257,7 +257,8 @@ Join me using https://play.google.com/store/apps/details?id=com.foodhealers.clim
                     !volunteersRequired || eventDetails?.status === "Rejected"
                   }
                   title={`${localized.t("VOLUNTEER")}`}
-                  onPress={() =>
+                  onPress={() => {
+                    handlePressOutside(),
                     navigation.navigate("AddVolunteerToEventScreen", {
                       id: eventDetails.id,
                       title: `${localized.t("VOLUNTEER_AT_EVENT")}`,
@@ -267,7 +268,7 @@ Join me using https://play.google.com/store/apps/details?id=com.foodhealers.clim
                       eventStartDate: eventDetails?.eventStartDate,
                       eventEndDate: eventDetails?.eventEndDate,
                     })
-                  }
+                  }}
                   buttonStyle={styles.buttonStyles}
                   titleStyle={styles.titleStyle}
                 />

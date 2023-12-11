@@ -70,7 +70,7 @@ const PickupSelectedDetailsScreen = ({ route }: any) => {
                   name="chevron-back"
                   size={32}
                   color="white"
-                  onPress={() => navigation.goBack()}
+                  onPress={() =>{handlePressOutside(),navigation.goBack()}}
                 />
                 <View style={styles.item}>
                   <Text style={styles.itemText}>{localized.t("DRIVE")}</Text>
@@ -227,7 +227,8 @@ const PickupSelectedDetailsScreen = ({ route }: any) => {
                         [
                           {
                             text: "OK",
-                            onPress: () =>
+                            onPress: () => {
+                              handlePressOutside(),
                               navigation.navigate("PickupConfirmScreen", {
                                 pickAddress: pickAddress,
                                 pickupTiming: pickupTiming,
@@ -242,8 +243,9 @@ const PickupSelectedDetailsScreen = ({ route }: any) => {
                                 fullfilled: fullfilled,
                                 pickedup: pickedup,
                                 delivered: delivered,
-                              }),
-                          },
+                              })
+                            },
+                          }
                         ],
                         { cancelable: false }
                       );

@@ -163,6 +163,7 @@ const PickupDetailsScreen = ({ route }: any) => {
         <Button
           title={localized.t("DETAILS")}
           onPress={() => {
+            handlePressOutside(),
             active === false
               ? navigation.navigate("PickupConfirmScreen", {
                   pickAddress: pickAddress,
@@ -229,7 +230,7 @@ const PickupDetailsScreen = ({ route }: any) => {
                     name="chevron-back"
                     size={32}
                     color="white"
-                    onPress={() => navigation.navigate("DriverRequestScreen")}
+                    onPress={() => {navigation.navigate("DriverRequestScreen"),handlePressOutside()}}
                   />
                   <View style={styles.item}>
                     <Text style={styles.itemText}>

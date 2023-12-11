@@ -142,7 +142,7 @@ const RecipesHomeScreen = () => {
                 name="chevron-back"
                 size={32}
                 color="white"
-                onPress={() => navigation.goBack()}
+                onPress={() => {navigation.goBack(),handlePressOutside()}}
               />
               <View style={styles.item}>
                 <Text style={styles.itemText}>{localized.t("RECIPES")}</Text>
@@ -195,7 +195,8 @@ const RecipesHomeScreen = () => {
                   {textChange
                     ? filteredData?.map((recipe: any) => (
                         <TouchableOpacity
-                          onPress={() =>
+                          onPress={() => {
+                            handlePressOutside(),
                             navigation.navigate("SingleRecipeScreen", {
                               recipeData: {
                                 recipeImage: recipe?.foodImage,
@@ -204,7 +205,7 @@ const RecipesHomeScreen = () => {
                                 recipeInstructions: recipe?.cookingInstructions,
                               },
                             })
-                          }
+                          }}
                         >
                           <View
                             key={recipe?.id}
@@ -273,12 +274,13 @@ const RecipesHomeScreen = () => {
                       ))
                     : recipesCategory.map((recipe: any) => (
                         <TouchableOpacity
-                          onPress={() =>
+                          onPress={() => {
+                            handlePressOutside(),
                             navigation.navigate("CategoryScreen", {
                               categoryId: recipe?.id,
                               recipeName: recipe?.name,
                             })
-                          }
+                          }}
                         >
                           <View
                             key={recipe.id}

@@ -289,7 +289,7 @@ const PostEventDetailsScreen = ({ route }: any) => {
                   title={localized.t("SEE_ALL_EVENTS")}
                   buttonStyle={styles.buttonStyles}
                   titleStyle={styles.titleStyle}
-                  onPress={() => navigation.navigate("AllEventScreen")}
+                  onPress={() => {handlePressOutside(),navigation.navigate("AllEventScreen")}}
                 />
               </View>
             </SafeAreaView>

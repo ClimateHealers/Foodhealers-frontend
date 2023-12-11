@@ -220,7 +220,8 @@ const AllEventScreen = () => {
         </ScrollView>
         <Button
           title={localized.t("DETAILS")}
-          onPress={() =>
+          onPress={() => {
+            handlePressOutside(),
             navigation.navigate("SingleEventDetails", {
               eventDetails: {
                 id: id,
@@ -236,7 +237,7 @@ const AllEventScreen = () => {
                 status: status,
               },
             })
-          }
+          }}
           buttonStyle={{
             marginLeft: w2dp(3),
             marginRight: w2dp(5),
@@ -269,7 +270,7 @@ const AllEventScreen = () => {
               name="chevron-back"
               size={32}
               color="white"
-              onPress={() => navigation.navigate("EventsHomeScreen")}
+              onPress={() => {navigation.navigate("EventsHomeScreen"),handlePressOutside()}}
             />
             <View style={styles.item}>
               <Text style={styles.itemText}>

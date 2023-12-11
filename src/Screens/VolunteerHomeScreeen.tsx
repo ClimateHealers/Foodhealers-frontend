@@ -94,12 +94,13 @@ const VolunteerHomeScreen = ({ route }: any) => {
             >
               <TouchableOpacity activeOpacity={1}>
                 <TouchableOpacity
-                  onPress={() =>
+                  onPress={() => {
+                    handlePressOutside(),
                     navigation.navigate("VolunteerDonateScreen", {
                       latitude: latitude,
                       longitude: longitude,
                     })
-                  }
+                  }}
                 >
                   <View
                     style={{
@@ -121,6 +122,7 @@ const VolunteerHomeScreen = ({ route }: any) => {
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => {
+                    handlePressOutside(),
                     data?.isDriver
                       ? navigation.navigate("DriverRequestScreen")
                       : navigation.navigate("BecomeADriverScreen");
@@ -164,7 +166,8 @@ const VolunteerHomeScreen = ({ route }: any) => {
                     <View style={styles.horizonatalView}>
                       {events?.slice(0, 1)?.map((event: any) => (
                         <TouchableOpacity
-                          onPress={() =>
+                          onPress={() => {
+                            handlePressOutside(),
                             navigation?.navigate("WeekScreen", {
                               currentlatitude: latitude,
                               currentlongitude: longitude,
@@ -176,7 +179,7 @@ const VolunteerHomeScreen = ({ route }: any) => {
                               lng: event?.address?.lng,
                               address: event?.address,
                             })
-                          }
+                          }}
                         >
                           <View
                             key={event?.id}
@@ -220,7 +223,8 @@ const VolunteerHomeScreen = ({ route }: any) => {
                       {recipeData &&
                         recipeData?.slice(1, 2)?.map((recipe: any) => (
                           <TouchableOpacity
-                            onPress={() =>
+                            onPress={() => {
+                              handlePressOutside(),
                               navigation.navigate("RecipesHomeScreen", {
                                 recipeData: {
                                   recipeImage: recipe?.foodImage,
@@ -233,7 +237,7 @@ const VolunteerHomeScreen = ({ route }: any) => {
                                   recipeCredits: recipe?.recipeCredits,
                                 },
                               })
-                            }
+                            }}
                           >
                             <View
                               key={recipe?.id}

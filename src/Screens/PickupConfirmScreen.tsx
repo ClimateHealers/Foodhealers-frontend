@@ -111,6 +111,7 @@ const PickupConfirmScreen = ({ route }: any) => {
                   size={32}
                   color="white"
                   onPress={() => {
+                    handlePressOutside(),
                     navigation.navigate("PickupDetailsScreen", {
                       itemTypeId: 4,
                     });

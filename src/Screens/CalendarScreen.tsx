@@ -53,7 +53,7 @@ const CalendarScreen = ({ route }: any) => {
                   name="chevron-back"
                   size={32}
                   color="white"
-                  onPress={() => navigation.goBack()}
+                  onPress={() => {navigation.goBack(), handlePressOutside()}}
                 />
                 <View style={styles.item}>
                   <Text style={styles.itemText}>
@@ -110,6 +110,7 @@ const CalendarScreen = ({ route }: any) => {
                       );
 
                       if (response?.payload?.foodEvents) {
+                        handlePressOutside(),
                         navigation.navigate("CalendarEventScreen", {
                           selectedDate: day.dateString,
                           singleDayEvent: response?.payload?.foodEvents,

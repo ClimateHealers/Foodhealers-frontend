@@ -151,7 +151,7 @@ const DriverProfileScreen = ({ route }: any) => {
                   name="chevron-back"
                   size={32}
                   color="#00693D"
-                  onPress={() => navigation.navigate("DriverRequestScreen")}
+                  onPress={() => {navigation.navigate("DriverRequestScreen"),handlePressOutside()}}
                 />
                 <View style={styles.item}>
                   <Text style={styles.itemText}></Text>

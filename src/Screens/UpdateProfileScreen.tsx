@@ -89,7 +89,7 @@ const UpdateProfileScreen = ({ route }: any) => {
                   name="chevron-back"
                   size={32}
                   color="white"
-                  onPress={() => navigation.goBack()}
+                  onPress={() => {navigation.goBack(),handlePressOutside()}}
                 />
                 <View style={styles.item}>
                   <Text style={styles.itemText}>
@@ -170,7 +170,7 @@ const UpdateProfileScreen = ({ route }: any) => {
                         [
                           {
                             text: "OK",
-                            onPress: () => navigation.navigate("ProfileScreen"),
+                            onPress: () => {navigation.navigate("ProfileScreen"),handlePressOutside()},
                           },
                         ],
                         { cancelable: false }

@@ -146,7 +146,7 @@ const AddVolunteerToEvent = ({ route }: any) => {
                   name="chevron-back"
                   size={32}
                   color="white"
-                  onPress={() => navigation.goBack()}
+                  onPress={() => {navigation.goBack(),handlePressOutside()}}
                 />
                 <View style={styles.item}>
                   <Text style={styles.itemText}>{title}</Text>
@@ -227,14 +227,16 @@ const AddVolunteerToEvent = ({ route }: any) => {
                         [
                           {
                             text: `${localized.t("OK")}`,
-                            onPress: () =>
+                            onPress: () => {
+                              handlePressOutside(),
                               navigation.navigate("VolunteerThankYouScreen", {
                                 id: id,
                                 itemTypeId: itemTypeId,
                                 title: title,
                                 logitude: longitude,
                                 latitude: latitude,
-                              }),
+                              })
+                            }
                           },
                         ],
                         { cancelable: false }

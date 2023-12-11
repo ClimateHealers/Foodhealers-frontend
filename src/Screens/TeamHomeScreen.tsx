@@ -70,7 +70,7 @@ const TeamHomeScreen = ({ route }: any) => {
                       name="chevron-back"
                       size={32}
                       color="white"
-                      onPress={() => navigation.goBack()}
+                      onPress={() => {navigation.goBack(),handlePressOutside()}}
                     />
                     <View style={styles.item}>
                       <Text style={styles.itemText}>{localized.t("TEAM")}</Text>
@@ -105,12 +105,13 @@ const TeamHomeScreen = ({ route }: any) => {
                     </View>
                   </View> */}
                   <TouchableOpacity
-                    onPress={() =>
+                    onPress={() => {
+                      handlePressOutside(),
                       navigation.navigate("RequestFoodHomeScreen", {
                         itemTypeId: 1,
                         title: `${localized.t("REQUEST_FOOD")}`,
                       })
-                    }
+                    }}
                   >
                     <View
                       style={{
@@ -151,12 +152,13 @@ const TeamHomeScreen = ({ route }: any) => {
                     </View>
                   </View> */}
                   <TouchableOpacity
-                    onPress={() =>
+                    onPress={() => {
+                      handlePressOutside(),
                       navigation.navigate("RequestFoodHomeScreen", {
                         itemTypeId: 2,
                         title: `${localized.t("REQUEST_SUPPLIES")}`,
                       })
-                    }
+                    }}
                   >
                     <View
                       style={{

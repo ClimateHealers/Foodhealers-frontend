@@ -53,7 +53,7 @@ const BecomeADriverScreen = () => {
                   name="chevron-back"
                   size={32}
                   color="white"
-                  onPress={() => navigation.goBack()}
+                  onPress={() => {navigation.goBack(),handlePressOutside()}}
                 />
                 <View style={styles.item}>
                   <Text style={styles.itemText}>{localized.t("DRIVE")}</Text>
@@ -79,7 +79,7 @@ const BecomeADriverScreen = () => {
               <View>
                 <PrimaryButton
                   title={localized.t("BECOME_A_DRIVER_FOR_FOOD_HEALERS")} // {localized.t(// )}
-                  onPress={() => navigation.navigate("AddDriverScreen")}
+                  onPress={() => {navigation.navigate("AddDriverScreen"),handlePressOutside()}}
                   buttonStyle={{
                     backgroundColor: "white",
                     color: "black",

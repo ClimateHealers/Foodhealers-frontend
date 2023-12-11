@@ -95,7 +95,7 @@ const UploadPhotosScreen = ({ route }: any) => {
                   name="chevron-back"
                   size={32}
                   color="white"
-                  onPress={() => navigation.goBack()}
+                  onPress={() => {navigation.goBack(),handlePressOutside()}}
                 />
                 <View style={styles.item}>
                   <Text style={styles.itemText}>
@@ -133,7 +133,7 @@ const UploadPhotosScreen = ({ route }: any) => {
                 <Text style={{ fontSize: 20, marginTop: 10 }}>
                   {localized.t("UPLOAD_EVENT_PHOTO")}
                 </Text>
-                <TouchableOpacity onPress={() => navigation.goBack()}>
+                <TouchableOpacity onPress={() => {navigation.goBack(),handlePressOutside()}}>
                   <Text
                     style={{
                       fontSize: 20,

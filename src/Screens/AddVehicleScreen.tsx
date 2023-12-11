@@ -83,11 +83,12 @@ const AddVehicleScreen = ({ route }: any) => {
                   name="chevron-back"
                   size={32}
                   color="white"
-                  onPress={() =>
+                  onPress={() => {
+                    handlePressOutside(),
                     newVehicle
                       ? navigation.navigate("DriverRequestScreen")
                       : navigation.navigate("BecomeADriverScreen")
-                  }
+                  }}
                 />
                 <View style={styles.item}>
                   <Text style={styles.itemText}>{localized.t("DRIVE")}</Text>
@@ -154,6 +155,7 @@ const AddVehicleScreen = ({ route }: any) => {
                               text: "OK",
                               onPress: () => {
                                 navigation.navigate("DriverRequestScreen");
+                                handlePressOutside()
                               },
                             },
                           ],
@@ -179,6 +181,7 @@ const AddVehicleScreen = ({ route }: any) => {
                               text: "OK",
                               onPress: () => {
                                 navigation.navigate("DriverProfilePhoto");
+                                handlePressOutside()
                               },
                             },
                           ],

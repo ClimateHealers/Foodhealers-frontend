@@ -71,7 +71,7 @@ const RequestFoodHomeScreen = ({ route }: any) => {
                       name="chevron-back"
                       size={32}
                       color="white"
-                      onPress={() => navigation.goBack()}
+                      onPress={() => {navigation.goBack(),handlePressOutside()}}
                     />
                     <View style={styles.item}>
                       <Text style={styles.itemText}>{title}</Text>
@@ -83,12 +83,13 @@ const RequestFoodHomeScreen = ({ route }: any) => {
                     />
                   </View>
                   <TouchableOpacity
-                    onPress={() =>
+                    onPress={() => {
+                      handlePressOutside(),
                       navigation.navigate("SeeExistingDonationScreen", {
                         itemTypeId: itemTypeId,
                         title: title,
                       })
-                    }
+                    }}
                   >
                     <View
                       style={{
@@ -109,11 +110,12 @@ const RequestFoodHomeScreen = ({ route }: any) => {
                     </View>
                   </TouchableOpacity>
                   <TouchableOpacity
-                    onPress={() =>
+                    onPress={() => {
+                      handlePressOutside(),
                       navigation.navigate("RequestHistoryScreen", {
                         itemTypeId: itemTypeId,
                       })
-                    }
+                    }}
                   >
                     <View
                       style={{

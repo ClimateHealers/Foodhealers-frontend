@@ -296,7 +296,7 @@ const AllVolunteersScreen = ({ route }: any) => {
                   name="chevron-back"
                   size={43}
                   color="white"
-                  onPress={() => navigation.goBack()}
+                  onPress={() => {navigation.goBack(),handlePressOutside()}}
                 />
                 <View style={styles.item}>
                   <Text style={styles.itemText}>{title}</Text>

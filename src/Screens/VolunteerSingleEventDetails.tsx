@@ -324,6 +324,7 @@ Join me using https://play.google.com/store/apps/details?id=com.foodhealers.clim
                           : `Volunteers (${volunteerNumber})`
                       }
                       onPress={() => {
+                        handlePressOutside(),
                         volunteerNumber
                           ? navigation.navigate("AllVolunteersScreen", {
                               eventId: eventDetails?.id,

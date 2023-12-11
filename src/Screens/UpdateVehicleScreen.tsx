@@ -119,7 +119,7 @@ const UpdateVehicleScreen = ({ route }: any) => {
                   name="chevron-back"
                   size={32}
                   color="white"
-                  onPress={() => navigation.goBack()}
+                  onPress={() => {navigation.goBack(),handlePressOutside()}}
                 />
                 <View style={styles.item}>
                   <Text style={styles.itemText}>{localized.t("DRIVE")}</Text>
@@ -183,9 +183,11 @@ const UpdateVehicleScreen = ({ route }: any) => {
                         [
                           {
                             text: "OK",
-                            onPress: () =>
-                              navigation.navigate("DriverRequestScreen"),
-                          },
+                            onPress: () => {
+                              handlePressOutside(),
+                              navigation.navigate("DriverRequestScreen")
+                            }
+                          }
                         ],
                         { cancelable: false }
                       );
@@ -370,6 +372,7 @@ const UpdateVehicleScreen = ({ route }: any) => {
                         buttonStyle={styles.nextButtonStyles}
                         titleStyle={styles.titleStyle}
                         onPress={() => {
+                          handlePressOutside(),
                           navigation.navigate("AddVehicleScreen", {
                             newVehicle: true,
                           });

@@ -130,7 +130,7 @@ const AcceptRequestedDonationScreen = ({ route }: any) => {
                   name="chevron-back"
                   size={32}
                   color="white"
-                  onPress={() => navigation.goBack()}
+                  onPress={() => {navigation.goBack(), handlePressOutside()}}
                 />
                 <View style={styles.item}>
                   <Text style={styles.itemText}>{title}</Text>
@@ -217,13 +217,15 @@ const AcceptRequestedDonationScreen = ({ route }: any) => {
                         [
                           {
                             text: `${localized.t("OK")}`,
-                            onPress: () =>
+                            onPress: () => {
+                              handlePressOutside(),
                               navigation.navigate("VolunteerThankYouScreen", {
                                 itemTypeId: itemTypeId,
                                 title: title,
                                 latitude: latitude,
                                 longitude: longitude,
-                              }),
+                              })
+                            }
                           },
                         ],
                         { cancelable: false }

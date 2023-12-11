@@ -112,7 +112,7 @@ const FindFoodHomeScreen = ({ route }: any) => {
                 name="chevron-back"
                 size={32}
                 color="white"
-                onPress={() => navigation.goBack()}
+                onPress={() => {navigation.goBack(),handlePressOutside()}}
               />
               <View style={styles.item}>
                 <Text style={styles.itemText}>{localized.t("FIND_FOOD")}</Text>
@@ -124,7 +124,10 @@ const FindFoodHomeScreen = ({ route }: any) => {
             </View>
             <TouchableOpacity
               style={[styles.touchableView]}
-              onPress={clickHandler}
+              onPress={() => { 
+                handlePressOutside(),
+                clickHandler()
+              }}
             >
               <View style={[styles.mapcontainerView]}>
                 <MapView
@@ -206,12 +209,13 @@ const FindFoodHomeScreen = ({ route }: any) => {
             >
               <TouchableOpacity
                 style={[styles.touchableView]}
-                onPress={() =>
+                onPress={() =>{ 
+                  handlePressOutside(),
                   navigation.navigate("CalendarScreen", {
                     latitude: latitude,
                     longitude: lng,
                   })
-                }
+                }}
               >
                 <View
                   style={[styles.containerView, { marginBottom: w2dp(2.8) }]}
@@ -234,7 +238,10 @@ const FindFoodHomeScreen = ({ route }: any) => {
               </TouchableOpacity>
               <TouchableOpacity
                 style={[styles.touchableView]}
-                onPress={fetchRecipesCategories}
+                onPress={()=>{
+                  handlePressOutside(),
+                  fetchRecipesCategories()
+                }}
               >
                 <View
                   style={[styles.containerView, { marginBottom: w2dp(2.8) }]}

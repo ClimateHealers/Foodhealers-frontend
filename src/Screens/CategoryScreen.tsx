@@ -135,7 +135,7 @@ const CategoryScreen = ({ route }: any) => {
                 name="chevron-back"
                 size={32}
                 color="white"
-                onPress={() => navigation.goBack()}
+                onPress={() => {navigation.goBack(),handlePressOutside()}}
               />
               <View style={styles.dropdownContainer}></View>
               <ScrollView showsVerticalScrollIndicator={false}>
@@ -197,7 +197,8 @@ const CategoryScreen = ({ route }: any) => {
                   {textChange
                     ? filteredData?.map((recipe: any) => (
                         <TouchableOpacity
-                          onPress={() =>
+                          onPress={() => {
+                            handlePressOutside(),
                             navigation.navigate("SingleRecipeScreen", {
                               recipeData: {
                                 recipeImage: recipe?.foodImage,
@@ -206,7 +207,7 @@ const CategoryScreen = ({ route }: any) => {
                                 recipeInstructions: recipe?.cookingInstructions,
                               },
                             })
-                          }
+                          }}
                         >
                           <View
                             key={recipe?.id}
@@ -275,7 +276,8 @@ const CategoryScreen = ({ route }: any) => {
                       ))
                     : data?.map((recipe: any) => (
                         <TouchableOpacity
-                          onPress={() =>
+                          onPress={() => {
+                            handlePressOutside(),
                             navigation.navigate("SingleRecipeScreen", {
                               recipeData: {
                                 recipeImage: recipe?.foodImage,
@@ -287,7 +289,7 @@ const CategoryScreen = ({ route }: any) => {
                                 recipeCredits: recipe?.recipeCredits,
                               },
                             })
-                          }
+                          }}
                         >
                           <View
                             style={{

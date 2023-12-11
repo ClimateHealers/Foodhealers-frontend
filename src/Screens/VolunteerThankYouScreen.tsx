@@ -67,6 +67,7 @@ const VolunteerThankYouScreen = ({ route }: any) => {
                   size={32}
                   color="white"
                   onPress={() => {
+                    handlePressOutside(),
                     itemTypeId === 1
                       ? navigation.navigate("AddDonationsScreen", {
                           itemTypeId: itemTypeId,
@@ -158,12 +159,13 @@ const VolunteerThankYouScreen = ({ route }: any) => {
                   </Text>
                   <PrimaryButton
                     title={localized.t("HOME")}
-                    onPress={() =>
+                    onPress={() => {
+                      handlePressOutside()
                       navigation.navigate("VolunteerHomeScreen", {
                         latitude: latitude,
                         longitude: longitude,
                       })
-                    }
+                    }}
                     buttonStyle={styles.buttonMainStyles}
                     titleStyle={styles.titleStyle}
                   />
@@ -173,26 +175,28 @@ const VolunteerThankYouScreen = ({ route }: any) => {
                 {itemTypeId === 1 ? (
                   <PrimaryButton
                     title={localized.t("ADD_ANOTHER_DONATION")}
-                    onPress={() =>
+                    onPress={() => {
+                      handlePressOutside()
                       navigation.navigate("AddDonationsScreen", {
                         itemTypeId: itemTypeId,
                         id: id,
                         title: title,
                       })
-                    }
+                    }}
                     buttonStyle={styles.buttonMainStyles}
                     titleStyle={styles.titleStyle}
                   />
                 ) : itemTypeId === 2 ? (
                   <PrimaryButton
                     title={localized.t("ADD_ANOTHER_SUPPLIES")}
-                    onPress={() =>
+                    onPress={() => {
+                      handlePressOutside()
                       navigation.navigate("AddDonationsScreen", {
                         itemTypeId: itemTypeId,
                         id: id,
                         title: title,
                       })
-                    }
+                    }}
                     buttonStyle={styles.buttonMainStyles}
                     titleStyle={styles.titleStyle}
                   />
@@ -200,6 +204,7 @@ const VolunteerThankYouScreen = ({ route }: any) => {
                   <PrimaryButton
                     title={localized.t("VOLUNTEER_AT_EVENT")}
                     onPress={() => {
+                      handlePressOutside(),
                       navigation.navigate("VolunteerEventScreen", {
                         itemTypeId: itemTypeId,
                         id: id,
@@ -215,26 +220,28 @@ const VolunteerThankYouScreen = ({ route }: any) => {
                 {itemTypeId === 3 ? (
                   <PrimaryButton
                     title={localized.t("HISTORY")}
-                    onPress={() =>
+                    onPress={() => {
+                      handlePressOutside(),
                       navigation.navigate("VolunteerEventHistoryScreen", {
                         itemTypeId: itemTypeId,
                         title: title,
                         id: id,
                       })
-                    }
+                    }}
                     buttonStyle={styles.buttonHistoryStyles}
                     titleStyle={styles.titleMainStyle}
                   />
                 ) : (
                   <PrimaryButton
                     title={localized.t("HISTORY")}
-                    onPress={() =>
+                    onPress={() => {
+                      handlePressOutside(),
                       navigation.navigate("VolunteerDonationHistoryScreen", {
                         itemTypeId: itemTypeId,
                         title: title,
                         id: id,
                       })
-                    }
+                    }}
                     buttonStyle={styles.buttonHistoryStyles}
                     titleStyle={styles.titleMainStyle}
                   />

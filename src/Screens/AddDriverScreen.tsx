@@ -87,7 +87,7 @@ const AddDriverScreen = ({ route }: any) => {
                   name="chevron-back"
                   size={32}
                   color="white"
-                  onPress={() => navigation.goBack()}
+                  onPress={() => {navigation.goBack(),handlePressOutside()}}
                 />
                 <View style={styles.item}>
                   <Text style={styles.itemText}>{localized.t("DRIVE")}</Text>
@@ -169,10 +169,12 @@ const AddDriverScreen = ({ route }: any) => {
                         [
                           {
                             text: "OK",
-                            onPress: () =>
+                            onPress: () => {
+                              handlePressOutside(),
                               navigation.navigate("AddVehicleScreen", {
                                 newVehicle: false,
-                              }),
+                              })
+                            }
                           },
                         ],
                         { cancelable: false }

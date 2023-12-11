@@ -125,7 +125,8 @@ const VolunteerEventScreen = ({ route }: any) => {
         </ScrollView>
         <Button
           title={localized.t("DETAILS")}
-          onPress={() =>
+          onPress={() => {
+            handlePressOutside(),
             navigation.navigate("SingleEventDetails", {
               eventDetails: {
                 additionalInfo: additionalInfo,
@@ -145,7 +146,7 @@ const VolunteerEventScreen = ({ route }: any) => {
                 status: status,
               },
             })
-          }
+          }}
           buttonStyle={{
             marginLeft: w2dp(3),
             marginRight: w2dp(5),
@@ -178,7 +179,7 @@ const VolunteerEventScreen = ({ route }: any) => {
               name="chevron-back"
               size={32}
               color="white"
-              onPress={() => navigation.goBack()}
+              onPress={() => {navigation.goBack(),handlePressOutside()}}
             />
             <View style={styles.item}>
               <Text style={styles.itemText}>
@@ -240,7 +241,7 @@ const VolunteerEventScreen = ({ route }: any) => {
               />
             </View>
           ) : (
-            <TouchableOpacity onPress={() => navigation.navigate("PostEvent")}>
+            <TouchableOpacity onPress={() => {navigation.navigate("PostEvent"),handlePressOutside()}}>
               <View style={{ marginTop: h2dp(3), alignItems: "center" }}>
                 <Image
                   source={require("../../assets/images/shutterShock.png")}

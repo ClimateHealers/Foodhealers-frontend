@@ -93,7 +93,7 @@ const EventPhotosScreen = ({ route }: any) => {
                   name="chevron-back"
                   size={32}
                   color="white"
-                  onPress={() => navigation.goBack()}
+                  onPress={() => {navigation.goBack(),handlePressOutside()}}
                 />
                 <View style={styles.item}>
                   <Text style={styles.itemText}>
@@ -132,7 +132,7 @@ const EventPhotosScreen = ({ route }: any) => {
                         titleStyle={{
                           fontSize: 20,
                         }}
-                        onPress={() => navigation.navigate("PostEvent")}
+                        onPress={() => {navigation.navigate("PostEvent"),handlePressOutside()}}
                       />
                       <Button
                         title={localized.t("NEXT")}
