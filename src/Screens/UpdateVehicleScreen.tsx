@@ -88,8 +88,6 @@ const UpdateVehicleScreen = ({ route }: any) => {
     setMenuOpen(!menuClose);
   };
 
-  console.log("kjfnksnkjs", vehicleDetails?.id);
-
   const changeVehicle = async (itemValue: any, index: any) => {
     setLoading(true);
     let selectedVehicleID = vehicleData[index]?.make;
