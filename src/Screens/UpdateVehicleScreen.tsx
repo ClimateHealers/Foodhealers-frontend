@@ -42,6 +42,7 @@ import SelectDropdown from "react-native-select-dropdown";
 
 const UpdateVehicleScreen = ({ route }: any) => {
   const { id } = route?.params;
+  const [changedVehicleId, setChangedVehicleId] = useState(route?.params?.id);
   const [menuClose, setMenuOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [vehicleDetails, setVehicleDetails] = useState<any>();
@@ -87,6 +88,8 @@ const UpdateVehicleScreen = ({ route }: any) => {
     setMenuOpen(!menuClose);
   };
 
+  console.log("kjfnksnkjs", vehicleDetails?.id);
+
   const changeVehicle = async (itemValue: any, index: any) => {
     setLoading(true);
     let selectedVehicleID = vehicleData[index]?.make;
@@ -94,6 +97,7 @@ const UpdateVehicleScreen = ({ route }: any) => {
     const response = await dispatch(fetchVehicle({} as any) as any);
     const filteredVehicle = response?.payload?.vehicleDetails[index];
     setVehicleDetails(filteredVehicle);
+    setChangedVehicleId(filteredVehicle?.id);
     setLoading(false);
   };
 
@@ -119,7 +123,9 @@ const UpdateVehicleScreen = ({ route }: any) => {
                   name="chevron-back"
                   size={32}
                   color="white"
-                  onPress={() => {navigation.goBack(),handlePressOutside()}}
+                  onPress={() => {
+                    navigation.goBack(), handlePressOutside();
+                  }}
                 />
                 <View style={styles.item}>
                   <Text style={styles.itemText}>{localized.t("DRIVE")}</Text>
@@ -160,7 +166,7 @@ const UpdateVehicleScreen = ({ route }: any) => {
                       plateNumber: licencePlate,
                       make: carMake,
                       active: true,
-                      vehicleId: id,
+                      vehicleId: changedVehicleId,
                     };
                     const res = await dispatch(
                       updateVehicle(data as any) as any
@@ -185,9 +191,9 @@ const UpdateVehicleScreen = ({ route }: any) => {
                             text: "OK",
                             onPress: () => {
                               handlePressOutside(),
-                              navigation.navigate("DriverRequestScreen")
-                            }
-                          }
+                                navigation.navigate("DriverRequestScreen");
+                            },
+                          },
                         ],
                         { cancelable: false }
                       );
@@ -373,9 +379,9 @@ const UpdateVehicleScreen = ({ route }: any) => {
                         titleStyle={styles.titleStyle}
                         onPress={() => {
                           handlePressOutside(),
-                          navigation.navigate("AddVehicleScreen", {
-                            newVehicle: true,
-                          });
+                            navigation.navigate("AddVehicleScreen", {
+                              newVehicle: true,
+                            });
                         }}
                       />
                     </View>
