@@ -83,6 +83,10 @@ export default function NotificationScreen() {
   const Item = ({ title, message, requiredDate, id, is_unread }: any) => (
     <TouchableOpacity
       onPress={async () => {
+        const data = {
+          notificationId: id,
+        };
+        const res = await dispatch(putNotifications(data as any) as any);
         modalDisplayData(id);
         toggleDisplay();
       }}

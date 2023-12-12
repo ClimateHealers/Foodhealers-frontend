@@ -28,13 +28,17 @@ import PrimaryButton from "../Components/PrimaryButton";
 import { styles } from "../Components/Styles";
 import { getLocation } from "../Components/getCurrentLocation";
 import { localized } from "../locales/localization";
+import * as FileSystem from "expo-file-system";
+import * as Sharing from "expo-sharing";
 import { useDispatch } from "react-redux";
+import { Asset } from "expo-asset";
+import * as Clipboard from "expo-clipboard";
 import { GetEventVolunteers } from "../redux/actions/eventVolunteers";
 
 const VolunteerSingleEventDetails = ({ route }: any) => {
   const { eventDetails } = route.params;
   const navigation: any = useNavigation();
-
+  const [base64String, setbase64String] = useState<any>();
   const [menuClose, setMenuOpen] = useState(false);
   const [langOpen, setlangOpen] = useState(false);
   const [eventVolunteersData, setEventVolunteersData] = useState<[]>([]);
@@ -80,11 +84,61 @@ const VolunteerSingleEventDetails = ({ route }: any) => {
   const EndTime = eventDetails?.eventEndDate;
   const formattedEndTime = moment(EndTime).format("h:mm a");
 
-  console.log(
-    "checking formatted start and end time",
-    formattedStartTime,
-    formattedEndTime
-  );
+  const imagePath = eventDetails?.eventPhoto;
+
+  useEffect(() => {
+    const convertToBase64 = async () => {
+      try {
+        const asset = Asset.fromModule(imagePath);
+        await asset.downloadAsync();
+
+        const fileUri = asset.localUri || asset.uri;
+        const base64 = await FileSystem.readAsStringAsync(fileUri, {
+          encoding: FileSystem.EncodingType.Base64,
+        });
+        setbase64String(`${base64}`);
+      } catch (error) {
+        console.error("Error converting to base64:", error);
+      }
+    };
+
+    convertToBase64();
+  }, [imagePath]);
+
+  const saveBase64AsFile = async (base64String: any) => {
+    const path = FileSystem.cacheDirectory + "image.jpg";
+    try {
+      await FileSystem.writeAsStringAsync(path, base64String, {
+        encoding: FileSystem.EncodingType.Base64,
+      });
+      return path;
+    } catch (error) {
+      console.error("Error saving base64 as file:", error);
+      return null;
+    }
+  };
+
+  const shareAsSocialPost = async () => {
+    const imageUrl = base64String;
+    const localUri: any = await saveBase64AsFile(base64String);
+    const message: any = `I'm Volunteering ${eventDetails?.name} Event.
+
+From ${moment(eventDetails?.eventStartDate).format(
+      "D MMM, ddd"
+    )} around ${formattedStartTime} onwards at ${eventDetails?.address}
+
+Join me using https://play.google.com/store/apps/details?id=com.foodhealers.climatehealers.`;
+    try {
+      await Clipboard.setStringAsync(message);
+      await Sharing.shareAsync(localUri, {
+        mimeType: "image/jpeg",
+        dialogTitle: message,
+        UTI: "image/jpeg",
+      });
+    } catch (error) {
+      console.error("Error sharing to Instagram:", error);
+    }
+  };
 
   const changeLanguage = (itemValue: any, index: any) => {
     const selectedLanguage = lang[index].value;
@@ -95,30 +149,6 @@ const VolunteerSingleEventDetails = ({ route }: any) => {
   const navigationHandler = () => {
     const url = `https://www.google.com/maps/dir/?api=1&destination=${eventDetails?.lat},${eventDetails?.long}`;
     Linking.openURL(url);
-  };
-
-  const onShare = async () => {
-    try {
-      const result = await Share.share({
-        message: `I'm Volunteering for ${eventDetails?.name}.
-
-From ${moment(eventDetails?.eventStartDate).format(
-          "D MMM, ddd"
-        )} around ${formattedStartTime} onwards at ${eventDetails?.address}
-
-Join me using https://play.google.com/store/apps/details?id=com.foodhealers.climatehealers.`,
-        url: "https://play.google.com/store/apps/details?id=com.foodhealers.climatehealers",
-      });
-      if (result.action === Share.sharedAction) {
-        if (result.activityType) {
-        } else {
-        }
-      } else if (result.action === Share.dismissedAction) {
-        // dismissed
-      }
-    } catch (error: any) {
-      Alert.alert(error.message);
-    }
   };
 
   const expired = moment(eventDetails?.eventEndDate).isBefore(moment());
@@ -294,7 +324,23 @@ Join me using https://play.google.com/store/apps/details?id=com.foodhealers.clim
                       buttonStyle={styles.buttonStyles}
                       titleStyle={styles.titleStyle}
                     />
-                    <TouchableOpacity onPress={onShare}>
+                    <TouchableOpacity
+                      onPress={() => {
+                        Alert.alert(
+                          `Text/Caption Copied to Clipboard`,
+                          `Text/Caption copied to clipboard. Please paste while sharing`,
+                          [
+                            {
+                              text: "OK",
+                              onPress: () => {
+                                shareAsSocialPost();
+                              },
+                            },
+                          ],
+                          { cancelable: false }
+                        );
+                      }}
+                    >
                       <Text
                         style={{
                           color: "white",
@@ -325,19 +371,19 @@ Join me using https://play.google.com/store/apps/details?id=com.foodhealers.clim
                       }
                       onPress={() => {
                         handlePressOutside(),
-                        volunteerNumber
-                          ? navigation.navigate("AllVolunteersScreen", {
-                              eventId: eventDetails?.id,
-                              title: `${localized.t("VOLUNTEER_AT_EVENT")}`,
-                              itemTypeId: 3,
-                              eventVolunteersData: eventVolunteersData,
-                            })
-                          : null;
+                          volunteerNumber
+                            ? navigation.navigate("AllVolunteersScreen", {
+                                eventId: eventDetails?.id,
+                                title: `${localized.t("VOLUNTEER_AT_EVENT")}`,
+                                itemTypeId: 3,
+                                eventVolunteersData: eventVolunteersData,
+                              })
+                            : null;
                       }}
                       buttonStyle={styles.buttonStyles}
                       titleStyle={styles.titleStyle}
                     />
-                    <TouchableOpacity onPress={onShare}>
+                    <TouchableOpacity onPress={shareAsSocialPost}>
                       <Text
                         style={{
                           color: "white",

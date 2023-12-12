@@ -1,8 +1,12 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
+import * as FileSystem from "expo-file-system";
+import * as Sharing from "expo-sharing";
+import { Asset } from "expo-asset";
 import moment from "moment";
-import React, { useState } from "react";
+import * as Clipboard from "expo-clipboard";
+import React, { useEffect, useState } from "react";
 import {
   Alert,
   Image,
@@ -26,13 +30,13 @@ import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
 import PrimaryButton from "../Components/PrimaryButton";
 import { styles } from "../Components/Styles";
-import { getLocation } from "../Components/getCurrentLocation";
 import { localized } from "../locales/localization";
 
 const SingleEventDetails = ({ route }: any) => {
   const { eventDetails } = route.params;
   const navigation: any = useNavigation();
   const [menuClose, setMenuOpen] = useState(false);
+  const [base64String, setbase64String] = useState<any>();
   const [langOpen, setlangOpen] = useState(false);
   const [lang, setLang] = useState([
     { id: 1, label: "French", value: "fr" },
@@ -51,18 +55,67 @@ const SingleEventDetails = ({ route }: any) => {
     Keyboard.dismiss();
     setMenuOpen(!menuClose);
   };
+  const imagePath = eventDetails?.eventPhoto;
+
+  useEffect(() => {
+    const convertToBase64 = async () => {
+      try {
+        const asset = Asset.fromModule(imagePath);
+        await asset.downloadAsync();
+
+        const fileUri = asset.localUri || asset.uri;
+        const base64 = await FileSystem.readAsStringAsync(fileUri, {
+          encoding: FileSystem.EncodingType.Base64,
+        });
+        setbase64String(`${base64}`);
+      } catch (error) {
+        console.error("Error converting to base64:", error);
+      }
+    };
+
+    convertToBase64();
+  }, [imagePath]);
+
+  const saveBase64AsFile = async (base64String: any) => {
+    const path = FileSystem.cacheDirectory + "image.jpg";
+    try {
+      await FileSystem.writeAsStringAsync(path, base64String, {
+        encoding: FileSystem.EncodingType.Base64,
+      });
+      return path;
+    } catch (error) {
+      console.error("Error saving base64 as file:", error);
+      return null;
+    }
+  };
+
+  const shareAsSocialPost = async () => {
+    const imageUrl = base64String;
+    const localUri: any = await saveBase64AsFile(base64String);
+    const message: any = `I'm attending ${eventDetails?.name} Event.
+
+From ${moment(eventDetails?.eventStartDate).format(
+      "D MMM, ddd"
+    )} around ${formattedStartTime} onwards at ${eventDetails?.address}
+
+Join me using https://play.google.com/store/apps/details?id=com.foodhealers.climatehealers.`;
+    try {
+      await Clipboard.setStringAsync(message);
+      await Sharing.shareAsync(localUri, {
+        mimeType: "image/jpeg",
+        dialogTitle: message,
+        UTI: "image/jpeg",
+      });
+    } catch (error) {
+      console.error("Error sharing to Instagram:", error);
+    }
+  };
 
   const startTime = eventDetails?.eventStartDate;
   const formattedStartTime = moment(startTime).format("h:mm a");
 
   const EndTime = eventDetails?.eventEndDate;
   const formattedEndTime = moment(EndTime).format("h:mm a");
-
-  console.log(
-    "checking formatted start and end time",
-    formattedStartTime,
-    formattedEndTime
-  );
 
   const changeLanguage = (itemValue: any, index: any) => {
     const selectedLanguage = lang[index].value;
@@ -73,29 +126,6 @@ const SingleEventDetails = ({ route }: any) => {
   const navigationHandler = () => {
     const url = `https://www.google.com/maps/dir/?api=1&destination=${eventDetails?.lat},${eventDetails?.long}`;
     Linking.openURL(url);
-  };
-
-  const onShare = async () => {
-    try {
-      const result = await Share.share({
-        message: `I'm attending ${eventDetails?.name} Event.
-
-From ${moment(eventDetails?.eventStartDate).format(
-          "D MMM, ddd"
-        )} around ${formattedStartTime} onwards at ${eventDetails?.address}
-
-Join me using https://play.google.com/store/apps/details?id=com.foodhealers.climatehealers.`,
-        url: "https://play.google.com/store/apps/details?id=com.foodhealers.climatehealers",
-      });
-      if (result.action === Share.sharedAction) {
-        if (result.activityType) {
-        } else {
-        }
-      } else if (result.action === Share.dismissedAction) {
-      }
-    } catch (error: any) {
-      Alert.alert(error.message);
-    }
   };
 
   const expired = moment(eventDetails?.eventEndDate).isBefore(moment());
@@ -116,7 +146,9 @@ Join me using https://play.google.com/store/apps/details?id=com.foodhealers.clim
                   name="chevron-back"
                   size={32}
                   color="white"
-                  onPress={() => {navigation.goBack(),handlePressOutside()}}
+                  onPress={() => {
+                    navigation.goBack(), handlePressOutside();
+                  }}
                 />
                 <View style={styles.item}>
                   <Text style={styles.itemText}>{eventDetails.name}</Text>
@@ -164,7 +196,6 @@ Join me using https://play.google.com/store/apps/details?id=com.foodhealers.clim
                         {formattedStartTime}
                       </Text>
                     </Text>
-
                     <Divider
                       style={{
                         backgroundColor: "black",
@@ -199,7 +230,6 @@ Join me using https://play.google.com/store/apps/details?id=com.foodhealers.clim
                         {eventDetails.address}
                       </Text>
                     </Text>
-
                     <Divider
                       style={{
                         backgroundColor: "black",
@@ -220,7 +250,6 @@ Join me using https://play.google.com/store/apps/details?id=com.foodhealers.clim
                         {eventDetails?.additionalInfo}
                       </Text>
                     </Text>
-
                     <Divider
                       style={{
                         backgroundColor: "black",
@@ -241,7 +270,6 @@ Join me using https://play.google.com/store/apps/details?id=com.foodhealers.clim
                         {eventDetails?.requiredVolunteers}
                       </Text>
                     </Text>
-
                     <Divider
                       style={{
                         backgroundColor: "black",
@@ -268,7 +296,7 @@ Join me using https://play.google.com/store/apps/details?id=com.foodhealers.clim
                         : `${localized.t("VOLUNTEER")}`
                     }
                     onPress={() => {
-                      handlePressOutside()
+                      handlePressOutside();
                       navigation.navigate("AddVolunteerToEventScreen", {
                         id: eventDetails.id,
                         title: `${localized.t("VOLUNTEER_AT_EVENT")}`,
@@ -277,14 +305,30 @@ Join me using https://play.google.com/store/apps/details?id=com.foodhealers.clim
                         latitude: eventDetails.latitude,
                         eventStartDate: eventDetails?.eventStartDate,
                         eventEndDate: eventDetails?.eventEndDate,
-                      })
+                      });
                     }}
                     buttonStyle={styles.buttonStyles}
                     titleStyle={styles.titleStyle}
                   />
                   {!expired && (
                     <View>
-                      <TouchableOpacity onPress={onShare}>
+                      <TouchableOpacity
+                        onPress={() => {
+                          Alert.alert(
+                            `Text/Caption Copied to Clipboard`,
+                            `Text/Caption copied to clipboard. Please paste while sharing`,
+                            [
+                              {
+                                text: "OK",
+                                onPress: () => {
+                                  shareAsSocialPost();
+                                },
+                              },
+                            ],
+                            { cancelable: false }
+                          );
+                        }}
+                      >
                         <Text
                           style={{
                             color: "white",

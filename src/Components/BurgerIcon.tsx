@@ -4,7 +4,14 @@ import {
   heightPercentageToDP as h2dp,
   widthPercentageToDP as w2dp,
 } from "react-native-responsive-screen";
-import { Text, TouchableOpacity, View } from "react-native";
+import {
+  Alert,
+  Platform,
+  Share,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { getLocation } from "../Components/getCurrentLocation";
@@ -20,8 +27,27 @@ const BurgerIcon = ({ menuClose, onOutsidePress, menuItem }: any) => {
   );
 
   useEffect(() => {
-    setMenuOpen(false)
+    setMenuOpen(false);
   }, [menuClose]);
+
+  const onShare = async () => {
+    try {
+      const result = await Share.share({
+        message: `Download this application from Google Play Store
+        
+        https://play.google.com/store/apps/details?id=com.foodhealers.climatehealers`,
+        url: "https://play.google.com/store/apps/details?id=com.foodhealers.climatehealers",
+      });
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+        } else {
+        }
+      } else if (result.action === Share.dismissedAction) {
+      }
+    } catch (error: any) {
+      Alert.alert(error.message);
+    }
+  };
 
   const handleMenuItemPress = (item: any) => {
     setMenuOpen(false);
@@ -98,6 +124,11 @@ const BurgerIcon = ({ menuClose, onOutsidePress, menuItem }: any) => {
                   </Text>
                 </TouchableOpacity>
               ) : null}
+              {Platform?.OS === "ios" ? null : (
+                <TouchableOpacity onPress={() => onShare()}>
+                  <Text style={styles.burgerText}>{localized.t("SHARE")}</Text>
+                </TouchableOpacity>
+              )}
               {menuItem !== "Team" ? (
                 <TouchableOpacity
                   onPress={() => {
