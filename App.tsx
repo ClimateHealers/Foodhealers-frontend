@@ -130,7 +130,7 @@ export default function App() {
         return;
       }
       token = await Notifications.getExpoPushTokenAsync({
-        projectId: Constants?.appConfig?.expo?.extra?.eas?.projectId,
+        projectId: Constants?.appConfig?.expo?.extra?.eas?.apikey,
       });
     } else {
       alert("Must use physical device for Push Notifications");
