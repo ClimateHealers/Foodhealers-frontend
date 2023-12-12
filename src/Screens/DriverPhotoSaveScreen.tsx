@@ -31,6 +31,7 @@ const DriverPhotoSaveScreen = ({ route }: any) => {
   const { selectedImage, fromCameraRoll } = route?.params;
   const [selectedImage1, setSelectedImage1] = useState(selectedImage);
   const [loading, setLoading] = useState(false);
+  const [menuClose, setMenuOpen] = useState(false);
   const date = new Date().getTime();
   const userDetails = useSelector((state: any) => state.auth);
   const { data } = userDetails;
@@ -38,6 +39,7 @@ const DriverPhotoSaveScreen = ({ route }: any) => {
   const dispatch = useDispatch();
   const handlePressOutside = () => {
     Keyboard.dismiss();
+    setMenuOpen(!menuClose);
   };
 
   const openImagePickerAsync = async () => {
@@ -119,12 +121,15 @@ const DriverPhotoSaveScreen = ({ route }: any) => {
                   name="chevron-back"
                   size={32}
                   color="white"
-                  onPress={() => navigation.navigate("DriverProfilePhoto")}
+                  onPress={() => {navigation.navigate("DriverProfilePhoto"),handlePressOutside()}}
                 />
                 <View style={styles.item}>
                   <Text style={styles.itemText}>{localized.t("DRIVE")}</Text>
                 </View>
-                <BurgerIcon />
+                <BurgerIcon
+                  onOutsidePress={handlePressOutside}
+                  menuClose={menuClose}
+                />
               </View>
               <Modal visible={loading} animationType="slide" transparent={true}>
                 <View style={styles.centeredView}>
@@ -168,7 +173,7 @@ const DriverPhotoSaveScreen = ({ route }: any) => {
                 }
                 buttonStyle={styles.buttonHistoryStyles}
                 titleStyle={styles.titleMainStyle}
-                onPress={() => navigation.navigate("TakePictureScreen")}
+                onPress={() => {navigation.navigate("TakePictureScreen"), handlePressOutside()}}
               />
               <PrimaryButton
                 title={localized.t("CHOOSE_FROM_CAMERA_ROLL")}

@@ -44,6 +44,7 @@ const AcceptDonatedRequestScreen = ({ route }: any) => {
     requiredDate,
   } = route?.params;
   const [loading, setLoading] = useState(false);
+  const [menuClose, setMenuOpen] = useState(false);
   const [langOpen, setlangOpen] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
   const [showDatePicker, setShowDatePicker] = useState(false);
@@ -82,6 +83,7 @@ const AcceptDonatedRequestScreen = ({ route }: any) => {
   const handlePressOutside = () => {
     setlangOpen(false);
     Keyboard.dismiss();
+    setMenuOpen(!menuClose);
   };
   const navigation: any = useNavigation();
 
@@ -127,12 +129,15 @@ const AcceptDonatedRequestScreen = ({ route }: any) => {
                   name="chevron-back"
                   size={32}
                   color="white"
-                  onPress={() => navigation.goBack()}
+                  onPress={() => {navigation.goBack(), handlePressOutside()}}
                 />
                 <View style={styles.item}>
                   <Text style={styles.itemText}>{title}</Text>
                 </View>
-                <BurgerIcon />
+                <BurgerIcon
+                  onOutsidePress={handlePressOutside}
+                  menuClose={menuClose}
+                />
               </View>
               <Modal visible={loading} animationType="slide" transparent={true}>
                 <View style={styles.centeredView}>
@@ -206,14 +211,16 @@ const AcceptDonatedRequestScreen = ({ route }: any) => {
                         [
                           {
                             text: `${localized.t("OK")}`,
-                            onPress: () =>
+                            onPress: () => {
+                              handlePressOutside(),
                               navigation.navigate("RequestCreatedScreen", {
                                 itemTypeId: itemTypeId,
                                 title: title,
                                 address: address,
                                 eventDateTime: selectedDate,
                                 foodItem: foodItem,
-                              }),
+                              })
+                            }
                           },
                         ],
                         { cancelable: false }

@@ -26,8 +26,7 @@ import API from "../Utils/APIUtils";
 import { localized } from "../locales/localization";
 import { VeganRecipesCategory } from "../redux/actions/veganRecipesCategory";
 
-const blurhash =
-  "|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[";
+const blurhash = "LBE~3[-;j[oy_MoMfQj[offQfQfQ";
 
 const CategoryScreen = ({ route }: any) => {
   const { categoryId, recipeName } = route.params;
@@ -38,7 +37,7 @@ const CategoryScreen = ({ route }: any) => {
   });
 
   const [langOpen, setlangOpen] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [menuClose, setMenuOpen] = useState(false);
   const [data, setData] = useState<any>([]);
   const [recipeCat, setRecipeCat] = useState<any>([]);
   const [searchText, setSearchText] = useState("");
@@ -107,33 +106,10 @@ const CategoryScreen = ({ route }: any) => {
     setLoading(false);
   };
 
-  const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
-  };
-
-  const handleMenuItemPress = (item: any) => {
-    setMenuOpen(false);
-    if (isAuthenticated) {
-      navigation.navigate("HomeScreen");
-    } else {
-      navigation.navigate("SignupScreen");
-    }
-  };
-  const findFoodMenuItemPress = (item: any) => {
-    getLocation().then((location: any) => {
-      if (location) {
-        navigation?.navigate("MapScreen", {
-          location: location,
-        });
-      }
-    });
-    setMenuOpen(false);
-  };
-
   const handlePressOutside = () => {
     setlangOpen(false);
     Keyboard.dismiss();
-    setMenuOpen(false);
+    setMenuOpen(!menuClose);
   };
 
   const handleSearchTextChange = (text: any) => {
@@ -159,7 +135,7 @@ const CategoryScreen = ({ route }: any) => {
                 name="chevron-back"
                 size={32}
                 color="white"
-                onPress={() => navigation.goBack()}
+                onPress={() => {navigation.goBack(),handlePressOutside()}}
               />
               <View style={styles.dropdownContainer}></View>
               <ScrollView showsVerticalScrollIndicator={false}>
@@ -167,7 +143,10 @@ const CategoryScreen = ({ route }: any) => {
                   <Text style={styles.itemText}>{recipeName}</Text>
                 </View>
               </ScrollView>
-              <BurgerIcon />
+              <BurgerIcon
+                onOutsidePress={handlePressOutside}
+                menuClose={menuClose}
+              />
             </View>
             <Modal visible={loading} animationType="slide" transparent={true}>
               <View style={styles.centeredView}>
@@ -218,7 +197,8 @@ const CategoryScreen = ({ route }: any) => {
                   {textChange
                     ? filteredData?.map((recipe: any) => (
                         <TouchableOpacity
-                          onPress={() =>
+                          onPress={() => {
+                            handlePressOutside(),
                             navigation.navigate("SingleRecipeScreen", {
                               recipeData: {
                                 recipeImage: recipe?.foodImage,
@@ -227,7 +207,7 @@ const CategoryScreen = ({ route }: any) => {
                                 recipeInstructions: recipe?.cookingInstructions,
                               },
                             })
-                          }
+                          }}
                         >
                           <View
                             key={recipe?.id}
@@ -296,7 +276,8 @@ const CategoryScreen = ({ route }: any) => {
                       ))
                     : data?.map((recipe: any) => (
                         <TouchableOpacity
-                          onPress={() =>
+                          onPress={() => {
+                            handlePressOutside(),
                             navigation.navigate("SingleRecipeScreen", {
                               recipeData: {
                                 recipeImage: recipe?.foodImage,
@@ -308,7 +289,7 @@ const CategoryScreen = ({ route }: any) => {
                                 recipeCredits: recipe?.recipeCredits,
                               },
                             })
-                          }
+                          }}
                         >
                           <View
                             style={{

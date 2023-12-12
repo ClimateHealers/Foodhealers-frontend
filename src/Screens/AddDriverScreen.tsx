@@ -32,6 +32,7 @@ import { updateProfile } from "../redux/actions/authAction";
 const AddDriverScreen = ({ route }: any) => {
   const [loading, setLoading] = useState(false);
   const [langOpen, setlangOpen] = useState(false);
+  const [menuClose, setMenuOpen] = useState(false);
   const [response, setResponse] = useState({
     loading: false,
     error: false,
@@ -62,6 +63,7 @@ const AddDriverScreen = ({ route }: any) => {
   const handlePressOutside = () => {
     setlangOpen(false);
     Keyboard.dismiss();
+    setMenuOpen(!menuClose);
   };
   const navigation: any = useNavigation();
 
@@ -85,12 +87,15 @@ const AddDriverScreen = ({ route }: any) => {
                   name="chevron-back"
                   size={32}
                   color="white"
-                  onPress={() => navigation.goBack()}
+                  onPress={() => {navigation.goBack(),handlePressOutside()}}
                 />
                 <View style={styles.item}>
                   <Text style={styles.itemText}>{localized.t("DRIVE")}</Text>
                 </View>
-                <BurgerIcon />
+                <BurgerIcon
+                  onOutsidePress={handlePressOutside}
+                  menuClose={menuClose}
+                />
               </View>
               <Modal visible={loading} animationType="slide" transparent={true}>
                 <View style={styles.centeredView}>
@@ -164,9 +169,12 @@ const AddDriverScreen = ({ route }: any) => {
                         [
                           {
                             text: "OK",
-                            onPress: () => navigation.navigate("AddVehicleScreen",{
-                              newVehicle: false,
-                            })
+                            onPress: () => {
+                              handlePressOutside(),
+                              navigation.navigate("AddVehicleScreen", {
+                                newVehicle: false,
+                              })
+                            }
                           },
                         ],
                         { cancelable: false }

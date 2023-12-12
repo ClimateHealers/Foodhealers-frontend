@@ -8,7 +8,7 @@ import {
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import moment from "moment";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import {
   FlatList,
   Keyboard,
@@ -22,17 +22,16 @@ import {
   heightPercentageToDP as h2dp,
   widthPercentageToDP as w2dp,
 } from "react-native-responsive-screen";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
 import { styles } from "../Components/Styles";
-import { getLocation } from "../Components/getCurrentLocation";
 import { localized } from "../locales/localization";
 import { fetchVolunteerAtEvent } from "../redux/actions/volunteerAction";
 
 const VolunteerEventHistoryScreen = ({ route }: any) => {
   const { itemTypeId, title } = route?.params;
+  const [menuClose, setMenuOpen] = useState(false);
   const [filterName, setFilterName] = useState<string>(`${localized.t("NEW")}`);
   const [volunteerData, setVolunteerData]: any = useState<[]>([]);
   useFocusEffect(
@@ -75,6 +74,7 @@ const VolunteerEventHistoryScreen = ({ route }: any) => {
 
   const handlePressOutside = () => {
     Keyboard.dismiss();
+    setMenuOpen(!menuClose);
   };
 
   const Item = ({ status, fromDate, name, address, id }: any) => (
@@ -195,14 +195,17 @@ const VolunteerEventHistoryScreen = ({ route }: any) => {
               name="chevron-back"
               size={32}
               color="white"
-              onPress={() => navigation.goBack()}
+              onPress={() => {navigation.goBack(),handlePressOutside()}}
             />
             <View style={styles.item}>
               <Text style={styles.itemText}>
                 {localized.t("VOLUNTEER")} {localized.t("EVENT_HISTORY")}
               </Text>
             </View>
-            <BurgerIcon />
+            <BurgerIcon
+              onOutsidePress={handlePressOutside}
+              menuClose={menuClose}
+            />
           </View>
           <View style={styles.itemFilter}>
             <Text style={styles.itemFilterText}>

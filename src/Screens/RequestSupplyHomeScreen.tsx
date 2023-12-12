@@ -26,6 +26,7 @@ const RequestSupplyHomeScreen = ({ route }: any) => {
   const [recipeData, setRecipeData] = useState<[]>([]);
   const [events, setEvents] = useState<[]>([]);
   const navigation: any = useNavigation();
+  const [menuClose, setMenuOpen] = useState(false);
   const dispatch = useDispatch();
   const eventsScheduled = events?.length;
 
@@ -42,6 +43,7 @@ const RequestSupplyHomeScreen = ({ route }: any) => {
 
   const handlePressOutside = () => {
     Keyboard.dismiss();
+    setMenuOpen(!menuClose);
   };
 
   useFocusEffect(
@@ -68,20 +70,24 @@ const RequestSupplyHomeScreen = ({ route }: any) => {
                       name="chevron-back"
                       size={32}
                       color="white"
-                      onPress={() => navigation.goBack()}
+                      onPress={() =>{ navigation.goBack(),handlePressOutside()}}
                     />
                     <View style={styles.item}>
                       <Text style={styles.itemText}>{title}</Text>
                     </View>
-                    <BurgerIcon />
+                    <BurgerIcon
+                      onOutsidePress={handlePressOutside}
+                      menuClose={menuClose}
+                    />
                   </View>
                   <TouchableOpacity
-                    onPress={() =>
+                    onPress={() => {
+                      handlePressOutside(),
                       navigation.navigate("AddRequestDonationsScreen", {
                         itemTypeId: itemTypeId,
                         title: title,
                       })
-                    }
+                    }}
                   >
                     <View
                       style={{
@@ -102,11 +108,12 @@ const RequestSupplyHomeScreen = ({ route }: any) => {
                     </View>
                   </TouchableOpacity>
                   <TouchableOpacity
-                    onPress={() =>
+                    onPress={() => {
+                      handlePressOutside(),
                       navigation.navigate("RequestHistoryScreen", {
                         itemTypeId: itemTypeId,
                       })
-                    }
+                    }}
                   >
                     <View
                       style={{

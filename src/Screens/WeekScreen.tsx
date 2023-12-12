@@ -50,6 +50,7 @@ const WeekScreen = ({ route }: any) => {
   const ASPECT_RATIO = width / height;
   const LATITUDE_DELTA = 0.0922;
   const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
+  const [menuClose, setMenuOpen] = useState(false);
 
   const [langOpen, setlangOpen] = useState(false);
   const [events, setEvents] = useState([]);
@@ -64,7 +65,6 @@ const WeekScreen = ({ route }: any) => {
     { id: 8, label: "Spanish", value: "es" },
   ]);
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const [menuOpen, setMenuOpen] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState(localized.locale);
   const [currentLat, setCurrentlat] = useState(0);
   const [currentLong, setCurrentlong] = useState(0);
@@ -217,10 +217,6 @@ const WeekScreen = ({ route }: any) => {
     }, [])
   );
 
-  const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
-  };
-
   const handleSingleIndexSelect = async (index: any) => {
     setSelectedIndex(index);
     if (index === 0) {
@@ -265,7 +261,7 @@ const WeekScreen = ({ route }: any) => {
   const handlePressOutside = () => {
     setlangOpen(false);
     Keyboard.dismiss();
-    setMenuOpen(false);
+    setMenuOpen(!menuClose);
   };
 
   const changeLanguage = (itemValue: any, index: any) => {
@@ -320,7 +316,10 @@ const WeekScreen = ({ route }: any) => {
                     {localized.t("FIND_FOOD")}
                   </Text>
                 </View>
-                <BurgerIcon />
+                <BurgerIcon
+                  onOutsidePress={handlePressOutside}
+                  menuClose={menuClose}
+                />
               </View>
               <View
                 style={{

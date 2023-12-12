@@ -36,6 +36,7 @@ const AddDonationsScreen = ({ route }: any) => {
   const { itemTypeId, title, latitude, longitude } = route?.params;
   const [loading, setLoading] = useState(false);
   const [langOpen, setlangOpen] = useState(false);
+  const [menuClose, setMenuOpen] = useState(false);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [countryPhoneCode, setCountryPhoneCode] = useState<string>("");
   const phoneCode = countryPhoneCode.toString();
@@ -64,6 +65,7 @@ const AddDonationsScreen = ({ route }: any) => {
   const handlePressOutside = () => {
     setlangOpen(false);
     Keyboard.dismiss();
+    setMenuOpen(!menuClose);
   };
   const navigation: any = useNavigation();
 
@@ -99,19 +101,23 @@ const AddDonationsScreen = ({ route }: any) => {
                   name="chevron-back"
                   size={32}
                   color="white"
-                  onPress={() =>
+                  onPress={() => {
+                    handlePressOutside(),
                     navigation.navigate("SeeExistingRequestScreen", {
                       latitude: latitude,
                       longitude: longitude,
                       itemTypeId: itemTypeId,
                       title: title,
                     })
-                  }
+                  }}
                 />
                 <View style={styles.item}>
                   <Text style={styles.itemText}>{title}</Text>
                 </View>
-                <BurgerIcon />
+                <BurgerIcon
+                  onOutsidePress={handlePressOutside}
+                  menuClose={menuClose}
+                />
               </View>
               <Modal visible={loading} animationType="slide" transparent={true}>
                 <View style={styles.centeredView}>
@@ -189,13 +195,15 @@ const AddDonationsScreen = ({ route }: any) => {
                         [
                           {
                             text: `${localized.t("OK")}`,
-                            onPress: () =>
+                            onPress: () => {
+                              handlePressOutside(),
                               navigation.navigate("VolunteerThankYouScreen", {
                                 itemTypeId: itemTypeId,
                                 title: title,
                                 latitude: latitude,
                                 longitude: longitude,
-                              }),
+                              })
+                            }
                           },
                         ],
                         { cancelable: false }

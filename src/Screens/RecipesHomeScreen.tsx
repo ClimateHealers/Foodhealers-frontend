@@ -25,12 +25,11 @@ import { VeganAllRecipes } from "../redux/actions/veganRecipesCategory";
 import { decode } from "html-entities";
 import API from "../Utils/APIUtils";
 
-const blurhash =
-  "|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[";
+const blurhash = "LBE~3[-;j[oy_MoMfQj[offQfQfQ";
 
 const RecipesHomeScreen = () => {
   const [langOpen, setlangOpen] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [menuClose, setMenuOpen] = useState(false);
   const [recipesCategory, setRecipeData] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [textChange, setTextChange] = useState(false);
@@ -57,40 +56,16 @@ const RecipesHomeScreen = () => {
     fetchRecipesCategories();
   }, []);
 
-  
   const token = useSelector((state: any) => state.auth.data.token);
 
   const isAuthenticated = useSelector(
     (state: any) => state?.auth?.data?.isAuthenticated
   );
 
-  const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
-  };
-
-  const handleMenuItemPress = (item: any) => {
-    setMenuOpen(false);
-    if (isAuthenticated) {
-      navigation.navigate("HomeScreen");
-    } else {
-      navigation.navigate("SignupScreen");
-    }
-  };
-  const findFoodMenuItemPress = (item: any) => {
-    getLocation().then((location: any) => {
-      if (location) {
-        navigation?.navigate("MapScreen", {
-          location: location,
-        });
-      }
-    });
-    setMenuOpen(false);
-  };
-
   const handlePressOutside = () => {
     setlangOpen(false);
     Keyboard.dismiss();
-    setMenuOpen(false);
+    setMenuOpen(!menuClose);
   };
 
   const fetchData = async () => {
@@ -167,12 +142,15 @@ const RecipesHomeScreen = () => {
                 name="chevron-back"
                 size={32}
                 color="white"
-                onPress={() => navigation.goBack()}
+                onPress={() => {navigation.goBack(),handlePressOutside()}}
               />
               <View style={styles.item}>
                 <Text style={styles.itemText}>{localized.t("RECIPES")}</Text>
               </View>
-              <BurgerIcon />
+              <BurgerIcon
+                onOutsidePress={handlePressOutside}
+                menuClose={menuClose}
+              />
             </View>
             <View
               style={[
@@ -217,7 +195,8 @@ const RecipesHomeScreen = () => {
                   {textChange
                     ? filteredData?.map((recipe: any) => (
                         <TouchableOpacity
-                          onPress={() =>
+                          onPress={() => {
+                            handlePressOutside(),
                             navigation.navigate("SingleRecipeScreen", {
                               recipeData: {
                                 recipeImage: recipe?.foodImage,
@@ -226,7 +205,7 @@ const RecipesHomeScreen = () => {
                                 recipeInstructions: recipe?.cookingInstructions,
                               },
                             })
-                          }
+                          }}
                         >
                           <View
                             key={recipe?.id}
@@ -295,12 +274,13 @@ const RecipesHomeScreen = () => {
                       ))
                     : recipesCategory.map((recipe: any) => (
                         <TouchableOpacity
-                          onPress={() =>
+                          onPress={() => {
+                            handlePressOutside(),
                             navigation.navigate("CategoryScreen", {
                               categoryId: recipe?.id,
                               recipeName: recipe?.name,
                             })
-                          }
+                          }}
                         >
                           <View
                             key={recipe.id}

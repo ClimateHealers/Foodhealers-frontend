@@ -1,8 +1,5 @@
-import {
-  AntDesign,
-  Ionicons
-} from "@expo/vector-icons";
-import { CommonActions, useNavigation } from "@react-navigation/native";
+import { AntDesign, Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
 import { LinearGradient } from "expo-linear-gradient";
 import * as MediaLibrary from "expo-media-library";
@@ -28,13 +25,10 @@ import { useDispatch, useSelector } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
 import { styles } from "../Components/Styles";
-import { getLocation } from "../Components/getCurrentLocation";
-import { removeAuthData } from "../redux/actions/authAction";
-import { logOut } from "../redux/reducers/authreducers";
 
 const UploadPhotosScreen = ({ route }: any) => {
   const { eventFormData } = route.params;
-  const [menuOpen, setMenuOpen] = useState<boolean>(false);
+  const [menuClose, setMenuOpen] = useState(false);
   const [loc, setLoc] = useState(false);
   const [selectedImage, setSelectedImage] = useState<any | []>([]);
 
@@ -44,6 +38,11 @@ const UploadPhotosScreen = ({ route }: any) => {
   const isAuthenticated = useSelector(
     (state: any) => state.auth.data.isAuthenticated
   );
+
+  const handlePressOutside = () => {
+    Keyboard.dismiss();
+    setMenuOpen(!menuClose);
+  };
 
   const openImagePickerAsync = async () => {
     const res = await MediaLibrary.requestPermissionsAsync();
@@ -82,7 +81,7 @@ const UploadPhotosScreen = ({ route }: any) => {
   };
 
   return (
-    <TouchableWithoutFeedback onPress={() => setMenuOpen(false)}>
+    <TouchableWithoutFeedback onPress={() => handlePressOutside()}>
       <LinearGradient
         colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
         style={styles.background}
@@ -96,14 +95,17 @@ const UploadPhotosScreen = ({ route }: any) => {
                   name="chevron-back"
                   size={32}
                   color="white"
-                  onPress={() => navigation.goBack()}
+                  onPress={() => {navigation.goBack(),handlePressOutside()}}
                 />
                 <View style={styles.item}>
                   <Text style={styles.itemText}>
                     {localized.t("POST_AN_EVENT")}
                   </Text>
                 </View>
-                <BurgerIcon />
+                <BurgerIcon
+                  onOutsidePress={handlePressOutside}
+                  menuClose={menuClose}
+                />
               </View>
               <View
                 style={[
@@ -131,7 +133,7 @@ const UploadPhotosScreen = ({ route }: any) => {
                 <Text style={{ fontSize: 20, marginTop: 10 }}>
                   {localized.t("UPLOAD_EVENT_PHOTO")}
                 </Text>
-                <TouchableOpacity onPress={() => navigation.goBack()}>
+                <TouchableOpacity onPress={() => {navigation.goBack(),handlePressOutside()}}>
                   <Text
                     style={{
                       fontSize: 20,

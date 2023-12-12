@@ -12,7 +12,7 @@ const appConfig = {
   expo: {
     name: "food-healers",
     slug: "food-healers",
-    version: "1.3.3",
+    version: "1.3.4",
     orientation: "portrait",
 
     icon: "./assets/FH-androidLogo.png",
@@ -52,7 +52,7 @@ const appConfig = {
       },
     },
     android: {
-      versionCode: 14,
+      versionCode: 15,
       permissions: [
         "android.permission.ACCESS_COARSE_LOCATION",
         "android.permission.ACCESS_FINE_LOCATION",
@@ -76,7 +76,8 @@ const appConfig = {
     ],
     extra: {
       eas: {
-        projectId: "e0f0f8a7-ffa0-4792-8f06-fc991a1d09fc",
+        projectId: process.env.PROJECT_ID || "",
+        apikey: process.env.FIREBASE_FCM_API_KEY || "",
       },
       googleMapsApiKey: process.env.GOOGLE_API_KEY || "",
     },

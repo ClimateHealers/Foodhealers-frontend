@@ -37,7 +37,7 @@ const CalendarEventScreen = ({ route }: any) => {
   const formattedDate = moment(selectedDate).format("DD MMM");
   const monthHeader = moment(selectedDate).format("MMM");
 
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [menuClose, setMenuOpen] = useState(false);
 
   const isAuthenticated = useSelector(
     (state: any) => state?.auth?.data?.isAuthenticated
@@ -45,30 +45,7 @@ const CalendarEventScreen = ({ route }: any) => {
 
   const handlePressOutside = () => {
     Keyboard.dismiss();
-    setMenuOpen(false);
-  };
-
-  const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
-  };
-
-  const handleMenuItemPress = (item: any) => {
-    setMenuOpen(false);
-    if (isAuthenticated) {
-      navigation.navigate("HomeScreen");
-    } else {
-      navigation.navigate("SignupScreen");
-    }
-  };
-  const findFoodMenuItemPress = (item: any) => {
-    getLocation().then((location: any) => {
-      if (location) {
-        navigation?.navigate("MapScreen", {
-          location: location,
-        });
-      }
-    });
-    setMenuOpen(false);
+    setMenuOpen(!menuClose);
   };
 
   const navigateToDetailScreen = () => {
@@ -95,16 +72,19 @@ const CalendarEventScreen = ({ route }: any) => {
               name="chevron-back"
               size={32}
               color="white"
-              onPress={() => navigation.goBack()}
+              onPress={() =>{ navigation.goBack(),handlePressOutside()}}
             />
             <View style={styles.item}>
               <Text style={styles.itemText}>{localized.t("FOOD_EVENTS")}</Text>
             </View>
-            <BurgerIcon />
+            <BurgerIcon
+              onOutsidePress={handlePressOutside}
+              menuClose={menuClose}
+            />
           </View>
 
           <View style={styles.subHeader}>
-            <TouchableOpacity onPress={() => navigation.goBack()}>
+            <TouchableOpacity onPress={() =>{ navigation.goBack(),handlePressOutside()}}>
               <View
                 style={{
                   display: "flex",
@@ -165,13 +145,14 @@ const CalendarEventScreen = ({ route }: any) => {
                   {singleDayEvent.map((event: any, index: any) => (
                     <TouchableOpacity
                       key={index}
-                      onPress={() =>
+                      onPress={() => { 
+                        handlePressOutside(),
                         navigation.navigate("CalendarEventDetailScreen", {
                           eventDetails: event,
                           latitude: latitude,
                           longitude: longitude,
                         })
-                      }
+                      }}
                     >
                       <View style={styles.eventCon}>
                         <Text style={styles.eventTitle}>{event?.name}</Text>

@@ -60,7 +60,7 @@ const HistoryScreen = ({ route }: any) => {
                     name="chevron-back"
                     size={32}
                     color="white"
-                    onPress={() => navigation.goBack()}
+                    onPress={() => {navigation.goBack(),handlePressOutside()}}
                   />
                 </View>
                 <View style={styles.item}>

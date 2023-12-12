@@ -26,19 +26,16 @@ const VolunteerDonateScreen = ({ route }: any) => {
   const navigation: any = useNavigation();
 
   const [langOpen, setlangOpen] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [menuClose, setMenuOpen] = useState(false);
   const { width: screenWidth } = Dimensions.get("window");
   const [activeSlide, setActiveSlide] = useState(0);
-
-  const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
-  };
 
   const sliderRef: any = useRef(null);
 
   const handlePressOutside = () => {
     setlangOpen(false);
     Keyboard.dismiss();
+    setMenuOpen(!menuClose);
   };
   const cardData = [
     {
@@ -57,7 +54,9 @@ const VolunteerDonateScreen = ({ route }: any) => {
     },
     {
       id: 3,
-      title: `${localized.t("REQUEST")} ${localized.t("FOOD")}/${localized.t("SUPPLIES")}`,
+      title: `${localized.t("REQUEST")} ${localized.t("FOOD")}/${localized.t(
+        "SUPPLIES"
+      )}`,
       image: require("../../assets/images/requestFoodSupplies.png"),
       itemTypeId: 3,
       navigation: "TeamHomeScreen",
@@ -117,14 +116,15 @@ const VolunteerDonateScreen = ({ route }: any) => {
               </Text>
               <PrimaryButton
                 title={localized.t("SELECT")}
-                onPress={() =>
+                onPress={() => {
+                  handlePressOutside(),
                   navigation.navigate(item?.navigation, {
                     itemTypeId: item?.itemTypeId,
                     title: item?.title,
                     latitude: latitude,
                     longitude: longitude,
                   })
-                }
+                }}
                 buttonStyle={styles.buttonStyles}
                 titleStyle={styles.titleStyle}
               />
@@ -150,14 +150,17 @@ const VolunteerDonateScreen = ({ route }: any) => {
                   name="chevron-back"
                   size={32}
                   color="white"
-                  onPress={() => navigation.goBack()}
+                  onPress={() => {navigation.goBack(),handlePressOutside()}}
                 />
                 <View style={styles.item}>
                   <Text style={styles.itemText}>
                     {localized.t("VOLUNTEER")}
                   </Text>
                 </View>
-                <BurgerIcon />
+                <BurgerIcon
+                  onOutsidePress={handlePressOutside}
+                  menuClose={menuClose}
+                />
               </View>
               <View style={{ marginHorizontal: "-4%" }}>
                 <Carousel

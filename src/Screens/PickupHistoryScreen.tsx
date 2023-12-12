@@ -29,6 +29,7 @@ import { fetchPickup } from "../redux/actions/acceptPickupAction";
 
 const PickupHistoryScreen = ({ route }: any) => {
   const { itemTypeId } = route?.params;
+  const [menuClose, setMenuOpen] = useState(false);
   const [pickupData, setPickupData]: any[] = useState<[]>([]);
   const [filterName, setFilterName] = useState<string>(`${localized.t("NEW")}`);
   const dispatch = useDispatch();
@@ -78,6 +79,7 @@ const PickupHistoryScreen = ({ route }: any) => {
 
   const handlePressOutside = () => {
     Keyboard.dismiss();
+    setMenuOpen(!menuClose);
   };
 
   const Item = ({
@@ -122,6 +124,7 @@ const PickupHistoryScreen = ({ route }: any) => {
         <Button
           title={localized.t("DETAILS")}
           onPress={() => {
+            handlePressOutside(),
             console.log(active);
             active === false
               ? navigation.navigate("PickupConfirmScreen", {
@@ -187,14 +190,17 @@ const PickupHistoryScreen = ({ route }: any) => {
                     name="chevron-back"
                     size={32}
                     color="white"
-                    onPress={() => navigation.navigate("DriverRequestScreen")}
+                    onPress={() => {navigation.navigate("DriverRequestScreen"),handlePressOutside()}}
                   />
                   <View style={styles.item}>
                     <Text style={styles.itemText}>
                       {localized.t("PICKUP_HISTORY")}
                     </Text>
                   </View>
-                  <BurgerIcon />
+                  <BurgerIcon
+                    onOutsidePress={handlePressOutside}
+                    menuClose={menuClose}
+                  />
                 </View>
                 {pickupData?.length > 0 ? (
                   <View>

@@ -1,7 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
-import React from "react";
+import React, { useState } from "react";
 import {
   Image,
   Keyboard,
@@ -24,9 +24,11 @@ import { localized } from "../locales/localization";
 
 const BecomeADriverScreen = () => {
   const navigation: any = useNavigation();
+  const [menuClose, setMenuOpen] = useState(false);
 
   const handlePressOutside = () => {
     Keyboard.dismiss();
+    setMenuOpen(!menuClose);
   };
 
   return (
@@ -51,12 +53,15 @@ const BecomeADriverScreen = () => {
                   name="chevron-back"
                   size={32}
                   color="white"
-                  onPress={() => navigation.goBack()}
+                  onPress={() => {navigation.goBack(),handlePressOutside()}}
                 />
                 <View style={styles.item}>
                   <Text style={styles.itemText}>{localized.t("DRIVE")}</Text>
                 </View>
-                <BurgerIcon />
+                <BurgerIcon
+                  onOutsidePress={handlePressOutside}
+                  menuClose={menuClose}
+                />
               </View>
               <View
                 style={{
@@ -68,15 +73,13 @@ const BecomeADriverScreen = () => {
               >
                 <Image
                   source={require("../../assets/images/shutterstock_1907968996.png")}
-                  style={{width: "100%", height: h2dp(30)}}
+                  style={{ width: "100%", height: h2dp(30) }}
                 />
               </View>
               <View>
                 <PrimaryButton
                   title={localized.t("BECOME_A_DRIVER_FOR_FOOD_HEALERS")} // {localized.t(// )}
-                  onPress={() =>
-                    navigation.navigate("AddDriverScreen")
-                  }
+                  onPress={() => {navigation.navigate("AddDriverScreen"),handlePressOutside()}}
                   buttonStyle={{
                     backgroundColor: "white",
                     color: "black",

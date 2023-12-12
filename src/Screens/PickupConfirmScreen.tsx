@@ -57,6 +57,7 @@ const PickupConfirmScreen = ({ route }: any) => {
   const [loading, setLoading] = useState(false);
   const itemTypeId = 4;
   const [otp, setOtp] = useState(false);
+  const [menuClose, setMenuOpen] = useState(false);
   const [response, setResponse] = useState({
     loading: false,
     error: false,
@@ -81,6 +82,7 @@ const PickupConfirmScreen = ({ route }: any) => {
 
   const handlePressOutside = () => {
     Keyboard.dismiss();
+    setMenuOpen(!menuClose);
   };
 
   const pickNavigationHandler = () => {
@@ -109,6 +111,7 @@ const PickupConfirmScreen = ({ route }: any) => {
                   size={32}
                   color="white"
                   onPress={() => {
+                    handlePressOutside(),
                     navigation.navigate("PickupDetailsScreen", {
                       itemTypeId: 4,
                     });
@@ -117,7 +120,10 @@ const PickupConfirmScreen = ({ route }: any) => {
                 <View style={styles.item}>
                   <Text style={styles.itemText}>{localized.t("DRIVE")}</Text>
                 </View>
-                <BurgerIcon />
+                <BurgerIcon
+                  onOutsidePress={handlePressOutside}
+                  menuClose={menuClose}
+                />
               </View>
               <Modal visible={loading} animationType="slide" transparent={true}>
                 <View style={styles.centeredView}>

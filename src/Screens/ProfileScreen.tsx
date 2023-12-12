@@ -302,14 +302,12 @@ const ProfileScreen = () => {
                 size={28}
               />
             </TouchableOpacity>
-            {/* <View style={styles.item}> */}
             <MaterialCommunityIcons
               name="menu"
               size={40}
               color="white"
               onPress={toggleMenu}
             />
-            {/* </View> */}
           </View>
         </View>
         <ScrollView
@@ -326,7 +324,6 @@ const ProfileScreen = () => {
                   flexDirection: "row",
                 }}
               >
-                <View></View>
                 <View
                   style={{
                     height: hp2dp(20),
@@ -335,7 +332,7 @@ const ProfileScreen = () => {
                     alignItems: "center",
                     backgroundColor: "white",
                     overflow: "hidden",
-                    marginTop: hp2dp(2),
+                    marginTop: hp2dp(1),
                     alignSelf: "center",
                   }}
                 >
@@ -575,27 +572,18 @@ const ProfileScreen = () => {
                 support@climatehealers.org
               </Text>
             </View>
-            <View
+            <Text
               style={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "center",
-                alignContent: "center",
+                textDecorationLine: "underline",
+                textAlign: "center",
+                color: "white",
+                fontSize: h2dp(1.5),
+                marginBottom: hp2dp(3)
               }}
+              onPress={() => navigation.navigate("LicenseScreen")}
             >
-              <Text
-                style={{
-                  textDecorationLine: "underline",
-                  color: "white",
-                  fontSize: h2dp(1.5),
-                  marginLeft: wp2dp(1),
-                  marginRight: w2dp(4),
-                }}
-                onPress={() => navigation.navigate("LicenseScreen")}
-              >
-                Open-Source Licences
-              </Text>
-            </View>
+              Open-Source Licences
+            </Text>
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -613,7 +601,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     marginHorizontal: w2dp(2),
-    // width: "100%",
     zIndex: 1,
   },
   item: {
@@ -640,7 +627,7 @@ const styles = StyleSheet.create({
   },
   rowItem: {
     borderColor: "black",
-    marginTop: hp2dp(5),
+    marginTop: hp2dp(4.5),
     borderRadius: 5,
     flexDirection: "row",
     alignItems: "center",
@@ -707,7 +694,7 @@ const styles = StyleSheet.create({
     fontSize: h2dp(1.5),
     textAlign: "center",
     color: "white",
-    marginBottom: hp2dp(3),
+    marginBottom: hp2dp(2),
   },
   editProfileRoot: {
     marginTop: 10,

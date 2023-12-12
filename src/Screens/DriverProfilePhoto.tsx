@@ -31,7 +31,7 @@ import PrimaryButton from "../Components/PrimaryButton";
 import { styles } from "../Components/Styles";
 
 const DriverProfilePhoto = ({ route }: any) => {
-  const [menuOpen, setMenuOpen] = useState<boolean>(false);
+  const [menuClose, setMenuOpen] = useState(false);
   const [loc, setLoc] = useState(false);
   const [selectedImage, setSelectedImage] = useState("");
   const userDetails = useSelector((state: any) => state.auth);
@@ -40,6 +40,7 @@ const DriverProfilePhoto = ({ route }: any) => {
 
   const handlePressOutside = () => {
     Keyboard.dismiss();
+    setMenuOpen(!menuClose);
   };
 
   const openImagePickerAsync = async () => {
@@ -91,12 +92,15 @@ const DriverProfilePhoto = ({ route }: any) => {
                   name="chevron-back"
                   size={32}
                   color="white"
-                  onPress={() => navigation.navigate("BecomeADriverScreen")}
+                  onPress={() => {navigation.navigate("BecomeADriverScreen"),handlePressOutside()}}
                 />
                 <View style={styles.item}>
                   <Text style={styles.itemText}>{localized.t("DRIVE")}</Text>
                 </View>
-                <BurgerIcon />
+                <BurgerIcon
+                  onOutsidePress={handlePressOutside}
+                  menuClose={menuClose}
+                />
               </View>
               <View
                 style={{
@@ -137,7 +141,7 @@ const DriverProfilePhoto = ({ route }: any) => {
                 title={localized.t("TAKE_PHOTO")}
                 buttonStyle={styles.buttonStyles}
                 titleStyle={styles.titleStyle}
-                onPress={() => navigation.navigate("TakePictureScreen")}
+                onPress={() => {navigation.navigate("TakePictureScreen"),handlePressOutside()}}
               />
               <PrimaryButton
                 title={localized.t("CHOOSE_FROM_CAMERA_ROLL")}

@@ -35,6 +35,7 @@ import { fetchUser } from "../redux/actions/authAction";
 const PickupDetailsScreen = ({ route }: any) => {
   const { itemTypeId } = route?.params;
   const [loading, setLoading] = useState(false);
+  const [menuClose, setMenuOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [data, setData] = useState<any>();
   const [pickupData, setPickupData]: any[] = useState<[]>([]);
@@ -94,6 +95,7 @@ const PickupDetailsScreen = ({ route }: any) => {
 
   const handlePressOutside = () => {
     Keyboard.dismiss();
+    setMenuOpen(!menuClose);
   };
 
   const handleSingleIndexSelect = async (index: any) => {
@@ -161,6 +163,7 @@ const PickupDetailsScreen = ({ route }: any) => {
         <Button
           title={localized.t("DETAILS")}
           onPress={() => {
+            handlePressOutside(),
             active === false
               ? navigation.navigate("PickupConfirmScreen", {
                   pickAddress: pickAddress,
@@ -227,14 +230,17 @@ const PickupDetailsScreen = ({ route }: any) => {
                     name="chevron-back"
                     size={32}
                     color="white"
-                    onPress={() => navigation.navigate("DriverRequestScreen")}
+                    onPress={() => {navigation.navigate("DriverRequestScreen"),handlePressOutside()}}
                   />
                   <View style={styles.item}>
                     <Text style={styles.itemText}>
                       {localized.t("PICKUPS")}
                     </Text>
                   </View>
-                  <BurgerIcon />
+                  <BurgerIcon
+                    onOutsidePress={handlePressOutside}
+                    menuClose={menuClose}
+                  />
                 </View>
                 <Modal
                   visible={loading}

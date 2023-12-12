@@ -2,7 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { decode } from "html-entities";
-import React from "react";
+import React, { useState } from "react";
 import {
   Keyboard,
   Linking,
@@ -21,15 +21,14 @@ import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
 import { styles } from "../Components/Styles";
 import { localized } from "../locales/localization";
-import * as WebBrowser from 'expo-web-browser';
-import { Image } from 'expo-image';
+import * as WebBrowser from "expo-web-browser";
+import { Image } from "expo-image";
 
-const blurhash =
-  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
-
+const blurhash = "LBE~3[-;j[oy_MoMfQj[offQfQfQ";
 
 const SingleRecipeScreen = ({ route }: any) => {
   const { recipeData } = route.params;
+  const [menuClose, setMenuOpen] = useState(false);
 
   const ingredients = recipeData?.recipeIngredient
     .replace(/\[|\]|'/g, "")
@@ -40,6 +39,7 @@ const SingleRecipeScreen = ({ route }: any) => {
 
   const handlePressOutside = () => {
     Keyboard.dismiss();
+    setMenuOpen(!menuClose);
   };
 
   return (
@@ -63,14 +63,17 @@ const SingleRecipeScreen = ({ route }: any) => {
               name="chevron-back"
               size={32}
               color="white"
-              onPress={() => navigation.goBack()}
+              onPress={() => {navigation.goBack(),handlePressOutside()}}
             />
             <ScrollView showsVerticalScrollIndicator={false}>
               <View style={[{ alignSelf: "center", justifyContent: "center" }]}>
                 <Text style={styles.itemText}>{localized.t("RECIPE")}</Text>
               </View>
             </ScrollView>
-            <BurgerIcon />
+            <BurgerIcon
+              onOutsidePress={handlePressOutside}
+              menuClose={menuClose}
+            />
           </View>
           <View>
             <Text
@@ -196,7 +199,9 @@ const SingleRecipeScreen = ({ route }: any) => {
                     <Text
                       style={styles.underlineTextStyle}
                       // onPress={() => Linking.openURL(recipeData?.recipeSource)}
-                      onPress={() => WebBrowser.openBrowserAsync(recipeData?.recipeSource)}
+                      onPress={() =>
+                        WebBrowser.openBrowserAsync(recipeData?.recipeSource)
+                      }
                     >
                       {recipeData?.recipeSource}
                     </Text>

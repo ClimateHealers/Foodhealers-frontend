@@ -65,7 +65,7 @@ const RequestCreatedScreen = ({ route }: any) => {
                   name="chevron-back"
                   size={32}
                   color="white"
-                  onPress={() => navigation.navigate("TeamHomeScreen")}
+                  onPress={() => {navigation.navigate("TeamHomeScreen"),handlePressOutside()}}
                 />
                 <View style={styles.item}>
                   <Text style={styles.itemText}>{title}</Text>
@@ -118,12 +118,13 @@ const RequestCreatedScreen = ({ route }: any) => {
               <View>
                 <PrimaryButton
                   title={localized.t("REQUEST_MORE")}
-                  onPress={() =>
+                  onPress={() => {
+                    handlePressOutside(),
                     navigation.navigate("AddRequestDonationsScreen", {
                       itemTypeId: itemTypeId,
                       title: title,
                     })
-                  }
+                  }}
                   buttonStyle={styles.buttonStyles}
                   titleStyle={styles.titleStyle}
                 />
@@ -131,12 +132,13 @@ const RequestCreatedScreen = ({ route }: any) => {
               <View>
                 <PrimaryButton
                   title={localized.t("SEE_ALL_REQUESTS")}
-                  onPress={() =>
+                  onPress={() => {
+                    handlePressOutside(),
                     navigation.navigate("RequestHistoryScreen", {
                       itemTypeId: itemTypeId,
                       title: title,
                     })
-                  }
+                  }}
                   buttonStyle={styles.buttonHistoryStyles}
                   titleStyle={styles.titleMainStyle}
                 />

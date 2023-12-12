@@ -7,18 +7,16 @@ import {
   FlatList,
   Keyboard,
   ScrollView,
-  StatusBar,
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  View,
+  View
 } from "react-native";
 import { Button, Image } from "react-native-elements";
 import {
   heightPercentageToDP as h2dp,
   widthPercentageToDP as w2dp,
 } from "react-native-responsive-screen";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
@@ -29,6 +27,7 @@ import { allEvents } from "../redux/actions/allEvents";
 const VolunteerEventScreen = ({ route }: any) => {
   const { itemTypeId, title, latitude, longitude } = route?.params;
   const [eventData, setEventData]: any[] = useState<[]>([]);
+  const [menuClose, setMenuOpen] = useState(false);
 
   const [filterName, setFilterName] = useState<string>(`${localized.t("NEW")}`);
   const dispatch = useDispatch();
@@ -72,6 +71,7 @@ const VolunteerEventScreen = ({ route }: any) => {
 
   const handlePressOutside = () => {
     Keyboard.dismiss();
+    setMenuOpen(!menuClose);
   };
 
   const Item = ({
@@ -125,7 +125,8 @@ const VolunteerEventScreen = ({ route }: any) => {
         </ScrollView>
         <Button
           title={localized.t("DETAILS")}
-          onPress={() =>
+          onPress={() => {
+            handlePressOutside(),
             navigation.navigate("SingleEventDetails", {
               eventDetails: {
                 additionalInfo: additionalInfo,
@@ -145,7 +146,7 @@ const VolunteerEventScreen = ({ route }: any) => {
                 status: status,
               },
             })
-          }
+          }}
           buttonStyle={{
             marginLeft: w2dp(3),
             marginRight: w2dp(5),
@@ -178,7 +179,7 @@ const VolunteerEventScreen = ({ route }: any) => {
               name="chevron-back"
               size={32}
               color="white"
-              onPress={() => navigation.goBack()}
+              onPress={() => {navigation.goBack(),handlePressOutside()}}
             />
             <View style={styles.item}>
               <Text style={styles.itemText}>
@@ -187,7 +188,10 @@ const VolunteerEventScreen = ({ route }: any) => {
                   : `${localized.t("POST_AN_EVENT")}`}
               </Text>
             </View>
-            <BurgerIcon />
+            <BurgerIcon
+              onOutsidePress={handlePressOutside}
+              menuClose={menuClose}
+            />
           </View>
           <View style={styles.itemFilter}>
             <Text style={styles.itemFilterText}>{localized.t("EVENTS")}</Text>
@@ -237,7 +241,7 @@ const VolunteerEventScreen = ({ route }: any) => {
               />
             </View>
           ) : (
-            <TouchableOpacity onPress={() => navigation.navigate("PostEvent")}>
+            <TouchableOpacity onPress={() => {navigation.navigate("PostEvent"),handlePressOutside()}}>
               <View style={{ marginTop: h2dp(3), alignItems: "center" }}>
                 <Image
                   source={require("../../assets/images/shutterShock.png")}

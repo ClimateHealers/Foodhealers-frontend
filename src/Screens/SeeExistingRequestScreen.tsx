@@ -242,6 +242,7 @@ const SeeExistingRequestScreen = ({ route }: any) => {
                 {
                   text: "Yes",
                   onPress: () => {
+                    handlePressOutside(),
                     navigation.navigate("AcceptRequestedDonationScreen", {
                       quantity: quantity,
                       itemTypeId: itemTypeId,
@@ -294,12 +295,15 @@ const SeeExistingRequestScreen = ({ route }: any) => {
               name="chevron-back"
               size={32}
               color="white"
-              onPress={() => navigation.navigate("VolunteerDonateScreen", {
-                latitude: latitude,
-                longitude: longitude,
-                itemTypeId: itemTypeId,
-                title: title,
-              })}
+              onPress={() => {
+                handlePressOutside(),
+                navigation.navigate("VolunteerDonateScreen", {
+                  latitude: latitude,
+                  longitude: longitude,
+                  itemTypeId: itemTypeId,
+                  title: title,
+                })
+              }}
             />
             <View style={styles.item}>
               <Text style={styles.itemText}>
@@ -374,14 +378,15 @@ const SeeExistingRequestScreen = ({ route }: any) => {
           </View>
           <PrimaryButton
             title={`${localized.t("DONATE")} ${item}`}
-            onPress={() =>
+            onPress={() => {
+              handlePressOutside(),
               navigation.navigate("AddDonationsScreen", {
                 itemTypeId: itemTypeId,
                 title: title,
                 latitude: latitude,
                 longitude: longitude,
               })
-            }
+            }}
             buttonStyle={{
               backgroundColor: "#FC5A56",
               color: "black",

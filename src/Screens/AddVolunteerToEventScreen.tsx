@@ -44,7 +44,7 @@ const AddVolunteerToEvent = ({ route }: any) => {
   } = route?.params;
   const [loading, setLoading] = useState(false);
   const [langOpen, setlangOpen] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [menuClose, setMenuOpen] = useState(false);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showEndDatePicker, setShowEndDatePicker] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState(localized.locale);
@@ -94,6 +94,7 @@ const AddVolunteerToEvent = ({ route }: any) => {
   const handlePressOutside = () => {
     setlangOpen(false);
     Keyboard.dismiss();
+    setMenuOpen(!menuClose);
   };
   const navigation: any = useNavigation();
 
@@ -125,26 +126,6 @@ const AddVolunteerToEvent = ({ route }: any) => {
     setShowEndDatePicker(false);
   };
 
-  const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
-  };
-  const handleMenuItemPress = (item: any) => {
-    setMenuOpen(false);
-    navigation.navigate("HomeScreen");
-  };
-  const findFoodMenuItemPress = (item: any) => {
-    getLocation().then((res) => {
-      if (res) {
-        navigation.navigate("MapScreen", {
-          latitude: res?.latitude,
-          longitude: res?.longitude,
-        });
-      }
-    });
-
-    setMenuOpen(false);
-  };
-
   useEffect(() => {
     setSelectedEndDate(moment(eventEndDate));
     setMinmumEndDate(moment(new Date(eventStartDate)).add(1, "hour"));
@@ -165,12 +146,15 @@ const AddVolunteerToEvent = ({ route }: any) => {
                   name="chevron-back"
                   size={32}
                   color="white"
-                  onPress={() => navigation.goBack()}
+                  onPress={() => {navigation.goBack(),handlePressOutside()}}
                 />
                 <View style={styles.item}>
                   <Text style={styles.itemText}>{title}</Text>
                 </View>
-                <BurgerIcon />
+                <BurgerIcon
+                  onOutsidePress={handlePressOutside}
+                  menuClose={menuClose}
+                />
               </View>
               <Modal visible={loading} animationType="slide" transparent={true}>
                 <View style={styles.centeredView}>
@@ -243,14 +227,16 @@ const AddVolunteerToEvent = ({ route }: any) => {
                         [
                           {
                             text: `${localized.t("OK")}`,
-                            onPress: () =>
+                            onPress: () => {
+                              handlePressOutside(),
                               navigation.navigate("VolunteerThankYouScreen", {
                                 id: id,
                                 itemTypeId: itemTypeId,
                                 title: title,
                                 logitude: longitude,
                                 latitude: latitude,
-                              }),
+                              })
+                            }
                           },
                         ],
                         { cancelable: false }

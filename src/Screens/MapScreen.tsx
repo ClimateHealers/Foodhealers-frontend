@@ -506,7 +506,7 @@ const MapScreen = ({ route }: any) => {
                       title={localized.t("HOME")}
                       buttonStyle={styles.buttonStyles}
                       titleStyle={styles.titleStyle}
-                      onPress={() => navigation.navigate("HomeScreen")}
+                      onPress={() => {navigation.navigate("HomeScreen"),handlePressOutside()}}
                     />
                   </View>
                 ) : !emptyEvents && buttonVisibility ? (
@@ -515,7 +515,7 @@ const MapScreen = ({ route }: any) => {
                       title={localized.t("NEXT")}
                       buttonStyle={styles.buttonStyles}
                       titleStyle={styles.titleStyle}
-                      onPress={() => clickHandler()}
+                      onPress={() => {clickHandler(),handlePressOutside()}}
                     />
                   </View>
                 ) : null}

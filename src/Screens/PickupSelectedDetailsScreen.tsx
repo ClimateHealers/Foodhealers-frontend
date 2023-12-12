@@ -39,6 +39,7 @@ const PickupSelectedDetailsScreen = ({ route }: any) => {
     pickedup,
     delivered,
   } = route?.params;
+  const [menuClose, setMenuOpen] = useState(false);
 
   const [loading, setLoading] = useState(false);
   const [response, setResponse] = useState({
@@ -51,6 +52,7 @@ const PickupSelectedDetailsScreen = ({ route }: any) => {
 
   const handlePressOutside = () => {
     Keyboard.dismiss();
+    setMenuOpen(!menuClose);
   };
 
   return (
@@ -68,12 +70,15 @@ const PickupSelectedDetailsScreen = ({ route }: any) => {
                   name="chevron-back"
                   size={32}
                   color="white"
-                  onPress={() => navigation.goBack()}
+                  onPress={() =>{handlePressOutside(),navigation.goBack()}}
                 />
                 <View style={styles.item}>
                   <Text style={styles.itemText}>{localized.t("DRIVE")}</Text>
                 </View>
-                <BurgerIcon />
+                <BurgerIcon
+                  onOutsidePress={handlePressOutside}
+                  menuClose={menuClose}
+                />
               </View>
               <Text
                 style={{
@@ -222,7 +227,8 @@ const PickupSelectedDetailsScreen = ({ route }: any) => {
                         [
                           {
                             text: "OK",
-                            onPress: () =>
+                            onPress: () => {
+                              handlePressOutside(),
                               navigation.navigate("PickupConfirmScreen", {
                                 pickAddress: pickAddress,
                                 pickupTiming: pickupTiming,
@@ -237,8 +243,9 @@ const PickupSelectedDetailsScreen = ({ route }: any) => {
                                 fullfilled: fullfilled,
                                 pickedup: pickedup,
                                 delivered: delivered,
-                              }),
-                          },
+                              })
+                            },
+                          }
                         ],
                         { cancelable: false }
                       );

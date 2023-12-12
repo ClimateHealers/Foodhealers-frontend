@@ -1,25 +1,21 @@
+import { Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useEffect, useState } from "react";
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import {
-  View,
-  Text,
-  FlatList,
-  TouchableWithoutFeedback,
-  SafeAreaView,
-  Modal,
   ActivityIndicator,
+  FlatList,
   Keyboard,
-  ScrollView,
+  Modal,
+  SafeAreaView,
+  Text,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View
 } from "react-native";
-import {
-  heightPercentageToDP as h2dp,
-  widthPercentageToDP as w2dp,
-} from "react-native-responsive-screen";
-import { styles } from "../Components/Styles";
-import FoodhealersHeader from "../Components/FoodhealersHeader";
-import { Ionicons } from "@expo/vector-icons";
 import BurgerIcon from "../Components/BurgerIcon";
+import FoodhealersHeader from "../Components/FoodhealersHeader";
+import { styles } from "../Components/Styles";
 
 const LicenseScreen = () => {
   const [packages, setPackages] = useState<any[]>([]);
@@ -41,13 +37,13 @@ const LicenseScreen = () => {
           const version = packageInfo[1];
           return { name, version };
         });
-        console.log("packag: ", packag);
         const extractedPackages: any[] = Object.keys(packag).map(
           (packageName: any) => {
             const packageData = packag[packageName] || {};
             return {
               name: packageData?.name,
               version: packageData?.version,
+              key: packageName,
             };
           }
         );
@@ -78,7 +74,9 @@ const LicenseScreen = () => {
               name="chevron-back"
               size={32}
               color="white"
-              onPress={() => navigation.goBack()}
+              onPress={() => {
+                navigation.goBack(), handlePressOutside();
+              }}
             />
             <View style={styles.item}>
               <Text style={styles.itemText}>{"Open-Source Packages"}</Text>
@@ -96,7 +94,8 @@ const LicenseScreen = () => {
               </View>
             </View>
           </Modal>
-          <ScrollView showsVerticalScrollIndicator={false}>
+          {/* <ScrollView showsVerticalScrollIndicator={false}> */}
+          <TouchableOpacity activeOpacity={1}>
             <View
               style={{
                 display: "flex",
@@ -105,13 +104,12 @@ const LicenseScreen = () => {
             >
               <FlatList
                 data={packages}
-                keyExtractor={(item) => item.name}
+                showsVerticalScrollIndicator={false}
+                keyExtractor={(item) => item.key}
                 renderItem={({ item }) => {
                   return (
                     <View style={{ padding: 10 }}>
-                      <Text
-                        style={styles.profileDetailsText2}
-                      >
+                      <Text style={styles.profileDetailsText2}>
                         {" "}
                         {item.name} {item.version}
                       </Text>
@@ -120,7 +118,7 @@ const LicenseScreen = () => {
                 }}
               />
             </View>
-          </ScrollView>
+          </TouchableOpacity>
         </SafeAreaView>
       </LinearGradient>
     </TouchableWithoutFeedback>

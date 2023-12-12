@@ -42,6 +42,8 @@ import SelectDropdown from "react-native-select-dropdown";
 
 const UpdateVehicleScreen = ({ route }: any) => {
   const { id } = route?.params;
+  const [changedVehicleId, setChangedVehicleId] = useState(route?.params?.id);
+  const [menuClose, setMenuOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [vehicleDetails, setVehicleDetails] = useState<any>();
   const [vehicleData, setVehicleData] = useState<any>();
@@ -83,6 +85,7 @@ const UpdateVehicleScreen = ({ route }: any) => {
 
   const handlePressOutside = () => {
     Keyboard.dismiss();
+    setMenuOpen(!menuClose);
   };
 
   const changeVehicle = async (itemValue: any, index: any) => {
@@ -92,6 +95,7 @@ const UpdateVehicleScreen = ({ route }: any) => {
     const response = await dispatch(fetchVehicle({} as any) as any);
     const filteredVehicle = response?.payload?.vehicleDetails[index];
     setVehicleDetails(filteredVehicle);
+    setChangedVehicleId(filteredVehicle?.id);
     setLoading(false);
   };
 
@@ -117,12 +121,17 @@ const UpdateVehicleScreen = ({ route }: any) => {
                   name="chevron-back"
                   size={32}
                   color="white"
-                  onPress={() => navigation.goBack()}
+                  onPress={() => {
+                    navigation.goBack(), handlePressOutside();
+                  }}
                 />
                 <View style={styles.item}>
                   <Text style={styles.itemText}>{localized.t("DRIVE")}</Text>
                 </View>
-                <BurgerIcon />
+                <BurgerIcon
+                  onOutsidePress={handlePressOutside}
+                  menuClose={menuClose}
+                />
               </View>
               <Modal visible={loading} animationType="slide" transparent={true}>
                 <View style={styles.centeredView}>
@@ -155,7 +164,7 @@ const UpdateVehicleScreen = ({ route }: any) => {
                       plateNumber: licencePlate,
                       make: carMake,
                       active: true,
-                      vehicleId: id,
+                      vehicleId: changedVehicleId,
                     };
                     const res = await dispatch(
                       updateVehicle(data as any) as any
@@ -178,8 +187,10 @@ const UpdateVehicleScreen = ({ route }: any) => {
                         [
                           {
                             text: "OK",
-                            onPress: () =>
-                              navigation.navigate("DriverRequestScreen"),
+                            onPress: () => {
+                              handlePressOutside(),
+                                navigation.navigate("DriverRequestScreen");
+                            },
                           },
                         ],
                         { cancelable: false }
@@ -365,9 +376,10 @@ const UpdateVehicleScreen = ({ route }: any) => {
                         buttonStyle={styles.nextButtonStyles}
                         titleStyle={styles.titleStyle}
                         onPress={() => {
-                          navigation.navigate("AddVehicleScreen", {
-                            newVehicle: true,
-                          });
+                          handlePressOutside(),
+                            navigation.navigate("AddVehicleScreen", {
+                              newVehicle: true,
+                            });
                         }}
                       />
                     </View>

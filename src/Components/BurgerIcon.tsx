@@ -4,20 +4,50 @@ import {
   heightPercentageToDP as h2dp,
   widthPercentageToDP as w2dp,
 } from "react-native-responsive-screen";
-import { Text, TouchableOpacity, View } from "react-native";
-import React, { useState } from "react";
+import {
+  Alert,
+  Platform,
+  Share,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { getLocation } from "../Components/getCurrentLocation";
 import { styles } from "./Styles";
 import { localized } from "../locales/localization";
 
 const BurgerIcon = ({ menuClose, onOutsidePress, menuItem }: any) => {
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(menuClose);
   const navigation: any = useNavigation();
-  let [menutoggle, setToggle] = useState(menuClose);
+  const burgerRef = useRef<View>(null);
   const isAuthenticated = useSelector(
     (state: any) => state.auth.data.isAuthenticated
   );
+
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [menuClose]);
+
+  const onShare = async () => {
+    try {
+      const result = await Share.share({
+        message: `Download this application from Google Play Store
+        
+        https://play.google.com/store/apps/details?id=com.foodhealers.climatehealers`,
+        url: "https://play.google.com/store/apps/details?id=com.foodhealers.climatehealers",
+      });
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+        } else {
+        }
+      } else if (result.action === Share.dismissedAction) {
+      }
+    } catch (error: any) {
+      Alert.alert(error.message);
+    }
+  };
 
   const handleMenuItemPress = (item: any) => {
     setMenuOpen(false);
@@ -27,6 +57,7 @@ const BurgerIcon = ({ menuClose, onOutsidePress, menuItem }: any) => {
       navigation.navigate("SignupScreen");
     }
   };
+
   const findFoodMenuItemPress = (item: any) => {
     getLocation().then((res) => {
       if (res) {
@@ -56,6 +87,7 @@ const BurgerIcon = ({ menuClose, onOutsidePress, menuItem }: any) => {
       />
       {menuOpen && (
         <View
+          ref={burgerRef}
           style={{
             position: "absolute",
             right: w2dp(8.5),
@@ -92,6 +124,11 @@ const BurgerIcon = ({ menuClose, onOutsidePress, menuItem }: any) => {
                   </Text>
                 </TouchableOpacity>
               ) : null}
+              {Platform?.OS === "ios" ? null : (
+                <TouchableOpacity onPress={() => onShare()}>
+                  <Text style={styles.burgerText}>{localized.t("SHARE")}</Text>
+                </TouchableOpacity>
+              )}
               {menuItem !== "Team" ? (
                 <TouchableOpacity
                   onPress={() => {

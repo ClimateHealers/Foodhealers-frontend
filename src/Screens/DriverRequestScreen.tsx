@@ -42,6 +42,7 @@ const DriverRequestScreen = ({ route }: any) => {
   const navigation: any = useNavigation<string>();
   const handlePressOutside = () => {
     Keyboard.dismiss();
+    setMenuOpen(false);
   };
   const [response, setResponse] = useState({
     loading: false,
@@ -180,7 +181,7 @@ const DriverRequestScreen = ({ route }: any) => {
                   name="chevron-back"
                   size={32}
                   color="#00693D"
-                  onPress={() => navigation.goBack()}
+                  onPress={() => {navigation.goBack(),handlePressOutside()}}
                 />
                 <View style={styles.item}>
                   <Text style={{ fontSize: 25, color: "#00693D" }}>
@@ -319,6 +320,7 @@ const DriverRequestScreen = ({ route }: any) => {
                 <PrimaryButton
                   title={localized.t("EDIT_VEHICLE_DETAILS")}
                   onPress={() => {
+                    handlePressOutside(),
                     navigation.navigate("UpdateVehicleScreen", {
                       id: vehicleDetails?.id,
                       make: vehicleDetails?.make,
@@ -345,11 +347,12 @@ const DriverRequestScreen = ({ route }: any) => {
               </View>
               <PrimaryButton
                 title={localized.t("SEE_PICKUP_REQUESTS")}
-                onPress={() =>
+                onPress={() => {
+                  handlePressOutside(),
                   navigation.navigate("PickupDetailsScreen", {
                     itemTypeId: 4,
                   })
-                }
+                }}
                 buttonStyle={{
                   backgroundColor: "#00693D",
                   color: "black",
@@ -367,11 +370,12 @@ const DriverRequestScreen = ({ route }: any) => {
               />
               <PrimaryButton
                 title={localized.t("HISTORY")}
-                onPress={() =>
+                onPress={() => {
+                  handlePressOutside(),
                   navigation.navigate("PickupHistoryScreen", {
                     itemTypeId: 4,
                   })
-                }
+                }}
                 buttonStyle={{
                   backgroundColor: "#D1D1D6",
                   color: "black",

@@ -25,20 +25,18 @@ import { localized } from "../locales/localization";
 const VolunteerThankYouScreen = ({ route }: any) => {
   const { id, itemTypeId, title, latitude, longitude } = route?.params;
   const userDetails = useSelector((state: any) => state.auth);
+  const [menuClose, setMenuOpen] = useState(false);
   const navigation: any = useNavigation();
   const { data } = userDetails;
-
-  const [menuOpen, setMenuOpen] = useState(false);
-
-  const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
-  };
 
   useFocusEffect(
     useCallback(() => {
       const { routes } = navigation.getState();
       const filteredRoutes = routes.filter(
-        (route: any) => route.name !== "AddDonationsScreen" && route.name !== 'AcceptRequestedDonationScreen' && route.name !== 'AddVolunteerToEventScreen'
+        (route: any) =>
+          route.name !== "AddDonationsScreen" &&
+          route.name !== "AcceptRequestedDonationScreen" &&
+          route.name !== "AddVolunteerToEventScreen"
       );
 
       navigation.reset({
@@ -50,21 +48,7 @@ const VolunteerThankYouScreen = ({ route }: any) => {
 
   const handlePressOutside = () => {
     Keyboard.dismiss();
-  };
-  const handleMenuItemPress = (item: any) => {
-    setMenuOpen(false);
-    navigation.navigate("HomeScreen");
-  };
-  const findFoodMenuItemPress = (item: any) => {
-    getLocation().then((res) => {
-      if (res) {
-        navigation?.navigate("MapScreen", {
-          latitude: res?.latitude,
-          longitude: res?.longitude,
-        });
-      }
-    });
-    setMenuOpen(false);
+    setMenuOpen(!menuClose);
   };
 
   return (
@@ -83,6 +67,7 @@ const VolunteerThankYouScreen = ({ route }: any) => {
                   size={32}
                   color="white"
                   onPress={() => {
+                    handlePressOutside(),
                     itemTypeId === 1
                       ? navigation.navigate("AddDonationsScreen", {
                           itemTypeId: itemTypeId,
@@ -108,7 +93,10 @@ const VolunteerThankYouScreen = ({ route }: any) => {
                 <View style={styles.item}>
                   <Text style={styles.itemText}>{title}</Text>
                 </View>
-                <BurgerIcon />
+                <BurgerIcon
+                  onOutsidePress={handlePressOutside}
+                  menuClose={menuClose}
+                />
               </View>
               <View
                 style={[
@@ -171,12 +159,13 @@ const VolunteerThankYouScreen = ({ route }: any) => {
                   </Text>
                   <PrimaryButton
                     title={localized.t("HOME")}
-                    onPress={() =>
+                    onPress={() => {
+                      handlePressOutside()
                       navigation.navigate("VolunteerHomeScreen", {
                         latitude: latitude,
                         longitude: longitude,
                       })
-                    }
+                    }}
                     buttonStyle={styles.buttonMainStyles}
                     titleStyle={styles.titleStyle}
                   />
@@ -186,26 +175,28 @@ const VolunteerThankYouScreen = ({ route }: any) => {
                 {itemTypeId === 1 ? (
                   <PrimaryButton
                     title={localized.t("ADD_ANOTHER_DONATION")}
-                    onPress={() =>
+                    onPress={() => {
+                      handlePressOutside()
                       navigation.navigate("AddDonationsScreen", {
                         itemTypeId: itemTypeId,
                         id: id,
                         title: title,
                       })
-                    }
+                    }}
                     buttonStyle={styles.buttonMainStyles}
                     titleStyle={styles.titleStyle}
                   />
                 ) : itemTypeId === 2 ? (
                   <PrimaryButton
                     title={localized.t("ADD_ANOTHER_SUPPLIES")}
-                    onPress={() =>
+                    onPress={() => {
+                      handlePressOutside()
                       navigation.navigate("AddDonationsScreen", {
                         itemTypeId: itemTypeId,
                         id: id,
                         title: title,
                       })
-                    }
+                    }}
                     buttonStyle={styles.buttonMainStyles}
                     titleStyle={styles.titleStyle}
                   />
@@ -213,6 +204,7 @@ const VolunteerThankYouScreen = ({ route }: any) => {
                   <PrimaryButton
                     title={localized.t("VOLUNTEER_AT_EVENT")}
                     onPress={() => {
+                      handlePressOutside(),
                       navigation.navigate("VolunteerEventScreen", {
                         itemTypeId: itemTypeId,
                         id: id,
@@ -228,26 +220,28 @@ const VolunteerThankYouScreen = ({ route }: any) => {
                 {itemTypeId === 3 ? (
                   <PrimaryButton
                     title={localized.t("HISTORY")}
-                    onPress={() =>
+                    onPress={() => {
+                      handlePressOutside(),
                       navigation.navigate("VolunteerEventHistoryScreen", {
                         itemTypeId: itemTypeId,
                         title: title,
                         id: id,
                       })
-                    }
+                    }}
                     buttonStyle={styles.buttonHistoryStyles}
                     titleStyle={styles.titleMainStyle}
                   />
                 ) : (
                   <PrimaryButton
                     title={localized.t("HISTORY")}
-                    onPress={() =>
+                    onPress={() => {
+                      handlePressOutside(),
                       navigation.navigate("VolunteerDonationHistoryScreen", {
                         itemTypeId: itemTypeId,
                         title: title,
                         id: id,
                       })
-                    }
+                    }}
                     buttonStyle={styles.buttonHistoryStyles}
                     titleStyle={styles.titleMainStyle}
                   />
