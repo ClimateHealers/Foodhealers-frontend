@@ -22,7 +22,7 @@ import {
 } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useSelector } from "react-redux";
-import { getLocation } from "../Components/getCurrentLocation";
+import { getLocation } from "../Components/GetCurrentLocation";
 import moment from "moment";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
 import BurgerIcon from "../Components/BurgerIcon";
@@ -72,7 +72,9 @@ const CalendarEventScreen = ({ route }: any) => {
               name="chevron-back"
               size={32}
               color="white"
-              onPress={() =>{ navigation.goBack(),handlePressOutside()}}
+              onPress={() => {
+                navigation.goBack(), handlePressOutside();
+              }}
             />
             <View style={styles.item}>
               <Text style={styles.itemText}>{localized.t("FOOD_EVENTS")}</Text>
@@ -84,7 +86,11 @@ const CalendarEventScreen = ({ route }: any) => {
           </View>
 
           <View style={styles.subHeader}>
-            <TouchableOpacity onPress={() =>{ navigation.goBack(),handlePressOutside()}}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.goBack(), handlePressOutside();
+              }}
+            >
               <View
                 style={{
                   display: "flex",
@@ -145,13 +151,13 @@ const CalendarEventScreen = ({ route }: any) => {
                   {singleDayEvent.map((event: any, index: any) => (
                     <TouchableOpacity
                       key={index}
-                      onPress={() => { 
+                      onPress={() => {
                         handlePressOutside(),
-                        navigation.navigate("CalendarEventDetailScreen", {
-                          eventDetails: event,
-                          latitude: latitude,
-                          longitude: longitude,
-                        })
+                          navigation.navigate("CalendarEventDetailScreen", {
+                            eventDetails: event,
+                            latitude: latitude,
+                            longitude: longitude,
+                          });
                       }}
                     >
                       <View style={styles.eventCon}>

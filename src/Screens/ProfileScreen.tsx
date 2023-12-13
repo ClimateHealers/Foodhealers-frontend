@@ -39,7 +39,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { iOSColors, systemWeights } from "react-native-typography";
 import MaterialIcon from "react-native-vector-icons/MaterialIcons";
 import { useDispatch, useSelector } from "react-redux";
-import { getLocation } from "../Components/getCurrentLocation";
+import { getLocation } from "../Components/GetCurrentLocation";
 import PrimaryButton from "../Components/PrimaryButton";
 import {
   fetchUser,
@@ -584,7 +584,7 @@ const ProfileScreen = () => {
                 textAlign: "center",
                 color: "white",
                 fontSize: h2dp(1.5),
-                marginBottom: hp2dp(3)
+                marginBottom: hp2dp(3),
               }}
               onPress={() => navigation.navigate("LicenseScreen")}
             >

@@ -19,7 +19,7 @@ import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
 import PrimaryButton from "../Components/PrimaryButton";
 import { styles } from "../Components/Styles";
-import { getLocation } from "../Components/getCurrentLocation";
+import { getLocation } from "../Components/GetCurrentLocation";
 import { localized } from "../locales/localization";
 
 const VolunteerThankYouScreen = ({ route }: any) => {
@@ -68,26 +68,26 @@ const VolunteerThankYouScreen = ({ route }: any) => {
                   color="white"
                   onPress={() => {
                     handlePressOutside(),
-                    itemTypeId === 1
-                      ? navigation.navigate("AddDonationsScreen", {
-                          itemTypeId: itemTypeId,
-                          title: title,
-                          latitude: latitude,
-                          longitude: longitude,
-                        })
-                      : itemTypeId === 2
-                      ? navigation.navigate("AddDonationsScreen", {
-                          itemTypeId: itemTypeId,
-                          title: title,
-                          latitude: latitude,
-                          longitude: longitude,
-                        })
-                      : navigation.navigate("VolunteerEventScreen", {
-                          itemTypeId: itemTypeId,
-                          title: title,
-                          latitude: latitude,
-                          longitude: longitude,
-                        });
+                      itemTypeId === 1
+                        ? navigation.navigate("AddDonationsScreen", {
+                            itemTypeId: itemTypeId,
+                            title: title,
+                            latitude: latitude,
+                            longitude: longitude,
+                          })
+                        : itemTypeId === 2
+                        ? navigation.navigate("AddDonationsScreen", {
+                            itemTypeId: itemTypeId,
+                            title: title,
+                            latitude: latitude,
+                            longitude: longitude,
+                          })
+                        : navigation.navigate("VolunteerEventScreen", {
+                            itemTypeId: itemTypeId,
+                            title: title,
+                            latitude: latitude,
+                            longitude: longitude,
+                          });
                   }}
                 />
                 <View style={styles.item}>
@@ -160,11 +160,11 @@ const VolunteerThankYouScreen = ({ route }: any) => {
                   <PrimaryButton
                     title={localized.t("HOME")}
                     onPress={() => {
-                      handlePressOutside()
+                      handlePressOutside();
                       navigation.navigate("VolunteerHomeScreen", {
                         latitude: latitude,
                         longitude: longitude,
-                      })
+                      });
                     }}
                     buttonStyle={styles.buttonMainStyles}
                     titleStyle={styles.titleStyle}
@@ -176,12 +176,12 @@ const VolunteerThankYouScreen = ({ route }: any) => {
                   <PrimaryButton
                     title={localized.t("ADD_ANOTHER_DONATION")}
                     onPress={() => {
-                      handlePressOutside()
+                      handlePressOutside();
                       navigation.navigate("AddDonationsScreen", {
                         itemTypeId: itemTypeId,
                         id: id,
                         title: title,
-                      })
+                      });
                     }}
                     buttonStyle={styles.buttonMainStyles}
                     titleStyle={styles.titleStyle}
@@ -190,12 +190,12 @@ const VolunteerThankYouScreen = ({ route }: any) => {
                   <PrimaryButton
                     title={localized.t("ADD_ANOTHER_SUPPLIES")}
                     onPress={() => {
-                      handlePressOutside()
+                      handlePressOutside();
                       navigation.navigate("AddDonationsScreen", {
                         itemTypeId: itemTypeId,
                         id: id,
                         title: title,
-                      })
+                      });
                     }}
                     buttonStyle={styles.buttonMainStyles}
                     titleStyle={styles.titleStyle}
@@ -205,11 +205,11 @@ const VolunteerThankYouScreen = ({ route }: any) => {
                     title={localized.t("VOLUNTEER_AT_EVENT")}
                     onPress={() => {
                       handlePressOutside(),
-                      navigation.navigate("VolunteerEventScreen", {
-                        itemTypeId: itemTypeId,
-                        id: id,
-                        title: title,
-                      });
+                        navigation.navigate("VolunteerEventScreen", {
+                          itemTypeId: itemTypeId,
+                          id: id,
+                          title: title,
+                        });
                     }}
                     buttonStyle={styles.buttonMainStyles}
                     titleStyle={styles.titleStyle}
@@ -222,11 +222,11 @@ const VolunteerThankYouScreen = ({ route }: any) => {
                     title={localized.t("HISTORY")}
                     onPress={() => {
                       handlePressOutside(),
-                      navigation.navigate("VolunteerEventHistoryScreen", {
-                        itemTypeId: itemTypeId,
-                        title: title,
-                        id: id,
-                      })
+                        navigation.navigate("VolunteerEventHistoryScreen", {
+                          itemTypeId: itemTypeId,
+                          title: title,
+                          id: id,
+                        });
                     }}
                     buttonStyle={styles.buttonHistoryStyles}
                     titleStyle={styles.titleMainStyle}
@@ -236,11 +236,11 @@ const VolunteerThankYouScreen = ({ route }: any) => {
                     title={localized.t("HISTORY")}
                     onPress={() => {
                       handlePressOutside(),
-                      navigation.navigate("VolunteerDonationHistoryScreen", {
-                        itemTypeId: itemTypeId,
-                        title: title,
-                        id: id,
-                      })
+                        navigation.navigate("VolunteerDonationHistoryScreen", {
+                          itemTypeId: itemTypeId,
+                          title: title,
+                          id: id,
+                        });
                     }}
                     buttonStyle={styles.buttonHistoryStyles}
                     titleStyle={styles.titleMainStyle}

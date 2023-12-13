@@ -16,7 +16,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { SceneMap, TabBar, TabView } from "react-native-tab-view";
 import { useDispatch } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
-import { getLocation } from "../Components/getCurrentLocation";
+import { getLocation } from "../Components/GetCurrentLocation";
 import { localized } from "../locales/localization";
 import DonationTabScreen from "./DonationTabScreen";
 import VolunteerTabScreen from "./VolunteerTabScreen";
@@ -77,7 +77,9 @@ const VolunteerAndDonateScreen = ({ route }: any) => {
                     name="chevron-back"
                     size={32}
                     color="white"
-                    onPress={() =>{ navigation.goBack(),handlePressOutside()}}
+                    onPress={() => {
+                      navigation.goBack(), handlePressOutside();
+                    }}
                   />
                 </View>
                 <View style={styles.item}>

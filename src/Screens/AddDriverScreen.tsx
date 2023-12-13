@@ -25,7 +25,7 @@ import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
 import PrimaryButton from "../Components/PrimaryButton";
 import { styles } from "../Components/Styles";
-import { addDriver } from "../Components/validation";
+import { addDriver } from "../Components/Validation";
 import { localized } from "../locales/localization";
 import { updateProfile } from "../redux/actions/authAction";
 
@@ -87,7 +87,9 @@ const AddDriverScreen = ({ route }: any) => {
                   name="chevron-back"
                   size={32}
                   color="white"
-                  onPress={() => {navigation.goBack(),handlePressOutside()}}
+                  onPress={() => {
+                    navigation.goBack(), handlePressOutside();
+                  }}
                 />
                 <View style={styles.item}>
                   <Text style={styles.itemText}>{localized.t("DRIVE")}</Text>
@@ -171,10 +173,10 @@ const AddDriverScreen = ({ route }: any) => {
                             text: "OK",
                             onPress: () => {
                               handlePressOutside(),
-                              navigation.navigate("AddVehicleScreen", {
-                                newVehicle: false,
-                              })
-                            }
+                                navigation.navigate("AddVehicleScreen", {
+                                  newVehicle: false,
+                                });
+                            },
                           },
                         ],
                         { cancelable: false }

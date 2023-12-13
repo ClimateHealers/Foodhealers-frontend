@@ -19,7 +19,7 @@ import {
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { Text, TextInput } from "react-native-paper";
 import PrimaryButton from "../Components/PrimaryButton";
-import { AddDonations } from "../Components/validation";
+import { AddDonations } from "../Components/Validation";
 
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import PhoneInput from "react-native-phone-number-input";
@@ -103,12 +103,12 @@ const AddDonationsScreen = ({ route }: any) => {
                   color="white"
                   onPress={() => {
                     handlePressOutside(),
-                    navigation.navigate("SeeExistingRequestScreen", {
-                      latitude: latitude,
-                      longitude: longitude,
-                      itemTypeId: itemTypeId,
-                      title: title,
-                    })
+                      navigation.navigate("SeeExistingRequestScreen", {
+                        latitude: latitude,
+                        longitude: longitude,
+                        itemTypeId: itemTypeId,
+                        title: title,
+                      });
                   }}
                 />
                 <View style={styles.item}>
@@ -197,13 +197,13 @@ const AddDonationsScreen = ({ route }: any) => {
                             text: `${localized.t("OK")}`,
                             onPress: () => {
                               handlePressOutside(),
-                              navigation.navigate("VolunteerThankYouScreen", {
-                                itemTypeId: itemTypeId,
-                                title: title,
-                                latitude: latitude,
-                                longitude: longitude,
-                              })
-                            }
+                                navigation.navigate("VolunteerThankYouScreen", {
+                                  itemTypeId: itemTypeId,
+                                  title: title,
+                                  latitude: latitude,
+                                  longitude: longitude,
+                                });
+                            },
                           },
                         ],
                         { cancelable: false }

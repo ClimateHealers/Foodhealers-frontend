@@ -19,7 +19,7 @@ import {
   widthPercentageToDP as w2dp,
 } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { getLocation } from "../Components/getCurrentLocation";
+import { getLocation } from "../Components/GetCurrentLocation";
 import PrimaryButton from "../Components/PrimaryButton";
 import { localized } from "../locales/localization";
 import { useSelector } from "react-redux";
@@ -289,7 +289,9 @@ const PostEventDetailsScreen = ({ route }: any) => {
                   title={localized.t("SEE_ALL_EVENTS")}
                   buttonStyle={styles.buttonStyles}
                   titleStyle={styles.titleStyle}
-                  onPress={() => {handlePressOutside(),navigation.navigate("AllEventScreen")}}
+                  onPress={() => {
+                    handlePressOutside(), navigation.navigate("AllEventScreen");
+                  }}
                 />
               </View>
             </SafeAreaView>

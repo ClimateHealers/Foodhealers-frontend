@@ -100,11 +100,6 @@ const WeekScreen = ({ route }: any) => {
       mapRef.current.animateToRegion(region, 2000);
     }
   };
-  useFocusEffect(useCallback(() => {
-    if (lat && lng) {
-      focusMarker();
-    }
-  }, [lat, lng]));
 
   const fetchUserLocation = async () => {
     try {
@@ -196,7 +191,7 @@ const WeekScreen = ({ route }: any) => {
       eventStartDate: startDate ? startDate : 0,
       eventEndDate: endDate ? endDate : 0,
     };
-    console.log("bjsddjkjk", findFoodData);
+    
     const response = await dispatch(findFood(findFoodData as any) as any);
 
     const foodEvents = response?.payload?.results?.foodEvents;
@@ -205,8 +200,6 @@ const WeekScreen = ({ route }: any) => {
     );
     setEvents(verifiedFoodEvents);
   };
-
-  console.log("bjsbdjvdj", events);
 
   const navigateToEvent = (eventData: any) => {
     navigation.navigate("EventDetailsScreen", {
@@ -219,6 +212,9 @@ const WeekScreen = ({ route }: any) => {
   useFocusEffect(
     useCallback(() => {
       gettingEvents();
+      if (lat && lng) {
+        focusMarker();
+      }
     }, [])
   );
 

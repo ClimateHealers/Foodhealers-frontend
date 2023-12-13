@@ -19,7 +19,7 @@ import {
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { Text, TextInput } from "react-native-paper";
 import PrimaryButton from "../Components/PrimaryButton";
-import { AddDonations } from "../Components/validation";
+import { AddDonations } from "../Components/Validation";
 
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import PhoneInput from "react-native-phone-number-input";
@@ -130,7 +130,9 @@ const AcceptRequestedDonationScreen = ({ route }: any) => {
                   name="chevron-back"
                   size={32}
                   color="white"
-                  onPress={() => {navigation.goBack(), handlePressOutside()}}
+                  onPress={() => {
+                    navigation.goBack(), handlePressOutside();
+                  }}
                 />
                 <View style={styles.item}>
                   <Text style={styles.itemText}>{title}</Text>
@@ -219,13 +221,13 @@ const AcceptRequestedDonationScreen = ({ route }: any) => {
                             text: `${localized.t("OK")}`,
                             onPress: () => {
                               handlePressOutside(),
-                              navigation.navigate("VolunteerThankYouScreen", {
-                                itemTypeId: itemTypeId,
-                                title: title,
-                                latitude: latitude,
-                                longitude: longitude,
-                              })
-                            }
+                                navigation.navigate("VolunteerThankYouScreen", {
+                                  itemTypeId: itemTypeId,
+                                  title: title,
+                                  latitude: latitude,
+                                  longitude: longitude,
+                                });
+                            },
                           },
                         ],
                         { cancelable: false }

@@ -27,7 +27,7 @@ import { useDispatch, useSelector } from "react-redux";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
 import PrimaryButton from "../Components/PrimaryButton";
 import { styles } from "../Components/Styles";
-import { getLocation } from "../Components/getCurrentLocation";
+import { getLocation } from "../Components/GetCurrentLocation";
 import { localized } from "../locales/localization";
 import { fetchVehicle } from "../redux/actions/addVehicle";
 import { fetchUser } from "../redux/actions/authAction";
@@ -151,7 +151,10 @@ const DriverProfileScreen = ({ route }: any) => {
                   name="chevron-back"
                   size={32}
                   color="#00693D"
-                  onPress={() => {navigation.navigate("DriverRequestScreen"),handlePressOutside()}}
+                  onPress={() => {
+                    navigation.navigate("DriverRequestScreen"),
+                      handlePressOutside();
+                  }}
                 />
                 <View style={styles.item}>
                   <Text style={styles.itemText}></Text>

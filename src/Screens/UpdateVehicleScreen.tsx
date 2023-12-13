@@ -37,7 +37,7 @@ import {
   fetchVehicle,
   updateVehicle,
 } from "../redux/actions/addVehicle";
-import { addDriver, adddVehicle } from "../Components/validation";
+import { addDriver, adddVehicle } from "../Components/Validation";
 import SelectDropdown from "react-native-select-dropdown";
 
 const UpdateVehicleScreen = ({ route }: any) => {

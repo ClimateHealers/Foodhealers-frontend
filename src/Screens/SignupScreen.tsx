@@ -25,12 +25,16 @@ import { Text, TextInput } from "react-native-paper";
 import SelectDropdown from "react-native-select-dropdown";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useDispatch, useSelector } from "react-redux";
-import { getLocation } from "../Components/getCurrentLocation";
+import { getLocation } from "../Components/GetCurrentLocation";
 import PrimaryButton from "../Components/PrimaryButton";
-import { signupSchema } from "../Components/validation";
+import { signupSchema } from "../Components/Validation";
 import { auth } from "../firebase/firebaseConfig";
 import { localized } from "../locales/localization";
-import { login, registerUser, updateExpoPushToken } from "../redux/actions/authAction";
+import {
+  login,
+  registerUser,
+  updateExpoPushToken,
+} from "../redux/actions/authAction";
 import { setLanguage } from "../redux/reducers/langReducer";
 import * as Notifications from "expo-notifications";
 import Constants from "expo-constants";

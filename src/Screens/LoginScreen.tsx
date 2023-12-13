@@ -25,9 +25,9 @@ import {
 import SelectDropdown from "react-native-select-dropdown";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useDispatch, useSelector } from "react-redux";
-import { getLocation } from "../Components/getCurrentLocation";
+import { getLocation } from "../Components/GetCurrentLocation";
 import PrimaryButton from "../Components/PrimaryButton";
-import { loginSchema } from "../Components/validation";
+import { loginSchema } from "../Components/Validation";
 import { auth } from "../firebase/firebaseConfig";
 import { localized } from "../locales/localization";
 import {

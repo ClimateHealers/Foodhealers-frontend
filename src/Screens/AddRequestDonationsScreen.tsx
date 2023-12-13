@@ -19,7 +19,7 @@ import {
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { Text, TextInput } from "react-native-paper";
 import PrimaryButton from "../Components/PrimaryButton";
-import { AddDonations, AddRequest } from "../Components/validation";
+import { AddDonations, AddRequest } from "../Components/Validation";
 
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import PhoneInput from "react-native-phone-number-input";
@@ -100,7 +100,9 @@ const AddRequestDonationsScreen = ({ route }: any) => {
                   name="chevron-back"
                   size={32}
                   color="white"
-                  onPress={() => {navigation.goBack(),handlePressOutside()}}
+                  onPress={() => {
+                    navigation.goBack(), handlePressOutside();
+                  }}
                 />
                 <View style={styles.item}>
                   <Text style={styles.itemText}>{title}</Text>
@@ -182,15 +184,15 @@ const AddRequestDonationsScreen = ({ route }: any) => {
                             text: `${localized.t("OK")}`,
                             onPress: () => {
                               handlePressOutside(),
-                              navigation.navigate("RequestCreatedScreen", {
-                                itemTypeId: itemTypeId,
-                                title: title,
-                                address: address,
-                                eventDateTime: selectedDate,
-                                foodItem: foodItem,
-                                quantity: quantity,
-                              })
-                            }
+                                navigation.navigate("RequestCreatedScreen", {
+                                  itemTypeId: itemTypeId,
+                                  title: title,
+                                  address: address,
+                                  eventDateTime: selectedDate,
+                                  foodItem: foodItem,
+                                  quantity: quantity,
+                                });
+                            },
                           },
                         ],
                         { cancelable: false }

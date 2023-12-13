@@ -21,7 +21,7 @@ import { useDispatch, useSelector } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
 import { styles } from "../Components/Styles";
-import { getLocation } from "../Components/getCurrentLocation";
+import { getLocation } from "../Components/GetCurrentLocation";
 import API from "../Utils/APIUtils";
 import { localized } from "../locales/localization";
 import { VeganRecipesCategory } from "../redux/actions/veganRecipesCategory";
@@ -135,7 +135,9 @@ const CategoryScreen = ({ route }: any) => {
                 name="chevron-back"
                 size={32}
                 color="white"
-                onPress={() => {navigation.goBack(),handlePressOutside()}}
+                onPress={() => {
+                  navigation.goBack(), handlePressOutside();
+                }}
               />
               <View style={styles.dropdownContainer}></View>
               <ScrollView showsVerticalScrollIndicator={false}>
@@ -199,14 +201,15 @@ const CategoryScreen = ({ route }: any) => {
                         <TouchableOpacity
                           onPress={() => {
                             handlePressOutside(),
-                            navigation.navigate("SingleRecipeScreen", {
-                              recipeData: {
-                                recipeImage: recipe?.foodImage,
-                                recipeIngredient: recipe?.ingredients,
-                                recipeName: recipe?.foodName,
-                                recipeInstructions: recipe?.cookingInstructions,
-                              },
-                            })
+                              navigation.navigate("SingleRecipeScreen", {
+                                recipeData: {
+                                  recipeImage: recipe?.foodImage,
+                                  recipeIngredient: recipe?.ingredients,
+                                  recipeName: recipe?.foodName,
+                                  recipeInstructions:
+                                    recipe?.cookingInstructions,
+                                },
+                              });
                           }}
                         >
                           <View
@@ -278,17 +281,18 @@ const CategoryScreen = ({ route }: any) => {
                         <TouchableOpacity
                           onPress={() => {
                             handlePressOutside(),
-                            navigation.navigate("SingleRecipeScreen", {
-                              recipeData: {
-                                recipeImage: recipe?.foodImage,
-                                recipeIngredient: recipe?.ingredients,
-                                recipeName: recipe?.foodName,
-                                recipeInstructions: recipe?.cookingInstructions,
-                                cookingTime: recipe?.preparationTime,
-                                recipeSource: recipe?.recipeSource,
-                                recipeCredits: recipe?.recipeCredits,
-                              },
-                            })
+                              navigation.navigate("SingleRecipeScreen", {
+                                recipeData: {
+                                  recipeImage: recipe?.foodImage,
+                                  recipeIngredient: recipe?.ingredients,
+                                  recipeName: recipe?.foodName,
+                                  recipeInstructions:
+                                    recipe?.cookingInstructions,
+                                  cookingTime: recipe?.preparationTime,
+                                  recipeSource: recipe?.recipeSource,
+                                  recipeCredits: recipe?.recipeCredits,
+                                },
+                              });
                           }}
                         >
                           <View

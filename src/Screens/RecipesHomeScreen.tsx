@@ -17,7 +17,7 @@ import { useDispatch, useSelector } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
 import { styles } from "../Components/Styles";
-import { getLocation } from "../Components/getCurrentLocation";
+import { getLocation } from "../Components/GetCurrentLocation";
 import { localized } from "../locales/localization";
 import { VeganRecipesCategories } from "../redux/actions/veganRecipes";
 import { Image } from "expo-image";
@@ -142,7 +142,9 @@ const RecipesHomeScreen = () => {
                 name="chevron-back"
                 size={32}
                 color="white"
-                onPress={() => {navigation.goBack(),handlePressOutside()}}
+                onPress={() => {
+                  navigation.goBack(), handlePressOutside();
+                }}
               />
               <View style={styles.item}>
                 <Text style={styles.itemText}>{localized.t("RECIPES")}</Text>
@@ -197,14 +199,15 @@ const RecipesHomeScreen = () => {
                         <TouchableOpacity
                           onPress={() => {
                             handlePressOutside(),
-                            navigation.navigate("SingleRecipeScreen", {
-                              recipeData: {
-                                recipeImage: recipe?.foodImage,
-                                recipeIngredient: recipe?.ingredients,
-                                recipeName: recipe?.foodName,
-                                recipeInstructions: recipe?.cookingInstructions,
-                              },
-                            })
+                              navigation.navigate("SingleRecipeScreen", {
+                                recipeData: {
+                                  recipeImage: recipe?.foodImage,
+                                  recipeIngredient: recipe?.ingredients,
+                                  recipeName: recipe?.foodName,
+                                  recipeInstructions:
+                                    recipe?.cookingInstructions,
+                                },
+                              });
                           }}
                         >
                           <View
@@ -276,10 +279,10 @@ const RecipesHomeScreen = () => {
                         <TouchableOpacity
                           onPress={() => {
                             handlePressOutside(),
-                            navigation.navigate("CategoryScreen", {
-                              categoryId: recipe?.id,
-                              recipeName: recipe?.name,
-                            })
+                              navigation.navigate("CategoryScreen", {
+                                categoryId: recipe?.id,
+                                recipeName: recipe?.name,
+                              });
                           }}
                         >
                           <View
