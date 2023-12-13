@@ -378,7 +378,7 @@ const MapScreen = ({ route }: any) => {
                   },
                   description: {
                     color: "black",
-                    fontSize: 14,
+                    fontSize: h2dp(1.4),
                     width: "80%",
                   },
                   listView: {
@@ -460,7 +460,7 @@ const MapScreen = ({ route }: any) => {
                           <Text
                             style={{
                               color: "#FC5A56",
-                              fontSize: 15,
+                              fontSize: h2dp(1.5),
                               opacity: 0.8,
                               fontWeight: "500",
                             }}
@@ -482,7 +482,7 @@ const MapScreen = ({ route }: any) => {
                     style={{
                       marginTop: 5,
                       textAlign: "center",
-                      fontSize: 20,
+                      fontSize: h2dp(2.0),
                       color: "white",
                     }}
                   >
@@ -493,7 +493,7 @@ const MapScreen = ({ route }: any) => {
                     style={{
                       marginTop: 5,
                       textAlign: "center",
-                      fontSize: 20,
+                      fontSize: h2dp(2.0),
                       color: "white",
                       opacity: 0,
                     }}

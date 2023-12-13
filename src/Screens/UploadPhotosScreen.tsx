@@ -130,13 +130,13 @@ const UploadPhotosScreen = ({ route }: any) => {
                   <AntDesign name="upload" size={24} color="black" />
                 </TouchableOpacity>
 
-                <Text style={{ fontSize: 20, marginTop: 10 }}>
+                <Text style={{ fontSize: h2dp(2.0), marginTop: 10 }}>
                   {localized.t("UPLOAD_EVENT_PHOTO")}
                 </Text>
                 <TouchableOpacity onPress={() => {navigation.goBack(),handlePressOutside()}}>
                   <Text
                     style={{
-                      fontSize: 20,
+                      fontSize: h2dp(2.0),
                       marginTop: 40,
                       textDecorationLine: "underline",
                     }}

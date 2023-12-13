@@ -5,6 +5,10 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { localized } from "../locales/localization";
 import { useDispatch, useSelector } from "react-redux";
 import { setLanguage } from "../redux/reducers/langReducer";
+import {
+  heightPercentageToDP as h2dp,
+  widthPercentageToDP as w2dp,
+} from "react-native-responsive-screen";
 
 const Dropdown = () => {
   const [langOpen, setlangOpen] = useState(false);
@@ -69,13 +73,13 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#D1D1D6",
   },
-  dropdown1BtnTxtStyle: { color: "#B50000", textAlign: "left", fontSize: 14 },
+  dropdown1BtnTxtStyle: { color: "#B50000", textAlign: "left", fontSize: h2dp(1.4) },
   dropdown1DropdownStyle: {
     backgroundColor: "#EFEFEF",
     color: "black",
     borderRadius: 4,
     height: 180,
-    fontSize: 14,
+    fontSize: h2dp(1.4),
     borderColor: "blue",
   },
   dropdown1RowStyle: {
@@ -84,7 +88,7 @@ const styles = StyleSheet.create({
     borderBottomColor: "#D1D1D6",
     borderRadius: 5,
   },
-  dropdown1RowTxtStyle: { color: "black", textAlign: "center", fontSize: 10 },
+  dropdown1RowTxtStyle: { color: "black", textAlign: "center", fontSize: h2dp(1.0) },
 });
 
 export default Dropdown;

@@ -101,7 +101,7 @@ const PickupHistoryScreen = ({ route }: any) => {
           <Text
             style={{
               marginLeft: w2dp(3),
-              fontSize: 16,
+              fontSize: h2dp(1.6),
               lineHeight: 30,
               paddingTop: h2dp(0.5),
               fontWeight: "500",
@@ -113,7 +113,7 @@ const PickupHistoryScreen = ({ route }: any) => {
             style={{
               marginLeft: w2dp(3),
               fontWeight: "300",
-              fontSize: 16,
+              fontSize: h2dp(1.6),
               lineHeight: 20,
               paddingBottom: h2dp(1),
             }}

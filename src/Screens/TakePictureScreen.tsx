@@ -15,6 +15,11 @@ import {
 } from "react-native";
 import { localized } from "../locales/localization";
 
+import {
+  heightPercentageToDP as h2dp,
+  widthPercentageToDP as w2dp,
+} from "react-native-responsive-screen";
+
 export default function TakePictureScreen() {
   const [type, setType] = useState(CameraType.front);
   const [loading, setLoading] = useState(false);
@@ -135,7 +140,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   text: {
-    fontSize: 24,
+    fontSize: h2dp(2.4),
     fontWeight: "bold",
     color: "white",
   },

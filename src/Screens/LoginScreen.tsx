@@ -133,7 +133,7 @@ const LoginScreen = () => {
                   <Text
                     style={{
                       padding: 10,
-                      fontSize: 20,
+                      fontSize: h2dp(2.0),
                       fontWeight: "300",
                       lineHeight: 27.24,
                     }}
@@ -147,7 +147,7 @@ const LoginScreen = () => {
                   <Text
                     style={{
                       padding: 10,
-                      fontSize: 20,
+                      fontSize: h2dp(2.0),
                       fontWeight: "300",
                       lineHeight: 27.24,
                     }}
@@ -351,7 +351,7 @@ const LoginScreen = () => {
                         <Text
                           style={{
                             color: "white",
-                            fontSize: 15,
+                            fontSize: h2dp(1.5),
                             textDecorationLine: "underline",
                           }}
                         >
@@ -387,7 +387,7 @@ const LoginScreen = () => {
                         style={{
                           textAlign: "center",
                           color: "white",
-                          fontSize: 18,
+                          fontSize: h2dp(1.8),
                           marginTop: 10,
                         }}
                       >
@@ -399,7 +399,7 @@ const LoginScreen = () => {
                         <Text
                           style={{
                             color: "white",
-                            fontSize: 18,
+                            fontSize: h2dp(1.8),
                             textDecorationLine: "underline",
                             fontFamily: "OpenSans-Bold",
                             textAlign: "center",
@@ -466,7 +466,7 @@ const styles = StyleSheet.create({
   },
   titleStyle: {
     color: "white",
-    fontSize: 26,
+    fontSize: h2dp(2.6),
     fontWeight: "400",
     lineHeight: 35,
     fontFamily: "OpenSans-Regular",
@@ -487,13 +487,13 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#D1D1D6",
   },
-  dropdown1BtnTxtStyle: { color: "#B50000", textAlign: "left", fontSize: 14 },
+  dropdown1BtnTxtStyle: { color: "#B50000", textAlign: "left", fontSize: h2dp(1.4) },
   dropdown1DropdownStyle: {
     backgroundColor: "#EFEFEF",
     color: "black",
     borderRadius: 4,
     height: 180,
-    fontSize: 14,
+    fontSize: h2dp(1.4),
     borderColor: "blue",
   },
   dropdown1RowStyle: {
@@ -502,7 +502,7 @@ const styles = StyleSheet.create({
     borderBottomColor: "#D1D1D6",
     borderRadius: 5,
   },
-  dropdown1RowTxtStyle: { color: "black", textAlign: "center", fontSize: 10 },
+  dropdown1RowTxtStyle: { color: "black", textAlign: "center", fontSize: h2dp(1.0) },
   inputError: {
     color: "red",
     marginBottom: 10,

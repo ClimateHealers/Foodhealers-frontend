@@ -332,7 +332,7 @@ Join me using https://play.google.com/store/apps/details?id=com.foodhealers.clim
                         <Text
                           style={{
                             color: "white",
-                            fontSize: 20,
+                            fontSize: h2dp(2.0),
                             marginTop: w2dp(5),
                             textDecorationLine: "underline",
                             alignSelf: "center",

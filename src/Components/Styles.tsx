@@ -69,12 +69,12 @@ export const styles = StyleSheet.create({
     borderRadius: 5,
   },
   itemFilterText: {
-    fontSize: 16,
+    fontSize: h2dp(1.6),
     color: "white",
     marginTop: h2dp(1),
   },
   filterNameText: {
-    fontSize: 16,
+    fontSize: h2dp(1.6),
     color: "white",
     marginTop: h2dp(1),
     fontWeight: "bold",
@@ -166,7 +166,7 @@ export const styles = StyleSheet.create({
     color: "white",
   },
   itemTextDriver: {
-    fontSize: 25,
+    fontSize: h2dp(2.5),
     color: "black",
   },
   datePickerStyle: {
@@ -203,12 +203,12 @@ export const styles = StyleSheet.create({
   },
   burgerText: {
     padding: 10,
-    fontSize: 20,
+    fontSize: h2dp(2.0),
     fontWeight: "400",
     lineHeight: 27.24,
   },
   foodhearlerText: {
-    fontSize: 24,
+    fontSize: h2dp(2.4),
     fontWeight: "400",
     alignSelf: "center",
     lineHeight: 35,
@@ -256,7 +256,7 @@ export const styles = StyleSheet.create({
   },
   textStyle: {
     textAlign: "center",
-    fontSize: 20,
+    fontSize: h2dp(2.0),
     lineHeight: 35,
     fontWeight: "normal",
     fontStyle: "normal",
@@ -332,7 +332,7 @@ export const styles = StyleSheet.create({
   },
   boldText: {
     fontWeight: "300",
-    fontSize: 20,
+    fontSize: h2dp(2.0),
   },
   modalContainer: {
     flex: 1,
@@ -357,13 +357,13 @@ export const styles = StyleSheet.create({
     borderRadius: 8,
   },
   HeaderText: {
-    fontSize: 20,
+    fontSize: h2dp(2.0),
     textAlign: "left",
     color: "white",
     fontWeight: "bold",
   },
   modalText: {
-    fontSize: 16,
+    fontSize: h2dp(1.6),
     textAlign: "left",
     color: "white",
     marginTop: 15,
@@ -391,13 +391,13 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#D1D1D6",
   },
-  dropdown1BtnTxtStyle: { color: "#B50000", textAlign: "left", fontSize: 14 },
+  dropdown1BtnTxtStyle: { color: "#B50000", textAlign: "left", fontSize: h2dp(1.4) },
   dropdown1DropdownStyle: {
     backgroundColor: "#EFEFEF",
     color: "black",
     borderRadius: 4,
     height: 180,
-    fontSize: 14,
+    fontSize: h2dp(1.4),
     borderColor: "blue",
   },
   dropdown1RowStyle: {
@@ -406,7 +406,7 @@ export const styles = StyleSheet.create({
     borderBottomColor: "#D1D1D6",
     borderRadius: 5,
   },
-  dropdown1RowTxtStyle: { color: "black", textAlign: "center", fontSize: 10 },
+  dropdown1RowTxtStyle: { color: "black", textAlign: "center", fontSize: h2dp(1.0) },
   calendarView: {
     width: w2dp(85),
     alignSelf: "center",
@@ -415,7 +415,7 @@ export const styles = StyleSheet.create({
   },
   tabLabel: {
     color: "white",
-    fontSize: 16,
+    fontSize: h2dp(1.6),
     fontWeight: "bold",
   },
   tabIndicator: {

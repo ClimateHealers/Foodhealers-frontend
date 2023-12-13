@@ -130,7 +130,7 @@ const EventPhotosScreen = ({ route }: any) => {
                           paddingVertical: 10,
                         }}
                         titleStyle={{
-                          fontSize: 20,
+                          fontSize: h2dp(2.0),
                         }}
                         onPress={() => {navigation.navigate("PostEvent"),handlePressOutside()}}
                       />
@@ -143,7 +143,7 @@ const EventPhotosScreen = ({ route }: any) => {
                           paddingVertical: 10,
                         }}
                         titleStyle={{
-                          fontSize: 20,
+                          fontSize: h2dp(2.0),
                         }}
                         onPress={naivgateToAllEvents}
                       />
@@ -158,7 +158,7 @@ const EventPhotosScreen = ({ route }: any) => {
                   justifyContent: "flex-start",
                 }}
               >
-                <Text style={{ fontSize: 25, color: "white" }}>
+                <Text style={{ fontSize: h2dp(2.5), color: "white" }}>
                   {localized.t("SELECTED_PHOTOS")}
                 </Text>
               </View>

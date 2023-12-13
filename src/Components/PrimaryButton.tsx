@@ -1,6 +1,10 @@
 import React from "react";
 import { StyleSheet } from "react-native";
 import { Button } from "react-native-elements";
+import {
+  heightPercentageToDP as h2dp,
+  widthPercentageToDP as w2dp,
+} from "react-native-responsive-screen";
 
 const PrimaryButton = ({ onPress, title, buttonStyle, titleStyle, disabled }: any) => {
   return (
@@ -24,7 +28,7 @@ const styles = StyleSheet.create({
   },
   titleStyle: {
     color: "black",
-    fontSize: 26,
+    fontSize: h2dp(2.6),
     fontWeight: "400",
     lineHeight: 35,
   },

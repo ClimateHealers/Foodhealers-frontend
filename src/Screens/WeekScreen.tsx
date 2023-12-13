@@ -363,7 +363,7 @@ const WeekScreen = ({ route }: any) => {
                     styles.boldText,
                     {
                       color: "orange",
-                      fontSize: 15,
+                      fontSize: h2dp(1.5),
                     },
                   ]}
                 >
@@ -378,7 +378,7 @@ const WeekScreen = ({ route }: any) => {
                       color: "orange",
                       textDecorationLine: "underline",
                       marginTop: h2dp(1),
-                      fontSize: 15,
+                      fontSize: h2dp(1.5),
                       fontWeight: "300",
                     }}
                   >
@@ -433,7 +433,7 @@ const WeekScreen = ({ route }: any) => {
                           <Text
                             style={{
                               color: "#FC5A56",
-                              fontSize: 15,
+                              fontSize: h2dp(1.5),
                               opacity: 0.8,
                               fontWeight: "500",
                             }}

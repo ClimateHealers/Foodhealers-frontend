@@ -134,7 +134,7 @@ const PostEventDetailsScreen = ({ route }: any) => {
                         <Text
                           style={{
                             padding: 10,
-                            fontSize: 20,
+                            fontSize: h2dp(2.0),
                             fontWeight: "300",
                             lineHeight: 27.24,
                           }}
@@ -148,7 +148,7 @@ const PostEventDetailsScreen = ({ route }: any) => {
                         <Text
                           style={{
                             padding: 10,
-                            fontSize: 20,
+                            fontSize: h2dp(2.0),
                             fontWeight: "300",
                             lineHeight: 27.24,
                           }}
@@ -323,7 +323,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   itemText: {
-    fontSize: 25,
+    fontSize: h2dp(2.5),
     color: "white",
   },
   cardContainer: {
@@ -344,13 +344,13 @@ const styles = StyleSheet.create({
   },
   burgerText: {
     padding: 10,
-    fontSize: 20,
+    fontSize: h2dp(2.0),
     fontWeight: "400",
     lineHeight: 27.24,
   },
   titleStyle: {
     color: "white",
-    fontSize: 26,
+    fontSize: h2dp(2.6),
 
     lineHeight: 35,
     fontFamily: "OpenSans-Regular",
@@ -359,13 +359,13 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
   cardText: {
-    fontSize: 20,
+    fontSize: h2dp(2.0),
     marginLeft: 10,
     fontFamily: "OpenSans-Light",
   },
   boldText: {
     fontWeight: "300",
-    fontSize: 20,
+    fontSize: h2dp(2.0),
   },
 });
 

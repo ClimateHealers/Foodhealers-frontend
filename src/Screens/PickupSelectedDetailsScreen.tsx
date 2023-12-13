@@ -82,7 +82,7 @@ const PickupSelectedDetailsScreen = ({ route }: any) => {
               </View>
               <Text
                 style={{
-                  fontSize: 26,
+                  fontSize: h2dp(2.6),
                   marginTop: h2dp(3),
                   alignSelf: "center",
                 }}
@@ -102,7 +102,7 @@ const PickupSelectedDetailsScreen = ({ route }: any) => {
                     <Text
                       style={{
                         marginLeft: w2dp(3),
-                        fontSize: 16,
+                        fontSize: h2dp(1.6),
                         lineHeight: 30,
                         fontWeight: "500",
                         paddingTop: h2dp(0.5),
@@ -123,7 +123,7 @@ const PickupSelectedDetailsScreen = ({ route }: any) => {
                       <Text
                         style={{
                           marginLeft: w2dp(3),
-                          fontSize: 16,
+                          fontSize: h2dp(1.6),
                           lineHeight: 30,
                           fontWeight: "500",
                           paddingTop: h2dp(0.5),
@@ -136,7 +136,7 @@ const PickupSelectedDetailsScreen = ({ route }: any) => {
                         <Text
                           style={{
                             marginLeft: w2dp(3),
-                            fontSize: 16,
+                            fontSize: h2dp(1.6),
                             lineHeight: 30,
                             paddingTop: h2dp(0.5),
                             marginRight: w2dp(3),
@@ -149,7 +149,7 @@ const PickupSelectedDetailsScreen = ({ route }: any) => {
                     <Text
                       style={{
                         marginLeft: w2dp(3),
-                        fontSize: 16,
+                        fontSize: h2dp(1.6),
                         lineHeight: 30,
                         fontWeight: "500",
                         paddingTop: h2dp(0.5),
@@ -169,7 +169,7 @@ const PickupSelectedDetailsScreen = ({ route }: any) => {
                       <Text
                         style={{
                           marginLeft: w2dp(3),
-                          fontSize: 16,
+                          fontSize: h2dp(1.6),
                           lineHeight: 30,
                           fontWeight: "500",
                           paddingTop: h2dp(0.5),
@@ -182,7 +182,7 @@ const PickupSelectedDetailsScreen = ({ route }: any) => {
                         <Text
                           style={{
                             marginLeft: w2dp(3),
-                            fontSize: 16,
+                            fontSize: h2dp(1.6),
                             lineHeight: 30,
                             paddingTop: h2dp(0.5),
                             marginRight: w2dp(3),

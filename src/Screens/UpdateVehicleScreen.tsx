@@ -345,7 +345,7 @@ const UpdateVehicleScreen = ({ route }: any) => {
                         rowTextStyle={{
                           color: "black",
                           textAlign: "center",
-                          fontSize: 16,
+                          fontSize: h2dp(1.6),
                         }}
                         data={
                           vehicleData &&

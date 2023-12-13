@@ -184,7 +184,7 @@ const DriverRequestScreen = ({ route }: any) => {
                   onPress={() => {navigation.goBack(),handlePressOutside()}}
                 />
                 <View style={styles.item}>
-                  <Text style={{ fontSize: 25, color: "#00693D" }}>
+                  <Text style={{ fontSize: h2dp(2.5), color: "#00693D" }}>
                     {localized.t("DRIVE")}
                   </Text>
                 </View>
@@ -291,7 +291,7 @@ const DriverRequestScreen = ({ route }: any) => {
                   )}
                 </TouchableOpacity>
               </View>
-              <Text style={{ fontSize: 36, color: "#00693D" }}>
+              <Text style={{ fontSize: h2dp(3.6), color: "#00693D" }}>
                 {localized.t("HELLO")}, {data?.name}
               </Text>
               <View
@@ -307,7 +307,7 @@ const DriverRequestScreen = ({ route }: any) => {
               >
                 <Text
                   style={{
-                    fontSize: 24,
+                    fontSize: h2dp(2.4),
                     color: "white",
                     marginVertical: h2dp(1),
                     alignItems: "center",
@@ -339,7 +339,7 @@ const DriverRequestScreen = ({ route }: any) => {
                   }}
                   titleStyle={{
                     color: "black",
-                    fontSize: 18,
+                    fontSize: h2dp(1.8),
                     // lineHeight: 20,
                     fontFamily: "OpenSans-Regular",
                   }}

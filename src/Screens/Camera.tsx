@@ -2,6 +2,10 @@ import React, { useRef, useState, useEffect } from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { Camera } from "expo-camera";
 import { localized } from "../locales/localization";
+import {
+  heightPercentageToDP as h2dp,
+  widthPercentageToDP as w2dp,
+} from "react-native-responsive-screen";
 
 export default function App(): JSX.Element {
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
@@ -69,6 +73,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
   },
   buttonText: {
-    fontSize: 14,
+    fontSize: h2dp(1.4),
   },
 });

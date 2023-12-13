@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   View,
   Linking,
+  TouchableWithoutFeedback,
 } from "react-native";
 import {
   heightPercentageToDP as h2dp,
@@ -120,6 +121,10 @@ const ProfileScreen = () => {
     setNotificationData(filterRead?.length);
   };
 
+  const handlePressOutside = () => {
+    setMenuOpen(false);
+  };
+
   useFocusEffect(
     useCallback(() => {
       fetchingUserData();
@@ -181,6 +186,7 @@ const ProfileScreen = () => {
   };
 
   return (
+    <TouchableWithoutFeedback onPress={handlePressOutside}>
     <LinearGradient
       colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
       style={styles.background}
@@ -588,6 +594,8 @@ const ProfileScreen = () => {
         </ScrollView>
       </SafeAreaView>
     </LinearGradient>
+    </TouchableWithoutFeedback>
+
   );
 };
 

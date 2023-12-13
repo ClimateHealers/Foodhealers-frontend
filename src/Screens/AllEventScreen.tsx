@@ -133,7 +133,7 @@ const AllEventScreen = () => {
             <Text
               style={{
                 marginLeft: h2dp(1.5),
-                fontSize: 11,
+                fontSize: h2dp(1.1),
                 color: "green",
                 marginTop: h2dp(0.5),
               }}
@@ -155,7 +155,7 @@ const AllEventScreen = () => {
             <Text
               style={{
                 marginLeft: h2dp(1.5),
-                fontSize: 11,
+                fontSize: h2dp(1.1),
                 color: "#f2db0a",
                 marginTop: h2dp(0.5),
               }}
@@ -174,7 +174,7 @@ const AllEventScreen = () => {
             <Text
               style={{
                 marginLeft: h2dp(1.5),
-                fontSize: 11,
+                fontSize: h2dp(1.1),
                 color: "red",
                 marginTop: h2dp(0.5),
               }}
@@ -187,7 +187,7 @@ const AllEventScreen = () => {
           <Text
             style={{
               marginLeft: w2dp(5),
-              fontSize: 16,
+              fontSize: h2dp(1.6),
               lineHeight: 30,
               paddingTop: h2dp(0.5),
             }}
@@ -199,7 +199,7 @@ const AllEventScreen = () => {
               marginLeft: w2dp(5),
               width: w2dp(52),
               fontWeight: "500",
-              fontSize: 16,
+              fontSize: h2dp(1.6),
               lineHeight: 30,
             }}
           >
@@ -210,7 +210,7 @@ const AllEventScreen = () => {
               marginLeft: w2dp(5),
               width: w2dp(47),
               fontWeight: "200",
-              fontSize: 16,
+              fontSize: h2dp(1.6),
               lineHeight: 20,
               paddingBottom: h2dp(1),
             }}

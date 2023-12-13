@@ -31,6 +31,11 @@ import FoodhealersHeader from "../Components/FoodhealersHeader";
 import { styles } from "../Components/Styles";
 import { getLocation } from "../Components/getCurrentLocation";
 
+import {
+  heightPercentageToDP as h2dp,
+  widthPercentageToDP as w2dp,
+} from "react-native-responsive-screen";
+
 const PostEvent = () => {
   const [loading, setLoading] = useState(false);
   const [langOpen, setlangOpen] = useState(false);
@@ -316,7 +321,7 @@ const PostEvent = () => {
                             <Text
                               style={{
                                 color: "black",
-                                fontSize: 13,
+                                fontSize: h2dp(1.3),
                                 marginBottom: 5,
                                 marginLeft: 15,
                               }}
@@ -326,7 +331,7 @@ const PostEvent = () => {
                             <Text
                               style={{
                                 color: "black",
-                                fontSize: 13,
+                                fontSize: h2dp(1.3),
                                 marginBottom: 5,
                                 marginLeft: 15,
                               }}
@@ -365,7 +370,7 @@ const PostEvent = () => {
                             <Text
                               style={{
                                 color: "black",
-                                fontSize: 13,
+                                fontSize: h2dp(1.3),
                                 width: 200,
                                 marginBottom: 5,
                                 marginLeft: 15,
@@ -376,7 +381,7 @@ const PostEvent = () => {
                             <Text
                               style={{
                                 color: "black",
-                                fontSize: 13,
+                                fontSize: h2dp(1.3),
                                 marginBottom: 5,
                                 marginLeft: 15,
                               }}
@@ -403,7 +408,7 @@ const PostEvent = () => {
                             <Text
                               style={{
                                 color: "black",
-                                fontSize: 13,
+                                fontSize: h2dp(1.3),
                                 marginBottom: 5,
                                 marginLeft: 15,
                               }}
@@ -413,7 +418,7 @@ const PostEvent = () => {
                             <Text
                               style={{
                                 color: "black",
-                                fontSize: 13,
+                                fontSize: h2dp(1.3),
                                 marginBottom: 5,
                                 marginLeft: 15,
                               }}
@@ -454,7 +459,7 @@ const PostEvent = () => {
                             <Text
                               style={{
                                 color: "black",
-                                fontSize: 13,
+                                fontSize: h2dp(1.3),
                                 width: 200,
                                 marginBottom: 5,
                                 marginLeft: 15,
@@ -465,7 +470,7 @@ const PostEvent = () => {
                             <Text
                               style={{
                                 color: "black",
-                                fontSize: 13,
+                                fontSize: h2dp(1.3),
                                 marginBottom: 5,
                                 marginLeft: 15,
                               }}

@@ -230,7 +230,7 @@ const DriverProfileScreen = ({ route }: any) => {
                   </View>
                 )}
               </View>
-              <Text style={{ fontSize: 36, color: "#00693D" }}>
+              <Text style={{ fontSize: h2dp(3.6), color: "#00693D" }}>
                 {localized.t("DRIVE")}
               </Text>
               <View
@@ -265,7 +265,7 @@ const DriverProfileScreen = ({ route }: any) => {
                     </View>
                   )}
                 </TouchableOpacity>
-                <Text style={{ fontSize: 36, color: "#00693D" }}>
+                <Text style={{ fontSize: h2dp(3.6), color: "#00693D" }}>
                   {data?.user?.name}
                 </Text>
               </View>
@@ -279,24 +279,24 @@ const DriverProfileScreen = ({ route }: any) => {
               }}
             >
               <Text
-                style={{ fontSize: 24, fontWeight: "500", marginTop: h2dp(2) }}
+                style={{ fontSize: h2dp(2.4), fontWeight: "500", marginTop: h2dp(2) }}
               >
                 {data?.name}
               </Text>
-              <Text style={{ fontSize: 24, marginTop: h2dp(2) }}>
+              <Text style={{ fontSize: h2dp(2.4), marginTop: h2dp(2) }}>
                 {data?.email}
               </Text>
-              <Text style={{ fontSize: 24, marginTop: h2dp(2) }}>
+              <Text style={{ fontSize: h2dp(2.4), marginTop: h2dp(2) }}>
                 {data?.address?.fullAddress}
               </Text>
-              <Text style={{ fontSize: 24, marginTop: h2dp(2) }}>
+              <Text style={{ fontSize: h2dp(2.4), marginTop: h2dp(2) }}>
                 {data?.phoneNumber}
               </Text>
-              <Text style={{ fontSize: 24, marginTop: h2dp(2) }}>
+              <Text style={{ fontSize: h2dp(2.4), marginTop: h2dp(2) }}>
                 {vehicleDetails?.make} {vehicleDetails?.model},{" "}
                 {vehicleDetails?.vehicleColour}
               </Text>
-              <Text style={{ fontSize: 24, marginTop: h2dp(2) }}>
+              <Text style={{ fontSize: h2dp(2.4), marginTop: h2dp(2) }}>
                 {vehicleDetails?.plateNumber}
               </Text>
             </View>

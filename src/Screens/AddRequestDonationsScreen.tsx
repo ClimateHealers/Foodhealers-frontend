@@ -388,7 +388,7 @@ const AddRequestDonationsScreen = ({ route }: any) => {
                             <Text
                               style={{
                                 color: "black",
-                                fontSize: 13,
+                                fontSize: h2dp(1.3),
                                 marginBottom: 5,
                                 marginLeft: 15,
                               }}
@@ -398,7 +398,7 @@ const AddRequestDonationsScreen = ({ route }: any) => {
                             <Text
                               style={{
                                 color: "black",
-                                fontSize: 13,
+                                fontSize: h2dp(1.3),
                                 marginBottom: 5,
                                 marginLeft: 15,
                               }}
@@ -437,7 +437,7 @@ const AddRequestDonationsScreen = ({ route }: any) => {
                             <Text
                               style={{
                                 color: "black",
-                                fontSize: 13,
+                                fontSize: h2dp(1.3),
                                 width: 200,
                                 marginBottom: 5,
                                 marginLeft: 15,
@@ -448,7 +448,7 @@ const AddRequestDonationsScreen = ({ route }: any) => {
                             <Text
                               style={{
                                 color: "black",
-                                fontSize: 13,
+                                fontSize: h2dp(1.3),
                                 marginBottom: 5,
                                 marginLeft: 15,
                               }}

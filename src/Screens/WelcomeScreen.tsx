@@ -9,6 +9,11 @@ import {
 } from "react-native";
 import { localized } from "../locales/localization";
 
+import {
+  heightPercentageToDP as h2dp,
+  widthPercentageToDP as w2dp,
+} from "react-native-responsive-screen";
+
 const WelcomeScreen = () => {
   return (
     <View style={styles.container}>
@@ -49,13 +54,13 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    fontSize: 32,
+    fontSize: h2dp(3.2),
     fontWeight: "bold",
     color: "white",
     marginBottom: 16,
   },
   subtitle: {
-    fontSize: 18,
+    fontSize: h2dp(1.8),
     color: "white",
     textAlign: "center",
   },
@@ -83,7 +88,7 @@ const styles = StyleSheet.create({
 
   Headers: {
     width: 350,
-    fontSize: 55,
+    fontSize: h2dp(5.5),
     color: "white",
     textAlign: "center",
     fontFamily: "Poppins-Regular",
