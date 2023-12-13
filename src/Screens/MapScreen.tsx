@@ -112,6 +112,7 @@ const MapScreen = ({ route }: any) => {
       const json = await response.json();
       setCurrentLocation(json.results[0]?.formatted_address);
       setAddress(json.results[0]?.formatted_address);
+      setfullAddress(json.results[0]?.formatted_address);
       const findFoodData = {
         lat: latitude ? latitude : 0,
         lng: longitude ? longitude : 0,
@@ -124,6 +125,8 @@ const MapScreen = ({ route }: any) => {
 
         eventEndDate: endDate ? endDate : 0,
       };
+
+      console.log("dhfddf", findFoodData);
       const res = await dispatch(findFood(findFoodData as any) as any);
       const foodEvents = res?.payload?.results?.foodEvents;
       const verifiedFoodEvents = foodEvents?.filter(
@@ -345,7 +348,6 @@ const MapScreen = ({ route }: any) => {
 
                     eventEndDate: endDate ? endDate : 0,
                   };
-
                   const response = await dispatch(
                     findFood(findFoodData as any) as any
                   );
@@ -506,7 +508,9 @@ const MapScreen = ({ route }: any) => {
                       title={localized.t("HOME")}
                       buttonStyle={styles.buttonStyles}
                       titleStyle={styles.titleStyle}
-                      onPress={() => {navigation.navigate("HomeScreen"),handlePressOutside()}}
+                      onPress={() => {
+                        navigation.navigate("HomeScreen"), handlePressOutside();
+                      }}
                     />
                   </View>
                 ) : !emptyEvents && buttonVisibility ? (
@@ -515,7 +519,9 @@ const MapScreen = ({ route }: any) => {
                       title={localized.t("NEXT")}
                       buttonStyle={styles.buttonStyles}
                       titleStyle={styles.titleStyle}
-                      onPress={() => {clickHandler(),handlePressOutside()}}
+                      onPress={() => {
+                        clickHandler(), handlePressOutside();
+                      }}
                     />
                   </View>
                 ) : null}
