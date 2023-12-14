@@ -316,7 +316,10 @@ Join me using https://play.google.com/store/apps/details?id=com.foodhealers.clim
                 />
 
                 {!expired && (
-                  <TouchableOpacity onPress={() => {
+                  <PrimaryButton
+                  disabled={expired}
+                  title={localized.t("SHARE")}
+                  onPress={() => {
                     Alert.alert(
                       `Text/Caption Copied to Clipboard`,
                       `Text/Caption copied to clipboard. Please paste while sharing`,
@@ -330,18 +333,10 @@ Join me using https://play.google.com/store/apps/details?id=com.foodhealers.clim
                       ],
                       { cancelable: false }
                     );
-                  }}>
-                    <Text
-                      style={{
-                        color: "white",
-                        fontSize: h2dp(2.0),
-                        marginTop: w2dp(5),
-                        textDecorationLine: "underline",
-                      }}
-                    >
-                      {localized.t("SHARE")}
-                    </Text>
-                  </TouchableOpacity>
+                  }}
+                  buttonStyle={styles.buttonStyles}
+                  titleStyle={styles.titleStyle}
+                />
                 )}
               </View>
             </View>

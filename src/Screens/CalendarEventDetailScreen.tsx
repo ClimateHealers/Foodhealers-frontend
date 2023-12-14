@@ -1,9 +1,11 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { LinearGradient } from "expo-linear-gradient";
-import moment from "moment";
 import { Asset } from "expo-asset";
+import * as Clipboard from "expo-clipboard";
 import * as FileSystem from "expo-file-system";
+import { LinearGradient } from "expo-linear-gradient";
+import * as Sharing from "expo-sharing";
+import moment from "moment";
 import React, { useEffect, useState } from "react";
 import {
   Alert,
@@ -11,27 +13,20 @@ import {
   Keyboard,
   Linking,
   ScrollView,
-  Share,
-  // Share,
   Text,
-  TouchableOpacity,
   TouchableWithoutFeedback,
-  View,
+  View
 } from "react-native";
 import { Divider } from "react-native-paper";
 import {
-  heightPercentageToDP as h2dp,
-  widthPercentageToDP as w2dp,
+  heightPercentageToDP as h2dp
 } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useDispatch } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
 import PrimaryButton from "../Components/PrimaryButton";
 import { styles } from "../Components/Styles";
 import { localized } from "../locales/localization";
-import * as Clipboard from "expo-clipboard";
-import * as Sharing from "expo-sharing";
 
 const image = require("../../assets/welcomeBackground.jpg");
 
@@ -295,32 +290,27 @@ Join me using https://play.google.com/store/apps/details?id=com.foodhealers.clim
                 titleStyle={styles.titleStyle}
               />
               {!expired && (
-                <TouchableOpacity onPress={() => {
-                  Alert.alert(
-                    `Text/Caption Copied to Clipboard`,
-                    `Text/Caption copied to clipboard. Please paste while sharing`,
-                    [
-                      {
-                        text: "OK",
-                        onPress: () => {
-                          shareAsSocialPost();
+                <PrimaryButton
+                  disabled={expired}
+                  title={localized.t("SHARE")}
+                  onPress={() => {
+                    Alert.alert(
+                      `Text/Caption Copied to Clipboard`,
+                      `Text/Caption copied to clipboard. Please paste while sharing`,
+                      [
+                        {
+                          text: "OK",
+                          onPress: () => {
+                            shareAsSocialPost();
+                          },
                         },
-                      },
-                    ],
-                    { cancelable: false }
-                  );
-                }}>
-                  <Text
-                    style={{
-                      color: "white",
-                      fontSize: h2dp(2.0),
-                      marginTop: w2dp(5),
-                      textDecorationLine: "underline",
-                    }}
-                  >
-                    {localized.t("SHARE")}
-                  </Text>
-                </TouchableOpacity>
+                      ],
+                      { cancelable: false }
+                    );
+                  }}
+                  buttonStyle={styles.buttonStyles}
+                  titleStyle={styles.titleStyle}
+                />
               )}
             </View>
           </ScrollView>

@@ -1,11 +1,11 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { LinearGradient } from "expo-linear-gradient";
-import * as FileSystem from "expo-file-system";
-import * as Sharing from "expo-sharing";
 import { Asset } from "expo-asset";
-import moment from "moment";
 import * as Clipboard from "expo-clipboard";
+import * as FileSystem from "expo-file-system";
+import { LinearGradient } from "expo-linear-gradient";
+import * as Sharing from "expo-sharing";
+import moment from "moment";
 import React, { useEffect, useState } from "react";
 import {
   Alert,
@@ -13,12 +13,10 @@ import {
   Keyboard,
   Linking,
   ScrollView,
-  Share,
   StatusBar,
   Text,
-  TouchableOpacity,
   TouchableWithoutFeedback,
-  View,
+  View
 } from "react-native";
 import { Divider } from "react-native-paper";
 import {
@@ -312,7 +310,9 @@ Join me using https://play.google.com/store/apps/details?id=com.foodhealers.clim
                   />
                   {!expired && (
                     <View>
-                      <TouchableOpacity
+                      <PrimaryButton
+                        disabled={expired}
+                        title={localized.t("SHARE")}
                         onPress={() => {
                           Alert.alert(
                             `Text/Caption Copied to Clipboard`,
@@ -328,19 +328,9 @@ Join me using https://play.google.com/store/apps/details?id=com.foodhealers.clim
                             { cancelable: false }
                           );
                         }}
-                      >
-                        <Text
-                          style={{
-                            color: "white",
-                            fontSize: h2dp(2.0),
-                            marginTop: w2dp(5),
-                            textDecorationLine: "underline",
-                            alignSelf: "center",
-                          }}
-                        >
-                          {localized.t("SHARE")}
-                        </Text>
-                      </TouchableOpacity>
+                        buttonStyle={styles.buttonStyles}
+                        titleStyle={styles.titleStyle}
+                      />
                     </View>
                   )}
                 </View>
