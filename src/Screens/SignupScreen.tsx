@@ -77,6 +77,7 @@ const SignupScreen = () => {
   const handlePressOutside = () => {
     setlangOpen(false);
     Keyboard.dismiss();
+    setMenuOpen(false);
   };
   const navigation: any = useNavigation();
 
