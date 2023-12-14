@@ -15,12 +15,10 @@ import {
   ScrollView,
   Text,
   TouchableWithoutFeedback,
-  View
+  View,
 } from "react-native";
 import { Divider } from "react-native-paper";
-import {
-  heightPercentageToDP as h2dp
-} from "react-native-responsive-screen";
+import { heightPercentageToDP as h2dp } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
 import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
@@ -64,7 +62,7 @@ const CalendarEventDetailScreen = ({ route }: any) => {
     Linking.openURL(url);
   };
 
-  const imagePath = eventDetails?.eventPhoto;
+  const imagePath = eventDetails?.eventSharingPhoto;
 
   useEffect(() => {
     const convertToBase64 = async () => {
@@ -294,19 +292,7 @@ Join me using https://play.google.com/store/apps/details?id=com.foodhealers.clim
                   disabled={expired}
                   title={localized.t("SHARE")}
                   onPress={() => {
-                    Alert.alert(
-                      `Text/Caption Copied to Clipboard`,
-                      `Text/Caption copied to clipboard. Please paste while sharing`,
-                      [
-                        {
-                          text: "OK",
-                          onPress: () => {
-                            shareAsSocialPost();
-                          },
-                        },
-                      ],
-                      { cancelable: false }
-                    );
+                    handlePressOutside(), shareAsSocialPost();
                   }}
                   buttonStyle={styles.buttonStyles}
                   titleStyle={styles.titleStyle}

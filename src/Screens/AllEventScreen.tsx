@@ -116,6 +116,7 @@ const AllEventScreen = () => {
     eventPhoto,
     name,
     requiredVolunteers,
+    eventSharingPhoto
   }: any) => (
     <TouchableOpacity activeOpacity={1}>
       <View style={styles.cardContainer}>
@@ -222,21 +223,22 @@ const AllEventScreen = () => {
           title={localized.t("DETAILS")}
           onPress={() => {
             handlePressOutside(),
-            navigation.navigate("SingleEventDetails", {
-              eventDetails: {
-                id: id,
-                name: name,
-                additionalInfo: additionalInfo,
-                address: address,
-                eventStartDate: eventStartDate,
-                eventEndDate: eventEndDate,
-                lat: lat,
-                long: long,
-                eventPhoto: eventPhoto,
-                requiredVolunteers: requiredVolunteers,
-                status: status,
-              },
-            })
+              navigation.navigate("SingleEventDetails", {
+                eventDetails: {
+                  id: id,
+                  name: name,
+                  additionalInfo: additionalInfo,
+                  address: address,
+                  eventStartDate: eventStartDate,
+                  eventEndDate: eventEndDate,
+                  lat: lat,
+                  long: long,
+                  eventPhoto: eventPhoto,
+                  requiredVolunteers: requiredVolunteers,
+                  status: status,
+                  eventSharingPhoto: eventSharingPhoto
+                },
+              });
           }}
           buttonStyle={{
             marginLeft: w2dp(3),
@@ -270,7 +272,9 @@ const AllEventScreen = () => {
               name="chevron-back"
               size={32}
               color="white"
-              onPress={() => {navigation.navigate("EventsHomeScreen"),handlePressOutside()}}
+              onPress={() => {
+                navigation.navigate("EventsHomeScreen"), handlePressOutside();
+              }}
             />
             <View style={styles.item}>
               <Text style={styles.itemText}>
@@ -343,6 +347,7 @@ const AllEventScreen = () => {
                     status={item?.status}
                     eventPhoto={item?.eventPhoto}
                     requiredVolunteers={item?.requiredVolunteers}
+                    eventSharingPhoto= {item?.eventSharingPhoto}
                   />
                 )}
                 keyExtractor={(item: any) => item?.id}

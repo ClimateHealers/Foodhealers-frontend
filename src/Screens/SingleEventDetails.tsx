@@ -16,7 +16,7 @@ import {
   StatusBar,
   Text,
   TouchableWithoutFeedback,
-  View
+  View,
 } from "react-native";
 import { Divider } from "react-native-paper";
 import {
@@ -53,7 +53,7 @@ const SingleEventDetails = ({ route }: any) => {
     Keyboard.dismiss();
     setMenuOpen(!menuClose);
   };
-  const imagePath = eventDetails?.eventPhoto;
+  const imagePath = eventDetails?.eventSharingPhoto;
 
   useEffect(() => {
     const convertToBase64 = async () => {
@@ -314,19 +314,8 @@ Join me using https://play.google.com/store/apps/details?id=com.foodhealers.clim
                         disabled={expired}
                         title={localized.t("SHARE")}
                         onPress={() => {
-                          Alert.alert(
-                            `Text/Caption Copied to Clipboard`,
-                            `Text/Caption copied to clipboard. Please paste while sharing`,
-                            [
-                              {
-                                text: "OK",
-                                onPress: () => {
-                                  shareAsSocialPost();
-                                },
-                              },
-                            ],
-                            { cancelable: false }
-                          );
+                          handlePressOutside(),
+                          shareAsSocialPost();
                         }}
                         buttonStyle={styles.buttonStyles}
                         titleStyle={styles.titleStyle}

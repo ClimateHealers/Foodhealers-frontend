@@ -79,6 +79,7 @@ const VolunteerTabScreen = () => {
     lat,
     long,
     eventPhoto,
+    eventSharingPhoto
   }: any) => (
     <TouchableOpacity activeOpacity={1}>
       <View style={styles.cardContainer}>
@@ -195,7 +196,8 @@ const VolunteerTabScreen = () => {
                 long: long,
                 eventPhoto: eventPhoto,
                 requiredVolunteers: requiredVolunteers,
-                status: status
+                status: status,
+                eventSharingPhoto: eventSharingPhoto
               },
             })
           }
@@ -261,6 +263,7 @@ const VolunteerTabScreen = () => {
                   status={item?.status}
                   eventPhoto={item?.eventPhoto}
                   requiredVolunteers={item?.requiredVolunteers}
+                  eventSharingPhoto={item?.eventSharingPhoto}
                 />
               )}
               keyExtractor={(item: any) => item?.id}
