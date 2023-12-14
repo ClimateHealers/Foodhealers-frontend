@@ -71,7 +71,7 @@ const PostEventDetailsScreen = ({ route }: any) => {
   const epochDate = eventDetails?.eventDate;
   const dateObj = new Date(epochDate * 1000);
 
-  const options = {
+  const options: any = {
     weekday: "short",
     month: "long",
     day: "numeric",
