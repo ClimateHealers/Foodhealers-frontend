@@ -81,7 +81,9 @@ const LoginScreen = () => {
   const handlePressOutside = () => {
     setlangOpen(false);
     Keyboard.dismiss();
+    setMenuOpen(false);
   };
+
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
@@ -109,11 +111,11 @@ const LoginScreen = () => {
   };
 
   return (
-    <LinearGradient
-      colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
-      style={styles.background}
-    >
-      <TouchableWithoutFeedback onPress={handlePressOutside}>
+    <TouchableWithoutFeedback onPress={() => handlePressOutside()}>
+      <LinearGradient
+        colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
+        style={styles.background}
+      >
         <ScrollView>
           <View style={styles.container}>
             <StatusBar animated={true} backgroundColor="auto" />
@@ -394,7 +396,10 @@ const LoginScreen = () => {
                         {localized.t("NOT_AN_USER")}
                       </Text>
                       <TouchableOpacity
-                        onPress={() => navigation.navigate("SignupScreen")}
+                        onPress={() => {
+                          handlePressOutside(),
+                            navigation.navigate("SignupScreen");
+                        }}
                       >
                         <Text
                           style={{
@@ -416,8 +421,8 @@ const LoginScreen = () => {
             </View>
           </View>
         </ScrollView>
-      </TouchableWithoutFeedback>
-    </LinearGradient>
+      </LinearGradient>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -487,7 +492,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#D1D1D6",
   },
-  dropdown1BtnTxtStyle: { color: "#B50000", textAlign: "left", fontSize: h2dp(1.4) },
+  dropdown1BtnTxtStyle: {
+    color: "#B50000",
+    textAlign: "left",
+    fontSize: h2dp(1.4),
+  },
   dropdown1DropdownStyle: {
     backgroundColor: "#EFEFEF",
     color: "black",
@@ -502,7 +511,11 @@ const styles = StyleSheet.create({
     borderBottomColor: "#D1D1D6",
     borderRadius: 5,
   },
-  dropdown1RowTxtStyle: { color: "black", textAlign: "center", fontSize: h2dp(1.0) },
+  dropdown1RowTxtStyle: {
+    color: "black",
+    textAlign: "center",
+    fontSize: h2dp(1.0),
+  },
   inputError: {
     color: "red",
     marginBottom: 10,

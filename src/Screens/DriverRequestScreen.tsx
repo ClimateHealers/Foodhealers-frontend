@@ -272,7 +272,7 @@ const DriverRequestScreen = ({ route }: any) => {
                   marginBottom: h2dp(3),
                 }}
               >
-                <TouchableOpacity onPress={openImagePickerAsync}>
+                <TouchableOpacity onPress={()=>{handlePressOutside(),openImagePickerAsync}}>
                   {image ? (
                     <View>
                       <Image

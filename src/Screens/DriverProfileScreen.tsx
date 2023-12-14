@@ -247,7 +247,11 @@ const DriverProfileScreen = ({ route }: any) => {
                   marginTop: h2dp(2),
                 }}
               >
-                <TouchableOpacity onPress={openImagePickerAsync}>
+                <TouchableOpacity
+                  onPress={() => {
+                    handlePressOutside(), openImagePickerAsync;
+                  }}
+                >
                   {data?.profilePhoto ? (
                     <View>
                       <Image
@@ -282,7 +286,11 @@ const DriverProfileScreen = ({ route }: any) => {
               }}
             >
               <Text
-                style={{ fontSize: h2dp(2.4), fontWeight: "500", marginTop: h2dp(2) }}
+                style={{
+                  fontSize: h2dp(2.4),
+                  fontWeight: "500",
+                  marginTop: h2dp(2),
+                }}
               >
                 {data?.name}
               </Text>
@@ -305,11 +313,12 @@ const DriverProfileScreen = ({ route }: any) => {
             </View>
             <PrimaryButton
               title={localized.t("ACCEPT_RIDES")}
-              onPress={() =>
-                navigation.navigate("PickupDetailsScreen", {
-                  itemTypeId: 4,
-                })
-              }
+              onPress={() => {
+                handlePressOutside(),
+                  navigation.navigate("PickupDetailsScreen", {
+                    itemTypeId: 4,
+                  });
+              }}
               buttonStyle={[
                 styles.nextButtonStyles,
                 {
