@@ -22,7 +22,7 @@ import {
 } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useSelector } from "react-redux";
-import { getLocation } from "../Components/getCurrentLocation";
+import { getLocation } from "../Components/GetCurrentLocation";
 import moment from "moment";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
 import BurgerIcon from "../Components/BurgerIcon";
@@ -72,7 +72,9 @@ const CalendarEventScreen = ({ route }: any) => {
               name="chevron-back"
               size={32}
               color="white"
-              onPress={() =>{ navigation.goBack(),handlePressOutside()}}
+              onPress={() => {
+                navigation.goBack(), handlePressOutside();
+              }}
             />
             <View style={styles.item}>
               <Text style={styles.itemText}>{localized.t("FOOD_EVENTS")}</Text>
@@ -84,7 +86,11 @@ const CalendarEventScreen = ({ route }: any) => {
           </View>
 
           <View style={styles.subHeader}>
-            <TouchableOpacity onPress={() =>{ navigation.goBack(),handlePressOutside()}}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.goBack(), handlePressOutside();
+              }}
+            >
               <View
                 style={{
                   display: "flex",
@@ -145,13 +151,13 @@ const CalendarEventScreen = ({ route }: any) => {
                   {singleDayEvent.map((event: any, index: any) => (
                     <TouchableOpacity
                       key={index}
-                      onPress={() => { 
+                      onPress={() => {
                         handlePressOutside(),
-                        navigation.navigate("CalendarEventDetailScreen", {
-                          eventDetails: event,
-                          latitude: latitude,
-                          longitude: longitude,
-                        })
+                          navigation.navigate("CalendarEventDetailScreen", {
+                            eventDetails: event,
+                            latitude: latitude,
+                            longitude: longitude,
+                          });
                       }}
                     >
                       <View style={styles.eventCon}>
@@ -202,7 +208,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   itemText: {
-    fontSize: 25,
+    fontSize: h2dp(2.5),
     color: "white",
   },
   mapContainer: {},
@@ -216,13 +222,13 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#D1D1D6",
   },
-  dropdown1BtnTxtStyle: { color: "#B50000", textAlign: "left", fontSize: 14 },
+  dropdown1BtnTxtStyle: { color: "#B50000", textAlign: "left", fontSize: h2dp(1.4) },
   dropdown1DropdownStyle: {
     backgroundColor: "#EFEFEF",
     color: "black",
     borderRadius: 4,
     height: 180,
-    fontSize: 14,
+    fontSize: h2dp(1.4),
     borderColor: "blue",
   },
   dropdown1RowStyle: {
@@ -231,7 +237,7 @@ const styles = StyleSheet.create({
     borderBottomColor: "#D1D1D6",
     borderRadius: 5,
   },
-  dropdown1RowTxtStyle: { color: "black", textAlign: "center", fontSize: 10 },
+  dropdown1RowTxtStyle: { color: "black", textAlign: "center", fontSize: h2dp(1.0) },
   buttonStyles: {
     backgroundColor: "#FC5A56",
     color: "white",
@@ -242,7 +248,7 @@ const styles = StyleSheet.create({
 
   titleStyle: {
     color: "white",
-    fontSize: 26,
+    fontSize: h2dp(2.6),
     fontWeight: "400",
     lineHeight: 35,
     fontFamily: "OpenSans-Regular",

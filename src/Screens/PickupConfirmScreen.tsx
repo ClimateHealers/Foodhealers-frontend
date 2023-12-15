@@ -1,11 +1,11 @@
 import { Ionicons } from "@expo/vector-icons";
 import {
-  CommonActions,
   useFocusEffect,
-  useNavigation,
+  useNavigation
 } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
-import React, { useCallback, useEffect, useState } from "react";
+import { Formik } from "formik";
+import React, { useCallback, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
@@ -17,25 +17,24 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
+import { TextInput } from "react-native-paper";
 import {
   heightPercentageToDP as h2dp,
   widthPercentageToDP as w2dp,
 } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useDispatch } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
 import PrimaryButton from "../Components/PrimaryButton";
 import { styles } from "../Components/Styles";
+import { GenerateOTP } from "../Components/Validation";
 import { localized } from "../locales/localization";
-import { Formik } from "formik";
-import { otpGenerate } from "../redux/actions/optGenerateAction";
-import { TextInput } from "react-native-paper";
-import { useDispatch } from "react-redux";
 import {
   fetchPickup,
   updatePickupRequest,
 } from "../redux/actions/acceptPickupAction";
-import { GenerateOTP } from "../Components/validation";
+import { otpGenerate } from "../redux/actions/optGenerateAction";
 
 const PickupConfirmScreen = ({ route }: any) => {
   const {
@@ -112,9 +111,9 @@ const PickupConfirmScreen = ({ route }: any) => {
                   color="white"
                   onPress={() => {
                     handlePressOutside(),
-                    navigation.navigate("PickupDetailsScreen", {
-                      itemTypeId: 4,
-                    });
+                      navigation.navigate("PickupDetailsScreen", {
+                        itemTypeId: 4,
+                      });
                   }}
                 />
                 <View style={styles.item}>

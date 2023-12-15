@@ -19,7 +19,7 @@ import {
   widthPercentageToDP as w2dp,
 } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { getLocation } from "../Components/getCurrentLocation";
+import { getLocation } from "../Components/GetCurrentLocation";
 import PrimaryButton from "../Components/PrimaryButton";
 import { localized } from "../locales/localization";
 import { useSelector } from "react-redux";
@@ -71,7 +71,7 @@ const PostEventDetailsScreen = ({ route }: any) => {
   const epochDate = eventDetails?.eventDate;
   const dateObj = new Date(epochDate * 1000);
 
-  const options = {
+  const options: any = {
     weekday: "short",
     month: "long",
     day: "numeric",
@@ -134,7 +134,7 @@ const PostEventDetailsScreen = ({ route }: any) => {
                         <Text
                           style={{
                             padding: 10,
-                            fontSize: 20,
+                            fontSize: h2dp(2.0),
                             fontWeight: "300",
                             lineHeight: 27.24,
                           }}
@@ -148,7 +148,7 @@ const PostEventDetailsScreen = ({ route }: any) => {
                         <Text
                           style={{
                             padding: 10,
-                            fontSize: 20,
+                            fontSize: h2dp(2.0),
                             fontWeight: "300",
                             lineHeight: 27.24,
                           }}
@@ -289,7 +289,9 @@ const PostEventDetailsScreen = ({ route }: any) => {
                   title={localized.t("SEE_ALL_EVENTS")}
                   buttonStyle={styles.buttonStyles}
                   titleStyle={styles.titleStyle}
-                  onPress={() => {handlePressOutside(),navigation.navigate("AllEventScreen")}}
+                  onPress={() => {
+                    handlePressOutside(), navigation.navigate("AllEventScreen");
+                  }}
                 />
               </View>
             </SafeAreaView>
@@ -323,7 +325,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   itemText: {
-    fontSize: 25,
+    fontSize: h2dp(2.5),
     color: "white",
   },
   cardContainer: {
@@ -344,13 +346,13 @@ const styles = StyleSheet.create({
   },
   burgerText: {
     padding: 10,
-    fontSize: 20,
+    fontSize: h2dp(2.0),
     fontWeight: "400",
     lineHeight: 27.24,
   },
   titleStyle: {
     color: "white",
-    fontSize: 26,
+    fontSize: h2dp(2.6),
 
     lineHeight: 35,
     fontFamily: "OpenSans-Regular",
@@ -359,13 +361,13 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
   cardText: {
-    fontSize: 20,
+    fontSize: h2dp(2.0),
     marginLeft: 10,
     fontFamily: "OpenSans-Light",
   },
   boldText: {
     fontWeight: "300",
-    fontSize: 20,
+    fontSize: h2dp(2.0),
   },
 });
 

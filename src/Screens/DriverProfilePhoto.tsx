@@ -134,7 +134,7 @@ const DriverProfilePhoto = ({ route }: any) => {
                   )}
                 </TouchableOpacity>
               </View>
-              <Text style={{ fontSize: 26, marginTop: h2dp(3) }}>
+              <Text style={{ fontSize: h2dp(2.6), marginTop: h2dp(3) }}>
                 {localized.t("A_PHOTO_OF_YOU")}
               </Text>
               <PrimaryButton

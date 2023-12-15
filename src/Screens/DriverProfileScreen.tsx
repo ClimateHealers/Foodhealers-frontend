@@ -27,7 +27,7 @@ import { useDispatch, useSelector } from "react-redux";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
 import PrimaryButton from "../Components/PrimaryButton";
 import { styles } from "../Components/Styles";
-import { getLocation } from "../Components/getCurrentLocation";
+import { getLocation } from "../Components/GetCurrentLocation";
 import { localized } from "../locales/localization";
 import { fetchVehicle } from "../redux/actions/addVehicle";
 import { fetchUser } from "../redux/actions/authAction";
@@ -151,7 +151,10 @@ const DriverProfileScreen = ({ route }: any) => {
                   name="chevron-back"
                   size={32}
                   color="#00693D"
-                  onPress={() => {navigation.navigate("DriverRequestScreen"),handlePressOutside()}}
+                  onPress={() => {
+                    navigation.navigate("DriverRequestScreen"),
+                      handlePressOutside();
+                  }}
                 />
                 <View style={styles.item}>
                   <Text style={styles.itemText}></Text>
@@ -230,7 +233,7 @@ const DriverProfileScreen = ({ route }: any) => {
                   </View>
                 )}
               </View>
-              <Text style={{ fontSize: 36, color: "#00693D" }}>
+              <Text style={{ fontSize: h2dp(3.6), color: "#00693D" }}>
                 {localized.t("DRIVE")}
               </Text>
               <View
@@ -244,7 +247,11 @@ const DriverProfileScreen = ({ route }: any) => {
                   marginTop: h2dp(2),
                 }}
               >
-                <TouchableOpacity onPress={openImagePickerAsync}>
+                <TouchableOpacity
+                  onPress={() => {
+                    handlePressOutside(), openImagePickerAsync;
+                  }}
+                >
                   {data?.profilePhoto ? (
                     <View>
                       <Image
@@ -265,7 +272,7 @@ const DriverProfileScreen = ({ route }: any) => {
                     </View>
                   )}
                 </TouchableOpacity>
-                <Text style={{ fontSize: 36, color: "#00693D" }}>
+                <Text style={{ fontSize: h2dp(3.6), color: "#00693D" }}>
                   {data?.user?.name}
                 </Text>
               </View>
@@ -279,34 +286,39 @@ const DriverProfileScreen = ({ route }: any) => {
               }}
             >
               <Text
-                style={{ fontSize: 24, fontWeight: "500", marginTop: h2dp(2) }}
+                style={{
+                  fontSize: h2dp(2.4),
+                  fontWeight: "500",
+                  marginTop: h2dp(2),
+                }}
               >
                 {data?.name}
               </Text>
-              <Text style={{ fontSize: 24, marginTop: h2dp(2) }}>
+              <Text style={{ fontSize: h2dp(2.4), marginTop: h2dp(2) }}>
                 {data?.email}
               </Text>
-              <Text style={{ fontSize: 24, marginTop: h2dp(2) }}>
+              <Text style={{ fontSize: h2dp(2.4), marginTop: h2dp(2) }}>
                 {data?.address?.fullAddress}
               </Text>
-              <Text style={{ fontSize: 24, marginTop: h2dp(2) }}>
+              <Text style={{ fontSize: h2dp(2.4), marginTop: h2dp(2) }}>
                 {data?.phoneNumber}
               </Text>
-              <Text style={{ fontSize: 24, marginTop: h2dp(2) }}>
+              <Text style={{ fontSize: h2dp(2.4), marginTop: h2dp(2) }}>
                 {vehicleDetails?.make} {vehicleDetails?.model},{" "}
                 {vehicleDetails?.vehicleColour}
               </Text>
-              <Text style={{ fontSize: 24, marginTop: h2dp(2) }}>
+              <Text style={{ fontSize: h2dp(2.4), marginTop: h2dp(2) }}>
                 {vehicleDetails?.plateNumber}
               </Text>
             </View>
             <PrimaryButton
               title={localized.t("ACCEPT_RIDES")}
-              onPress={() =>
-                navigation.navigate("PickupDetailsScreen", {
-                  itemTypeId: 4,
-                })
-              }
+              onPress={() => {
+                handlePressOutside(),
+                  navigation.navigate("PickupDetailsScreen", {
+                    itemTypeId: 4,
+                  });
+              }}
               buttonStyle={[
                 styles.nextButtonStyles,
                 {

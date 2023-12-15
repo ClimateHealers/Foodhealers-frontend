@@ -62,7 +62,7 @@ const EventDetailsScreen = ({ route }: any) => {
     setSelectedLanguage(selectedLanguage);
   };
 
-  const imagePath = eventDetails?.eventPhoto;
+  const imagePath = eventDetails?.eventSharingPhoto;
 
   useEffect(() => {
     const convertToBase64 = async () => {
@@ -316,32 +316,15 @@ Join me using https://play.google.com/store/apps/details?id=com.foodhealers.clim
                 />
 
                 {!expired && (
-                  <TouchableOpacity onPress={() => {
-                    Alert.alert(
-                      `Text/Caption Copied to Clipboard`,
-                      `Text/Caption copied to clipboard. Please paste while sharing`,
-                      [
-                        {
-                          text: "OK",
-                          onPress: () => {
-                            shareAsSocialPost();
-                          },
-                        },
-                      ],
-                      { cancelable: false }
-                    );
-                  }}>
-                    <Text
-                      style={{
-                        color: "white",
-                        fontSize: 20,
-                        marginTop: w2dp(5),
-                        textDecorationLine: "underline",
-                      }}
-                    >
-                      {localized.t("SHARE")}
-                    </Text>
-                  </TouchableOpacity>
+                  <PrimaryButton
+                    disabled={expired}
+                    title={localized.t("SHARE")}
+                    onPress={() => {
+                      handlePressOutside(), shareAsSocialPost();
+                    }}
+                    buttonStyle={styles.buttonStyles}
+                    titleStyle={styles.titleStyle}
+                  />
                 )}
               </View>
             </View>

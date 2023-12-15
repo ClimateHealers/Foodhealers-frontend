@@ -77,7 +77,7 @@ const appConfig = {
     extra: {
       eas: {
         projectId: process.env.PROJECT_ID || "",
-        apikey: process.env.FIREBASE_FCM_API_KEY || "",
+        apikey: process.env.FIREBASE_FCM_API_KEY || process.env.PROJECT_ID,
       },
       googleMapsApiKey: process.env.GOOGLE_API_KEY || "",
     },

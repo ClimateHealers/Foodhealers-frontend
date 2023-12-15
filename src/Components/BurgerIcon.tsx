@@ -14,7 +14,7 @@ import {
 } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
-import { getLocation } from "../Components/getCurrentLocation";
+import { getLocation } from "./GetCurrentLocation";
 import { styles } from "./Styles";
 import { localized } from "../locales/localization";
 

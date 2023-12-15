@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   View,
   Linking,
+  TouchableWithoutFeedback,
 } from "react-native";
 import {
   heightPercentageToDP as h2dp,
@@ -38,7 +39,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { iOSColors, systemWeights } from "react-native-typography";
 import MaterialIcon from "react-native-vector-icons/MaterialIcons";
 import { useDispatch, useSelector } from "react-redux";
-import { getLocation } from "../Components/getCurrentLocation";
+import { getLocation } from "../Components/GetCurrentLocation";
 import PrimaryButton from "../Components/PrimaryButton";
 import {
   fetchUser,
@@ -120,6 +121,10 @@ const ProfileScreen = () => {
     setNotificationData(filterRead?.length);
   };
 
+  const handlePressOutside = () => {
+    setMenuOpen(false);
+  };
+
   useFocusEffect(
     useCallback(() => {
       fetchingUserData();
@@ -181,413 +186,436 @@ const ProfileScreen = () => {
   };
 
   return (
-    <LinearGradient
-      colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
-      style={styles.background}
-    >
-      <SafeAreaView style={styles.mainContainer}>
-        {menuOpen && (
-          <View
-            style={{
-              position: "absolute",
-              right: wp2dp(10.5),
-              top: Platform.OS === "ios" ? hp2dp(8) : hp2dp(6),
-              backgroundColor: "white",
-              borderColor: "black",
-              borderWidth: 0.5,
-              borderRadius: 5,
-              zIndex: 9999,
-            }}
-          >
-            <TouchableOpacity onPress={() => handleMenuItemPress("Home")}>
-              <Text
-                style={{
-                  padding: 10,
-                  fontSize: h2dp(2),
-                  fontWeight: "300",
-                  lineHeight: 27.24,
-                }}
-              >
-                {localized.t("HOME")}
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => findFoodMenuItemPress("Find Food")}
-            >
-              <Text
-                style={{
-                  padding: 10,
-                  fontSize: h2dp(2),
-                  fontWeight: "300",
-                  lineHeight: 27.24,
-                }}
-              >
-                {localized.t("FIND_FOOD")}
-              </Text>
-            </TouchableOpacity>
-            {isAuthenticated && (
-              <View>
-                <TouchableOpacity
-                  onPress={() => {
-                    navigation.navigate("HistoryScreen");
-                    setMenuOpen(false);
-                  }}
-                >
-                  <Text
-                    style={{
-                      padding: 10,
-                      fontSize: h2dp(2),
-                      fontWeight: "300",
-                      lineHeight: 27.24,
-                    }}
-                  >
-                    {localized.t("HISTORY")}
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => {
-                    navigation.navigate("TeamHomeScreen");
-                    setMenuOpen(false);
-                  }}
-                >
-                  <Text
-                    style={{
-                      padding: 10,
-                      fontSize: h2dp(2),
-                      fontWeight: "300",
-                      lineHeight: 27.24,
-                    }}
-                  >
-                    {localized.t("TEAM")}
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            )}
-          </View>
-        )}
-        <View style={styles.row}>
-          <View
-            style={{ height: 100, justifyContent: "center", width: wp2dp(20) }}
-          >
-            <Ionicons
-              name="chevron-back"
-              size={32}
-              color="white"
-              onPress={() => navigation.navigate("HomeScreen")}
-            />
-          </View>
-          <View style={{ height: 100, justifyContent: "center" }}>
-            <Text style={styles.itemText}>{localized.t("ACCOUNT")}</Text>
-          </View>
-          <View
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-            }}
-          >
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate("NotificationScreen");
+    <TouchableWithoutFeedback onPress={handlePressOutside}>
+      <LinearGradient
+        colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
+        style={styles.background}
+      >
+        <SafeAreaView style={styles.mainContainer}>
+          {menuOpen && (
+            <View
+              style={{
+                position: "absolute",
+                right: wp2dp(10.5),
+                top: Platform.OS === "ios" ? hp2dp(8) : hp2dp(6),
+                backgroundColor: "white",
+                borderColor: "black",
+                borderWidth: 0.5,
+                borderRadius: 5,
+                zIndex: 9999,
               }}
-              style={styles.circleAvatar}
             >
-              <Badge style={styles.notificatioAvatarLogo}>
-                {notificationData}
-              </Badge>
-
-              <Ionicons
-                name="md-notifications-outline"
-                style={styles.avatarLogo}
-                size={28}
-              />
-            </TouchableOpacity>
-            <MaterialCommunityIcons
-              name="menu"
-              size={40}
-              color="white"
-              onPress={toggleMenu}
-            />
-          </View>
-        </View>
-        <ScrollView
-          style={styles.ScrollView}
-          showsVerticalScrollIndicator={false}
-        >
-          <View>
-            <View>
-              <View
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  alignItems: "center",
-                  flexDirection: "row",
-                }}
-              >
-                <View
+              <TouchableOpacity onPress={() => handleMenuItemPress("Home")}>
+                <Text
                   style={{
-                    height: hp2dp(20),
-                    width: hp2dp(20),
-                    borderRadius: hp2dp(50),
-                    alignItems: "center",
-                    backgroundColor: "white",
-                    overflow: "hidden",
-                    marginTop: hp2dp(1),
-                    alignSelf: "center",
+                    padding: 10,
+                    fontSize: h2dp(2),
+                    fontWeight: "300",
+                    lineHeight: 27.24,
                   }}
                 >
-                  <TouchableOpacity onPress={openImagePickerAsync}>
-                    {image ? (
-                      <View>
-                        <Image
-                          source={{ uri: image }}
-                          style={{ width: hp2dp(20), height: hp2dp(20) }}
-                        />
-                      </View>
-                    ) : (
-                      <View>
-                        {!data?.profilePhoto ||
-                        data?.profilePhoto === "Profile Photo not available" ? (
-                          <View
-                            style={{
-                              paddingVertical: hp2dp(2),
-                              justifyContent: "center",
-                              marginBottom: hp2dp(1),
-                              position: "relative",
-                            }}
-                          >
-                            <AntDesign name="user" size={150} color="#B01D19" />
-                          </View>
-                        ) : (
-                          <View>
-                            <Image
-                              source={{ uri: data?.profilePhoto }}
-                              style={{ width: hp2dp(20), height: hp2dp(20) }}
-                            />
-                          </View>
-                        )}
-                      </View>
-                    )}
-                  </TouchableOpacity>
-                </View>
-                <PrimaryButton
-                  title={localized.t("EDIT")}
-                  onPress={() => {
-                    navigation.navigate("UpdateProfileScreen", {
-                      name: data?.name,
-                      phoneNumber: data?.phoneNumber,
-                      email: data?.email,
-                      lat: data?.address?.lat,
-                      long: data?.address?.lng,
-                      volunteerFullAddress: data?.address?.fullAddress,
-                      city: data?.address?.city,
-                      state: data?.address?.state,
-                      zipCode: data?.address?.postalCode,
-                    });
-                  }}
-                  buttonStyle={{
-                    backgroundColor: "#D1D1D6",
-                    color: "white",
-                    borderRadius: 5,
-                    right: 0,
-                    float: "right",
-                    paddingHorizontal: wp2dp(6),
-                    marginLeft: wp2dp(2),
-                  }}
-                  titleStyle={{
-                    color: "black",
-                    fontSize: h2dp(1.8),
-                    lineHeight: 20,
-                    fontFamily: "OpenSans-Regular",
-                  }}
-                />
-              </View>
-              <View style={styles.rowItem}>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    display: "flex",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <MaterialCommunityIcons
-                    color="white"
-                    size={24}
-                    style={{
-                      justifyContent: "center",
-                      alignSelf: "center",
-                      marginRight: 5,
-                    }}
-                    name="account"
-                  />
-                  <View style={{ justifyContent: "center" }}>
-                    <Text style={styles.profileDetailsText3}>
-                      {localized.t("NAME")}
-                    </Text>
-                    <Text style={[styles.profileDetailsText2]}>
-                      {data?.name}
-                    </Text>
-                  </View>
-                </View>
-                <View
-                  style={{
-                    width: wp2dp("28%"),
-                  }}
-                ></View>
-              </View>
-              <Divider
-                style={{
-                  backgroundColor: "white",
-                  height: 1,
-                  padding: 0.8,
-                  marginTop: hp2dp("0.5%"),
-                }}
-              />
-              <View style={styles.rowItem}>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    display: "flex",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <MaterialIcon
-                    color="white"
-                    size={24}
-                    style={{
-                      justifyContent: "center",
-                      alignSelf: "center",
-                      marginRight: 5,
-                    }}
-                    name="email"
-                  />
-                  <View style={{ justifyContent: "center" }}>
-                    <Text style={styles.profileDetailsText3}>
-                      {localized.t("EMAIL")}
-                    </Text>
-                    <Text style={[styles.profileDetailsText2]}>
-                      {data?.email}
-                    </Text>
-                  </View>
-                </View>
-                <View
-                  style={{
-                    width: wp2dp("28%"),
-                  }}
-                ></View>
-              </View>
-              <Divider
-                style={{
-                  backgroundColor: "white",
-                  height: 1,
-                  padding: 0.8,
-                  marginTop: hp2dp("0.5%"),
-                }}
-              />
-              <View style={styles.rowItem}>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    display: "flex",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <MaterialCommunityIcons
-                    color="white"
-                    size={24}
-                    style={{
-                      justifyContent: "center",
-                      alignSelf: "center",
-                      marginRight: 5,
-                    }}
-                    name="phone"
-                  />
-                  <View style={{ justifyContent: "center" }}>
-                    <Text style={styles.profileDetailsText3}>
-                      {localized.t("NUMBER")}
-                    </Text>
-                    <Text style={[styles.profileDetailsText2]}>
-                      {data?.phoneNumber ? data.phoneNumber : "N/A"}
-                    </Text>
-                  </View>
-                </View>
-                <View
-                  style={{
-                    width: wp2dp("28%"),
-                  }}
-                ></View>
-              </View>
-              <Divider
-                style={{
-                  backgroundColor: "white",
-                  height: 1,
-                  padding: 0.8,
-                  marginTop: hp2dp("0.5%"),
-                }}
-              />
-            </View>
-
-            <View style={[styles.logout, { alignSelf: "center" }]}>
-              <PrimaryButton
-                title={localized.t("LOGOUT")}
-                onPress={logout}
-                buttonStyle={styles.buttonStyles}
-                titleStyle={styles.titleStyle}
-              />
-            </View>
-            <View style={[styles.deleteProfile, { alignSelf: "center" }]}>
-              <TouchableOpacity
-                style={styles.deleteProfileTextContainer}
-                onPress={() => navigation.navigate("DeleteAccount")}
-              >
-                <Text style={styles.deleteProfileText}>
-                  {localized.t("DELETE_MY_ACCOUNT")}
+                  {localized.t("HOME")}
                 </Text>
               </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => findFoodMenuItemPress("Find Food")}
+              >
+                <Text
+                  style={{
+                    padding: 10,
+                    fontSize: h2dp(2),
+                    fontWeight: "300",
+                    lineHeight: 27.24,
+                  }}
+                >
+                  {localized.t("FIND_FOOD")}
+                </Text>
+              </TouchableOpacity>
+              {isAuthenticated && (
+                <View>
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.navigate("HistoryScreen");
+                      setMenuOpen(false);
+                    }}
+                  >
+                    <Text
+                      style={{
+                        padding: 10,
+                        fontSize: h2dp(2),
+                        fontWeight: "300",
+                        lineHeight: 27.24,
+                      }}
+                    >
+                      {localized.t("HISTORY")}
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.navigate("TeamHomeScreen");
+                      setMenuOpen(false);
+                    }}
+                  >
+                    <Text
+                      style={{
+                        padding: 10,
+                        fontSize: h2dp(2),
+                        fontWeight: "300",
+                        lineHeight: 27.24,
+                      }}
+                    >
+                      {localized.t("TEAM")}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              )}
             </View>
-            <Text style={styles.appVersion}>
-              {localized.t("APP_VERSION")} {appVersion}
-            </Text>
+          )}
+          <View style={styles.row}>
+            <View
+              style={{
+                height: 100,
+                justifyContent: "center",
+                width: wp2dp(20),
+              }}
+            >
+              <Ionicons
+                name="chevron-back"
+                size={32}
+                color="white"
+                onPress={() => navigation.navigate("HomeScreen")}
+              />
+            </View>
+            <View style={{ height: 100, justifyContent: "center" }}>
+              <Text style={styles.itemText}>{localized.t("ACCOUNT")}</Text>
+            </View>
             <View
               style={{
                 display: "flex",
                 flexDirection: "row",
-                justifyContent: "center",
-                alignContent: "center",
+                alignItems: "center",
               }}
             >
-              <Text style={styles.support}>Contact us for support :</Text>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate("NotificationScreen");
+                }}
+                style={styles.circleAvatar}
+              >
+                <Badge style={styles.notificatioAvatarLogo}>
+                  {notificationData}
+                </Badge>
+
+                <Ionicons
+                  name="md-notifications-outline"
+                  style={styles.avatarLogo}
+                  size={28}
+                />
+              </TouchableOpacity>
+              <MaterialCommunityIcons
+                name="menu"
+                size={40}
+                color="white"
+                onPress={toggleMenu}
+              />
+            </View>
+          </View>
+          <ScrollView
+            style={styles.ScrollView}
+            showsVerticalScrollIndicator={false}
+          >
+            <View>
+              <View>
+                <View
+                  style={{
+                    display: "flex",
+                    justifyContent: "flex-end",
+                    alignItems: "center",
+                    flexDirection: "row",
+                  }}
+                >
+                  <View
+                    style={{
+                      height: hp2dp(20),
+                      width: hp2dp(20),
+                      borderRadius: hp2dp(50),
+                      alignItems: "center",
+                      backgroundColor: "white",
+                      overflow: "hidden",
+                      marginTop: hp2dp(1),
+                      alignSelf: "center",
+                    }}
+                  >
+                    <TouchableOpacity
+                      onPress={() => {
+                        handlePressOutside(), openImagePickerAsync();
+                      }}
+                    >
+                      {image ? (
+                        <View>
+                          <Image
+                            source={{ uri: image }}
+                            style={{ width: hp2dp(20), height: hp2dp(20) }}
+                          />
+                        </View>
+                      ) : (
+                        <View>
+                          {!data?.profilePhoto ||
+                          data?.profilePhoto ===
+                            "Profile Photo not available" ? (
+                            <View
+                              style={{
+                                paddingVertical: hp2dp(2),
+                                justifyContent: "center",
+                                marginBottom: hp2dp(1),
+                                position: "relative",
+                              }}
+                            >
+                              <AntDesign
+                                name="user"
+                                size={150}
+                                color="#B01D19"
+                              />
+                            </View>
+                          ) : (
+                            <View>
+                              <Image
+                                source={{ uri: data?.profilePhoto }}
+                                style={{ width: hp2dp(20), height: hp2dp(20) }}
+                              />
+                            </View>
+                          )}
+                        </View>
+                      )}
+                    </TouchableOpacity>
+                  </View>
+                  <PrimaryButton
+                    title={localized.t("EDIT")}
+                    onPress={() => {
+                      handlePressOutside(),
+                        navigation.navigate("UpdateProfileScreen", {
+                          name: data?.name,
+                          phoneNumber: data?.phoneNumber,
+                          email: data?.email,
+                          lat: data?.address?.lat,
+                          long: data?.address?.lng,
+                          volunteerFullAddress: data?.address?.fullAddress,
+                          city: data?.address?.city,
+                          state: data?.address?.state,
+                          zipCode: data?.address?.postalCode,
+                        });
+                    }}
+                    buttonStyle={{
+                      backgroundColor: "#D1D1D6",
+                      color: "white",
+                      borderRadius: 5,
+                      right: 0,
+                      float: "right",
+                      paddingHorizontal: wp2dp(6),
+                      marginLeft: wp2dp(2),
+                    }}
+                    titleStyle={{
+                      color: "black",
+                      fontSize: h2dp(1.8),
+                      lineHeight: 20,
+                      fontFamily: "OpenSans-Regular",
+                    }}
+                  />
+                </View>
+                <View style={styles.rowItem}>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      display: "flex",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <MaterialCommunityIcons
+                      color="white"
+                      size={24}
+                      style={{
+                        justifyContent: "center",
+                        alignSelf: "center",
+                        marginRight: 5,
+                      }}
+                      name="account"
+                    />
+                    <View style={{ justifyContent: "center" }}>
+                      <Text style={styles.profileDetailsText3}>
+                        {localized.t("NAME")}
+                      </Text>
+                      <Text style={[styles.profileDetailsText2]}>
+                        {data?.name}
+                      </Text>
+                    </View>
+                  </View>
+                  <View
+                    style={{
+                      width: wp2dp("28%"),
+                    }}
+                  ></View>
+                </View>
+                <Divider
+                  style={{
+                    backgroundColor: "white",
+                    height: 1,
+                    padding: 0.8,
+                    marginTop: hp2dp("0.5%"),
+                  }}
+                />
+                <View style={styles.rowItem}>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      display: "flex",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <MaterialIcon
+                      color="white"
+                      size={24}
+                      style={{
+                        justifyContent: "center",
+                        alignSelf: "center",
+                        marginRight: 5,
+                      }}
+                      name="email"
+                    />
+                    <View style={{ justifyContent: "center" }}>
+                      <Text style={styles.profileDetailsText3}>
+                        {localized.t("EMAIL")}
+                      </Text>
+                      <Text style={[styles.profileDetailsText2]}>
+                        {data?.email}
+                      </Text>
+                    </View>
+                  </View>
+                  <View
+                    style={{
+                      width: wp2dp("28%"),
+                    }}
+                  ></View>
+                </View>
+                <Divider
+                  style={{
+                    backgroundColor: "white",
+                    height: 1,
+                    padding: 0.8,
+                    marginTop: hp2dp("0.5%"),
+                  }}
+                />
+                <View style={styles.rowItem}>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      display: "flex",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <MaterialCommunityIcons
+                      color="white"
+                      size={24}
+                      style={{
+                        justifyContent: "center",
+                        alignSelf: "center",
+                        marginRight: 5,
+                      }}
+                      name="phone"
+                    />
+                    <View style={{ justifyContent: "center" }}>
+                      <Text style={styles.profileDetailsText3}>
+                        {localized.t("NUMBER")}
+                      </Text>
+                      <Text style={[styles.profileDetailsText2]}>
+                        {data?.phoneNumber ? data.phoneNumber : "N/A"}
+                      </Text>
+                    </View>
+                  </View>
+                  <View
+                    style={{
+                      width: wp2dp("28%"),
+                    }}
+                  ></View>
+                </View>
+                <Divider
+                  style={{
+                    backgroundColor: "white",
+                    height: 1,
+                    padding: 0.8,
+                    marginTop: hp2dp("0.5%"),
+                  }}
+                />
+              </View>
+
+              <View style={[styles.logout, { alignSelf: "center" }]}>
+                <PrimaryButton
+                  title={localized.t("LOGOUT")}
+                  onPress={() => {
+                    handlePressOutside(), logout();
+                  }}
+                  buttonStyle={styles.buttonStyles}
+                  titleStyle={styles.titleStyle}
+                />
+              </View>
+              <View style={[styles.deleteProfile, { alignSelf: "center" }]}>
+                <TouchableOpacity
+                  style={styles.deleteProfileTextContainer}
+                  onPress={() => {
+                    handlePressOutside(), navigation.navigate("DeleteAccount");
+                  }}
+                >
+                  <Text style={styles.deleteProfileText}>
+                    {localized.t("DELETE_MY_ACCOUNT")}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+              <Text style={styles.appVersion}>
+                {localized.t("APP_VERSION")} {appVersion}
+              </Text>
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignContent: "center",
+                }}
+              >
+                <Text style={styles.support}>Contact us for support :</Text>
+                <Text
+                  style={{
+                    textDecorationLine: "underline",
+                    color: "white",
+                    fontSize: h2dp(1.5),
+                    marginLeft: wp2dp(1),
+                    marginRight: w2dp(4),
+                  }}
+                  onPress={() => {
+                    handlePressOutside(),
+                      Linking.openURL("mailto:support@climatehealers.org");
+                  }}
+                >
+                  support@climatehealers.org
+                </Text>
+              </View>
               <Text
                 style={{
                   textDecorationLine: "underline",
+                  textAlign: "center",
                   color: "white",
                   fontSize: h2dp(1.5),
-                  marginLeft: wp2dp(1),
-                  marginRight: w2dp(4),
+                  marginBottom: hp2dp(3),
                 }}
-                onPress={() =>
-                  Linking.openURL("mailto:support@climatehealers.org")
-                }
+                onPress={() => {
+                  handlePressOutside(), navigation.navigate("LicenseScreen");
+                }}
               >
-                support@climatehealers.org
+                Open-Source Licences
               </Text>
             </View>
-            <Text
-              style={{
-                textDecorationLine: "underline",
-                textAlign: "center",
-                color: "white",
-                fontSize: h2dp(1.5),
-                marginBottom: hp2dp(3)
-              }}
-              onPress={() => navigation.navigate("LicenseScreen")}
-            >
-              Open-Source Licences
-            </Text>
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    </LinearGradient>
+          </ScrollView>
+        </SafeAreaView>
+      </LinearGradient>
+    </TouchableWithoutFeedback>
   );
 };
 

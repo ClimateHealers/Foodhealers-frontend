@@ -37,7 +37,7 @@ import {
   fetchVehicle,
   updateVehicle,
 } from "../redux/actions/addVehicle";
-import { addDriver, adddVehicle } from "../Components/validation";
+import { addDriver, adddVehicle } from "../Components/Validation";
 import SelectDropdown from "react-native-select-dropdown";
 
 const UpdateVehicleScreen = ({ route }: any) => {
@@ -345,7 +345,7 @@ const UpdateVehicleScreen = ({ route }: any) => {
                         rowTextStyle={{
                           color: "black",
                           textAlign: "center",
-                          fontSize: 16,
+                          fontSize: h2dp(1.6),
                         }}
                         data={
                           vehicleData &&

@@ -25,8 +25,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
 import PrimaryButton from "../Components/PrimaryButton";
-import { getLocation } from "../Components/getCurrentLocation";
-import { addVolunteer } from "../Components/validation";
+import { getLocation } from "../Components/GetCurrentLocation";
+import { addVolunteer } from "../Components/Validation";
 import { localized } from "../locales/localization";
 import { volunteerAtEvent } from "../redux/actions/volunteerAction";
 import { styles } from "../Components/Styles";
@@ -146,7 +146,9 @@ const AddVolunteerToEvent = ({ route }: any) => {
                   name="chevron-back"
                   size={32}
                   color="white"
-                  onPress={() => {navigation.goBack(),handlePressOutside()}}
+                  onPress={() => {
+                    navigation.goBack(), handlePressOutside();
+                  }}
                 />
                 <View style={styles.item}>
                   <Text style={styles.itemText}>{title}</Text>
@@ -229,14 +231,14 @@ const AddVolunteerToEvent = ({ route }: any) => {
                             text: `${localized.t("OK")}`,
                             onPress: () => {
                               handlePressOutside(),
-                              navigation.navigate("VolunteerThankYouScreen", {
-                                id: id,
-                                itemTypeId: itemTypeId,
-                                title: title,
-                                logitude: longitude,
-                                latitude: latitude,
-                              })
-                            }
+                                navigation.navigate("VolunteerThankYouScreen", {
+                                  id: id,
+                                  itemTypeId: itemTypeId,
+                                  title: title,
+                                  logitude: longitude,
+                                  latitude: latitude,
+                                });
+                            },
                           },
                         ],
                         { cancelable: false }
@@ -440,7 +442,7 @@ const AddVolunteerToEvent = ({ route }: any) => {
                             <Text
                               style={{
                                 color: "black",
-                                fontSize: 13,
+                                fontSize: h2dp(1.3),
                                 marginBottom: 5,
                                 marginLeft: 15,
                               }}
@@ -450,7 +452,7 @@ const AddVolunteerToEvent = ({ route }: any) => {
                             <Text
                               style={{
                                 color: "black",
-                                fontSize: 13,
+                                fontSize: h2dp(1.3),
                                 marginBottom: 5,
                                 marginLeft: 15,
                               }}
@@ -490,7 +492,7 @@ const AddVolunteerToEvent = ({ route }: any) => {
                             <Text
                               style={{
                                 color: "black",
-                                fontSize: 13,
+                                fontSize: h2dp(1.3),
                                 width: 200,
                                 marginBottom: 5,
                                 marginLeft: 15,
@@ -501,7 +503,7 @@ const AddVolunteerToEvent = ({ route }: any) => {
                             <Text
                               style={{
                                 color: "black",
-                                fontSize: 13,
+                                fontSize: h2dp(1.3),
                                 marginBottom: 5,
                                 marginLeft: 15,
                               }}
@@ -528,7 +530,7 @@ const AddVolunteerToEvent = ({ route }: any) => {
                             <Text
                               style={{
                                 color: "black",
-                                fontSize: 13,
+                                fontSize: h2dp(1.3),
                                 marginBottom: 5,
                                 marginLeft: 15,
                               }}
@@ -538,7 +540,7 @@ const AddVolunteerToEvent = ({ route }: any) => {
                             <Text
                               style={{
                                 color: "black",
-                                fontSize: 13,
+                                fontSize: h2dp(1.3),
                                 marginBottom: 5,
                                 marginLeft: 15,
                               }}
@@ -577,7 +579,7 @@ const AddVolunteerToEvent = ({ route }: any) => {
                             <Text
                               style={{
                                 color: "black",
-                                fontSize: 13,
+                                fontSize: h2dp(1.3),
                                 width: 200,
                                 marginBottom: 5,
                                 marginLeft: 15,
@@ -588,7 +590,7 @@ const AddVolunteerToEvent = ({ route }: any) => {
                             <Text
                               style={{
                                 color: "black",
-                                fontSize: 13,
+                                fontSize: h2dp(1.3),
                                 marginBottom: 5,
                                 marginLeft: 15,
                               }}

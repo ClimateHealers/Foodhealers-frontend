@@ -1,11 +1,11 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { LinearGradient } from "expo-linear-gradient";
-import * as FileSystem from "expo-file-system";
-import * as Sharing from "expo-sharing";
 import { Asset } from "expo-asset";
-import moment from "moment";
 import * as Clipboard from "expo-clipboard";
+import * as FileSystem from "expo-file-system";
+import { LinearGradient } from "expo-linear-gradient";
+import * as Sharing from "expo-sharing";
+import moment from "moment";
 import React, { useEffect, useState } from "react";
 import {
   Alert,
@@ -13,10 +13,8 @@ import {
   Keyboard,
   Linking,
   ScrollView,
-  Share,
   StatusBar,
   Text,
-  TouchableOpacity,
   TouchableWithoutFeedback,
   View,
 } from "react-native";
@@ -55,7 +53,7 @@ const SingleEventDetails = ({ route }: any) => {
     Keyboard.dismiss();
     setMenuOpen(!menuClose);
   };
-  const imagePath = eventDetails?.eventPhoto;
+  const imagePath = eventDetails?.eventSharingPhoto;
 
   useEffect(() => {
     const convertToBase64 = async () => {
@@ -312,35 +310,16 @@ Join me using https://play.google.com/store/apps/details?id=com.foodhealers.clim
                   />
                   {!expired && (
                     <View>
-                      <TouchableOpacity
+                      <PrimaryButton
+                        disabled={expired}
+                        title={localized.t("SHARE")}
                         onPress={() => {
-                          Alert.alert(
-                            `Text/Caption Copied to Clipboard`,
-                            `Text/Caption copied to clipboard. Please paste while sharing`,
-                            [
-                              {
-                                text: "OK",
-                                onPress: () => {
-                                  shareAsSocialPost();
-                                },
-                              },
-                            ],
-                            { cancelable: false }
-                          );
+                          handlePressOutside(),
+                          shareAsSocialPost();
                         }}
-                      >
-                        <Text
-                          style={{
-                            color: "white",
-                            fontSize: 20,
-                            marginTop: w2dp(5),
-                            textDecorationLine: "underline",
-                            alignSelf: "center",
-                          }}
-                        >
-                          {localized.t("SHARE")}
-                        </Text>
-                      </TouchableOpacity>
+                        buttonStyle={styles.buttonStyles}
+                        titleStyle={styles.titleStyle}
+                      />
                     </View>
                   )}
                 </View>

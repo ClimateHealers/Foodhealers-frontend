@@ -25,9 +25,9 @@ import {
 import SelectDropdown from "react-native-select-dropdown";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useDispatch, useSelector } from "react-redux";
-import { getLocation } from "../Components/getCurrentLocation";
+import { getLocation } from "../Components/GetCurrentLocation";
 import PrimaryButton from "../Components/PrimaryButton";
-import { loginSchema } from "../Components/validation";
+import { loginSchema } from "../Components/Validation";
 import { auth } from "../firebase/firebaseConfig";
 import { localized } from "../locales/localization";
 import {
@@ -81,7 +81,9 @@ const LoginScreen = () => {
   const handlePressOutside = () => {
     setlangOpen(false);
     Keyboard.dismiss();
+    setMenuOpen(false);
   };
+
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
@@ -109,11 +111,11 @@ const LoginScreen = () => {
   };
 
   return (
-    <LinearGradient
-      colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
-      style={styles.background}
-    >
-      <TouchableWithoutFeedback onPress={handlePressOutside}>
+    <TouchableWithoutFeedback onPress={() => handlePressOutside()}>
+      <LinearGradient
+        colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
+        style={styles.background}
+      >
         <ScrollView>
           <View style={styles.container}>
             <StatusBar animated={true} backgroundColor="auto" />
@@ -133,7 +135,7 @@ const LoginScreen = () => {
                   <Text
                     style={{
                       padding: 10,
-                      fontSize: 20,
+                      fontSize: h2dp(2.0),
                       fontWeight: "300",
                       lineHeight: 27.24,
                     }}
@@ -147,7 +149,7 @@ const LoginScreen = () => {
                   <Text
                     style={{
                       padding: 10,
-                      fontSize: 20,
+                      fontSize: h2dp(2.0),
                       fontWeight: "300",
                       lineHeight: 27.24,
                     }}
@@ -351,7 +353,7 @@ const LoginScreen = () => {
                         <Text
                           style={{
                             color: "white",
-                            fontSize: 15,
+                            fontSize: h2dp(1.5),
                             textDecorationLine: "underline",
                           }}
                         >
@@ -387,19 +389,22 @@ const LoginScreen = () => {
                         style={{
                           textAlign: "center",
                           color: "white",
-                          fontSize: 18,
+                          fontSize: h2dp(1.8),
                           marginTop: 10,
                         }}
                       >
                         {localized.t("NOT_AN_USER")}
                       </Text>
                       <TouchableOpacity
-                        onPress={() => navigation.navigate("SignupScreen")}
+                        onPress={() => {
+                          handlePressOutside(),
+                            navigation.navigate("SignupScreen");
+                        }}
                       >
                         <Text
                           style={{
                             color: "white",
-                            fontSize: 18,
+                            fontSize: h2dp(1.8),
                             textDecorationLine: "underline",
                             fontFamily: "OpenSans-Bold",
                             textAlign: "center",
@@ -416,8 +421,8 @@ const LoginScreen = () => {
             </View>
           </View>
         </ScrollView>
-      </TouchableWithoutFeedback>
-    </LinearGradient>
+      </LinearGradient>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -466,7 +471,7 @@ const styles = StyleSheet.create({
   },
   titleStyle: {
     color: "white",
-    fontSize: 26,
+    fontSize: h2dp(2.6),
     fontWeight: "400",
     lineHeight: 35,
     fontFamily: "OpenSans-Regular",
@@ -487,13 +492,17 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#D1D1D6",
   },
-  dropdown1BtnTxtStyle: { color: "#B50000", textAlign: "left", fontSize: 14 },
+  dropdown1BtnTxtStyle: {
+    color: "#B50000",
+    textAlign: "left",
+    fontSize: h2dp(1.4),
+  },
   dropdown1DropdownStyle: {
     backgroundColor: "#EFEFEF",
     color: "black",
     borderRadius: 4,
     height: 180,
-    fontSize: 14,
+    fontSize: h2dp(1.4),
     borderColor: "blue",
   },
   dropdown1RowStyle: {
@@ -502,7 +511,11 @@ const styles = StyleSheet.create({
     borderBottomColor: "#D1D1D6",
     borderRadius: 5,
   },
-  dropdown1RowTxtStyle: { color: "black", textAlign: "center", fontSize: 10 },
+  dropdown1RowTxtStyle: {
+    color: "black",
+    textAlign: "center",
+    fontSize: h2dp(1.0),
+  },
   inputError: {
     color: "red",
     marginBottom: 10,

@@ -52,7 +52,7 @@ const DeleteAccount = () => {
         <ScrollView style={styles.ScrollView}>
           <View style={styles.profile}>
             <Text style={styles.profileName}>{userInfo?.name}</Text>
-            <Text style={{ color: "white", fontSize: 20 }}>
+            <Text style={{ color: "white", fontSize: hp2dp(2.0) }}>
               {userInfo?.email}
             </Text>
           </View>
@@ -62,7 +62,7 @@ const DeleteAccount = () => {
           <View style={{ alignSelf: "center" }}>
             <Text
               style={{
-                fontSize: 28,
+                fontSize: hp2dp(2.8),
                 fontWeight: "bold",
                 alignSelf: "center",
                 marginBottom: 20,
@@ -71,7 +71,7 @@ const DeleteAccount = () => {
             >
               {localized.t("ATTENTION")}
             </Text>
-            <Text style={{ fontSize: 18, color: "white" }}>
+            <Text style={{ fontSize: hp2dp(1.8), color: "white" }}>
               {localized.t("DELETE_YOUR_ACCOUNT_WILL_REMOVE_DATABASE")}{" "}
               {localized.t("THIS_CANNOT_BE_UNDONE")}
             </Text>
@@ -104,7 +104,7 @@ const DeleteAccount = () => {
                       style={{
                         ...systemWeights.semibold,
                         color: "white",
-                        fontSize: 18,
+                        fontSize: hp2dp(1.8),
                       }}
                     >
                       {localized.t("KEEP_ACCOUNT")}
@@ -120,7 +120,7 @@ const DeleteAccount = () => {
                 <View>
                   <Text
                     style={{
-                      fontSize: 18,
+                      fontSize: hp2dp(1.8),
                       fontWeight: "bold",
                       marginVertical: hp2dp("2%"),
                     }}
@@ -129,7 +129,7 @@ const DeleteAccount = () => {
                   </Text>
                 </View>
                 <View>
-                  <Text style={{ fontSize: 18, color: "black" }}>
+                  <Text style={{ fontSize: hp2dp(1.8), color: "black" }}>
                     {localized.t("WE_RECEIVED__YOUR_REQUEST_TO_DELETE")}{" "}
                     {localized.t("TO_COMPLETE_YOUR_DELETION")}
                   </Text>
@@ -197,7 +197,7 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     ...systemWeights.bold,
     color: "white",
-    fontSize: 20,
+    fontSize: hp2dp(2.0),
   },
 
   modalView: {
@@ -224,12 +224,12 @@ const styles = StyleSheet.create({
     height: 50,
     marginTop: 10,
     width: wp2dp("80%"),
-    fontSize: 25,
+    fontSize: hp2dp(2.5),
   },
   googletext: {
     ...systemWeights.semibold,
     color: "white",
-    fontSize: 18,
+    fontSize: hp2dp(1.8),
   },
   centeredView: {
     justifyContent: "center",

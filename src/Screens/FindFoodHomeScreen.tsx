@@ -181,7 +181,7 @@ const FindFoodHomeScreen = ({ route }: any) => {
                           <Text
                             style={{
                               color: "#FC5A56",
-                              fontSize: 15,
+                              fontSize: h2dp(1.5),
                               opacity: 0.8,
                               fontWeight: "500",
                             }}
@@ -304,7 +304,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   itemText: {
-    fontSize: 25,
+    fontSize: h2dp(2.5),
     color: "white",
   },
   dropdown1BtnStyle: {
@@ -317,13 +317,13 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#D1D1D6",
   },
-  dropdown1BtnTxtStyle: { color: "#B50000", textAlign: "left", fontSize: 14 },
+  dropdown1BtnTxtStyle: { color: "#B50000", textAlign: "left", fontSize: h2dp(1.4) },
   dropdown1DropdownStyle: {
     backgroundColor: "#EFEFEF",
     color: "black",
     borderRadius: 4,
     height: 180,
-    fontSize: 14,
+    fontSize: h2dp(1.4),
     borderColor: "blue",
   },
   dropdown1RowStyle: {
@@ -332,7 +332,7 @@ const styles = StyleSheet.create({
     borderBottomColor: "#D1D1D6",
     borderRadius: 5,
   },
-  dropdown1RowTxtStyle: { color: "black", textAlign: "center", fontSize: 10 },
+  dropdown1RowTxtStyle: { color: "black", textAlign: "center", fontSize: h2dp(1.0) },
   buttonStyles: {
     backgroundColor: "#FC5A56",
     color: "white",
@@ -343,7 +343,7 @@ const styles = StyleSheet.create({
 
   titleStyle: {
     color: "white",
-    fontSize: 26,
+    fontSize: h2dp(2.6),
     fontWeight: "400",
     lineHeight: 35,
     fontFamily: "OpenSans-Regular",

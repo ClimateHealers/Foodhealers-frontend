@@ -6,6 +6,10 @@ import MaterialIcon from "react-native-vector-icons/MaterialIcons";
 
 import moment from "moment";
 import { human, material, systemWeights } from "react-native-typography";
+import {
+  heightPercentageToDP as h2dp,
+  widthPercentageToDP as w2dp,
+} from "react-native-responsive-screen";
 
 const NotificationFlatlist = ({ data }: any) => {
   const renderItem = ({ item }: any) => {
@@ -90,7 +94,7 @@ const styles = StyleSheet.create({
   },
   buttonContent: {
     paddingTop: 2,
-    fontSize: 12,
+    fontSize: h2dp(1.2),
   },
 });
 export default NotificationFlatlist;

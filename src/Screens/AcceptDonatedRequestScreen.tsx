@@ -19,7 +19,7 @@ import {
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { Text, TextInput } from "react-native-paper";
 import PrimaryButton from "../Components/PrimaryButton";
-import { AddRequest } from "../Components/validation";
+import { AddRequest } from "../Components/Validation";
 
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import PhoneInput from "react-native-phone-number-input";
@@ -129,7 +129,9 @@ const AcceptDonatedRequestScreen = ({ route }: any) => {
                   name="chevron-back"
                   size={32}
                   color="white"
-                  onPress={() => {navigation.goBack(), handlePressOutside()}}
+                  onPress={() => {
+                    navigation.goBack(), handlePressOutside();
+                  }}
                 />
                 <View style={styles.item}>
                   <Text style={styles.itemText}>{title}</Text>
@@ -213,14 +215,14 @@ const AcceptDonatedRequestScreen = ({ route }: any) => {
                             text: `${localized.t("OK")}`,
                             onPress: () => {
                               handlePressOutside(),
-                              navigation.navigate("RequestCreatedScreen", {
-                                itemTypeId: itemTypeId,
-                                title: title,
-                                address: address,
-                                eventDateTime: selectedDate,
-                                foodItem: foodItem,
-                              })
-                            }
+                                navigation.navigate("RequestCreatedScreen", {
+                                  itemTypeId: itemTypeId,
+                                  title: title,
+                                  address: address,
+                                  eventDateTime: selectedDate,
+                                  foodItem: foodItem,
+                                });
+                            },
                           },
                         ],
                         { cancelable: false }
@@ -424,7 +426,7 @@ const AcceptDonatedRequestScreen = ({ route }: any) => {
                             <Text
                               style={{
                                 color: "black",
-                                fontSize: 13,
+                                fontSize: h2dp(1.3),
                                 marginBottom: 5,
                                 marginLeft: 15,
                               }}
@@ -434,7 +436,7 @@ const AcceptDonatedRequestScreen = ({ route }: any) => {
                             <Text
                               style={{
                                 color: "black",
-                                fontSize: 13,
+                                fontSize: h2dp(1.3),
                                 marginBottom: 5,
                                 marginLeft: 15,
                               }}
@@ -474,7 +476,7 @@ const AcceptDonatedRequestScreen = ({ route }: any) => {
                             <Text
                               style={{
                                 color: "black",
-                                fontSize: 13,
+                                fontSize: h2dp(1.3),
                                 width: 200,
                                 marginBottom: 5,
                                 marginLeft: 15,
@@ -485,7 +487,7 @@ const AcceptDonatedRequestScreen = ({ route }: any) => {
                             <Text
                               style={{
                                 color: "black",
-                                fontSize: 13,
+                                fontSize: h2dp(1.3),
                                 marginBottom: 5,
                                 marginLeft: 15,
                               }}

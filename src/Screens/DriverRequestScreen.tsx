@@ -1,7 +1,4 @@
-import {
-  Ionicons,
-  MaterialCommunityIcons
-} from "@expo/vector-icons";
+import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useCallback, useState } from "react";
@@ -28,7 +25,7 @@ import { useDispatch, useSelector } from "react-redux";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
 import PrimaryButton from "../Components/PrimaryButton";
 import { styles } from "../Components/Styles";
-import { getLocation } from "../Components/getCurrentLocation";
+import { getLocation } from "../Components/GetCurrentLocation";
 import { fetchVehicle } from "../redux/actions/addVehicle";
 import { fetchUser, updatePhoto } from "../redux/actions/authAction";
 
@@ -181,10 +178,12 @@ const DriverRequestScreen = ({ route }: any) => {
                   name="chevron-back"
                   size={32}
                   color="#00693D"
-                  onPress={() => {navigation.goBack(),handlePressOutside()}}
+                  onPress={() => {
+                    navigation.goBack(), handlePressOutside();
+                  }}
                 />
                 <View style={styles.item}>
-                  <Text style={{ fontSize: 25, color: "#00693D" }}>
+                  <Text style={{ fontSize: h2dp(2.5), color: "#00693D" }}>
                     {localized.t("DRIVE")}
                   </Text>
                 </View>
@@ -273,7 +272,7 @@ const DriverRequestScreen = ({ route }: any) => {
                   marginBottom: h2dp(3),
                 }}
               >
-                <TouchableOpacity onPress={openImagePickerAsync}>
+                <TouchableOpacity onPress={()=>{handlePressOutside(),openImagePickerAsync}}>
                   {image ? (
                     <View>
                       <Image
@@ -291,7 +290,7 @@ const DriverRequestScreen = ({ route }: any) => {
                   )}
                 </TouchableOpacity>
               </View>
-              <Text style={{ fontSize: 36, color: "#00693D" }}>
+              <Text style={{ fontSize: h2dp(3.6), color: "#00693D" }}>
                 {localized.t("HELLO")}, {data?.name}
               </Text>
               <View
@@ -307,7 +306,7 @@ const DriverRequestScreen = ({ route }: any) => {
               >
                 <Text
                   style={{
-                    fontSize: 24,
+                    fontSize: h2dp(2.4),
                     color: "white",
                     marginVertical: h2dp(1),
                     alignItems: "center",
@@ -321,13 +320,13 @@ const DriverRequestScreen = ({ route }: any) => {
                   title={localized.t("EDIT_VEHICLE_DETAILS")}
                   onPress={() => {
                     handlePressOutside(),
-                    navigation.navigate("UpdateVehicleScreen", {
-                      id: vehicleDetails?.id,
-                      make: vehicleDetails?.make,
-                      model: vehicleDetails?.model,
-                      vehicleColour: vehicleDetails.vehicleColour,
-                      plateNumber: vehicleDetails?.plateNumber,
-                    });
+                      navigation.navigate("UpdateVehicleScreen", {
+                        id: vehicleDetails?.id,
+                        make: vehicleDetails?.make,
+                        model: vehicleDetails?.model,
+                        vehicleColour: vehicleDetails.vehicleColour,
+                        plateNumber: vehicleDetails?.plateNumber,
+                      });
                   }}
                   buttonStyle={{
                     backgroundColor: "#D1D1D6",
@@ -339,7 +338,7 @@ const DriverRequestScreen = ({ route }: any) => {
                   }}
                   titleStyle={{
                     color: "black",
-                    fontSize: 18,
+                    fontSize: h2dp(1.8),
                     // lineHeight: 20,
                     fontFamily: "OpenSans-Regular",
                   }}
@@ -349,9 +348,9 @@ const DriverRequestScreen = ({ route }: any) => {
                 title={localized.t("SEE_PICKUP_REQUESTS")}
                 onPress={() => {
                   handlePressOutside(),
-                  navigation.navigate("PickupDetailsScreen", {
-                    itemTypeId: 4,
-                  })
+                    navigation.navigate("PickupDetailsScreen", {
+                      itemTypeId: 4,
+                    });
                 }}
                 buttonStyle={{
                   backgroundColor: "#00693D",
@@ -372,9 +371,9 @@ const DriverRequestScreen = ({ route }: any) => {
                 title={localized.t("HISTORY")}
                 onPress={() => {
                   handlePressOutside(),
-                  navigation.navigate("PickupHistoryScreen", {
-                    itemTypeId: 4,
-                  })
+                    navigation.navigate("PickupHistoryScreen", {
+                      itemTypeId: 4,
+                    });
                 }}
                 buttonStyle={{
                   backgroundColor: "#D1D1D6",

@@ -20,6 +20,10 @@ import * as yup from "yup";
 import { auth } from "../firebase/firebaseConfig";
 import { localized } from "../locales/localization";
 import Spinner from "react-native-loading-spinner-overlay/lib";
+import {
+  heightPercentageToDP as h2dp,
+  widthPercentageToDP as w2dp,
+} from "react-native-responsive-screen";
 
 const forgotPasswordValidationSchema = yup.object().shape({
   email: yup
@@ -192,7 +196,7 @@ const styles = StyleSheet.create({
   textInput: {
     height: 55,
     marginBottom: 1,
-    fontSize: 15,
+    fontSize: h2dp(1.5),
     paddingLeft: 10,
     borderWidth: 1,
     borderColor: "white",
@@ -204,7 +208,7 @@ const styles = StyleSheet.create({
   container2: {
   },
   header: {
-    fontSize: 25,
+    fontSize: h2dp(2.5),
     fontWeight: "bold",
     marginBottom: 5,
     color: "white",
@@ -222,7 +226,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 30,
     color: "white",
-    fontSize: 18,
+    fontSize: h2dp(1.8),
   },
 
   regBtn: {
@@ -249,7 +253,7 @@ const styles = StyleSheet.create({
   },
   regText: {
     color: "white",
-    fontSize: 20,
+    fontSize: h2dp(2.0),
   },
 });
 export default ForgotPassword;

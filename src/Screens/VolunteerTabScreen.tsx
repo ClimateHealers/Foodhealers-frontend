@@ -79,6 +79,7 @@ const VolunteerTabScreen = () => {
     lat,
     long,
     eventPhoto,
+    eventSharingPhoto
   }: any) => (
     <TouchableOpacity activeOpacity={1}>
       <View style={styles.cardContainer}>
@@ -96,7 +97,7 @@ const VolunteerTabScreen = () => {
             <Text
               style={{
                 marginLeft: h2dp(1.5),
-                fontSize: 11,
+                fontSize: h2dp(1.1),
                 color: "green",
                 marginTop: h2dp(0.5),
               }}
@@ -118,7 +119,7 @@ const VolunteerTabScreen = () => {
             <Text
               style={{
                 marginLeft: h2dp(1.5),
-                fontSize: 11,
+                fontSize: h2dp(1.1),
                 color: "#f2db0a",
                 marginTop: h2dp(0.5),
               }}
@@ -137,7 +138,7 @@ const VolunteerTabScreen = () => {
             <Text
               style={{
                 marginLeft: h2dp(1.5),
-                fontSize: 11,
+                fontSize: h2dp(1.1),
                 color: "red",
                 marginTop: h2dp(0.5),
               }}
@@ -150,7 +151,7 @@ const VolunteerTabScreen = () => {
           <Text
             style={{
               marginLeft: w2dp(3),
-              fontSize: 16,
+              fontSize: h2dp(1.6),
               lineHeight: 30,
               paddingTop: h2dp(0.5),
             }}
@@ -161,7 +162,7 @@ const VolunteerTabScreen = () => {
             style={{
               marginLeft: w2dp(3),
               fontWeight: "500",
-              fontSize: 16,
+              fontSize: h2dp(1.6),
               lineHeight: 30,
               paddingTop: h2dp(0.7),
             }}
@@ -172,7 +173,7 @@ const VolunteerTabScreen = () => {
             style={{
               marginLeft: w2dp(3),
               fontWeight: "200",
-              fontSize: 16,
+              fontSize: h2dp(1.6),
               lineHeight: 20,
               paddingBottom: h2dp(1),
             }}
@@ -195,7 +196,8 @@ const VolunteerTabScreen = () => {
                 long: long,
                 eventPhoto: eventPhoto,
                 requiredVolunteers: requiredVolunteers,
-                status: status
+                status: status,
+                eventSharingPhoto: eventSharingPhoto
               },
             })
           }
@@ -261,6 +263,7 @@ const VolunteerTabScreen = () => {
                   status={item?.status}
                   eventPhoto={item?.eventPhoto}
                   requiredVolunteers={item?.requiredVolunteers}
+                  eventSharingPhoto={item?.eventSharingPhoto}
                 />
               )}
               keyExtractor={(item: any) => item?.id}

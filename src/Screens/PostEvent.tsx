@@ -20,7 +20,7 @@ import {
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { Text, TextInput } from "react-native-paper";
 import PrimaryButton from "../Components/PrimaryButton";
-import { postEventSchema } from "../Components/validation";
+import { postEventSchema } from "../Components/Validation";
 import { localized } from "../locales/localization";
 
 import DateTimePickerModal from "react-native-modal-datetime-picker";
@@ -29,7 +29,12 @@ import { useDispatch, useSelector } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
 import { styles } from "../Components/Styles";
-import { getLocation } from "../Components/getCurrentLocation";
+import { getLocation } from "../Components/GetCurrentLocation";
+
+import {
+  heightPercentageToDP as h2dp,
+  widthPercentageToDP as w2dp,
+} from "react-native-responsive-screen";
 
 const PostEvent = () => {
   const [loading, setLoading] = useState(false);
@@ -69,7 +74,7 @@ const PostEvent = () => {
   const eventDateTime = moment(selectedDate).utc().unix();
 
   const eventEndDateTime = moment(selectedEndDate).utc().unix();
-  
+
   const handlePressOutside = () => {
     setlangOpen(false);
     Keyboard.dismiss();
@@ -154,7 +159,9 @@ const PostEvent = () => {
                   name="chevron-back"
                   size={32}
                   color="white"
-                  onPress={() => {navigation.goBack(),handlePressOutside()}}
+                  onPress={() => {
+                    navigation.goBack(), handlePressOutside();
+                  }}
                 />
                 <View style={styles.item}>
                   <Text style={styles.itemText}>
@@ -316,7 +323,7 @@ const PostEvent = () => {
                             <Text
                               style={{
                                 color: "black",
-                                fontSize: 13,
+                                fontSize: h2dp(1.3),
                                 marginBottom: 5,
                                 marginLeft: 15,
                               }}
@@ -326,7 +333,7 @@ const PostEvent = () => {
                             <Text
                               style={{
                                 color: "black",
-                                fontSize: 13,
+                                fontSize: h2dp(1.3),
                                 marginBottom: 5,
                                 marginLeft: 15,
                               }}
@@ -365,7 +372,7 @@ const PostEvent = () => {
                             <Text
                               style={{
                                 color: "black",
-                                fontSize: 13,
+                                fontSize: h2dp(1.3),
                                 width: 200,
                                 marginBottom: 5,
                                 marginLeft: 15,
@@ -376,7 +383,7 @@ const PostEvent = () => {
                             <Text
                               style={{
                                 color: "black",
-                                fontSize: 13,
+                                fontSize: h2dp(1.3),
                                 marginBottom: 5,
                                 marginLeft: 15,
                               }}
@@ -403,7 +410,7 @@ const PostEvent = () => {
                             <Text
                               style={{
                                 color: "black",
-                                fontSize: 13,
+                                fontSize: h2dp(1.3),
                                 marginBottom: 5,
                                 marginLeft: 15,
                               }}
@@ -413,7 +420,7 @@ const PostEvent = () => {
                             <Text
                               style={{
                                 color: "black",
-                                fontSize: 13,
+                                fontSize: h2dp(1.3),
                                 marginBottom: 5,
                                 marginLeft: 15,
                               }}
@@ -454,7 +461,7 @@ const PostEvent = () => {
                             <Text
                               style={{
                                 color: "black",
-                                fontSize: 13,
+                                fontSize: h2dp(1.3),
                                 width: 200,
                                 marginBottom: 5,
                                 marginLeft: 15,
@@ -465,7 +472,7 @@ const PostEvent = () => {
                             <Text
                               style={{
                                 color: "black",
-                                fontSize: 13,
+                                fontSize: h2dp(1.3),
                                 marginBottom: 5,
                                 marginLeft: 15,
                               }}

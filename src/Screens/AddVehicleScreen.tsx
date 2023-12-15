@@ -27,7 +27,7 @@ import PrimaryButton from "../Components/PrimaryButton";
 import { styles } from "../Components/Styles";
 import { localized } from "../locales/localization";
 import { addVehicle } from "../redux/actions/addVehicle";
-import { addDriver, adddVehicle } from "../Components/validation";
+import { addDriver, adddVehicle } from "../Components/Validation";
 
 const AddVehicleScreen = ({ route }: any) => {
   const { newVehicle } = route?.params;
@@ -85,9 +85,9 @@ const AddVehicleScreen = ({ route }: any) => {
                   color="white"
                   onPress={() => {
                     handlePressOutside(),
-                    newVehicle
-                      ? navigation.navigate("DriverRequestScreen")
-                      : navigation.navigate("BecomeADriverScreen")
+                      newVehicle
+                        ? navigation.navigate("DriverRequestScreen")
+                        : navigation.navigate("BecomeADriverScreen");
                   }}
                 />
                 <View style={styles.item}>
@@ -155,7 +155,7 @@ const AddVehicleScreen = ({ route }: any) => {
                               text: "OK",
                               onPress: () => {
                                 navigation.navigate("DriverRequestScreen");
-                                handlePressOutside()
+                                handlePressOutside();
                               },
                             },
                           ],
@@ -181,7 +181,7 @@ const AddVehicleScreen = ({ route }: any) => {
                               text: "OK",
                               onPress: () => {
                                 navigation.navigate("DriverProfilePhoto");
-                                handlePressOutside()
+                                handlePressOutside();
                               },
                             },
                           ],

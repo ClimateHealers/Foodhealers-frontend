@@ -3,7 +3,7 @@ import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import * as Location from "expo-location";
 import moment from "moment";
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
   Dimensions,
   Keyboard,
@@ -32,6 +32,7 @@ import { styles } from "../Components/Styles";
 import { localized } from "../locales/localization";
 import { findFood } from "../redux/actions/findFoodaction";
 import { setLanguage } from "../redux/reducers/langReducer";
+import { configureStore } from "@reduxjs/toolkit";
 
 const WeekScreen = ({ route }: any) => {
   const {
@@ -99,9 +100,6 @@ const WeekScreen = ({ route }: any) => {
       mapRef.current.animateToRegion(region, 2000);
     }
   };
-  if (lat && lng) {
-    focusMarker();
-  }
 
   const fetchUserLocation = async () => {
     try {
@@ -183,8 +181,8 @@ const WeekScreen = ({ route }: any) => {
 
   const gettingEvents = async () => {
     const findFoodData = {
-      lat: lat ? lat : 0,
-      lng: lng ? lng : 0,
+      lat: lat ? lat : currentLatitude,
+      lng: lng ? lng : currentLongitude,
       alt: 0,
       city: city,
       state: state,
@@ -193,7 +191,7 @@ const WeekScreen = ({ route }: any) => {
       eventStartDate: startDate ? startDate : 0,
       eventEndDate: endDate ? endDate : 0,
     };
-
+    
     const response = await dispatch(findFood(findFoodData as any) as any);
 
     const foodEvents = response?.payload?.results?.foodEvents;
@@ -214,6 +212,9 @@ const WeekScreen = ({ route }: any) => {
   useFocusEffect(
     useCallback(() => {
       gettingEvents();
+      if (lat && lng) {
+        focusMarker();
+      }
     }, [])
   );
 
@@ -358,7 +359,7 @@ const WeekScreen = ({ route }: any) => {
                     styles.boldText,
                     {
                       color: "orange",
-                      fontSize: 15,
+                      fontSize: h2dp(1.5),
                     },
                   ]}
                 >
@@ -373,7 +374,7 @@ const WeekScreen = ({ route }: any) => {
                       color: "orange",
                       textDecorationLine: "underline",
                       marginTop: h2dp(1),
-                      fontSize: 15,
+                      fontSize: h2dp(1.5),
                       fontWeight: "300",
                     }}
                   >
@@ -428,7 +429,7 @@ const WeekScreen = ({ route }: any) => {
                           <Text
                             style={{
                               color: "#FC5A56",
-                              fontSize: 15,
+                              fontSize: h2dp(1.5),
                               opacity: 0.8,
                               fontWeight: "500",
                             }}

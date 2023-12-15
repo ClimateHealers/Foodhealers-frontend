@@ -265,7 +265,7 @@ const HomeScreen = ({ route }: any) => {
                 <Text
                   style={{
                     color: "white",
-                    fontSize: 18,
+                    fontSize: h2dp(1.8),
                     marginBottom: h2dp(4),
                     fontFamily: "OpenSans-bold",
                   }}
@@ -347,7 +347,7 @@ const styles = StyleSheet.create({
   },
   titleStyle: {
     color: "black",
-    fontSize: 22,
+    fontSize: h2dp(2.2),
     fontWeight: "200",
     fontFamily: "OpenSans-bold",
   },
@@ -400,7 +400,7 @@ const styles = StyleSheet.create({
     borderBottomColor: "#D1D1D6",
     borderRadius: 5,
   },
-  dropdown1RowTxtStyle: { color: "black", textAlign: "center", fontSize: 10 },
+  dropdown1RowTxtStyle: { color: "black", textAlign: "center", fontSize: h2dp(1.0) },
 });
 
 export default HomeScreen;

@@ -16,7 +16,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { SceneMap, TabBar, TabView } from "react-native-tab-view";
 import { useDispatch } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
-import { getLocation } from "../Components/getCurrentLocation";
+import { getLocation } from "../Components/GetCurrentLocation";
 import { localized } from "../locales/localization";
 import DonationTabScreen from "./DonationTabScreen";
 import VolunteerTabScreen from "./VolunteerTabScreen";
@@ -77,7 +77,9 @@ const VolunteerAndDonateScreen = ({ route }: any) => {
                     name="chevron-back"
                     size={32}
                     color="white"
-                    onPress={() =>{ navigation.goBack(),handlePressOutside()}}
+                    onPress={() => {
+                      navigation.goBack(), handlePressOutside();
+                    }}
                   />
                 </View>
                 <View style={styles.item}>
@@ -138,7 +140,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   itemText: {
-    fontSize: 25,
+    fontSize: h2dp(2.5),
     color: "white",
     marginTop: h2dp(3),
   },
@@ -158,7 +160,7 @@ const styles = StyleSheet.create({
   },
   titleStyle: {
     color: "white",
-    fontSize: 26,
+    fontSize: h2dp(2.6),
 
     lineHeight: 35,
     fontFamily: "OpenSans-Regular",
@@ -167,13 +169,13 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
   cardText: {
-    fontSize: 20,
+    fontSize: h2dp(2.0),
     marginLeft: 10,
     fontFamily: "OpenSans-Light",
   },
   boldText: {
     fontWeight: "300",
-    fontSize: 20,
+    fontSize: h2dp(2.0),
   },
   headerContainer: {
     display: "flex",
@@ -194,7 +196,7 @@ const styles = StyleSheet.create({
   },
   tabLabel: {
     color: "white",
-    fontSize: 16,
+    fontSize: h2dp(1.6),
     fontWeight: "bold",
   },
   tabIndicator: {
@@ -212,11 +214,11 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   itemTitle: {
-    fontSize: 18,
+    fontSize: h2dp(1.8),
     fontWeight: "bold",
   },
   itemDescription: {
-    fontSize: 16,
+    fontSize: h2dp(1.6),
   },
 });
 

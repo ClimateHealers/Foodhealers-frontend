@@ -26,7 +26,7 @@ import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
 import PrimaryButton from "../Components/PrimaryButton";
 import { styles } from "../Components/Styles";
-import { getLocation } from "../Components/getCurrentLocation";
+import { getLocation } from "../Components/GetCurrentLocation";
 import { localized } from "../locales/localization";
 import * as FileSystem from "expo-file-system";
 import * as Sharing from "expo-sharing";
@@ -84,7 +84,7 @@ const VolunteerSingleEventDetails = ({ route }: any) => {
   const EndTime = eventDetails?.eventEndDate;
   const formattedEndTime = moment(EndTime).format("h:mm a");
 
-  const imagePath = eventDetails?.eventPhoto;
+  const imagePath = eventDetails?.eventSharingPhoto;
 
   useEffect(() => {
     const convertToBase64 = async () => {
@@ -324,35 +324,15 @@ Join me using https://play.google.com/store/apps/details?id=com.foodhealers.clim
                       buttonStyle={styles.buttonStyles}
                       titleStyle={styles.titleStyle}
                     />
-                    <TouchableOpacity
+                    <PrimaryButton
+                      disabled={expired}
+                      title={localized.t("SHARE")}
                       onPress={() => {
-                        Alert.alert(
-                          `Text/Caption Copied to Clipboard`,
-                          `Text/Caption copied to clipboard. Please paste while sharing`,
-                          [
-                            {
-                              text: "OK",
-                              onPress: () => {
-                                shareAsSocialPost();
-                              },
-                            },
-                          ],
-                          { cancelable: false }
-                        );
+                        handlePressOutside(), shareAsSocialPost();
                       }}
-                    >
-                      <Text
-                        style={{
-                          color: "white",
-                          fontSize: 20,
-                          marginTop: w2dp(5),
-                          textDecorationLine: "underline",
-                          alignSelf: "center",
-                        }}
-                      >
-                        {localized.t("SHARE")}
-                      </Text>
-                    </TouchableOpacity>
+                      buttonStyle={styles.buttonStyles}
+                      titleStyle={styles.titleStyle}
+                    />
                   </View>
                 ) : (
                   <View
@@ -383,19 +363,15 @@ Join me using https://play.google.com/store/apps/details?id=com.foodhealers.clim
                       buttonStyle={styles.buttonStyles}
                       titleStyle={styles.titleStyle}
                     />
-                    <TouchableOpacity onPress={shareAsSocialPost}>
-                      <Text
-                        style={{
-                          color: "white",
-                          fontSize: 20,
-                          marginTop: w2dp(5),
-                          textDecorationLine: "underline",
-                          alignSelf: "center",
-                        }}
-                      >
-                        {localized.t("SHARE")}
-                      </Text>
-                    </TouchableOpacity>
+                    <PrimaryButton
+                      disabled={expired}
+                      title={localized.t("SHARE")}
+                      onPress={() => {
+                        handlePressOutside(), shareAsSocialPost();
+                      }}
+                      buttonStyle={styles.buttonStyles}
+                      titleStyle={styles.titleStyle}
+                    />
                   </View>
                 )}
               </View>
