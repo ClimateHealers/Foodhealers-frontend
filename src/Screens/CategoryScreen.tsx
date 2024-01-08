@@ -16,7 +16,10 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import { heightPercentageToDP as h2dp } from "react-native-responsive-screen";
+import {
+  heightPercentageToDP as h2dp,
+  widthPercentageToDP as w2dp,
+} from "react-native-responsive-screen";
 import { useDispatch, useSelector } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
@@ -24,7 +27,10 @@ import { styles } from "../Components/Styles";
 import { getLocation } from "../Components/GetCurrentLocation";
 import API from "../Utils/APIUtils";
 import { localized } from "../locales/localization";
-import { VeganRecipesCategory } from "../redux/actions/veganRecipesCategory";
+import {
+  VeganAllRecipes,
+  VeganRecipesCategory,
+} from "../redux/actions/veganRecipesCategory";
 
 const blurhash = "LBE~3[-;j[oy_MoMfQj[offQfQfQ";
 
@@ -112,13 +118,19 @@ const CategoryScreen = ({ route }: any) => {
     setMenuOpen(!menuClose);
   };
 
-  const handleSearchTextChange = (text: any) => {
+  const handleSearchTextChange = async (text: any) => {
     setSearchText(text);
     setTextChange(true);
-    const filtered = data?.filter((item: any) =>
-      item?.foodName?.toLowerCase()?.includes(text?.toLowerCase())
-    );
-    setFilteredData(filtered);
+    const data = {
+      searchText: text?.toLowerCase(),
+      category: categoryId,
+    };
+    if (text === "") {
+      setTextChange(false);
+    } else {
+      const response = await dispatch(VeganAllRecipes(data as any) as any);
+      setFilteredData(response?.payload?.results?.recipeList);
+    }
   };
 
   return (
@@ -208,6 +220,9 @@ const CategoryScreen = ({ route }: any) => {
                                   recipeName: recipe?.foodName,
                                   recipeInstructions:
                                     recipe?.cookingInstructions,
+                                  cookingTime: recipe?.preparationTime,
+                                  recipeSource: recipe?.recipeSource,
+                                  recipeCredits: recipe?.recipeCredits,
                                 },
                               });
                           }}
@@ -215,7 +230,7 @@ const CategoryScreen = ({ route }: any) => {
                           <View
                             key={recipe?.id}
                             style={{
-                              marginBottom: h2dp(3),
+                              marginBottom: h2dp(2),
                               position: "relative",
                             }}
                           >
@@ -297,7 +312,7 @@ const CategoryScreen = ({ route }: any) => {
                         >
                           <View
                             style={{
-                              marginBottom: h2dp(3),
+                              marginBottom: h2dp(2),
                               position: "relative",
                             }}
                             key={recipe?.id}
@@ -357,6 +372,15 @@ const CategoryScreen = ({ route }: any) => {
                           </View>
                         </TouchableOpacity>
                       ))}
+                  <Text
+                    style={{
+                      color: "white",
+                      fontSize: h2dp(1.5),
+                      marginBottom: h2dp(1.5),
+                    }}
+                  >
+                    Loading...
+                  </Text>
                 </View>
               </TouchableOpacity>
             </ScrollView>

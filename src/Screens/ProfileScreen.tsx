@@ -585,9 +585,9 @@ const ProfileScreen = () => {
                   style={{
                     textDecorationLine: "underline",
                     color: "white",
-                    fontSize: h2dp(1.5),
+                    fontSize: hp2dp(1.5),
                     marginLeft: wp2dp(1),
-                    marginRight: w2dp(4),
+                    marginRight: wp2dp(4),
                   }}
                   onPress={() => {
                     handlePressOutside(),
