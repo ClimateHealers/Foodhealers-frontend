@@ -118,12 +118,14 @@ const RecipesHomeScreen = () => {
   const handleSearchTextChange = async (text: any) => {
     setSearchText(text);
     setTextChange(true);
+    const data = {
+      searchText: text?.toLowerCase(),
+      category: 0,
+    };
     if (text === "") {
       setTextChange(false);
     } else {
-      const response = await dispatch(
-        VeganAllRecipes(text?.toLowerCase() as any) as any
-      );
+      const response = await dispatch(VeganAllRecipes(data as any) as any);
       setFilteredData(response?.payload?.results?.recipeList);
     }
   };
@@ -206,6 +208,9 @@ const RecipesHomeScreen = () => {
                                   recipeName: recipe?.foodName,
                                   recipeInstructions:
                                     recipe?.cookingInstructions,
+                                  cookingTime: recipe?.preparationTime,
+                                  recipeSource: recipe?.recipeSource,
+                                  recipeCredits: recipe?.recipeCredits,
                                 },
                               });
                           }}

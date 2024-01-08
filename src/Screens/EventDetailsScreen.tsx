@@ -174,7 +174,7 @@ Join me using https://play.google.com/store/apps/details?id=com.foodhealers.clim
                     source={{ uri: eventDetails?.eventPhoto }}
                     style={{
                       width: "100%",
-                      height: 200,
+                      height: h2dp(20),
                       borderTopLeftRadius: 10,
                       borderTopRightRadius: 10,
                       opacity: expired ? 0.3 : 1,
