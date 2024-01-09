@@ -8,6 +8,8 @@ export interface veganRecipesCat {
 export interface veganAllRecipes {
   token: string;
   search_keyword: string;
+  searchText: string;
+  category: string;
 }
 
 export const VeganRecipesCategory = createAsyncThunk<
@@ -35,7 +37,8 @@ export const VeganAllRecipes = createAsyncThunk<
         Authorization: token,
       },
       params: {
-        search_keyword: searchData,
+        search_keyword: searchData?.searchText,
+        category_id : searchData?.category,
       },
     };
     const result = await API.get(`v1/api/search-recipe/`, config);

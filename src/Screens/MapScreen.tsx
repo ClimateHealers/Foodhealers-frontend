@@ -125,8 +125,6 @@ const MapScreen = ({ route }: any) => {
 
         eventEndDate: endDate ? endDate : 0,
       };
-
-      console.log("dhfddf", findFoodData);
       const res = await dispatch(findFood(findFoodData as any) as any);
       const foodEvents = res?.payload?.results?.foodEvents;
       const verifiedFoodEvents = foodEvents?.filter(
