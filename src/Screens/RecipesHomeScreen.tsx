@@ -1,7 +1,8 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { useDebounce } from "../Components/Debounce";
 import {
   Keyboard,
   SafeAreaView,
@@ -52,9 +53,38 @@ const RecipesHomeScreen = () => {
     setRecipeData(response?.payload?.categoriesList);
   };
 
+  const data = {
+    searchText: searchText?.toLowerCase(),
+    category: 0,
+  };
+
+  const searchQuery = useDebounce(data, 200);
+
+  const controllerRef = useRef<any>();
+
+  const controller = new AbortController();
+
+  if (controllerRef != undefined) {
+    controllerRef.current = controller;
+  }
+  const searchCharacter = async () => {
+    if (searchText === "") {
+      setTextChange(false);
+    } else {
+      setTextChange(true);
+      const data: any = await dispatch(VeganAllRecipes(searchQuery));
+      setFilteredData(data?.payload?.results?.recipeList);
+      controllerRef.current = null;
+    }
+  };
+
   useEffect(() => {
     fetchRecipesCategories();
   }, []);
+
+  useEffect(() => {
+    searchCharacter();
+  }, [searchQuery]);
 
   const token = useSelector((state: any) => state.auth.data.token);
 
@@ -117,17 +147,6 @@ const RecipesHomeScreen = () => {
 
   const handleSearchTextChange = async (text: any) => {
     setSearchText(text);
-    setTextChange(true);
-    const data = {
-      searchText: text?.toLowerCase(),
-      category: 0,
-    };
-    if (text === "") {
-      setTextChange(false);
-    } else {
-      const response = await dispatch(VeganAllRecipes(data as any) as any);
-      setFilteredData(response?.payload?.results?.recipeList);
-    }
   };
 
   return (
@@ -312,6 +331,18 @@ const RecipesHomeScreen = () => {
                           </View>
                         </TouchableOpacity>
                       ))}
+                  {filteredData?.length > 0 &&
+                  recipesCategory?.length > 0 ? null : (
+                    <Text
+                      style={{
+                        color: "white",
+                        fontSize: h2dp(1.5),
+                        marginBottom: h2dp(1.5),
+                      }}
+                    >
+                      No results found
+                    </Text>
+                  )}
                 </View>
               </TouchableOpacity>
             </ScrollView>

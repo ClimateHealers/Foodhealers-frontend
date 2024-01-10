@@ -3,7 +3,7 @@ import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { decode } from "html-entities";
 import { Image } from "expo-image";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   ActivityIndicator,
   Keyboard,
@@ -31,6 +31,7 @@ import {
   VeganAllRecipes,
   VeganRecipesCategory,
 } from "../redux/actions/veganRecipesCategory";
+import { useDebounce } from "../Components/Debounce";
 
 const blurhash = "LBE~3[-;j[oy_MoMfQj[offQfQfQ";
 
@@ -70,10 +71,31 @@ const CategoryScreen = ({ route }: any) => {
     }
   };
 
+  const searchData = {
+    searchText: searchText?.toLowerCase(),
+    category: categoryId,
+  };
+
+  const searchQuery = useDebounce(searchData, 200);
+
+  const searchCharacter = async () => {
+    if (searchText === "") {
+      setTextChange(false);
+    } else {
+      setTextChange(true);
+      const data: any = await dispatch(VeganAllRecipes(searchQuery));
+      setFilteredData(data?.payload?.results?.recipeList);
+    }
+  };
+
   useEffect(() => {
     fetchRecipesCategory();
     fetchData();
   }, []);
+
+  useEffect(() => {
+    searchCharacter();
+  }, [searchQuery]);
 
   const fetchData = async () => {
     try {
@@ -120,17 +142,6 @@ const CategoryScreen = ({ route }: any) => {
 
   const handleSearchTextChange = async (text: any) => {
     setSearchText(text);
-    setTextChange(true);
-    const data = {
-      searchText: text?.toLowerCase(),
-      category: categoryId,
-    };
-    if (text === "") {
-      setTextChange(false);
-    } else {
-      const response = await dispatch(VeganAllRecipes(data as any) as any);
-      setFilteredData(response?.payload?.results?.recipeList);
-    }
   };
 
   return (
@@ -372,15 +383,27 @@ const CategoryScreen = ({ route }: any) => {
                           </View>
                         </TouchableOpacity>
                       ))}
-                  <Text
-                    style={{
-                      color: "white",
-                      fontSize: h2dp(1.5),
-                      marginBottom: h2dp(1.5),
-                    }}
-                  >
-                    Loading...
-                  </Text>
+                  {filteredData?.length > 0 && data?.length > 0 ? (
+                    <Text
+                      style={{
+                        color: "white",
+                        fontSize: h2dp(1.5),
+                        marginBottom: h2dp(1.5),
+                      }}
+                    >
+                      Loading...
+                    </Text>
+                  ) : (
+                    <Text
+                      style={{
+                        color: "white",
+                        fontSize: h2dp(1.5),
+                        marginBottom: h2dp(1.5),
+                      }}
+                    >
+                      No results found
+                    </Text>
+                  )}
                 </View>
               </TouchableOpacity>
             </ScrollView>
