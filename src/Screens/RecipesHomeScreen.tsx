@@ -331,9 +331,7 @@ const RecipesHomeScreen = () => {
                           </View>
                         </TouchableOpacity>
                       ))}
-                  {filteredData?.length > 0 &&
-                  recipesCategory?.length > 0 ? null : (
-                    <Text
+                  {filteredData?.length == undefined && textChange ? <Text
                       style={{
                         color: "white",
                         fontSize: h2dp(1.5),
@@ -341,7 +339,8 @@ const RecipesHomeScreen = () => {
                       }}
                     >
                       No results found
-                    </Text>
+                    </Text> : (
+                    null
                   )}
                 </View>
               </TouchableOpacity>
