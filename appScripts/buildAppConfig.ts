@@ -12,7 +12,7 @@ const appConfig = {
   expo: {
     name: "food-healers",
     slug: "food-healers",
-    version: "1.3.5",
+    version: "1.3.6",
     orientation: "portrait",
 
     icon: "./assets/FH-androidLogo.png",
@@ -41,10 +41,10 @@ const appConfig = {
       supportsTablet: false,
       bundleIdentifier: "com.foodhealers.climatehealers",
       infoPlist: {
-        NSLocationWhenInUseUsageDescription:
+          NSLocationWhenInUseUsageDescription:
           "FoodHealers app needs your location to show nearby events and best transportation options for the selected event within the app.",
-          NSPhotoLibraryAddUsageDescription:
-          "FoodHealers app needs PhotoLibrary permission to let you update your profile picture, and create/modify events with appropriate images for community",
+          NSPhotoLibraryUsageDescription:
+          "Enable photo library access for the Foodhealers app to effortlessly share and upload relevant photos of your contributions and events",
       },
       useFrameworks: "static",
       config: {
@@ -52,7 +52,7 @@ const appConfig = {
       },
     },
     android: {
-      versionCode: 16,
+      versionCode: 17,
       permissions: [
         "android.permission.ACCESS_COARSE_LOCATION",
         "android.permission.ACCESS_FINE_LOCATION",
