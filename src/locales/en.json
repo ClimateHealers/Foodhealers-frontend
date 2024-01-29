@@ -139,7 +139,7 @@
     "SOURCE":"Source",
     "CREDITS":"Credits",
     "MEDIA_LIBRARY_ACCESS":"Media Library Access",
-    "FOODHEALERS_APP_NEEDS_PHOTOLIBRARY":"FoodHealers app needs PhotoLibrary permission to let you update your profile picture, and create/modify events with appropriate images for community.You can enable it anytime from settings.",
+    "FOODHEALERS_APP_NEEDS_PHOTOLIBRARY":"Enable photo library access for the Foodhealers app to effortlessly share and upload relevant photos of your contributions and events.",
     "BACK": "Back",
     "UPLOAD_EVENT_PHOTO": "Upload event photo",
     "DONATIONS": "Donations",
