@@ -25,7 +25,7 @@ import { useDispatch, useSelector } from "react-redux";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
 import PrimaryButton from "../Components/PrimaryButton";
 import { styles } from "../Components/Styles";
-import { getLocation } from "../Components/GetCurrentLocation";
+import { getLocation } from "../Components/getCurrentLocation";
 import { fetchVehicle } from "../redux/actions/addVehicle";
 import { fetchUser, updatePhoto } from "../redux/actions/authAction";
 
@@ -272,7 +272,11 @@ const DriverRequestScreen = ({ route }: any) => {
                   marginBottom: h2dp(3),
                 }}
               >
-                <TouchableOpacity onPress={()=>{handlePressOutside(),openImagePickerAsync}}>
+                <TouchableOpacity
+                  onPress={() => {
+                    handlePressOutside(), openImagePickerAsync;
+                  }}
+                >
                   {image ? (
                     <View>
                       <Image

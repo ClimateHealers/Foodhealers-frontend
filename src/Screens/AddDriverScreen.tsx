@@ -25,7 +25,7 @@ import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
 import PrimaryButton from "../Components/PrimaryButton";
 import { styles } from "../Components/Styles";
-import { addDriver } from "../Components/Validation";
+import { addDriver } from "../Components/validation";
 import { localized } from "../locales/localization";
 import { updateProfile } from "../redux/actions/authAction";
 

@@ -19,7 +19,7 @@ import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
 import PrimaryButton from "../Components/PrimaryButton";
 import { styles } from "../Components/Styles";
-import { getLocation } from "../Components/GetCurrentLocation";
+import { getLocation } from "../Components/getCurrentLocation";
 import { localized } from "../locales/localization";
 
 const VolunteerThankYouScreen = ({ route }: any) => {

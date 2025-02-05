@@ -19,7 +19,7 @@ import {
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { Text, TextInput } from "react-native-paper";
 import PrimaryButton from "../Components/PrimaryButton";
-import { AddDonations, AddRequest } from "../Components/Validation";
+import { AddDonations, AddRequest } from "../Components/validation";
 
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import PhoneInput from "react-native-phone-number-input";

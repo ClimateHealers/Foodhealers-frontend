@@ -14,12 +14,12 @@ import {
 } from "react-native";
 import { heightPercentageToDP as h2dp } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
-import Carousel, { Pagination } from "react-native-snap-carousel";
 import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
 import PrimaryButton from "../Components/PrimaryButton";
 import { styles } from "../Components/Styles";
 import { localized } from "../locales/localization";
+import Carousel from "react-native-reanimated-carousel";
 
 const VolunteerDonateScreen = ({ route }: any) => {
   const { latitude, longitude } = route.params;
@@ -118,12 +118,12 @@ const VolunteerDonateScreen = ({ route }: any) => {
                 title={localized.t("SELECT")}
                 onPress={() => {
                   handlePressOutside(),
-                  navigation.navigate(item?.navigation, {
-                    itemTypeId: item?.itemTypeId,
-                    title: item?.title,
-                    latitude: latitude,
-                    longitude: longitude,
-                  })
+                    navigation.navigate(item?.navigation, {
+                      itemTypeId: item?.itemTypeId,
+                      title: item?.title,
+                      latitude: latitude,
+                      longitude: longitude,
+                    });
                 }}
                 buttonStyle={styles.buttonStyles}
                 titleStyle={styles.titleStyle}
@@ -150,7 +150,9 @@ const VolunteerDonateScreen = ({ route }: any) => {
                   name="chevron-back"
                   size={32}
                   color="white"
-                  onPress={() => {navigation.goBack(),handlePressOutside()}}
+                  onPress={() => {
+                    navigation.goBack(), handlePressOutside();
+                  }}
                 />
                 <View style={styles.item}>
                   <Text style={styles.itemText}>
@@ -177,21 +179,6 @@ const VolunteerDonateScreen = ({ route }: any) => {
                   loopClonesPerSide={2}
                   onSnapToItem={(index) => setActiveSlide(index)}
                   pagingEnabled={true}
-                />
-                <Pagination
-                  dotsLength={cardData?.length}
-                  activeDotIndex={activeSlide}
-                  dotStyle={{
-                    width: 10,
-                    height: 10,
-                    borderRadius: 5,
-                    backgroundColor: "#CDDE85",
-                  }}
-                  inactiveDotStyle={{
-                    backgroundColor: "#CDDE85",
-                  }}
-                  inactiveDotOpacity={0.4}
-                  inactiveDotScale={0.6}
                 />
               </View>
             </View>

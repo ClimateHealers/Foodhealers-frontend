@@ -24,7 +24,7 @@ import { useDispatch, useSelector } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
 import { styles } from "../Components/Styles";
-import { getLocation } from "../Components/GetCurrentLocation";
+import { getLocation } from "../Components/getCurrentLocation";
 import API from "../Utils/APIUtils";
 import { localized } from "../locales/localization";
 import {

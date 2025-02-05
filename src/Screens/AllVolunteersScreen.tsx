@@ -25,260 +25,252 @@ import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
 import { styles } from "../Components/Styles";
 import { localized } from "../locales/localization";
-import Carousel, { Pagination } from "react-native-snap-carousel";
+import Carousel from "react-native-reanimated-carousel";
+// import { Pagination } from "react-native-snap-carousel"; // If you want to keep the pagination component
 
-const AllVolunteersScreen = ({ route }: any) => {
+// TypeScript types for props
+interface Volunteer {
+  name: string;
+  address: {
+    fullAddress: string;
+    city: string;
+    state: string;
+    postalCode: string;
+  };
+  phoneNumber: string;
+}
+
+interface EventVolunteer {
+  volunteer: Volunteer;
+  fromDate: string;
+  toDate: string;
+}
+
+interface AllVolunteersScreenProps {
+  route: {
+    params: {
+      title: string;
+      itemTypeId: string;
+      eventId: string;
+      eventVolunteersData: EventVolunteer[];
+    };
+  };
+}
+
+const AllVolunteersScreen: React.FC<AllVolunteersScreenProps> = ({ route }) => {
   const { title, itemTypeId, eventId, eventVolunteersData } = route?.params;
   const [loading, setLoading] = useState(false);
   const phoneInput = useRef<PhoneInput>(null);
   const [menuClose, setMenuOpen] = useState(false);
   const [activeSlide, setActiveSlide] = useState(0);
   const { width: screenWidth } = Dimensions.get("window");
+
   const handlePressOutside = () => {
     Keyboard.dismiss();
     setMenuOpen(!menuClose);
   };
-  const sliderRef: any = useRef(null);
-  const navigation: any = useNavigation();
-  const renderItem = ({ item }: any) => {
-    return (
-      <View>
-        <TouchableOpacity activeOpacity={1}>
-          <View style={{ width: w2dp(90), alignSelf: "center" }}>
+  console.log(styles, "agdajsgdjsagd");
+  const sliderRef = useRef<any>(null);
+  const navigation = useNavigation();
+
+  const renderItem = ({ item }: { item: EventVolunteer }) => (
+    <View>
+      <TouchableOpacity activeOpacity={1}>
+        <View style={{ width: w2dp(90), alignSelf: "center" }}>
+          <TextInput
+            placeholder={
+              item?.volunteer?.name || `${localized.t("VOLUNTEER_NAME")}`
+            }
+            placeholderTextColor={"black"}
+            style={[styles.textInput, { marginBottom: h2dp(2) }]}
+            editable={false}
+          />
+          <TextInput
+            placeholder={
+              item?.volunteer?.address?.fullAddress ||
+              `${localized.t("ADDRESS")}`
+            }
+            placeholderTextColor={"black"}
+            style={[styles.textInput, { marginBottom: h2dp(2) }]}
+            editable={false}
+          />
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+              marginBottom: h2dp(2),
+            }}
+          >
             <TextInput
               placeholder={
-                item?.volunteer?.name
-                  ? item?.volunteer?.name
-                  : `${localized.t("VOLUNTEER_NAME")}`
+                item?.volunteer?.address?.city || `${localized.t("CITY")}`
               }
               placeholderTextColor={"black"}
-              style={[styles.textInput, { marginBottom: h2dp(2) }]}
+              style={[styles.textInput, { width: w2dp(43) }]}
               editable={false}
             />
             <TextInput
               placeholder={
-                item?.volunteer?.address?.fullAddress
-                  ? item?.volunteer?.address?.fullAddress
-                  : `${localized.t("ADDRESS")}`
+                item?.volunteer?.address?.state || `${localized.t("STATE")}`
               }
               placeholderTextColor={"black"}
-              style={[styles.textInput, { marginBottom: h2dp(2) }]}
+              style={[styles.textInput, { width: w2dp(43) }]}
               editable={false}
             />
+          </View>
+          <TextInput
+            placeholder={
+              item?.volunteer?.address?.postalCode ||
+              `${localized.t("ZIP_CODE")}`
+            }
+            placeholderTextColor={"black"}
+            editable={false}
+            style={[styles.textInput, { marginBottom: h2dp(2) }]}
+          />
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+              marginBottom: h2dp(2),
+            }}
+          >
             <View
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "space-between",
-                marginBottom: h2dp(2),
-              }}
+              style={[
+                styles.textInput,
+                { width: w2dp(43), paddingVertical: 5 },
+              ]}
             >
-              <TextInput
-                placeholder={
-                  item?.volunteer?.address?.city
-                    ? item?.volunteer?.address?.city
-                    : `${localized.t("CITY")}`
-                }
-                placeholderTextColor={"black"}
-                style={[styles.textInput, { width: w2dp(43) }]}
-                editable={false}
-              />
-              <TextInput
-                placeholder={
-                  item?.volunteer?.address?.state
-                    ? item?.volunteer?.address?.state
-                    : `${localized.t("STATE")}`
-                }
-                placeholderTextColor={"black"}
-                style={[styles.textInput, { width: w2dp(43) }]}
-                editable={false}
-              />
-            </View>
-            <View>
-              <TextInput
-                placeholder={
-                  item?.volunteer?.address?.postalCode
-                    ? item?.volunteer?.address?.postalCode
-                    : `${localized.t("ZIP_CODE")}`
-                }
-                placeholderTextColor={"black"}
-                editable={false}
-                style={[styles.textInput, { marginBottom: h2dp(2) }]}
-              />
-            </View>
-            <View
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "space-between",
-                marginBottom: h2dp(2),
-              }}
-            >
-              <View
-                style={[
-                  styles.textInput,
-                  {
-                    width: w2dp(43),
-                    paddingVertical: 5,
-                  },
-                ]}
+              <Text
+                style={{
+                  color: "black",
+                  fontSize: h2dp(1.3),
+                  marginBottom: 5,
+                  marginLeft: 15,
+                }}
               >
-                <Text
-                  style={{
-                    color: "black",
-                    fontSize: h2dp(1.3),
-                    marginBottom: 5,
-                    marginLeft: 15,
-                  }}
-                >
-                  {localized.t("START_DATE")}
-                </Text>
-                <Text
-                  style={{
-                    color: "black",
-                    fontSize: h2dp(1.3),
-                    marginBottom: 5,
-                    marginLeft: 15,
-                  }}
-                >
-                  {moment(item?.fromDate).format("MMM, DD, YYYY")}
-                </Text>
-              </View>
-              <View
-                style={[
-                  styles.textInput,
-                  {
-                    width: w2dp(43),
-                    paddingVertical: 5,
-                  },
-                ]}
+                {localized.t("START_DATE")}
+              </Text>
+              <Text
+                style={{
+                  color: "black",
+                  fontSize: h2dp(1.3),
+                  marginBottom: 5,
+                  marginLeft: 15,
+                }}
               >
-                <Text
-                  style={{
-                    color: "black",
-                    fontSize: h2dp(1.3),
-                    width: w2dp(43),
-                    marginBottom: 5,
-                    marginLeft: 15,
-                  }}
-                >
-                  {localized.t("START_TIME")}
-                </Text>
-                <Text
-                  style={{
-                    color: "black",
-                    fontSize: h2dp(1.3),
-                    marginBottom: 5,
-                    marginLeft: 15,
-                  }}
-                >
-                  {moment(item?.fromDate).format("hh:mm A")}
-                </Text>
-              </View>
+                {moment(item?.fromDate).format("MMM, DD, YYYY")}
+              </Text>
             </View>
             <View
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "space-between",
-                marginBottom: h2dp(2),
-              }}
+              style={[
+                styles.textInput,
+                { width: w2dp(43), paddingVertical: 5 },
+              ]}
             >
-              <View
-                style={[
-                  styles.textInput,
-                  {
-                    width: w2dp(43),
-                    paddingVertical: 5,
-                  },
-                ]}
+              <Text
+                style={{
+                  color: "black",
+                  fontSize: h2dp(1.3),
+                  marginBottom: 5,
+                  marginLeft: 15,
+                }}
               >
-                <Text
-                  style={{
-                    color: "black",
-                    fontSize: h2dp(1.3),
-                    width: w2dp(43),
-                    marginBottom: 5,
-                    marginLeft: 15,
-                  }}
-                >
-                  {localized.t("END_DATE")}
-                </Text>
-                <Text
-                  style={{
-                    color: "black",
-                    fontSize: h2dp(1.3),
-                    marginBottom: 5,
-                    marginLeft: 15,
-                  }}
-                >
-                  {moment(item?.toDate).format("MMM DD, YYYY")}
-                </Text>
-              </View>
-              <View
-                style={[
-                  styles.textInput,
-                  {
-                    width: w2dp(43),
-                    paddingVertical: 5,
-                  },
-                ]}
+                {localized.t("START_TIME")}
+              </Text>
+              <Text
+                style={{
+                  color: "black",
+                  fontSize: h2dp(1.3),
+                  marginBottom: 5,
+                  marginLeft: 15,
+                }}
               >
-                <Text
-                  style={{
-                    color: "black",
-                    fontSize: h2dp(1.3),
-                    width: w2dp(43),
-                    marginBottom: 5,
-                    marginLeft: 15,
-                  }}
-                >
-                  {localized.t("END_TIME")}
-                </Text>
-                <Text
-                  style={{
-                    color: "black",
-                    fontSize: h2dp(1.3),
-                    marginBottom: 5,
-                    marginLeft: 15,
-                  }}
-                >
-                  {moment(item?.toDate).format("hh:mm A")}
-                </Text>
-              </View>
-            </View>
-            <View
-              style={{
-                display: "flex",
-                alignItems: "center",
-              }}
-            >
-              <TextInput
-                placeholder={
-                  item?.volunteer?.phoneNumber
-                    ? item?.volunteer?.phoneNumber
-                    : `${localized.t("PHONE_NUMBER")} : N/A`
-                }
-                style={[
-                  styles.textInput,
-                  {
-                    width: "100%",
-                    alignContent: "center",
-                    justifyContent: "center",
-                    paddingVertical: 5,
-                  },
-                ]}
-                editable={false}
-              />
+                {moment(item?.fromDate).format("hh:mm A")}
+              </Text>
             </View>
           </View>
-        </TouchableOpacity>
-      </View>
-    );
-  };
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+              marginBottom: h2dp(2),
+            }}
+          >
+            <View
+              style={[
+                styles.textInput,
+                { width: w2dp(43), paddingVertical: 5 },
+              ]}
+            >
+              <Text
+                style={{
+                  color: "black",
+                  fontSize: h2dp(1.3),
+                  marginBottom: 5,
+                  marginLeft: 15,
+                }}
+              >
+                {localized.t("END_DATE")}
+              </Text>
+              <Text
+                style={{
+                  color: "black",
+                  fontSize: h2dp(1.3),
+                  marginBottom: 5,
+                  marginLeft: 15,
+                }}
+              >
+                {moment(item?.toDate).format("MMM DD, YYYY")}
+              </Text>
+            </View>
+            <View
+              style={[
+                styles.textInput,
+                { width: w2dp(43), paddingVertical: 5 },
+              ]}
+            >
+              <Text
+                style={{
+                  color: "black",
+                  fontSize: h2dp(1.3),
+                  marginBottom: 5,
+                  marginLeft: 15,
+                }}
+              >
+                {localized.t("END_TIME")}
+              </Text>
+              <Text
+                style={{
+                  color: "black",
+                  fontSize: h2dp(1.3),
+                  marginBottom: 5,
+                  marginLeft: 15,
+                }}
+              >
+                {moment(item?.toDate).format("hh:mm A")}
+              </Text>
+            </View>
+          </View>
+          <View style={{ display: "flex", alignItems: "center" }}>
+            <TextInput
+              placeholder={
+                item?.volunteer?.phoneNumber ||
+                `${localized.t("PHONE_NUMBER")} : N/A`
+              }
+              style={[styles.textInput, { width: "100%", paddingVertical: 5 }]}
+              editable={false}
+            />
+          </View>
+        </View>
+      </TouchableOpacity>
+    </View>
+  );
 
   return (
     <TouchableWithoutFeedback onPress={handlePressOutside}>
@@ -296,7 +288,9 @@ const AllVolunteersScreen = ({ route }: any) => {
                   name="chevron-back"
                   size={43}
                   color="white"
-                  onPress={() => {navigation.goBack(),handlePressOutside()}}
+                  onPress={() => {
+                    navigation.goBack(), handlePressOutside();
+                  }}
                 />
                 <View style={styles.item}>
                   <Text style={styles.itemText}>{title}</Text>
@@ -315,21 +309,17 @@ const AllVolunteersScreen = ({ route }: any) => {
               </Modal>
               <View style={{ marginHorizontal: "-4%" }}>
                 <Carousel
-                  ref={sliderRef}
+                  loop
+                  width={screenWidth}
+                  height={screenWidth}
+                  autoPlay={false}
                   data={eventVolunteersData}
                   renderItem={renderItem}
-                  sliderWidth={screenWidth}
-                  sliderHeight={screenWidth}
-                  itemWidth={screenWidth}
-                  layout={"default"}
-                  inactiveSlideScale={0.8}
-                  inactiveSlideOpacity={0.8}
-                  firstItem={0}
-                  loopClonesPerSide={2}
                   onSnapToItem={(index) => setActiveSlide(index)}
+                  firstItem={0}
                   pagingEnabled={true}
                 />
-                <Pagination
+                {/* <Pagination
                   dotsLength={eventVolunteersData?.length}
                   activeDotIndex={activeSlide}
                   dotStyle={{
@@ -343,7 +333,7 @@ const AllVolunteersScreen = ({ route }: any) => {
                   }}
                   inactiveDotOpacity={0.4}
                   inactiveDotScale={0.6}
-                />
+                /> */}
               </View>
             </View>
           </ScrollView>

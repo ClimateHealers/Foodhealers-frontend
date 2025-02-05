@@ -18,7 +18,7 @@ import { useDispatch, useSelector } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
 import { styles } from "../Components/Styles";
-import { getLocation } from "../Components/GetCurrentLocation";
+import { getLocation } from "../Components/getCurrentLocation";
 import { localized } from "../locales/localization";
 import { VeganRecipesCategories } from "../redux/actions/veganRecipes";
 import { Image } from "expo-image";
@@ -331,7 +331,8 @@ const RecipesHomeScreen = () => {
                           </View>
                         </TouchableOpacity>
                       ))}
-                  {filteredData?.length == undefined && textChange ? <Text
+                  {filteredData?.length == undefined && textChange ? (
+                    <Text
                       style={{
                         color: "white",
                         fontSize: h2dp(1.5),
@@ -339,9 +340,8 @@ const RecipesHomeScreen = () => {
                       }}
                     >
                       No results found
-                    </Text> : (
-                    null
-                  )}
+                    </Text>
+                  ) : null}
                 </View>
               </TouchableOpacity>
             </ScrollView>

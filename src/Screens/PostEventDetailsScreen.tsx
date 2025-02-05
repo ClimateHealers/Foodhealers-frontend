@@ -19,7 +19,7 @@ import {
   widthPercentageToDP as w2dp,
 } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { getLocation } from "../Components/GetCurrentLocation";
+import { getLocation } from "../Components/getCurrentLocation";
 import PrimaryButton from "../Components/PrimaryButton";
 import { localized } from "../locales/localization";
 import { useSelector } from "react-redux";

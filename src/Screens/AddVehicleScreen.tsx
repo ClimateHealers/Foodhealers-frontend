@@ -27,7 +27,7 @@ import PrimaryButton from "../Components/PrimaryButton";
 import { styles } from "../Components/Styles";
 import { localized } from "../locales/localization";
 import { addVehicle } from "../redux/actions/addVehicle";
-import { addDriver, adddVehicle } from "../Components/Validation";
+import { adddVehicle } from "../Components/validation";
 
 const AddVehicleScreen = ({ route }: any) => {
   const { newVehicle } = route?.params;

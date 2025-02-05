@@ -1,8 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
-import {
-  useFocusEffect,
-  useNavigation
-} from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Formik } from "formik";
 import React, { useCallback, useState } from "react";
@@ -28,7 +25,7 @@ import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
 import PrimaryButton from "../Components/PrimaryButton";
 import { styles } from "../Components/Styles";
-import { GenerateOTP } from "../Components/Validation";
+import { GenerateOTP } from "../Components/validation";
 import { localized } from "../locales/localization";
 import {
   fetchPickup,

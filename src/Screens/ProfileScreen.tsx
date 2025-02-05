@@ -39,7 +39,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { iOSColors, systemWeights } from "react-native-typography";
 import MaterialIcon from "react-native-vector-icons/MaterialIcons";
 import { useDispatch, useSelector } from "react-redux";
-import { getLocation } from "../Components/GetCurrentLocation";
+import { getLocation } from "../Components/getCurrentLocation";
 import PrimaryButton from "../Components/PrimaryButton";
 import {
   fetchUser,
