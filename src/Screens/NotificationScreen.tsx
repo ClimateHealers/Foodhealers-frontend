@@ -126,7 +126,7 @@ export default function NotificationScreen() {
             >
               <Ionicons
                 style={{ paddingTop: h2dp(0.5), marginRight: w2dp(1) }}
-                name="ios-time-outline"
+                name="time-outline"
                 size={20}
                 color="black"
               />
@@ -170,7 +170,9 @@ export default function NotificationScreen() {
               name="chevron-back"
               size={32}
               color="white"
-              onPress={() => {navigation.goBack(), handlePressOutside()}}
+              onPress={() => {
+                navigation.goBack(), handlePressOutside();
+              }}
             />
             <View style={styles.item}>
               <Text style={styles.itemText}>{"Notifications"}</Text>
@@ -241,7 +243,7 @@ export default function NotificationScreen() {
                   >
                     <Ionicons
                       style={{ paddingTop: h2dp(1.5), marginRight: w2dp(1) }}
-                      name="ios-time-outline"
+                      name="time-outline"
                       size={20}
                       color="black"
                     />

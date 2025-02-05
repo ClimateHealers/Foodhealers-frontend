@@ -309,15 +309,13 @@ const AllVolunteersScreen: React.FC<AllVolunteersScreenProps> = ({ route }) => {
               </Modal>
               <View style={{ marginHorizontal: "-4%" }}>
                 <Carousel
-                  loop
-                  width={screenWidth}
-                  height={screenWidth}
-                  autoPlay={false}
+                  ref={sliderRef}
                   data={eventVolunteersData}
                   renderItem={renderItem}
+                  width={screenWidth} // ✅ Add this line to define width
+                  height={h2dp(70)} // You might need to adjust the height
+                  loop
                   onSnapToItem={(index) => setActiveSlide(index)}
-                  firstItem={0}
-                  pagingEnabled={true}
                 />
                 {/* <Pagination
                   dotsLength={eventVolunteersData?.length}

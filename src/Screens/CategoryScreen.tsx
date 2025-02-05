@@ -286,7 +286,7 @@ const CategoryScreen = ({ route }: any) => {
                                 }}
                               >
                                 <Ionicons
-                                  name="ios-time-outline"
+                                  name="time-outline"
                                   size={20}
                                   color="#8A8686"
                                 />
@@ -366,7 +366,7 @@ const CategoryScreen = ({ route }: any) => {
                                 }}
                               >
                                 <Ionicons
-                                  name="ios-time-outline"
+                                  name="time-outline"
                                   size={20}
                                   color="#8A8686"
                                 />

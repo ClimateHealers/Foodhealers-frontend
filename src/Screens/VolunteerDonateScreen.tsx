@@ -169,16 +169,10 @@ const VolunteerDonateScreen = ({ route }: any) => {
                   ref={sliderRef}
                   data={cardData}
                   renderItem={renderItem}
-                  sliderWidth={screenWidth}
-                  sliderHeight={screenWidth}
-                  itemWidth={screenWidth}
-                  layout={"default"}
-                  inactiveSlideScale={0.8}
-                  inactiveSlideOpacity={0.8}
-                  firstItem={0}
-                  loopClonesPerSide={2}
+                  width={screenWidth} // ✅ Add this line to define width
+                  height={h2dp(70)} // You might need to adjust the height
+                  loop
                   onSnapToItem={(index) => setActiveSlide(index)}
-                  pagingEnabled={true}
                 />
               </View>
             </View>

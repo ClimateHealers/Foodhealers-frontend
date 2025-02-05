@@ -44,7 +44,9 @@ const EventsHomeScreen = () => {
                   name="chevron-back"
                   size={32}
                   color="white"
-                  onPress={() => {navigation.navigate("HomeScreen"),handlePressOutside()}}
+                  onPress={() => {
+                    navigation.navigate("HomeScreen"), handlePressOutside();
+                  }}
                 />
                 <View style={styles.item}>
                   <Text style={styles.itemText}>{localized.t("EVENTS")}</Text>
@@ -55,7 +57,9 @@ const EventsHomeScreen = () => {
                 />
               </View>
               <TouchableOpacity
-                onPress={() => {navigation.navigate("PostEvent"),handlePressOutside()}}
+                onPress={() => {
+                  navigation.navigate("PostEvent"), handlePressOutside();
+                }}
               >
                 <View style={{ marginTop: h2dp(1) }}>
                   <Image
@@ -70,7 +74,9 @@ const EventsHomeScreen = () => {
                 </View>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() =>{ navigation.navigate("AllEventScreen"), handlePressOutside()}}
+                onPress={() => {
+                  navigation.navigate("AllEventScreen"), handlePressOutside();
+                }}
               >
                 <View style={{ marginTop: h2dp(5) }}>
                   <Image

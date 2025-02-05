@@ -307,7 +307,7 @@ const ProfileScreen = () => {
                 </Badge>
 
                 <Ionicons
-                  name="md-notifications-outline"
+                  name="notifications-outline"
                   style={styles.avatarLogo}
                   size={28}
                 />

@@ -63,7 +63,9 @@ const SingleRecipeScreen = ({ route }: any) => {
               name="chevron-back"
               size={32}
               color="white"
-              onPress={() => {navigation.goBack(),handlePressOutside()}}
+              onPress={() => {
+                navigation.goBack(), handlePressOutside();
+              }}
             />
             <ScrollView showsVerticalScrollIndicator={false}>
               <View style={[{ alignSelf: "center", justifyContent: "center" }]}>
@@ -141,7 +143,7 @@ const SingleRecipeScreen = ({ route }: any) => {
                       marginTop: h2dp(1),
                     }}
                   >
-                    <Ionicons name="ios-time-outline" size={20} color="white" />
+                    <Ionicons name="time-outline" size={20} color="white" />
                     <Text
                       style={{
                         marginLeft: 4,

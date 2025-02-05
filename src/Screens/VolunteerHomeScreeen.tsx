@@ -82,11 +82,11 @@ const VolunteerHomeScreen = ({ route }: any) => {
               <View style={styles.item}>
                 <Text style={styles.itemText}>{localized.t("HOME")}</Text>
               </View>
-                <BurgerIcon
-                  style={{ zIndex: 10 }}
-                  onOutsidePress={handlePressOutside}
-                  menuClose={menuClose}
-                />
+              <BurgerIcon
+                style={{ zIndex: 10 }}
+                onOutsidePress={handlePressOutside}
+                menuClose={menuClose}
+              />
             </View>
             <ScrollView
               keyboardShouldPersistTaps="handled"
@@ -96,10 +96,10 @@ const VolunteerHomeScreen = ({ route }: any) => {
                 <TouchableOpacity
                   onPress={() => {
                     handlePressOutside(),
-                    navigation.navigate("VolunteerDonateScreen", {
-                      latitude: latitude,
-                      longitude: longitude,
-                    })
+                      navigation.navigate("VolunteerDonateScreen", {
+                        latitude: latitude,
+                        longitude: longitude,
+                      });
                   }}
                 >
                   <View
@@ -123,9 +123,9 @@ const VolunteerHomeScreen = ({ route }: any) => {
                 <TouchableOpacity
                   onPress={() => {
                     handlePressOutside(),
-                    data?.isDriver
-                      ? navigation.navigate("DriverRequestScreen")
-                      : navigation.navigate("BecomeADriverScreen");
+                      data?.isDriver
+                        ? navigation.navigate("DriverRequestScreen")
+                        : navigation.navigate("BecomeADriverScreen");
                   }}
                 >
                   <View
@@ -168,17 +168,17 @@ const VolunteerHomeScreen = ({ route }: any) => {
                         <TouchableOpacity
                           onPress={() => {
                             handlePressOutside(),
-                            navigation?.navigate("WeekScreen", {
-                              currentlatitude: latitude,
-                              currentlongitude: longitude,
-                              city: event?.address?.city,
-                              state: event?.address?.state,
-                              fullAddress: event?.address?.fullAddress,
-                              postalCode: event?.address?.postalCode,
-                              lat: event?.address?.lat,
-                              lng: event?.address?.lng,
-                              address: event?.address,
-                            })
+                              navigation?.navigate("WeekScreen", {
+                                currentlatitude: latitude,
+                                currentlongitude: longitude,
+                                city: event?.address?.city,
+                                state: event?.address?.state,
+                                fullAddress: event?.address?.fullAddress,
+                                postalCode: event?.address?.postalCode,
+                                lat: event?.address?.lat,
+                                lng: event?.address?.lng,
+                                address: event?.address,
+                              });
                           }}
                         >
                           <View
@@ -225,18 +225,18 @@ const VolunteerHomeScreen = ({ route }: any) => {
                           <TouchableOpacity
                             onPress={() => {
                               handlePressOutside(),
-                              navigation.navigate("RecipesHomeScreen", {
-                                recipeData: {
-                                  recipeImage: recipe?.foodImage,
-                                  recipeIngredient: recipe?.ingredients,
-                                  recipeName: recipe?.foodName,
-                                  recipeInstructions:
-                                    recipe?.cookingInstructions,
-                                  cookingTime: recipe?.preparationTime,
-                                  recipeSource: recipe?.recipeSource,
-                                  recipeCredits: recipe?.recipeCredits,
-                                },
-                              })
+                                navigation.navigate("RecipesHomeScreen", {
+                                  recipeData: {
+                                    recipeImage: recipe?.foodImage,
+                                    recipeIngredient: recipe?.ingredients,
+                                    recipeName: recipe?.foodName,
+                                    recipeInstructions:
+                                      recipe?.cookingInstructions,
+                                    cookingTime: recipe?.preparationTime,
+                                    recipeSource: recipe?.recipeSource,
+                                    recipeCredits: recipe?.recipeCredits,
+                                  },
+                                });
                             }}
                           >
                             <View

@@ -295,7 +295,6 @@ const PostEvent = () => {
                           borderColor: "black",
                           borderRadius: 3,
                           height: 50,
-                          zIndex: 1,
                           width: "100%",
                         },
                         textInput: {
