@@ -411,7 +411,6 @@ const MapScreen = ({ route }: any) => {
               >
                 <MapView
                   ref={mapRef}
-                  provider={"google"}
                   style={{
                     alignSelf: "stretch",
                     height: Platform.OS === "ios" ? "55%" : "60%",
@@ -424,7 +423,6 @@ const MapScreen = ({ route }: any) => {
                   }}
                   showsUserLocation={true}
                   followsUserLocation={true}
-                  customMapStyle={mapStyle}
                 >
                   {address ? (
                     <Marker

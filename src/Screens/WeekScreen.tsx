@@ -191,7 +191,7 @@ const WeekScreen = ({ route }: any) => {
       eventStartDate: startDate ? startDate : 0,
       eventEndDate: endDate ? endDate : 0,
     };
-    
+
     const response = await dispatch(findFood(findFoodData as any) as any);
 
     const foodEvents = response?.payload?.results?.foodEvents;
@@ -386,7 +386,6 @@ const WeekScreen = ({ route }: any) => {
               <View style={styles.mapContainer}>
                 <MapView
                   ref={mapRef}
-                  provider={"google"}
                   style={{
                     alignSelf: "stretch",
                     height: "65%",

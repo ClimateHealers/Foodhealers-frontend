@@ -83,7 +83,7 @@ const FindFoodHomeScreen = ({ route }: any) => {
     Keyboard.dismiss();
     setMenuOpen(!menuClose);
   };
-  
+
   const clickHandler = () => {
     navigation.navigate("WeekScreen", {
       currentlatitude: currentlat,
@@ -112,27 +112,28 @@ const FindFoodHomeScreen = ({ route }: any) => {
                 name="chevron-back"
                 size={32}
                 color="white"
-                onPress={() => {navigation.goBack(),handlePressOutside()}}
+                onPress={() => {
+                  navigation.goBack(), handlePressOutside();
+                }}
               />
               <View style={styles.item}>
                 <Text style={styles.itemText}>{localized.t("FIND_FOOD")}</Text>
               </View>
-              <BurgerIcon 
-                  onOutsidePress={handlePressOutside}
-                  menuClose={menuClose}
-                  menuItem={menuItem}/>
+              <BurgerIcon
+                onOutsidePress={handlePressOutside}
+                menuClose={menuClose}
+                menuItem={menuItem}
+              />
             </View>
             <TouchableOpacity
               style={[styles.touchableView]}
-              onPress={() => { 
-                handlePressOutside(),
-                clickHandler()
+              onPress={() => {
+                handlePressOutside(), clickHandler();
               }}
             >
               <View style={[styles.mapcontainerView]}>
                 <MapView
                   ref={mapRef}
-                  provider={"google"}
                   style={{
                     position: "relative",
                     alignSelf: "center",
@@ -209,12 +210,12 @@ const FindFoodHomeScreen = ({ route }: any) => {
             >
               <TouchableOpacity
                 style={[styles.touchableView]}
-                onPress={() =>{ 
+                onPress={() => {
                   handlePressOutside(),
-                  navigation.navigate("CalendarScreen", {
-                    latitude: latitude,
-                    longitude: lng,
-                  })
+                    navigation.navigate("CalendarScreen", {
+                      latitude: latitude,
+                      longitude: lng,
+                    });
                 }}
               >
                 <View
@@ -238,9 +239,8 @@ const FindFoodHomeScreen = ({ route }: any) => {
               </TouchableOpacity>
               <TouchableOpacity
                 style={[styles.touchableView]}
-                onPress={()=>{
-                  handlePressOutside(),
-                  fetchRecipesCategories()
+                onPress={() => {
+                  handlePressOutside(), fetchRecipesCategories();
                 }}
               >
                 <View
@@ -317,7 +317,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#D1D1D6",
   },
-  dropdown1BtnTxtStyle: { color: "#B50000", textAlign: "left", fontSize: h2dp(1.4) },
+  dropdown1BtnTxtStyle: {
+    color: "#B50000",
+    textAlign: "left",
+    fontSize: h2dp(1.4),
+  },
   dropdown1DropdownStyle: {
     backgroundColor: "#EFEFEF",
     color: "black",
@@ -332,7 +336,11 @@ const styles = StyleSheet.create({
     borderBottomColor: "#D1D1D6",
     borderRadius: 5,
   },
-  dropdown1RowTxtStyle: { color: "black", textAlign: "center", fontSize: h2dp(1.0) },
+  dropdown1RowTxtStyle: {
+    color: "black",
+    textAlign: "center",
+    fontSize: h2dp(1.0),
+  },
   buttonStyles: {
     backgroundColor: "#FC5A56",
     color: "white",
