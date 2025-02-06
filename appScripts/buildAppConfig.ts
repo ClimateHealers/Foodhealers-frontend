@@ -48,7 +48,7 @@ const appConfig = {
       },
       useFrameworks: "static",
       config: {
-        googleMapsApiKey: process.env.GOOGLE_API_KEY || "",
+        googleMapsApiKey: process.env.GOOGLE_API_KEY || "AIzaSyDRj8-ZV2Soyar4D5ksAcf5ILW8JKH-eh0",
       },
     },
     android: {
@@ -59,7 +59,7 @@ const appConfig = {
       ],
       config: {
         googleMaps: {
-          apiKey: process.env.GOOGLE_API_KEY || "",
+          apiKey: process.env.GOOGLE_API_KEY || "AIzaSyDRj8-ZV2Soyar4D5ksAcf5ILW8JKH-eh0",
         },
       },
       package: "com.foodhealers.climatehealers",
@@ -76,10 +76,10 @@ const appConfig = {
     ],
     extra: {
       eas: {
-        projectId: process.env.PROJECT_ID || "",
-        apikey: process.env.FIREBASE_FCM_API_KEY || process.env.PROJECT_ID,
+        projectId: process.env.PROJECT_ID || "e0f0f8a7-ffa0-4792-8f06-fc991a1d09fc",
+        apikey: process.env.FIREBASE_FCM_API_KEY || "e0f0f8a7-ffa0-4792-8f06-fc991a1d09fc",
       },
-      googleMapsApiKey: process.env.GOOGLE_API_KEY || "",
+      googleMapsApiKey: process.env.GOOGLE_API_KEY || "AIzaSyDRj8-ZV2Soyar4D5ksAcf5ILW8JKH-eh0",
     },
     owner: "food-healers",
   },
