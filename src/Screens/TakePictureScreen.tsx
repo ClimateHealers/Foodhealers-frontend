@@ -2,7 +2,6 @@ import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { Camera, CameraCapturedPicture, CameraType } from "expo-camera";
 import { FlipType, SaveFormat, manipulateAsync } from "expo-image-manipulator";
 import * as MediaLibrary from "expo-media-library";
-import * as Permissions from "expo-permissions";
 import React, { useCallback, useRef, useState } from "react";
 import {
   ActivityIndicator,
@@ -34,7 +33,7 @@ export default function TakePictureScreen() {
   }, []);
 
   const requestCameraPermission = async () => {
-    const { status } = await Permissions.askAsync(Permissions.CAMERA);
+    const { status } = await Camera.requestCameraPermissionsAsync();
 
     if (status === "granted") {
       requestPermission();
