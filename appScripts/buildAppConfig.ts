@@ -41,14 +41,14 @@ const appConfig = {
       supportsTablet: false,
       bundleIdentifier: "com.foodhealers.climatehealers",
       infoPlist: {
-          NSLocationWhenInUseUsageDescription:
+        NSLocationWhenInUseUsageDescription:
           "FoodHealers app needs your location to show nearby events and best transportation options for the selected event within the app.",
-          NSPhotoLibraryUsageDescription:
+        NSPhotoLibraryUsageDescription:
           "Enable photo library access for the Foodhealers app to effortlessly share and upload relevant photos of your contributions and events",
       },
       useFrameworks: "static",
       config: {
-        googleMapsApiKey: process.env.GOOGLE_API_KEY || "AIzaSyDRj8-ZV2Soyar4D5ksAcf5ILW8JKH-eh0",
+        googleMapsApiKey: process.env.GOOGLE_API_KEY || "",
       },
     },
     android: {
@@ -59,7 +59,7 @@ const appConfig = {
       ],
       config: {
         googleMaps: {
-          apiKey: process.env.GOOGLE_API_KEY || "AIzaSyDRj8-ZV2Soyar4D5ksAcf5ILW8JKH-eh0",
+          apiKey: process.env.GOOGLE_API_KEY || "",
         },
       },
       package: "com.foodhealers.climatehealers",
@@ -79,7 +79,7 @@ const appConfig = {
         projectId: process.env.PROJECT_ID || "e0f0f8a7-ffa0-4792-8f06-fc991a1d09fc",
         apikey: process.env.FIREBASE_FCM_API_KEY || "e0f0f8a7-ffa0-4792-8f06-fc991a1d09fc",
       },
-      googleMapsApiKey: process.env.GOOGLE_API_KEY || "AIzaSyDRj8-ZV2Soyar4D5ksAcf5ILW8JKH-eh0",
+      googleMapsApiKey: process.env.GOOGLE_API_KEY || "",
     },
     owner: "food-healers",
   },
