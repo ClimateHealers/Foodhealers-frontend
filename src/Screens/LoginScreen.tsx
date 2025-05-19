@@ -179,10 +179,10 @@ const LoginScreen = () => {
                 data={lang && lang.map((dd) => dd.label)}
                 onSelect={changeLanguage}
                 defaultButtonText={languageName.toUpperCase()}
-                buttonTextAfterSelection={(itemValue, index) => {
+                buttonTextAfterSelection={(itemValue: any, index: any) => {
                   return languageName.toUpperCase();
                 }}
-                rowTextForSelection={(item, index) => {
+                rowTextForSelection={(item: any, index: any) => {
                   return item;
                 }}
               />
@@ -203,7 +203,7 @@ const LoginScreen = () => {
                 </View>
               </View>
             </Modal>
-            <View style={{ marginTop: 30 }}>
+            <View>
               <Formik
                 initialValues={{
                   email: "",
@@ -315,105 +315,109 @@ const LoginScreen = () => {
                   values,
                   errors,
                 }) => (
-                  <View style={{ marginTop: 100 }}>
-                    <TextInput
-                      onChangeText={handleChange("email")}
-                      onBlur={handleBlur("email")}
-                      value={values.email.toLocaleLowerCase()}
-                      placeholder={localized.t("EMAIL")}
-                      placeholderTextColor={"black"}
-                      style={styles.textInput}
-                    />
-                    <Text style={styles.inputError}>{errors.email}</Text>
-                    <View style={styles.inputContainer}>
+                  <View style={{ marginTop: h2dp(8), gap: h2dp(5) }}>
+                    <Text style={styles.heading}>{localized.t("LOGIN")}</Text>
+                    <View>
                       <TextInput
-                        secureTextEntry={showPassword ? false : true}
-                        onChangeText={handleChange("password")}
-                        onBlur={handleBlur("password")}
-                        value={values.password}
-                        placeholder={localized.t("PASSWORD")}
+                        onChangeText={handleChange("email")}
+                        onBlur={handleBlur("email")}
+                        value={values.email.toLocaleLowerCase()}
+                        placeholder={localized.t("EMAIL")}
                         placeholderTextColor={"black"}
                         style={styles.textInput}
                       />
-                      <Icon
-                        name={"eye"}
-                        size={20}
-                        color="#A5A5A5"
-                        style={styles.icon}
-                        onPress={() => setShowPassword(!showPassword)}
-                      />
-                    </View>
+                      <Text style={styles.inputError}>{errors.email}</Text>
+                      <View style={styles.inputContainer}>
+                        <TextInput
+                          secureTextEntry={showPassword ? false : true}
+                          onChangeText={handleChange("password")}
+                          onBlur={handleBlur("password")}
+                          value={values.password}
+                          placeholder={localized.t("PASSWORD")}
+                          placeholderTextColor={"black"}
+                          style={styles.textInput}
+                        />
+                        <Icon
+                          name={"eye"}
+                          size={20}
+                          color="#A5A5A5"
+                          style={styles.icon}
+                          onPress={() => setShowPassword(!showPassword)}
+                        />
+                      </View>
 
-                    <View style={{ display: "flex", flexDirection: "column" }}>
-                      <Text style={styles.inputError}>{errors.password}</Text>
-                      <TouchableOpacity
-                        onPress={() => navigation.navigate("ForgotPassword")}
-                        style={{ alignSelf: "flex-end" }}
+                      <View
+                        style={{ display: "flex", flexDirection: "column" }}
                       >
-                        <Text
-                          style={{
-                            color: "white",
-                            fontSize: h2dp(1.5),
-                            textDecorationLine: "underline",
-                          }}
+                        <Text style={styles.inputError}>{errors.password}</Text>
+                        <TouchableOpacity
+                          onPress={() => navigation.navigate("ForgotPassword")}
+                          style={{ alignSelf: "flex-end" }}
                         >
-                          {localized.t("FORGOT_PASSWORD")}?
-                        </Text>
-                      </TouchableOpacity>
-                    </View>
-                    <View
-                      style={{
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        marginTop: h2dp("5"),
-                      }}
-                    >
-                      <PrimaryButton
-                        title={localized.t("SIGN_IN")}
-                        buttonStyle={styles.buttonStyles}
-                        titleStyle={styles.titleStyle}
-                        onPress={handleSubmit}
-                      />
-                    </View>
-                    <View
-                      style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        marginTop: h2dp("20"),
-                      }}
-                    >
-                      <Text
+                          <Text
+                            style={{
+                              color: "white",
+                              fontSize: h2dp(1.5),
+                              textDecorationLine: "underline",
+                            }}
+                          >
+                            {localized.t("FORGOT_PASSWORD")}?
+                          </Text>
+                        </TouchableOpacity>
+                      </View>
+                      <View
                         style={{
-                          textAlign: "center",
-                          color: "white",
-                          fontSize: h2dp(1.8),
-                          marginTop: 10,
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          marginTop: h2dp("5"),
                         }}
                       >
-                        {localized.t("NOT_AN_USER")}
-                      </Text>
-                      <TouchableOpacity
-                        onPress={() => {
-                          handlePressOutside(),
-                            navigation.navigate("SignupScreen");
+                        <PrimaryButton
+                          title={localized.t("SIGN_IN")}
+                          buttonStyle={styles.buttonStyles}
+                          titleStyle={styles.titleStyle}
+                          onPress={handleSubmit}
+                        />
+                      </View>
+                      <View
+                        style={{
+                          flex: 1,
+                          display: "flex",
+                          flexDirection: "row",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          marginTop: h2dp(5),
                         }}
                       >
                         <Text
                           style={{
+                            textAlign: "center",
                             color: "white",
                             fontSize: h2dp(1.8),
-                            textDecorationLine: "underline",
-                            fontFamily: "OpenSans-Bold",
-                            textAlign: "center",
-                            marginTop: 10,
                           }}
                         >
-                          {`${" "}${localized.t("SIGN_UP")}`}
+                          {localized.t("NOT_AN_USER")}
                         </Text>
-                      </TouchableOpacity>
+                        <TouchableOpacity
+                          onPress={() => {
+                            handlePressOutside();
+                            navigation.navigate("SignupScreen");
+                          }}
+                        >
+                          <Text
+                            style={{
+                              color: "white",
+                              fontSize: h2dp(1.8),
+                              textDecorationLine: "underline",
+                              fontFamily: "OpenSans-Bold",
+                              textAlign: "center",
+                            }}
+                          >
+                            {`${" "}${localized.t("SIGN_UP")}`}
+                          </Text>
+                        </TouchableOpacity>
+                      </View>
                     </View>
                   </View>
                 )}
@@ -430,25 +434,31 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "flex-start",
-    padding: 16,
+    paddingHorizontal: w2dp("4%"),
+  },
+  heading: {
+    fontSize: h2dp(3.5),
+    fontWeight: "bold",
+    textAlign: "center",
+    color: "#FFFFFF",
   },
   input: {
-    height: 50,
-    marginBottom: 10,
-    background: "#FFFFFF",
-    borderRadius: 4,
+    height: h2dp("6%"),
+    marginBottom: h2dp("1.5%"),
+    backgroundColor: "#FFFFFF",
+    borderRadius: h2dp("1%"),
   },
   centeredView: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 22,
+    marginTop: h2dp("2.5%"),
   },
   modalView: {
-    margin: 20,
+    margin: w2dp("5%"),
     backgroundColor: "rgba(0, 0, 0, 0.5)",
-    borderRadius: 20,
-    padding: 35,
+    borderRadius: w2dp("5%"),
+    padding: w2dp("8%"),
     alignItems: "center",
     shadowColor: "#000",
     shadowOffset: {
@@ -466,36 +476,35 @@ const styles = StyleSheet.create({
   buttonStyles: {
     backgroundColor: "#FC5A56",
     color: "black",
-    borderRadius: 5,
-    width: 190,
+    borderRadius: w2dp("2%"),
+    width: w2dp("50%"),
   },
   titleStyle: {
     color: "white",
-    fontSize: h2dp(2.6),
+    fontSize: h2dp("2.6%"),
     fontWeight: "400",
-    lineHeight: 35,
+    lineHeight: h2dp("4.5%"),
     fontFamily: "OpenSans-Regular",
   },
   dropdownContainer: {
-    display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginTop: 60,
+    marginTop: h2dp("7%"),
   },
   dropdown1BtnStyle: {
-    marginTop: 15,
-    width: "22%",
-    height: 50,
+    marginTop: h2dp("2%"),
+    width: w2dp("22%"),
+    height: h2dp("6%"),
     backgroundColor: "#FFF",
-    borderRadius: 5,
+    borderRadius: w2dp("2%"),
     borderWidth: 1,
     borderColor: "#D1D1D6",
   },
   dropdown1BtnTxtStyle: {
     color: "#B50000",
     textAlign: "left",
-    fontSize: h2dp(1.4),
+    fontSize: h2dp("1.4%"),
   },
   dropdown1DropdownStyle: {
     backgroundColor: "#EFEFEF",
@@ -507,25 +516,24 @@ const styles = StyleSheet.create({
   },
   dropdown1RowStyle: {
     backgroundColor: "#EFEFEF",
-    color: "#B50000",
     borderBottomColor: "#D1D1D6",
-    borderRadius: 5,
+    borderRadius: w2dp("1%"),
   },
   dropdown1RowTxtStyle: {
     color: "black",
     textAlign: "center",
-    fontSize: h2dp(1.0),
+    fontSize: h2dp("1%"),
   },
   inputError: {
-    color: "red",
-    marginBottom: 10,
+    color: "#ff6e75b",
+    marginBottom: h2dp(0.5),
   },
   inputContainer: {
     position: "relative",
   },
   textInput: {
-    height: 45,
-    marginBottom: 1,
+    height: h2dp("5.5%"),
+    marginBottom: h2dp("1%"),
     backgroundColor: "white",
   },
   icon: {

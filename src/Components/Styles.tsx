@@ -101,7 +101,7 @@ export const styles = StyleSheet.create({
   buttonStyles: {
     backgroundColor: "#B01D19",
     color: "black",
-    borderRadius: 5,
+    borderRadius: w2dp(2),
     alignSelf: "center",
     width: w2dp(70),
     marginTop: h2dp(5),
@@ -133,8 +133,8 @@ export const styles = StyleSheet.create({
     marginBottom: 5,
   },
   textInput: {
-    height: 50,
-    borderRadius: 3,
+    height: h2dp(6),
+    borderRadius: w2dp(2),
     backgroundColor: "#FFFFFF",
   },
   textArea: {
@@ -170,8 +170,8 @@ export const styles = StyleSheet.create({
     color: "black",
   },
   datePickerStyle: {
-    width: 345,
-    height: 45,
+    width: w2dp(85),
+    height: h2dp(6),
     marginBottom: 20,
     borderColor: "white",
     backgroundColor: "#FFFFFF",
@@ -202,7 +202,7 @@ export const styles = StyleSheet.create({
     width: w2dp(45),
   },
   burgerText: {
-    padding: 10,
+    padding: h2dp(1.2),
     fontSize: h2dp(2.0),
     fontWeight: "400",
     lineHeight: 27.24,
@@ -366,7 +366,7 @@ export const styles = StyleSheet.create({
     fontSize: h2dp(1.6),
     textAlign: "left",
     color: "white",
-    marginTop: 15,
+    marginTop: h2dp(2),
   },
   buttonContainer: {
     flexDirection: "row",
@@ -391,7 +391,11 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#D1D1D6",
   },
-  dropdown1BtnTxtStyle: { color: "#B50000", textAlign: "left", fontSize: h2dp(1.4) },
+  dropdown1BtnTxtStyle: {
+    color: "#B50000",
+    textAlign: "left",
+    fontSize: h2dp(1.4),
+  },
   dropdown1DropdownStyle: {
     backgroundColor: "#EFEFEF",
     color: "black",
@@ -406,7 +410,11 @@ export const styles = StyleSheet.create({
     borderBottomColor: "#D1D1D6",
     borderRadius: 5,
   },
-  dropdown1RowTxtStyle: { color: "black", textAlign: "center", fontSize: h2dp(1.0) },
+  dropdown1RowTxtStyle: {
+    color: "black",
+    textAlign: "center",
+    fontSize: h2dp(1.0),
+  },
   calendarView: {
     width: w2dp(85),
     alignSelf: "center",

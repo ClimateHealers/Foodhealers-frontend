@@ -1,4 +1,8 @@
-import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
+import {
+  Entypo,
+  MaterialCommunityIcons,
+  MaterialIcons,
+} from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { createUserWithEmailAndPassword } from "firebase/auth";
@@ -7,6 +11,7 @@ import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
+  Dimensions,
   Keyboard,
   Modal,
   Platform,
@@ -43,7 +48,7 @@ const SignupScreen = () => {
   const [loading, setLoading] = useState(false);
   const [langOpen, setlangOpen] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  // const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState(localized.locale);
   const [expoPushToken, setExpoPushToken] = useState<any>("");
@@ -57,6 +62,7 @@ const SignupScreen = () => {
     { id: 7, label: "Punjabi", value: "pu" },
     { id: 8, label: "Spanish", value: "es" },
   ]);
+
   useEffect(() => {
     const getExpoPushToken = async () => {
       const token = await Notifications.getExpoPushTokenAsync({
@@ -176,10 +182,10 @@ const SignupScreen = () => {
                 data={lang && lang.map((dd) => dd.label)}
                 onSelect={changeLanguage}
                 defaultButtonText={languageName.toUpperCase()}
-                buttonTextAfterSelection={(itemValue, index) => {
+                buttonTextAfterSelection={(itemValue: any, index: any) => {
                   return languageName.toUpperCase();
                 }}
-                rowTextForSelection={(item, index) => {
+                rowTextForSelection={(item: any, index: any) => {
                   return item;
                 }}
               />
@@ -214,7 +220,6 @@ const SignupScreen = () => {
                   .then((userCredential) => {
                     const user = userCredential.user;
                     setLoading(false);
-
                     return user.getIdToken();
                   })
                   .then(async (token) => {
@@ -225,7 +230,6 @@ const SignupScreen = () => {
                       isVolunteer: true,
                       expoPushToken: expoPushToken,
                     };
-
                     const response = await dispatch(registerUser(data) as any);
                     if (response.payload.success) {
                       const loginResponse = await dispatch(login(data) as any);
@@ -294,113 +298,165 @@ const SignupScreen = () => {
                 handleSubmit,
                 values,
                 errors,
-              }: any) => (
-                <View style={{ marginTop: h2dp(12) }}>
-                  <TextInput
-                    onChangeText={handleChange("name")}
-                    onBlur={handleBlur("name")}
-                    value={values.name}
-                    placeholder={localized.t("NAME")}
-                    placeholderTextColor={"black"}
-                    style={styles.textInput}
-                  />
-                  <Text style={styles.inputError}>{errors.name}</Text>
-                  <TextInput
-                    onChangeText={handleChange("email")}
-                    onBlur={handleBlur("email")}
-                    value={values.email.toLocaleLowerCase()}
-                    placeholder={localized.t("EMAIL")}
-                    placeholderTextColor={"black"}
-                    style={styles.textInput}
-                  />
-                  <Text style={styles.inputError}>{errors.email}</Text>
-                  <View style={{ position: "relative" }}>
-                    <TextInput
-                      secureTextEntry={showPassword ? false : true}
-                      onChangeText={handleChange("password")}
-                      onBlur={handleBlur("password")}
-                      value={values.password}
-                      placeholder={localized.t("PASSWORD")}
-                      placeholderTextColor={"black"}
-                      style={styles.textInput}
-                    />
-                    <Icon
-                      name={"eye"}
-                      size={20}
-                      color="#A5A5A5"
-                      style={styles.icon}
-                      onPress={() => setShowPassword(!showPassword)}
-                    />
-                  </View>
+              }: any) => {
+                const passwordRules = [
+                  {
+                    key: "PASSWORD_MUST_HAVE_SMALL",
+                    test: /[a-z]/.test(values.password),
+                  },
+                  {
+                    key: "PASSWORD_MUST_HAVE_CAPS",
+                    test: /[A-Z]/.test(values.password),
+                  },
+                  {
+                    key: "PASSWORD_MUST_HAVE_NUMBERS",
+                    test: /[0-9]/.test(values.password),
+                  },
+                  {
+                    key: "PASSWORD_MUST_HAVE_CHAR",
+                    test: /[^A-Za-z0-9]/.test(values.password),
+                  },
+                  {
+                    key: "PASSWORD_MUST_BE_LEAST",
+                    test: values.password.length >= 6,
+                  },
+                ];
+                return (
+                  <View style={{ gap: h2dp(5) }}>
+                    <Text style={styles.heading}>{localized.t("SIGN_UP")}</Text>
+                    <View>
+                      <TextInput
+                        onChangeText={handleChange("name")}
+                        onBlur={handleBlur("name")}
+                        value={values.name}
+                        placeholder={localized.t("NAME")}
+                        placeholderTextColor={"black"}
+                        style={styles.textInput}
+                      />
+                      <Text style={styles.inputError}>{errors.name}</Text>
+                      <TextInput
+                        onChangeText={handleChange("email")}
+                        onBlur={handleBlur("email")}
+                        value={values.email.toLocaleLowerCase()}
+                        placeholder={localized.t("EMAIL")}
+                        placeholderTextColor={"black"}
+                        style={styles.textInput}
+                      />
+                      <Text style={styles.inputError}>{errors.email}</Text>
+                      <View style={{ position: "relative" }}>
+                        <TextInput
+                          secureTextEntry={showPassword ? false : true}
+                          onChangeText={handleChange("password")}
+                          onBlur={handleBlur("password")}
+                          value={values.password}
+                          placeholder={localized.t("PASSWORD")}
+                          placeholderTextColor={"black"}
+                          style={styles.textInput}
+                        />
+                        <Icon
+                          name={"eye"}
+                          size={20}
+                          color="#A5A5A5"
+                          style={styles.icon}
+                          onPress={() => setShowPassword(!showPassword)}
+                        />
+                      </View>
+                      <Text style={styles.inputError}>{errors.password}</Text>
+                      {passwordRules.map(({ key, test }) => (
+                        <View style={styles.ruleRow} key={key}>
+                          <Entypo
+                            name={test ? "check" : "cross"}
+                            size={20}
+                            color={test ? "#FFFF" : "#ff6e75"}
+                            style={{ marginRight: 6 }}
+                          />
+                          <Text
+                            style={[
+                              styles.inputError,
+                              { color: test ? "#FFFF" : "#ff6e75" },
+                            ]}
+                          >
+                            {localized.t(key)}
+                          </Text>
+                        </View>
+                      ))}
 
-                  <Text style={styles.inputError}>{errors.password}</Text>
-                  <View style={{ position: "relative" }}>
-                    <TextInput
-                      secureTextEntry={showConfirmPassword ? false : true}
-                      onChangeText={handleChange("confirmPassword")}
-                      onBlur={handleBlur("confirmPassword")}
-                      value={values.confirmPassword}
-                      placeholder={localized.t("CONFIRM_PASSWORD")}
-                      placeholderTextColor={"black"}
-                      style={styles.textInput}
-                    />
-                    <Icon
-                      name={"eye"}
-                      size={20}
-                      color="#A5A5A5"
-                      onPress={() =>
-                        setShowConfirmPassword(!showConfirmPassword)
-                      }
-                      style={styles.eye}
-                    />
+                      {/* <View style={{ position: "relative" }}>
+                      <TextInput
+                        secureTextEntry={showConfirmPassword ? false : true}
+                        onChangeText={handleChange("confirmPassword")}
+                        onBlur={handleBlur("confirmPassword")}
+                        value={values.confirmPassword}
+                        placeholder={localized.t("CONFIRM_PASSWORD")}
+                        placeholderTextColor={"black"}
+                        style={styles.textInput}
+                      />
+                      <Icon
+                        name={"eye"}
+                        size={20}
+                        color="#A5A5A5"
+                        onPress={() =>
+                          setShowConfirmPassword(!showConfirmPassword)
+                        }
+                        style={styles.eye}
+                      />
+                    </View>
+                    <Text style={styles.inputError}>
+                      {errors.confirmPassword}
+                    </Text> */}
+                      <View
+                        style={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          marginTop: h2dp(5),
+                        }}
+                      >
+                        <PrimaryButton
+                          title={localized.t("SIGN_UP")}
+                          buttonStyle={styles.buttonStyles}
+                          titleStyle={styles.titleStyle}
+                          onPress={handleSubmit}
+                        />
+                      </View>
+                      <View
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          marginTop: h2dp(5),
+                        }}
+                      >
+                        <Text
+                          style={{
+                            textAlign: "center",
+                            color: "white",
+                            fontSize: h2dp(1.8),
+                          }}
+                        >
+                          {localized.t("ALREADY_HAVE_A_ACCOUNT")}
+                        </Text>
+                        <TouchableOpacity
+                          onPress={() => navigation.navigate("LoginScreen")}
+                        >
+                          <Text
+                            style={{
+                              color: "white",
+                              fontSize: h2dp(1.8),
+                              textDecorationLine: "underline",
+                              fontFamily: "OpenSans-Bold",
+                              textAlign: "center",
+                            }}
+                          >
+                            {localized.t("SIGN_IN")}
+                          </Text>
+                        </TouchableOpacity>
+                      </View>
+                    </View>
                   </View>
-                  <Text style={styles.inputError}>
-                    {errors.confirmPassword}
-                  </Text>
-
-                  <View
-                    style={{
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      marginTop: h2dp("5"),
-                    }}
-                  >
-                    <PrimaryButton
-                      title={localized.t("SIGN_UP")}
-                      buttonStyle={styles.buttonStyles}
-                      titleStyle={styles.titleStyle}
-                      onPress={handleSubmit}
-                    />
-                  </View>
-                  <Text
-                    style={{
-                      textAlign: "center",
-                      color: "white",
-                      fontSize: h2dp(1.8),
-                      marginTop: h2dp(9),
-                    }}
-                  >
-                    {localized.t("ALREADY_HAVE_A_ACCOUNT")} ?
-                  </Text>
-                  <TouchableOpacity
-                    onPress={() => navigation.navigate("LoginScreen")}
-                  >
-                    <Text
-                      style={{
-                        color: "white",
-                        fontSize: h2dp(1.8),
-                        textDecorationLine: "underline",
-                        fontFamily: "OpenSans-Bold",
-                        textAlign: "center",
-                        marginTop: 10,
-                      }}
-                    >
-                      {localized.t("SIGN_IN")}
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-              )}
+                );
+              }}
             </Formik>
           </View>
         </ScrollView>
@@ -413,25 +469,25 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "flex-start",
-    padding: 16,
+    paddingHorizontal: w2dp("4%"),
   },
   input: {
-    height: 50,
-    marginBottom: 16,
-    background: "#FFFFFF",
-    borderRadius: 4,
+    height: h2dp("6%"),
+    marginBottom: h2dp("2%"),
+    backgroundColor: "#FFFFFF",
+    borderRadius: h2dp("1%"),
   },
   centeredView: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 22,
+    marginTop: h2dp("2%"),
   },
   modalView: {
-    margin: 20,
+    margin: w2dp("5%"),
     backgroundColor: "rgba(0, 0, 0, 0.5)",
-    borderRadius: 20,
-    padding: 35,
+    borderRadius: w2dp("5%"),
+    padding: w2dp("8%"),
     alignItems: "center",
     shadowColor: "#000",
     shadowOffset: {
@@ -449,30 +505,29 @@ const styles = StyleSheet.create({
   buttonStyles: {
     backgroundColor: "#FC5A56",
     color: "black",
-    borderRadius: 5,
-    width: 190,
+    borderRadius: w2dp("2%"),
+    width: w2dp("50%"),
   },
   titleStyle: {
     color: "white",
     fontSize: h2dp(2.6),
     fontWeight: "400",
-    lineHeight: 35,
+    lineHeight: h2dp("4.5%"),
     fontFamily: "OpenSans-Regular",
   },
   dropdownContainer: {
-    display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginTop: 40,
+    marginTop: h2dp("5%"),
     position: "relative",
   },
   dropdown1BtnStyle: {
-    marginTop: 15,
-    width: "22%",
-    height: 50,
+    marginTop: h2dp("2%"),
+    width: w2dp("22%"),
+    height: h2dp("6%"),
     backgroundColor: "#FFF",
-    borderRadius: 5,
+    borderRadius: w2dp("2%"),
     borderWidth: 1,
     borderColor: "#D1D1D6",
   },
@@ -483,9 +538,8 @@ const styles = StyleSheet.create({
   },
   dropdown1DropdownStyle: {
     backgroundColor: "#EFEFEF",
-    color: "black",
-    borderRadius: 4,
-    height: 180,
+    borderRadius: h2dp("1%"),
+    height: h2dp("22%"),
     fontSize: h2dp(1.4),
     borderColor: "blue",
   },
@@ -493,21 +547,30 @@ const styles = StyleSheet.create({
     backgroundColor: "#EFEFEF",
     color: "#B50000",
     borderBottomColor: "#D1D1D6",
-    borderRadius: 5,
+    borderRadius: w2dp("1%"),
   },
   dropdown1RowTxtStyle: {
     color: "black",
     textAlign: "center",
-    fontSize: h2dp(1.0),
+    fontSize: h2dp("1%"),
   },
   inputError: {
-    color: "red",
-    marginBottom: 10,
+    color: "#ff6e75",
+    marginBottom: h2dp(0.5),
   },
-
+  ruleRow: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  heading: {
+    fontSize: h2dp(3.5),
+    fontWeight: "bold",
+    textAlign: "center",
+    color: "#FFFFFF",
+  },
   textInput: {
-    height: 45,
-    marginBottom: 1,
+    height: h2dp("6%"),
+    marginBottom: h2dp("1%"),
     backgroundColor: "white",
   },
   icon: {
