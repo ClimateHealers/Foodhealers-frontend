@@ -56,6 +56,7 @@ const BurgerIcon = ({ menuClose, onOutsidePress, menuItem }: any) => {
     } else {
       navigation.navigate("SignupScreen");
     }
+    navigation.navigate("HomeScreen");
   };
 
   const findFoodMenuItemPress = (item: any) => {
@@ -90,13 +91,15 @@ const BurgerIcon = ({ menuClose, onOutsidePress, menuItem }: any) => {
           ref={burgerRef}
           style={{
             position: "absolute",
-            right: w2dp(8.5),
-            top: h2dp(5.5),
+            right: w2dp("5%"),
+            top: Platform.OS === "ios" ? h2dp("6%") : h2dp("5%"),
             backgroundColor: "white",
             borderColor: "black",
             borderWidth: 0.5,
             borderRadius: 5,
-            zIndex: 10,
+            zIndex: 9999,
+            elevation: 5,
+            minWidth: w2dp("40%"),
           }}
         >
           <TouchableOpacity onPress={() => handleMenuItemPress("Home")}>

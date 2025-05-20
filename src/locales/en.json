@@ -120,7 +120,7 @@
     "INVALID_CREDENTIALS": "Invalid Credentials",
     "INCORRECT_EMAIL_OR_PASSWORD": "Incorrect email or password entered, please check your credentials and try again",
     "OK": "Ok",
-    "NOT_AN_USER": "Not a user?",
+    "NOT_AN_USER": "Not a user? ",
     "NO_EVENTS_FOUND": "No events found",
     "DATE": "Date",
     "APP_VERSION": "App version",

@@ -145,7 +145,7 @@ const VolunteerDonateScreen = ({ route }: any) => {
           <ScrollView keyboardShouldPersistTaps="handled">
             <View style={styles.container}>
               <FoodhealersHeader />
-              <View style={styles.root}>
+              <View style={styles.rootVolunteerHome}>
                 <Ionicons
                   name="chevron-back"
                   size={32}

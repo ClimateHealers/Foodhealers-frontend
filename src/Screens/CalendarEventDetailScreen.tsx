@@ -131,7 +131,7 @@ Join me using https://play.google.com/store/apps/details?id=com.foodhealers.clim
           <ScrollView>
             <View style={styles.containerVolunteer}>
               <FoodhealersHeader />
-              <View style={styles.rootVolunteerHome}>
+              <View style={styles.root}>
                 <Ionicons
                   name="chevron-back"
                   size={32}

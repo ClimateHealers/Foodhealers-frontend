@@ -70,14 +70,18 @@ const TeamHomeScreen = ({ route }: any) => {
                       name="chevron-back"
                       size={32}
                       color="white"
-                      onPress={() => {navigation.goBack(),handlePressOutside()}}
+                      onPress={() => {
+                        navigation.goBack(), handlePressOutside();
+                      }}
                     />
                     <View style={styles.item}>
                       <Text style={styles.itemText}>{localized.t("TEAM")}</Text>
                     </View>
-                    <BurgerIcon onOutsidePress={handlePressOutside}
-                  menuClose={menuClose}
-                  menuItem={menuItem}/>
+                    <BurgerIcon
+                      onOutsidePress={handlePressOutside}
+                      menuClose={menuClose}
+                      menuItem={menuItem}
+                    />
                   </View>
                   {/* <View
                     style={{
@@ -107,10 +111,10 @@ const TeamHomeScreen = ({ route }: any) => {
                   <TouchableOpacity
                     onPress={() => {
                       handlePressOutside(),
-                      navigation.navigate("RequestFoodHomeScreen", {
-                        itemTypeId: 1,
-                        title: `${localized.t("REQUEST_FOOD")}`,
-                      })
+                        navigation.navigate("RequestFoodHomeScreen", {
+                          itemTypeId: 1,
+                          title: `${localized.t("REQUEST_FOOD")}`,
+                        });
                     }}
                   >
                     <View
@@ -154,10 +158,10 @@ const TeamHomeScreen = ({ route }: any) => {
                   <TouchableOpacity
                     onPress={() => {
                       handlePressOutside(),
-                      navigation.navigate("RequestFoodHomeScreen", {
-                        itemTypeId: 2,
-                        title: `${localized.t("REQUEST_SUPPLIES")}`,
-                      })
+                        navigation.navigate("RequestFoodHomeScreen", {
+                          itemTypeId: 2,
+                          title: `${localized.t("REQUEST_SUPPLIES")}`,
+                        });
                     }}
                   >
                     <View

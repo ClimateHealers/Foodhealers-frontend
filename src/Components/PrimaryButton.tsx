@@ -6,7 +6,13 @@ import {
   widthPercentageToDP as w2dp,
 } from "react-native-responsive-screen";
 
-const PrimaryButton = ({ onPress, title, buttonStyle, titleStyle, disabled }: any) => {
+const PrimaryButton = ({
+  onPress,
+  title,
+  buttonStyle,
+  titleStyle,
+  disabled,
+}: any) => {
   return (
     <Button
       title={title}
@@ -14,6 +20,7 @@ const PrimaryButton = ({ onPress, title, buttonStyle, titleStyle, disabled }: an
       titleStyle={titleStyle}
       onPress={onPress}
       disabled={disabled}
+      style={styles.buttonStyles}
     />
   );
 };

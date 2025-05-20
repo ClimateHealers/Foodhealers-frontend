@@ -5,10 +5,16 @@ import {
 } from "react-native-responsive-screen";
 
 export const styles = StyleSheet.create({
+  scrollContent: {
+    flexGrow: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: w2dp(4),
+  },
   container: {
     flex: 1,
     marginHorizontal: w2dp(4),
-    marginTop: h2dp(2),
+    marginTop: h2dp(1),
   },
   subcontainer: {
     flex: 1,
@@ -19,7 +25,6 @@ export const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     marginHorizontal: w2dp(4),
-    marginTop: h2dp(2),
   },
   root: {
     flexDirection: "row",
@@ -36,7 +41,7 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    width: w2dp(85),
+    width: "100%",
     zIndex: 1,
     marginBottom: h2dp(1),
   },
@@ -99,13 +104,10 @@ export const styles = StyleSheet.create({
     resizeMode: "cover",
   },
   buttonStyles: {
-    backgroundColor: "#B01D19",
-    color: "black",
+    backgroundColor: "#FC5A56",
     borderRadius: w2dp(2),
-    alignSelf: "center",
-    width: w2dp(70),
-    marginTop: h2dp(5),
-    fontSize: h2dp(2),
+    marginTop: h2dp(3),
+    marginHorizontal: w2dp(4),
   },
   nextButtonStyles: {
     backgroundColor: "#FC5A56",
@@ -117,10 +119,8 @@ export const styles = StyleSheet.create({
   },
   titleStyle: {
     color: "white",
-    fontSize: h2dp(2.6),
-    fontWeight: "400",
-    lineHeight: 35,
-    fontFamily: "OpenSans-Regular",
+    fontSize: h2dp(2.2),
+    fontWeight: "bold",
   },
   dropdownContainer: {
     display: "flex",
@@ -136,6 +136,8 @@ export const styles = StyleSheet.create({
     height: h2dp(6),
     borderRadius: w2dp(2),
     backgroundColor: "#FFFFFF",
+    fontSize: h2dp(2),
+    paddingHorizontal: w2dp(4),
   },
   textArea: {
     height: 65,
@@ -164,6 +166,7 @@ export const styles = StyleSheet.create({
   itemText: {
     fontSize: h2dp(2.5),
     color: "white",
+    fontWeight: "500",
   },
   itemTextDriver: {
     fontSize: h2dp(2.5),

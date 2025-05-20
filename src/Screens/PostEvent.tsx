@@ -506,20 +506,12 @@ const PostEvent = () => {
                       id={"volunteers"}
                     />
                     <Text style={styles.inputError}>{errors.volunteers}</Text>
-                    <View
-                      style={{
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                      }}
-                    >
-                      <PrimaryButton
-                        title={localized.t("SUBMIT")}
-                        buttonStyle={styles.buttonStyles}
-                        titleStyle={styles.titleStyle}
-                        onPress={handleSubmit}
-                      />
-                    </View>
+                    <PrimaryButton
+                      title={localized.t("SUBMIT")}
+                      buttonStyle={styles.buttonStyles}
+                      titleStyle={styles.titleStyle}
+                      onPress={handleSubmit}
+                    />
                   </>
                 )}
               </Formik>

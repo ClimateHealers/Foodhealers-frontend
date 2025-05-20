@@ -14,246 +14,200 @@ import {
   TouchableOpacity,
   TextInput,
   Alert,
+  StatusBar,
+  KeyboardAvoidingView,
 } from "react-native";
-
-import * as yup from "yup";
 import { auth } from "../firebase/firebaseConfig";
 import { localized } from "../locales/localization";
 import Spinner from "react-native-loading-spinner-overlay/lib";
 import {
-  heightPercentageToDP as h2dp,
-  widthPercentageToDP as w2dp,
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
-
-const forgotPasswordValidationSchema = yup.object().shape({
-  email: yup
-    .string()
-    .email(`${localized.t("PLEASE_ENTER_YOUR_EMAIL")}`)
-    .required(`${localized.t("EMAIL_IS_REQUIRED")}`),
-});
+import { forgotPasswordValidationSchema } from "../Components/validation";
 
 function ForgotPassword() {
   const [loading, setLoading] = useState(false);
-  const [response, setReponse] = useState({
-    loading: false,
-    error: false,
-    message: "",
-  });
   const navigation: any = useNavigation();
-  const hideDialog = () => {
-    setReponse({
-      loading: false,
-      error: false,
-      message: "",
-    });
+
+  const handleResetPassword = async (email: string) => {
+    setLoading(true);
+    try {
+      await sendPasswordResetEmail(auth, email.toLowerCase());
+      setLoading(false);
+      Alert.alert(
+        localized.t("RESET_LINK_SENT_SUCCESSFULLY"),
+        localized.t(
+          "WE_HAVE_SUCCESSFULLY_SENT_THE_RESET_LINK_TO_THE_REGISTERED_EMAIL"
+        ),
+        [
+          {
+            text: localized.t("OK"),
+            onPress: () => navigation.navigate("LoginScreen"),
+          },
+        ],
+        { cancelable: false }
+      );
+    } catch (err: any) {
+      setLoading(false);
+      Alert.alert(
+        localized.t("EMAIL_NOT_FOUND"),
+        err.message,
+        [{ text: localized.t("OK") }],
+        { cancelable: false }
+      );
+    }
   };
+
   return (
     <LinearGradient
       colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
       style={styles.background}
     >
-      <SafeAreaView>
-        <ScrollView style={styles.scrollViewContainer}>
-          <View
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-around",
-              height: 400,
-            }}
+      <StatusBar animated={true} backgroundColor="auto" />
+      <SafeAreaView style={styles.safeArea}>
+        <View style={styles.root}>
+          <Ionicons
+            name="chevron-back"
+            size={wp("8%")}
+            color="white"
+            onPress={() => navigation.goBack()}
+          />
+          <Text style={styles.headerText}>
+            {localized.t("FORGOT_PASSWORD")}
+          </Text>
+        </View>
+
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          style={{ flex: 1 }}
+        >
+          <ScrollView
+            contentContainerStyle={styles.scrollContent}
+            keyboardShouldPersistTaps="handled"
           >
-            <View
-              style={{ display: "flex", flexDirection: "row", marginTop: 30 }}
-            >
-              <Ionicons
-                name="chevron-back"
-                size={30}
-                color="white"
-                style={{ marginLeft: 1 }}
-                onPress={() => navigation.goBack()}
-              />
-              <Text style={styles.header}>
-                {" "}
-                {localized.t("FORGOT_PASSWORD")}{" "}
-              </Text>
-            </View>
-            <View style={styles.container2}>
-              <Text style={styles.lineText}>
+            <View style={styles.container}>
+              <Text style={styles.instructionText}>
                 {localized.t("ENTER_YOUR_EMAIL")}
               </Text>
 
               <Formik
                 validationSchema={forgotPasswordValidationSchema}
-                initialValues={{
-                  email: "",
-                }}
-                onSubmit={async ({ email }) => {
-                  setLoading(true);
-                  try {
-                    setReponse({
-                      loading: true,
-                      message: "",
-                      error: false,
-                    });
-                    const res = await sendPasswordResetEmail(
-                      auth,
-                      email.toLowerCase()
-                    );
-                    setReponse({
-                      loading: false,
-                      message: "Reset link sent successfully",
-                      error: false,
-                    });
-                    setLoading(false);
-                    Alert.alert(
-                      `${localized.t("RESET_LINK_SENT_SUCCESSFULLY")}`,
-                      `${localized.t(
-                        "WE_HAVE_SUCCESSFULLY_SENT_THE_RESET_LINK_TO_THE_REGISTERED_EMAIL"
-                      )}`,
-                      [
-                        {
-                          text: `${localized.t("OK")}`,
-                          onPress: () => navigation.navigate("LoginScreen"),
-                        },
-                      ],
-                      { cancelable: false }
-                    );
-                  } catch (err: any) {
-                    setLoading(false);
-                    setReponse({
-                      loading: false,
-                      message: err.message,
-                      error: true,
-                    });
-                    Alert.alert(
-                      `${localized.t("EMAIL_NOT_FOUND")}`,
-                      `${err.message}`,
-                      [{ text: `${localized.t("OK")}` }],
-                      { cancelable: false }
-                    );
-                  }
-                }}
+                initialValues={{ email: "" }}
+                onSubmit={({ email }) => handleResetPassword(email)}
               >
                 {({
+                  handleChange,
                   handleBlur,
                   handleSubmit,
-                  setFieldValue,
-                  handleChange,
                   values,
                   errors,
                   touched,
                   isValid,
-                }) => {
-                  return (
-                    <>
-                      <TextInput
-                        style={styles.textInput}
-                        placeholder={localized.t("EMAIL")}
-                        placeholderTextColor="white"
-                        onChangeText={(values) => {
-                          setFieldValue("email", values);
-                        }}
-                        onBlur={handleBlur("email")}
-                        autoCapitalize="none"
-                        value={values.email}
-                      />
-                      {errors.email && touched.email && (
-                        <Text style={{ color: "red", marginBottom: 0 }}>
-                          {errors.email}
-                        </Text>
-                      )}
-                      <Spinner
-                        visible={loading}
-                        cancelable={false}
-                        textStyle={{
-                          color: "white",
-                        }}
-                      />
-                      <TouchableOpacity
-                        disabled={!isValid}
-                        onPress={() => handleSubmit}
-                        style={[
-                          styles.regBtn,
-                          !isValid && styles.regBtnDisabled,
-                        ]}
-                      >
-                        <Text style={styles.regText}>
-                          {localized.t("SEND_RESET_LINK")}
-                        </Text>
-                      </TouchableOpacity>
-                    </>
-                  );
-                }}
+                }) => (
+                  <>
+                    <TextInput
+                      style={styles.textInput}
+                      placeholder={localized.t("EMAIL")}
+                      placeholderTextColor="white"
+                      onChangeText={handleChange("email")}
+                      onBlur={handleBlur("email")}
+                      autoCapitalize="none"
+                      keyboardType="email-address"
+                      value={values.email}
+                    />
+                    {errors.email && touched.email && (
+                      <Text style={styles.errorText}>{errors.email}</Text>
+                    )}
+
+                    <Spinner visible={loading} textStyle={{ color: "white" }} />
+
+                    <TouchableOpacity
+                      onPress={handleSubmit}
+                      disabled={!isValid}
+                      style={[styles.button, !isValid && styles.buttonDisabled]}
+                    >
+                      <Text style={styles.buttonText}>
+                        {localized.t("SEND_RESET_LINK")}
+                      </Text>
+                    </TouchableOpacity>
+                  </>
+                )}
               </Formik>
             </View>
-          </View>
-        </ScrollView>
+          </ScrollView>
+        </KeyboardAvoidingView>
       </SafeAreaView>
     </LinearGradient>
   );
 }
+
 const styles = StyleSheet.create({
-  textInput: {
-    height: 55,
-    marginBottom: 1,
-    fontSize: h2dp(1.5),
-    paddingLeft: 10,
-    borderWidth: 1,
-    borderColor: "white",
-    color: "white",
-  },
-  scrollViewContainer: {
-    padding: 16,
-  },
-  container2: {
-  },
-  header: {
-    fontSize: h2dp(2.5),
-    fontWeight: "bold",
-    marginBottom: 5,
-    color: "white",
-  },
   background: {
     flex: 1,
-    resizeMode: "cover",
   },
-  TextInput: {
-    height: 50,
+  safeArea: {
     flex: 1,
-    padding: 10,
+    paddingHorizontal: wp(5),
+    paddingTop: Platform.OS === "android" ? hp(2) : 0,
   },
-  lineText: {
-    marginTop: 10,
-    marginBottom: 30,
-    color: "white",
-    fontSize: h2dp(1.8),
-  },
-
-  regBtn: {
-    width: "80%",
-    borderRadius: 4,
-    height: 55,
+  root: {
+    flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
-    marginBottom: 5,
-    backgroundColor: "#FC5A56",
-    marginTop: 30,
-    alignSelf: "center",
+    marginBottom: hp(3),
   },
-  regBtnDisabled: {
+  headerText: {
+    fontSize: hp(2.5),
+    color: "white",
+    marginLeft: wp(2),
+    fontWeight: "500",
+  },
+  scrollContent: {
+    flexGrow: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  container: {
     width: "100%",
-    borderRadius: 4,
-    height: 55,
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: 5,
-    backgroundColor: "grey",
-    opacity: 0.4,
-    marginTop: 20,
   },
-  regText: {
+  instructionText: {
+    marginBottom: hp(2),
     color: "white",
-    fontSize: h2dp(2.0),
+    fontSize: hp(2),
+  },
+  textInput: {
+    height: hp(6.5),
+    borderColor: "white",
+    borderWidth: 1,
+    paddingLeft: wp(3),
+    fontSize: hp(1.8),
+    color: "white",
+    borderRadius: wp(2),
+    marginBottom: hp(1.5),
+  },
+  errorText: {
+    color: "red",
+    marginBottom: hp(1),
+    fontSize: hp(1.6),
+  },
+  button: {
+    height: hp(6.5),
+    backgroundColor: "#FC5A56",
+    borderRadius: wp(2),
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: hp(2),
+    marginHorizontal: hp(3),
+  },
+  buttonDisabled: {
+    backgroundColor: "grey",
+    opacity: 0.5,
+  },
+  buttonText: {
+    color: "white",
+    fontSize: hp(2.2),
+    fontWeight: "600",
   },
 });
+
 export default ForgotPassword;

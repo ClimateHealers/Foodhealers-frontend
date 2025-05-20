@@ -476,7 +476,7 @@ const MapScreen = ({ route }: any) => {
                 {emptyEvents ? (
                   <Text
                     style={{
-                      marginTop: 5,
+                      marginTop: w2dp(5),
                       textAlign: "center",
                       fontSize: h2dp(2.0),
                       color: "white",
@@ -487,7 +487,7 @@ const MapScreen = ({ route }: any) => {
                 ) : (
                   <Text
                     style={{
-                      marginTop: 5,
+                      marginTop: w2dp(5),
                       textAlign: "center",
                       fontSize: h2dp(2.0),
                       color: "white",
@@ -499,7 +499,11 @@ const MapScreen = ({ route }: any) => {
                 )}
 
                 {emptyEvents ? (
-                  <View>
+                  <View
+                    style={{
+                      marginHorizontal: h2dp(3),
+                    }}
+                  >
                     <PrimaryButton
                       title={localized.t("HOME")}
                       buttonStyle={styles.buttonStyles}
