@@ -12,7 +12,10 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import { heightPercentageToDP as h2dp } from "react-native-responsive-screen";
+import {
+  heightPercentageToDP as h2dp,
+  widthPercentageToDP as w2dp,
+} from "react-native-responsive-screen";
 import { useDispatch } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
@@ -65,12 +68,14 @@ const RequestSupplyHomeScreen = ({ route }: any) => {
               <TouchableOpacity activeOpacity={1}>
                 <View style={styles.containerVolunteer}>
                   <FoodhealersHeader />
-                  <View style={styles.rootVolunteerHome}>
+                  <View style={styles.root}>
                     <Ionicons
                       name="chevron-back"
                       size={32}
                       color="white"
-                      onPress={() =>{ navigation.goBack(),handlePressOutside()}}
+                      onPress={() => {
+                        navigation.goBack(), handlePressOutside();
+                      }}
                     />
                     <View style={styles.item}>
                       <Text style={styles.itemText}>{title}</Text>
@@ -83,10 +88,10 @@ const RequestSupplyHomeScreen = ({ route }: any) => {
                   <TouchableOpacity
                     onPress={() => {
                       handlePressOutside(),
-                      navigation.navigate("AddRequestDonationsScreen", {
-                        itemTypeId: itemTypeId,
-                        title: title,
-                      })
+                        navigation.navigate("AddRequestDonationsScreen", {
+                          itemTypeId: itemTypeId,
+                          title: title,
+                        });
                     }}
                   >
                     <View
@@ -110,9 +115,9 @@ const RequestSupplyHomeScreen = ({ route }: any) => {
                   <TouchableOpacity
                     onPress={() => {
                       handlePressOutside(),
-                      navigation.navigate("RequestHistoryScreen", {
-                        itemTypeId: itemTypeId,
-                      })
+                        navigation.navigate("RequestHistoryScreen", {
+                          itemTypeId: itemTypeId,
+                        });
                     }}
                   >
                     <View

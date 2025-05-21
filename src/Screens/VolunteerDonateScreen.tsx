@@ -12,7 +12,10 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import { heightPercentageToDP as h2dp } from "react-native-responsive-screen";
+import {
+  heightPercentageToDP as h2dp,
+  widthPercentageToDP as w2dp,
+} from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
 import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
@@ -145,7 +148,7 @@ const VolunteerDonateScreen = ({ route }: any) => {
           <ScrollView keyboardShouldPersistTaps="handled">
             <View style={styles.container}>
               <FoodhealersHeader />
-              <View style={styles.rootVolunteerHome}>
+              <View style={styles.root}>
                 <Ionicons
                   name="chevron-back"
                   size={32}
@@ -169,8 +172,8 @@ const VolunteerDonateScreen = ({ route }: any) => {
                   ref={sliderRef}
                   data={cardData}
                   renderItem={renderItem}
-                  width={screenWidth} // ✅ Add this line to define width
-                  height={h2dp(70)} // You might need to adjust the height
+                  width={screenWidth}
+                  height={h2dp(70)}
                   loop
                   onSnapToItem={(index) => setActiveSlide(index)}
                 />

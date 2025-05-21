@@ -356,7 +356,7 @@ const DonationTabScreen = () => {
           <Text
             style={{
               marginLeft: w2dp(3),
-              fontWeight: "500",
+              fontWeight: "bold",
               fontSize: h2dp(1.6),
               lineHeight: 30,
               paddingTop: h2dp(0.7),

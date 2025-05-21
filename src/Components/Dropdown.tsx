@@ -1,14 +1,10 @@
 import React, { useState } from "react";
-import { StyleSheet } from "react-native";
 import SelectDropdown from "react-native-select-dropdown";
 import { MaterialIcons } from "@expo/vector-icons";
 import { localized } from "../locales/localization";
 import { useDispatch, useSelector } from "react-redux";
 import { setLanguage } from "../redux/reducers/langReducer";
-import {
-  heightPercentageToDP as h2dp,
-  widthPercentageToDP as w2dp,
-} from "react-native-responsive-screen";
+import { styles } from "./Styles";
 
 const Dropdown = () => {
   const [langOpen, setlangOpen] = useState(false);
@@ -24,71 +20,39 @@ const Dropdown = () => {
     { id: 8, label: "Spanish", value: "es" },
   ]);
 
-  const dispatch = useDispatch()
-  const languageName = useSelector((state:any) => state.language)
-  let selectedLang; 
+  const dispatch = useDispatch();
+  const languageName = useSelector((state: any) => state.language);
+  let selectedLang;
   const changeLanguage = (itemValue: any, index: any) => {
-     selectedLang = lang[index].value;
-    dispatch(setLanguage(selectedLang))
+    selectedLang = lang[index].value;
+    dispatch(setLanguage(selectedLang));
     localized.locale = selectedLang;
     setSelectedLanguage(selectedLang);
   };
   return (
     <SelectDropdown
-              buttonStyle={styles.dropdown1BtnStyle}
-              buttonTextStyle={styles.dropdown1BtnTxtStyle}
-              renderDropdownIcon={() => {
-                return (
-                  <MaterialIcons
-                    name="keyboard-arrow-down"
-                    size={18}
-                    color="#B50000"
-                  />
-                );
-              }}
-              dropdownIconPosition={"right"}
-              dropdownStyle={styles.dropdown1DropdownStyle}
-              rowStyle={styles.dropdown1RowStyle}
-              rowTextStyle={styles.dropdown1RowTxtStyle}
-              data={lang && lang.map((dd) => dd.label)}
-              onSelect={changeLanguage}
-              defaultButtonText={selectedLanguage}
-              buttonTextAfterSelection={(itemValue, index) => {
-                return lang[index].value.toUpperCase();
-              }}
-              rowTextForSelection={(item, index) => {
-                return item;
-              }}
-            />
+      buttonStyle={styles.dropdown1BtnStyle}
+      buttonTextStyle={styles.dropdown1BtnTxtStyle}
+      renderDropdownIcon={() => {
+        return (
+          <MaterialIcons name="keyboard-arrow-down" size={18} color="#B50000" />
+        );
+      }}
+      dropdownIconPosition={"right"}
+      dropdownStyle={styles.dropdown1DropdownStyle}
+      rowStyle={styles.dropdown1RowStyle}
+      rowTextStyle={styles.dropdown1RowTxtStyle}
+      data={lang && lang.map((dd) => dd.label)}
+      onSelect={changeLanguage}
+      defaultButtonText={selectedLanguage}
+      buttonTextAfterSelection={(itemValue: any, index: any) => {
+        return lang[index].value.toUpperCase();
+      }}
+      rowTextForSelection={(item: any, index: any) => {
+        return item;
+      }}
+    />
   );
 };
-
-const styles = StyleSheet.create({
-  dropdown1BtnStyle: {
-    marginTop: 15,
-    width: "30%",
-    height: 50,
-    backgroundColor: "#FFF",
-    borderRadius: 5,
-    borderWidth: 1,
-    borderColor: "#D1D1D6",
-  },
-  dropdown1BtnTxtStyle: { color: "#B50000", textAlign: "left", fontSize: h2dp(1.4) },
-  dropdown1DropdownStyle: {
-    backgroundColor: "#EFEFEF",
-    color: "black",
-    borderRadius: 4,
-    height: 180,
-    fontSize: h2dp(1.4),
-    borderColor: "blue",
-  },
-  dropdown1RowStyle: {
-    backgroundColor: "#EFEFEF",
-    color: "#B50000",
-    borderBottomColor: "#D1D1D6",
-    borderRadius: 5,
-  },
-  dropdown1RowTxtStyle: { color: "black", textAlign: "center", fontSize: h2dp(1.0) },
-});
 
 export default Dropdown;

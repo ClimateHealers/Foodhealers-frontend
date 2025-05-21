@@ -60,12 +60,14 @@ const RequestCreatedScreen = ({ route }: any) => {
           <ScrollView keyboardShouldPersistTaps="handled">
             <View style={styles.containerVolunteer}>
               <FoodhealersHeader />
-              <View style={styles.rootVolunteerHome}>
+              <View style={styles.root}>
                 <Ionicons
                   name="chevron-back"
                   size={32}
                   color="white"
-                  onPress={() => {navigation.navigate("TeamHomeScreen"),handlePressOutside()}}
+                  onPress={() => {
+                    navigation.navigate("TeamHomeScreen"), handlePressOutside();
+                  }}
                 />
                 <View style={styles.item}>
                   <Text style={styles.itemText}>{title}</Text>
@@ -92,7 +94,7 @@ const RequestCreatedScreen = ({ route }: any) => {
                     <Text
                       style={{
                         marginLeft: w2dp(3),
-                        fontWeight: "500",
+                        fontWeight: "bold",
                         fontSize: h2dp(1.6),
                         lineHeight: 30,
                       }}
@@ -120,10 +122,10 @@ const RequestCreatedScreen = ({ route }: any) => {
                   title={localized.t("REQUEST_MORE")}
                   onPress={() => {
                     handlePressOutside(),
-                    navigation.navigate("AddRequestDonationsScreen", {
-                      itemTypeId: itemTypeId,
-                      title: title,
-                    })
+                      navigation.navigate("AddRequestDonationsScreen", {
+                        itemTypeId: itemTypeId,
+                        title: title,
+                      });
                   }}
                   buttonStyle={styles.buttonStyles}
                   titleStyle={styles.titleStyle}
@@ -134,10 +136,10 @@ const RequestCreatedScreen = ({ route }: any) => {
                   title={localized.t("SEE_ALL_REQUESTS")}
                   onPress={() => {
                     handlePressOutside(),
-                    navigation.navigate("RequestHistoryScreen", {
-                      itemTypeId: itemTypeId,
-                      title: title,
-                    })
+                      navigation.navigate("RequestHistoryScreen", {
+                        itemTypeId: itemTypeId,
+                        title: title,
+                      });
                   }}
                   buttonStyle={styles.buttonHistoryStyles}
                   titleStyle={styles.titleMainStyle}

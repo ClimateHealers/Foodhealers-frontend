@@ -12,7 +12,10 @@ import {
   View,
 } from "react-native";
 import { Image } from "react-native-elements";
-import { heightPercentageToDP as h2dp } from "react-native-responsive-screen";
+import {
+  heightPercentageToDP as h2dp,
+  widthPercentageToDP as w2dp,
+} from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
 import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
@@ -39,13 +42,13 @@ const EventsHomeScreen = () => {
             <StatusBar animated={true} backgroundColor="auto" />
             <View style={styles.containerVolunteer}>
               <FoodhealersHeader />
-              <View style={styles.rootVolunteerHome}>
+              <View style={styles.root}>
                 <Ionicons
                   name="chevron-back"
                   size={32}
                   color="white"
                   onPress={() => {
-                    navigation.navigate("HomeScreen"), handlePressOutside();
+                    navigation.replace("HomeScreen"), handlePressOutside();
                   }}
                 />
                 <View style={styles.item}>

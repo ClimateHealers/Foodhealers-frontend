@@ -12,7 +12,10 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import { heightPercentageToDP as h2dp } from "react-native-responsive-screen";
+import {
+  heightPercentageToDP as h2dp,
+  widthPercentageToDP as w2dp,
+} from "react-native-responsive-screen";
 import { useDispatch } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
@@ -65,7 +68,7 @@ const TeamHomeScreen = ({ route }: any) => {
               <TouchableOpacity activeOpacity={1}>
                 <View style={styles.containerVolunteer}>
                   <FoodhealersHeader />
-                  <View style={styles.rootVolunteerHome}>
+                  <View style={styles.root}>
                     <Ionicons
                       name="chevron-back"
                       size={32}

@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
     fontSize: hp(2.5),
     color: "white",
     marginLeft: wp(2),
-    fontWeight: "500",
+    fontWeight: "bold",
   },
   scrollContent: {
     flexGrow: 1,

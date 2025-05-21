@@ -15,10 +15,14 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
+
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { Text, TextInput } from "react-native-paper";
 import PhoneInput from "react-native-phone-number-input";
-import { heightPercentageToDP as h2dp } from "react-native-responsive-screen";
+import {
+  heightPercentageToDP as h2dp,
+  widthPercentageToDP as w2dp,
+} from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
@@ -74,31 +78,32 @@ const AddDriverScreen = ({ route }: any) => {
   return (
     <TouchableWithoutFeedback onPress={handlePressOutside}>
       <LinearGradient
-        colors={["#6fa200", "#72a400", "#82b200", "#87b500", "#6fa200"]}
+        colors={["#012e17", "#017439", "#009b4d"]}
         style={styles.background}
       >
         <SafeAreaView>
           <ScrollView keyboardShouldPersistTaps="handled">
             <StatusBar animated={true} backgroundColor="auto" />
+            <View style={styles.root}>
+              <Ionicons
+                name="chevron-back"
+                size={32}
+                color="white"
+                onPress={() => {
+                  navigation.goBack(), handlePressOutside();
+                }}
+              />
+              <View style={styles.item}>
+                <Text style={styles.itemText}>{localized.t("DRIVE")}</Text>
+              </View>
+              <BurgerIcon
+                onOutsidePress={handlePressOutside}
+                menuClose={menuClose}
+              />
+            </View>
             <View style={styles.container}>
               <FoodhealersHeader />
-              <View style={styles.root}>
-                <Ionicons
-                  name="chevron-back"
-                  size={32}
-                  color="white"
-                  onPress={() => {
-                    navigation.goBack(), handlePressOutside();
-                  }}
-                />
-                <View style={styles.item}>
-                  <Text style={styles.itemText}>{localized.t("DRIVE")}</Text>
-                </View>
-                <BurgerIcon
-                  onOutsidePress={handlePressOutside}
-                  menuClose={menuClose}
-                />
-              </View>
+
               <Modal visible={loading} animationType="slide" transparent={true}>
                 <View style={styles.centeredView}>
                   <View style={styles.modalView}>
@@ -221,7 +226,7 @@ const AddDriverScreen = ({ route }: any) => {
                   touched,
                   isValid,
                 }) => (
-                  <>
+                  <View style={{ marginTop: h2dp(5) }}>
                     <TextInput
                       onChangeText={handleChange("name")}
                       onBlur={handleBlur("name")}
@@ -394,32 +399,30 @@ const AddDriverScreen = ({ route }: any) => {
                             width: "100%",
                             alignContent: "center",
                             justifyContent: "center",
+                            borderRadius: w2dp(1),
+                            overflow: "hidden",
                           },
                         ]}
                         value={values.phoneNumber}
-                        textInputProps={{ placeholderTextColor: "black" }}
-                        textInputStyle={{}}
+                        textInputProps={{
+                          placeholderTextColor: "black",
+                        }}
+                        textInputStyle={{
+                          height: h2dp(8),
+                          paddingVertical: "auto",
+                        }}
                       />
                       <Text style={styles.inputError}>
                         {errors?.phoneNumber}
                       </Text>
                     </View>
-                    <View
-                      style={{
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        marginTop: h2dp(1),
-                      }}
-                    >
-                      <PrimaryButton
-                        title={localized.t("NEXT")}
-                        buttonStyle={styles.nextButtonStyles}
-                        titleStyle={styles.titleStyle}
-                        onPress={handleSubmit}
-                      />
-                    </View>
-                  </>
+                    <PrimaryButton
+                      title={localized.t("NEXT")}
+                      buttonStyle={styles.buttonStyles}
+                      titleStyle={styles.titleStyle}
+                      onPress={handleSubmit}
+                    />
+                  </View>
                 )}
               </Formik>
             </View>

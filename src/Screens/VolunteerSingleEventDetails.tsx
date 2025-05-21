@@ -163,7 +163,7 @@ Join me using https://play.google.com/store/apps/details?id=com.foodhealers.clim
             <StatusBar animated={true} backgroundColor="auto" />
             <View style={styles.containerVolunteer}>
               <FoodhealersHeader />
-              <View style={styles.rootVolunteerHome}>
+              <View style={styles.root}>
                 <Ionicons
                   name="chevron-back"
                   size={32}

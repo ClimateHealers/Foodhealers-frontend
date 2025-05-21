@@ -23,7 +23,10 @@ import { AddDonations } from "../Components/validation";
 
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import PhoneInput from "react-native-phone-number-input";
-import { heightPercentageToDP as h2dp } from "react-native-responsive-screen";
+import {
+  heightPercentageToDP as h2dp,
+  widthPercentageToDP as w2dp,
+} from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
@@ -112,7 +115,9 @@ const AddDonationsScreen = ({ route }: any) => {
                   }}
                 />
                 <View style={styles.item}>
-                  <Text style={styles.itemText}>{title}</Text>
+                  <Text style={styles.itemText}>
+                    {localized.t("DONATE_FOOD")}
+                  </Text>
                 </View>
                 <BurgerIcon
                   onOutsidePress={handlePressOutside}
@@ -502,31 +507,26 @@ const AddDonationsScreen = ({ route }: any) => {
                             width: "100%",
                             alignContent: "center",
                             justifyContent: "center",
+                            borderRadius: w2dp(1),
+                            overflow: "hidden",
                           },
                         ]}
                         value={values.phoneNumber}
                         textInputProps={{ placeholderTextColor: "black" }}
-                        textInputStyle={{}}
+                        textInputStyle={{
+                          height: h2dp(8),
+                        }}
                       />
                       <Text style={styles.inputError}>
                         {errors?.phoneNumber}
                       </Text>
                     </View>
-                    <View
-                      style={{
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        marginTop: h2dp(1),
-                      }}
-                    >
-                      <PrimaryButton
-                        title={localized.t("SUBMIT")}
-                        buttonStyle={styles.buttonStyles}
-                        titleStyle={styles.titleStyle}
-                        onPress={handleSubmit}
-                      />
-                    </View>
+                    <PrimaryButton
+                      title={localized.t("SUBMIT")}
+                      buttonStyle={styles.buttonStyles}
+                      titleStyle={styles.titleStyle}
+                      onPress={handleSubmit}
+                    />
                   </>
                 )}
               </Formik>

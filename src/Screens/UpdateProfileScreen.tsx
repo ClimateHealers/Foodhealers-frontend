@@ -17,7 +17,10 @@ import {
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { Text, TextInput } from "react-native-paper";
 import PhoneInput from "react-native-phone-number-input";
-import { heightPercentageToDP as h2dp } from "react-native-responsive-screen";
+import {
+  heightPercentageToDP as h2dp,
+  widthPercentageToDP as w2dp,
+} from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
@@ -220,7 +223,11 @@ const UpdateProfileScreen = ({ route }: any) => {
                   touched,
                   isValid,
                 }) => (
-                  <>
+                  <View
+                    style={{
+                      marginTop: h2dp(5),
+                    }}
+                  >
                     <TextInput
                       onChangeText={handleChange("name")}
                       onBlur={handleBlur("name")}
@@ -250,6 +257,7 @@ const UpdateProfileScreen = ({ route }: any) => {
                       fetchDetails={true}
                       listViewDisplayed="auto"
                       textInputProps={{ placeholderTextColor: "#000000" }}
+                      containerStyle={{}}
                       query={{
                         key: API_KEY,
                         language: "en",
@@ -397,32 +405,28 @@ const UpdateProfileScreen = ({ route }: any) => {
                             width: "100%",
                             alignContent: "center",
                             justifyContent: "center",
+                            borderRadius: w2dp(1),
+                            overflow: "hidden",
                           },
                         ]}
                         value={values.phoneNumber}
                         textInputProps={{ placeholderTextColor: "black" }}
-                        textInputStyle={{}}
+                        textInputStyle={{
+                          height: h2dp(8),
+                        }}
                       />
                       <Text style={styles.inputError}>
                         {errors?.phoneNumber}
                       </Text>
                     </View>
-                    <View
-                      style={{
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        marginTop: h2dp(1),
-                      }}
-                    >
-                      <PrimaryButton
-                        title={localized.t("UPDATE")}
-                        buttonStyle={styles.nextButtonStyles}
-                        titleStyle={styles.titleStyle}
-                        onPress={handleSubmit}
-                      />
-                    </View>
-                  </>
+
+                    <PrimaryButton
+                      title={localized.t("UPDATE")}
+                      buttonStyle={styles.buttonStyles}
+                      titleStyle={styles.titleStyle}
+                      onPress={handleSubmit}
+                    />
+                  </View>
                 )}
               </Formik>
             </View>

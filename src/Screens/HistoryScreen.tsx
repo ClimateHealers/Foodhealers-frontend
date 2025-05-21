@@ -122,6 +122,7 @@ const styles = StyleSheet.create({
   itemText: {
     fontSize: h2dp(2.5),
     color: "white",
+    fontWeight: "bold",
   },
   card: {
     backgroundColor: "white",

@@ -20,7 +20,10 @@ import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplet
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { Text, TextInput } from "react-native-paper";
 import PhoneInput from "react-native-phone-number-input";
-import { heightPercentageToDP as h2dp } from "react-native-responsive-screen";
+import {
+  heightPercentageToDP as h2dp,
+  widthPercentageToDP as w2dp,
+} from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
@@ -621,31 +624,26 @@ const AddVolunteerToEvent = ({ route }: any) => {
                             width: "100%",
                             alignContent: "center",
                             justifyContent: "center",
+                            borderRadius: w2dp(1),
+                            overflow: "hidden",
                           },
                         ]}
                         value={values.phoneNumber}
                         textInputProps={{ placeholderTextColor: "black" }}
-                        textInputStyle={{}}
+                        textInputStyle={{
+                          height: h2dp(8),
+                        }}
                       />
                       <Text style={styles.inputError}>
                         {errors?.phoneNumber}
                       </Text>
                     </View>
-                    <View
-                      style={{
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        marginTop: h2dp(1),
-                      }}
-                    >
                       <PrimaryButton
                         title={localized.t("SUBMIT")}
                         buttonStyle={styles.buttonStyles}
                         titleStyle={styles.titleStyle}
                         onPress={handleSubmit}
                       />
-                    </View>
                   </>
                 )}
               </Formik>

@@ -140,8 +140,7 @@ const ProfileScreen = () => {
   );
 
   const appVersion = Constants?.manifest?.version;
-  const profilePhotoSize = Math.min(width * 0.4, height * 0.2);
-  const iconSize = width > 400 ? 28 : 24;
+  const profilePhotoSize = Math.min(width * 0.3, height * 0.2);
 
   const renderProfileImage = () => {
     if (image) {
@@ -191,7 +190,7 @@ const ProfileScreen = () => {
         <SafeAreaView style={styles.mainContainer}>
           {menuOpen && (
             <View style={styles.menuContainer}>
-              {renderMenuItem("HOME", () => navigation.navigate("HomeScreen"))}
+              {renderMenuItem("HOME", () => navigation.replace("HomeScreen"))}
               {renderMenuItem("FIND_FOOD", () => {
                 getLocation().then((res) => {
                   if (res) {
@@ -267,8 +266,14 @@ const ProfileScreen = () => {
                   </TouchableOpacity>
                 </View>
 
-                <PrimaryButton
+                {/* Optional: Keep this button below the image */}
+                {/* <PrimaryButton
                   title={localized.t("EDIT")}
+                  buttonStyle={styles.editButton}
+                  titleStyle={styles.editButtonText}
+                /> */}
+                <TouchableOpacity
+                  style={styles.editIconContainer}
                   onPress={() =>
                     navigation.navigate("UpdateProfileScreen", {
                       name: data?.name,
@@ -282,9 +287,9 @@ const ProfileScreen = () => {
                       zipCode: data?.address?.postalCode,
                     })
                   }
-                  buttonStyle={styles.editButton}
-                  titleStyle={styles.editButtonText}
-                />
+                >
+                  <AntDesign name="edit" size={20} color="white" />
+                </TouchableOpacity>
               </View>
 
               <View style={styles.detailsSection}>
@@ -296,7 +301,6 @@ const ProfileScreen = () => {
                 <Divider style={styles.divider} />
               </View>
 
-              {/* Actions */}
               <PrimaryButton
                 title={localized.t("LOGOUT")}
                 onPress={logout}
@@ -374,7 +378,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingVertical: hp("2%"),
+    width: "100%",
+    zIndex: 1,
+    marginBottom: hp(1),
+    marginTop: hp(2.8),
   },
   backButton: {
     width: wp("15%"),
@@ -383,7 +390,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: wp("5%"),
     color: "white",
-    fontWeight: "500",
+    fontWeight: "bold",
   },
   headerIcons: {
     flexDirection: "row",
@@ -407,7 +414,7 @@ const styles = StyleSheet.create({
     borderColor: "black",
     borderWidth: 0.5,
     borderRadius: 5,
-    zIndex: 9999,
+    zIndex: 1,
     elevation: 5,
     minWidth: wp("40%"),
   },
@@ -423,17 +430,10 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginBottom: hp("2%"),
     paddingHorizontal: wp("3%"),
-    paddingTop: hp("1%"),
+    top: hp(4),
   },
   profileSection: {
     alignItems: "center",
-  },
-  profileImageContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    width: "100%",
-    marginBottom: hp("2%"),
   },
   profileImageWrapper: {
     borderRadius: 100,
@@ -442,6 +442,23 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  profileImageContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  editIconContainer: {
+    position: "absolute",
+    bottom: 0,
+    right: hp(15),
+    backgroundColor: "#FC5A56",
+    borderRadius: 20,
+    padding: 6,
+    justifyContent: "center",
+    alignItems: "center",
+    borderColor: "white",
+    borderWidth: 2,
+  },
+
   placeholderContainer: {
     alignItems: "center",
     justifyContent: "center",
@@ -500,7 +517,7 @@ const styles = StyleSheet.create({
   },
   deleteButton: {
     borderWidth: 1,
-    borderColor: "red",
+    borderColor: "#ff6e75",
     borderRadius: 5,
     paddingHorizontal: wp("3%"),
     paddingVertical: hp("1%"),
@@ -510,7 +527,7 @@ const styles = StyleSheet.create({
   },
   deleteButtonText: {
     textAlign: "center",
-    color: "red",
+    color: "#ff6e75",
     fontSize: wp("3.2%"),
   },
   footer: {

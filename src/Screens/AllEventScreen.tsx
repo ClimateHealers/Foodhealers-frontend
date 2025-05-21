@@ -116,7 +116,7 @@ const AllEventScreen = () => {
     eventPhoto,
     name,
     requiredVolunteers,
-    eventSharingPhoto
+    eventSharingPhoto,
   }: any) => (
     <TouchableOpacity activeOpacity={1}>
       <View style={styles.cardContainer}>
@@ -199,7 +199,7 @@ const AllEventScreen = () => {
             style={{
               marginLeft: w2dp(5),
               width: w2dp(52),
-              fontWeight: "500",
+              fontWeight: "bold",
               fontSize: h2dp(1.6),
               lineHeight: 30,
             }}
@@ -236,7 +236,7 @@ const AllEventScreen = () => {
                   eventPhoto: eventPhoto,
                   requiredVolunteers: requiredVolunteers,
                   status: status,
-                  eventSharingPhoto: eventSharingPhoto
+                  eventSharingPhoto: eventSharingPhoto,
                 },
               });
           }}
@@ -347,7 +347,7 @@ const AllEventScreen = () => {
                     status={item?.status}
                     eventPhoto={item?.eventPhoto}
                     requiredVolunteers={item?.requiredVolunteers}
-                    eventSharingPhoto= {item?.eventSharingPhoto}
+                    eventSharingPhoto={item?.eventSharingPhoto}
                   />
                 )}
                 keyExtractor={(item: any) => item?.id}

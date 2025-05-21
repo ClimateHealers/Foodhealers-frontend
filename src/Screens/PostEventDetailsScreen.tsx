@@ -52,7 +52,7 @@ const PostEventDetailsScreen = ({ route }: any) => {
   };
   const handleMenuItemPress = (item: any) => {
     setMenuOpen(false);
-    navigation.navigate("HomeScreen");
+    navigation.replace("HomeScreen");
   };
 
   const findFoodMenuItemPress = (item: any) => {
@@ -327,6 +327,7 @@ const styles = StyleSheet.create({
   itemText: {
     fontSize: h2dp(2.5),
     color: "white",
+    fontWeight: "bold",
   },
   cardContainer: {
     marginTop: 10,

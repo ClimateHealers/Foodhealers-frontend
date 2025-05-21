@@ -143,7 +143,7 @@ const PickupDetailsScreen = ({ route }: any) => {
               fontSize: h2dp(1.6),
               lineHeight: 30,
               paddingTop: h2dp(0.5),
-              fontWeight: "500",
+              fontWeight: "bold",
             }}
           >
             {pickupTiming}
@@ -164,35 +164,35 @@ const PickupDetailsScreen = ({ route }: any) => {
           title={localized.t("DETAILS")}
           onPress={() => {
             handlePressOutside(),
-            active === false
-              ? navigation.navigate("PickupConfirmScreen", {
-                  pickAddress: pickAddress,
-                  pickupTiming: pickupTiming,
-                  picklat: picklat,
-                  picklng: picklng,
-                  droplat: droplat,
-                  droplng: droplng,
-                  dropTiming: dropTiming,
-                  dropAddress: dropAddress,
-                  pickupId: id,
-                  active: active,
-                  pickedup: pickedup,
-                  delivered: delivered,
-                })
-              : navigation.navigate("PickupSelectedDetailsScreen", {
-                  pickAddress: pickAddress,
-                  pickupTiming: pickupTiming,
-                  picklat: picklat,
-                  picklng: picklng,
-                  droplat: droplat,
-                  droplng: droplng,
-                  dropTiming: dropTiming,
-                  dropAddress: dropAddress,
-                  pickupId: id,
-                  active: active,
-                  pickedup: pickedup,
-                  delivered: delivered,
-                });
+              active === false
+                ? navigation.navigate("PickupConfirmScreen", {
+                    pickAddress: pickAddress,
+                    pickupTiming: pickupTiming,
+                    picklat: picklat,
+                    picklng: picklng,
+                    droplat: droplat,
+                    droplng: droplng,
+                    dropTiming: dropTiming,
+                    dropAddress: dropAddress,
+                    pickupId: id,
+                    active: active,
+                    pickedup: pickedup,
+                    delivered: delivered,
+                  })
+                : navigation.navigate("PickupSelectedDetailsScreen", {
+                    pickAddress: pickAddress,
+                    pickupTiming: pickupTiming,
+                    picklat: picklat,
+                    picklng: picklng,
+                    droplat: droplat,
+                    droplng: droplng,
+                    dropTiming: dropTiming,
+                    dropAddress: dropAddress,
+                    pickupId: id,
+                    active: active,
+                    pickedup: pickedup,
+                    delivered: delivered,
+                  });
           }}
           buttonStyle={{
             marginLeft: w2dp(3),
@@ -230,7 +230,10 @@ const PickupDetailsScreen = ({ route }: any) => {
                     name="chevron-back"
                     size={32}
                     color="white"
-                    onPress={() => {navigation.navigate("DriverRequestScreen"),handlePressOutside()}}
+                    onPress={() => {
+                      navigation.navigate("DriverRequestScreen"),
+                        handlePressOutside();
+                    }}
                   />
                   <View style={styles.item}>
                     <Text style={styles.itemText}>

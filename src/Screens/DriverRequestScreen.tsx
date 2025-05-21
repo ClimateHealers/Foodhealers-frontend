@@ -84,7 +84,7 @@ const DriverRequestScreen = ({ route }: any) => {
   const handleMenuItemPress = (item: any) => {
     setMenuOpen(false);
     if (isAuthenticated) {
-      navigation.navigate("HomeScreen");
+      navigation.replace("HomeScreen");
     } else {
       navigation.navigate("SignupScreen");
     }
@@ -173,7 +173,7 @@ const DriverRequestScreen = ({ route }: any) => {
           <ScrollView keyboardShouldPersistTaps="handled">
             <View style={styles.containerVolunteer}>
               <FoodhealersHeader />
-              <View style={styles.rootVolunteerHome}>
+              <View style={styles.root}>
                 <Ionicons
                   name="chevron-back"
                   size={32}

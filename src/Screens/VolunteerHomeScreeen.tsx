@@ -11,7 +11,10 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import { heightPercentageToDP as h2dp } from "react-native-responsive-screen";
+import {
+  heightPercentageToDP as h2dp,
+  widthPercentageToDP as w2dp,
+} from "react-native-responsive-screen";
 import { useDispatch } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
@@ -72,12 +75,12 @@ const VolunteerHomeScreen = ({ route }: any) => {
         >
           <View style={styles.containerVolunteer}>
             <FoodhealersHeader />
-            <View style={styles.rootVolunteerHome}>
+            <View style={styles.root}>
               <Ionicons
                 name="chevron-back"
                 size={32}
                 color="white"
-                onPress={() => navigation.navigate("HomeScreen")}
+                onPress={() => navigation.replace("HomeScreen")}
               />
               <View style={styles.item}>
                 <Text style={styles.itemText}>{localized.t("HOME")}</Text>

@@ -1,5 +1,9 @@
 import { MaterialIcons } from "@expo/vector-icons";
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import {
+  CommonActions,
+  useFocusEffect,
+  useNavigation,
+} from "@react-navigation/native";
 import * as Location from "expo-location";
 import React, { useCallback, useEffect, useState } from "react";
 import {
@@ -16,7 +20,10 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import { heightPercentageToDP as h2dp } from "react-native-responsive-screen";
+import {
+  heightPercentageToDP as h2dp,
+  widthPercentageToDP as w2dp,
+} from "react-native-responsive-screen";
 import SelectDropdown from "react-native-select-dropdown";
 import { useDispatch, useSelector } from "react-redux";
 import PrimaryButton from "../Components/PrimaryButton";
@@ -96,7 +103,6 @@ const HomeScreen = ({ route }: any) => {
       setLoading(false);
     }, [])
   );
-
   const fetchingDonationData = async () => {
     const response = await dispatch(myDonations({} as any) as any);
     setDonationData(response?.payload?.donationList);
@@ -205,7 +211,10 @@ const HomeScreen = ({ route }: any) => {
               onPress={navigateToMapScreen}
               buttonStyle={[
                 styles.postEventButton,
-                { backgroundColor: "#5FBB3F", marginTop: h2dp(4) },
+                {
+                  backgroundColor: "#5FBB3F",
+                  marginTop: h2dp(4),
+                },
               ]}
               titleStyle={styles.titleStyle}
             />
@@ -213,7 +222,7 @@ const HomeScreen = ({ route }: any) => {
               title={localized.t("POST_EVENT")}
               buttonStyle={styles.postEventButton}
               onPress={postEvent}
-              titleStyle={styles.titleStyle}
+              titleStyle={[styles.titleStyle, { color: "green" }]}
             />
             <PrimaryButton
               title={localized.t("VOLUNTEER")}
@@ -346,7 +355,7 @@ const styles = StyleSheet.create({
     width: "70%",
   },
   titleStyle: {
-    color: "black",
+    color: "white",
     fontSize: h2dp(2.2),
     fontWeight: "200",
     fontFamily: "OpenSans-bold",

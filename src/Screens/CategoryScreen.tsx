@@ -153,7 +153,7 @@ const CategoryScreen = ({ route }: any) => {
         >
           <SafeAreaView style={styles.containerVolunteer}>
             <FoodhealersHeader />
-            <View style={styles.rootVolunteerHome}>
+            <View style={styles.root}>
               <Ionicons
                 name="chevron-back"
                 size={32}

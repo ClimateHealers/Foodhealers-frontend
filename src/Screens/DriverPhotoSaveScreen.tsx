@@ -19,7 +19,10 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { localized } from "../locales/localization";
 
-import { heightPercentageToDP as h2dp } from "react-native-responsive-screen";
+import {
+  heightPercentageToDP as h2dp,
+  widthPercentageToDP as w2dp,
+} from "react-native-responsive-screen";
 import { useDispatch, useSelector } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
@@ -116,12 +119,15 @@ const DriverPhotoSaveScreen = ({ route }: any) => {
           <ScrollView keyboardShouldPersistTaps="handled">
             <View style={styles.containerVolunteer}>
               <FoodhealersHeader />
-              <View style={styles.rootVolunteerHome}>
+              <View style={styles.root}>
                 <Ionicons
                   name="chevron-back"
                   size={32}
                   color="white"
-                  onPress={() => {navigation.navigate("DriverProfilePhoto"),handlePressOutside()}}
+                  onPress={() => {
+                    navigation.navigate("DriverProfilePhoto"),
+                      handlePressOutside();
+                  }}
                 />
                 <View style={styles.item}>
                   <Text style={styles.itemText}>{localized.t("DRIVE")}</Text>
@@ -173,7 +179,10 @@ const DriverPhotoSaveScreen = ({ route }: any) => {
                 }
                 buttonStyle={styles.buttonHistoryStyles}
                 titleStyle={styles.titleMainStyle}
-                onPress={() => {navigation.navigate("TakePictureScreen"), handlePressOutside()}}
+                onPress={() => {
+                  navigation.navigate("TakePictureScreen"),
+                    handlePressOutside();
+                }}
               />
               <PrimaryButton
                 title={localized.t("CHOOSE_FROM_CAMERA_ROLL")}

@@ -72,7 +72,7 @@ const Navigation = () => {
 
   return (
     <>
-      <NavigationContainer>
+      {/* <NavigationContainer> */}
         <Stack.Navigator initialRouteName="HomeScreen">
           <Stack.Screen
             name="LoginScreen"
@@ -407,7 +407,7 @@ const Navigation = () => {
             options={{ title: "", header: () => null }}
           />
         </Stack.Navigator>
-      </NavigationContainer>
+      {/* </NavigationContainer> */}
     </>
   );
 };

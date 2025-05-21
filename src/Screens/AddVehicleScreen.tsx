@@ -18,7 +18,10 @@ import {
   View,
 } from "react-native";
 import { Text, TextInput } from "react-native-paper";
-import { heightPercentageToDP as h2dp } from "react-native-responsive-screen";
+import {
+  heightPercentageToDP as h2dp,
+  widthPercentageToDP as w2dp,
+} from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
@@ -294,21 +297,12 @@ const AddVehicleScreen = ({ route }: any) => {
                     <Text style={styles.inputError}>
                       {errors?.licencePlate}
                     </Text>
-                    <View
-                      style={{
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        marginTop: h2dp(1),
-                      }}
-                    >
-                      <PrimaryButton
-                        title={localized.t("NEXT")}
-                        buttonStyle={styles.nextButtonStyles}
-                        titleStyle={styles.titleStyle}
-                        onPress={handleSubmit}
-                      />
-                    </View>
+                    <PrimaryButton
+                      title={localized.t("NEXT")}
+                      buttonStyle={styles.nextButtonStyles}
+                      titleStyle={styles.titleStyle}
+                      onPress={handleSubmit}
+                    />
                   </>
                 )}
               </Formik>

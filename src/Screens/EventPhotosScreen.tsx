@@ -14,7 +14,10 @@ import {
 
 import { Button } from "react-native-elements";
 import Spinner from "react-native-loading-spinner-overlay";
-import { heightPercentageToDP as h2dp } from "react-native-responsive-screen";
+import {
+  heightPercentageToDP as h2dp,
+  widthPercentageToDP as w2dp,
+} from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
@@ -88,12 +91,14 @@ const EventPhotosScreen = ({ route }: any) => {
           <ScrollView keyboardShouldPersistTaps="handled">
             <View style={styles.containerVolunteer}>
               <FoodhealersHeader />
-              <View style={styles.rootVolunteerHome}>
+              <View style={styles.root}>
                 <Ionicons
                   name="chevron-back"
                   size={32}
                   color="white"
-                  onPress={() => {navigation.goBack(),handlePressOutside()}}
+                  onPress={() => {
+                    navigation.goBack(), handlePressOutside();
+                  }}
                 />
                 <View style={styles.item}>
                   <Text style={styles.itemText}>
@@ -132,7 +137,10 @@ const EventPhotosScreen = ({ route }: any) => {
                         titleStyle={{
                           fontSize: h2dp(2.0),
                         }}
-                        onPress={() => {navigation.navigate("PostEvent"),handlePressOutside()}}
+                        onPress={() => {
+                          navigation.navigate("PostEvent"),
+                            handlePressOutside();
+                        }}
                       />
                       <Button
                         title={localized.t("NEXT")}

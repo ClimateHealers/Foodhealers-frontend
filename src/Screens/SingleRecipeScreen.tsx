@@ -1,4 +1,4 @@
-import { Ionicons } from "@expo/vector-icons";
+import { Entypo, Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { decode } from "html-entities";
@@ -172,9 +172,14 @@ const SingleRecipeScreen = ({ route }: any) => {
                     {localized.t("INGREDIIENTS")}
                   </Text>
                   {ingredients.map((ingredient: any, index: any) => (
-                    <Text key={index} style={styles.ingredient}>
-                      {ingredient}
-                    </Text>
+                    <View
+                      style={{ flexDirection: "row", alignItems: "center" }}
+                    >
+                      <Entypo name="dot-single" size={24} color="white" />
+                      <Text key={index} style={styles.ingredient}>
+                        {ingredient}
+                      </Text>
+                    </View>
                   ))}
                 </View>
                 <View>

@@ -430,7 +430,7 @@ const WeekScreen = ({ route }: any) => {
                               color: "#FC5A56",
                               fontSize: h2dp(1.5),
                               opacity: 0.8,
-                              fontWeight: "500",
+                              fontWeight: "bold",
                             }}
                           >
                             {marker?.name}

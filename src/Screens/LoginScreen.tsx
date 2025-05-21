@@ -68,32 +68,6 @@ const LoginScreen = () => {
     setMenuOpen(!menuClose);
   };
 
-  const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
-  };
-  const handleMenuItemPress = (item: any) => {
-    setMenuOpen(false);
-    navigation.navigate("HomeScreen");
-  };
-  const findFoodMenuItemPress = (item: any) => {
-    getLocation().then((res) => {
-      if (res) {
-        navigation?.navigate("MapScreen", {
-          latitude: res?.latitude,
-          longitude: res?.longitude,
-        });
-      }
-    });
-    setMenuOpen(false);
-  };
-
-  const changeLanguage = (itemValue: any, index: any) => {
-    const selectedLanguage = lang[index].value;
-    dispatch(setLanguage(selectedLanguage));
-    localized.locale = selectedLanguage;
-    setSelectedLanguage(selectedLanguage);
-  };
-
   return (
     <TouchableWithoutFeedback onPress={handlePressOutside}>
       <LinearGradient
@@ -326,7 +300,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     paddingHorizontal: w2dp(4),
-    marginTop: h2dp(1),
+    marginTop: h2dp(2.8),
   },
   title: {
     fontSize: h2dp(2.5),

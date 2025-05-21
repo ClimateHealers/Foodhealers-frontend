@@ -177,7 +177,7 @@ const SeeExistingDonationScreen = ({ route }: any) => {
           <Text
             style={{
               marginLeft: w2dp(3),
-              fontWeight: "500",
+              fontWeight: "bold",
               fontSize: h2dp(1.6),
               lineHeight: 30,
               paddingTop: h2dp(0.7),
@@ -247,16 +247,16 @@ const SeeExistingDonationScreen = ({ route }: any) => {
                   text: "Yes",
                   onPress: () => {
                     handlePressOutside(),
-                    navigation.navigate("AcceptDonatedRequestScreen", {
-                      quantity: quantity,
-                      itemTypeId: itemTypeId,
-                      title: title,
-                      foodItem: foodItem,
-                      requiredDate: requiredDate,
-                      id: id,
-                      latitude: latitude,
-                      longitude: longitude,
-                    });
+                      navigation.navigate("AcceptDonatedRequestScreen", {
+                        quantity: quantity,
+                        itemTypeId: itemTypeId,
+                        title: title,
+                        foodItem: foodItem,
+                        requiredDate: requiredDate,
+                        id: id,
+                        latitude: latitude,
+                        longitude: longitude,
+                      });
                   },
                   style: "default",
                 },
@@ -299,7 +299,9 @@ const SeeExistingDonationScreen = ({ route }: any) => {
               name="chevron-back"
               size={32}
               color="white"
-              onPress={() => {navigation.goBack(),handlePressOutside()}}
+              onPress={() => {
+                navigation.goBack(), handlePressOutside();
+              }}
             />
             <View style={styles.item}>
               <Text style={styles.itemText}>
@@ -315,7 +317,7 @@ const SeeExistingDonationScreen = ({ route }: any) => {
           <Modal visible={loading} animationType="slide" transparent={true}>
             <View style={styles.centeredView}>
               <View style={styles.modalView}>
-                <ActivityIndicator size={"large"}/>
+                <ActivityIndicator size={"large"} />
               </View>
             </View>
           </Modal>
@@ -383,10 +385,10 @@ const SeeExistingDonationScreen = ({ route }: any) => {
             title={`${localized.t("REQUEST")} ${item}`}
             onPress={() => {
               handlePressOutside(),
-              navigation.navigate("AddRequestDonationsScreen", {
-                itemTypeId: itemTypeId,
-                title: title,
-              })
+                navigation.navigate("AddRequestDonationsScreen", {
+                  itemTypeId: itemTypeId,
+                  title: title,
+                });
             }}
             buttonStyle={{
               backgroundColor: "#FC5A56",

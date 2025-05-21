@@ -173,7 +173,7 @@ const SeeExistingRequestScreen = ({ route }: any) => {
           <Text
             style={{
               marginLeft: w2dp(3),
-              fontWeight: "500",
+              fontWeight: "bold",
               fontSize: h2dp(1.6),
               lineHeight: 30,
               paddingTop: h2dp(0.7),
@@ -243,16 +243,16 @@ const SeeExistingRequestScreen = ({ route }: any) => {
                   text: "Yes",
                   onPress: () => {
                     handlePressOutside(),
-                    navigation.navigate("AcceptRequestedDonationScreen", {
-                      quantity: quantity,
-                      itemTypeId: itemTypeId,
-                      title: title,
-                      foodItem: foodItem,
-                      latitude: latitude,
-                      longitude: longitude,
-                      requiredDate: requiredDate,
-                      id: id,
-                    });
+                      navigation.navigate("AcceptRequestedDonationScreen", {
+                        quantity: quantity,
+                        itemTypeId: itemTypeId,
+                        title: title,
+                        foodItem: foodItem,
+                        latitude: latitude,
+                        longitude: longitude,
+                        requiredDate: requiredDate,
+                        id: id,
+                      });
                   },
                   style: "default",
                 },
@@ -297,12 +297,12 @@ const SeeExistingRequestScreen = ({ route }: any) => {
               color="white"
               onPress={() => {
                 handlePressOutside(),
-                navigation.navigate("VolunteerDonateScreen", {
-                  latitude: latitude,
-                  longitude: longitude,
-                  itemTypeId: itemTypeId,
-                  title: title,
-                })
+                  navigation.navigate("VolunteerDonateScreen", {
+                    latitude: latitude,
+                    longitude: longitude,
+                    itemTypeId: itemTypeId,
+                    title: title,
+                  });
               }}
             />
             <View style={styles.item}>
@@ -380,12 +380,12 @@ const SeeExistingRequestScreen = ({ route }: any) => {
             title={`${localized.t("DONATE")} ${item}`}
             onPress={() => {
               handlePressOutside(),
-              navigation.navigate("AddDonationsScreen", {
-                itemTypeId: itemTypeId,
-                title: title,
-                latitude: latitude,
-                longitude: longitude,
-              })
+                navigation.navigate("AddDonationsScreen", {
+                  itemTypeId: itemTypeId,
+                  title: title,
+                  latitude: latitude,
+                  longitude: longitude,
+                });
             }}
             buttonStyle={{
               backgroundColor: "#FC5A56",

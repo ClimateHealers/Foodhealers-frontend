@@ -104,7 +104,7 @@ const PickupHistoryScreen = ({ route }: any) => {
               fontSize: h2dp(1.6),
               lineHeight: 30,
               paddingTop: h2dp(0.5),
-              fontWeight: "500",
+              fontWeight: "bold",
             }}
           >
             {pickupTiming}
@@ -124,8 +124,7 @@ const PickupHistoryScreen = ({ route }: any) => {
         <Button
           title={localized.t("DETAILS")}
           onPress={() => {
-            handlePressOutside(),
-            console.log(active);
+            handlePressOutside(), console.log(active);
             active === false
               ? navigation.navigate("PickupConfirmScreen", {
                   pickAddress: pickAddress,
@@ -190,7 +189,10 @@ const PickupHistoryScreen = ({ route }: any) => {
                     name="chevron-back"
                     size={32}
                     color="white"
-                    onPress={() => {navigation.navigate("DriverRequestScreen"),handlePressOutside()}}
+                    onPress={() => {
+                      navigation.navigate("DriverRequestScreen"),
+                        handlePressOutside();
+                    }}
                   />
                   <View style={styles.item}>
                     <Text style={styles.itemText}>

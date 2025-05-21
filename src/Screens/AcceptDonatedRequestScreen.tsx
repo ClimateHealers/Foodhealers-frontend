@@ -518,31 +518,26 @@ const AcceptDonatedRequestScreen = ({ route }: any) => {
                             width: "100%",
                             alignContent: "center",
                             justifyContent: "center",
+                            borderRadius: w2dp(1),
+                            overflow: "hidden",
                           },
                         ]}
                         value={values.phoneNumber}
                         textInputProps={{ placeholderTextColor: "black" }}
-                        textInputStyle={{}}
+                        textInputStyle={{
+                          height: h2dp(8),
+                        }}
                       />
                       <Text style={styles.inputError}>
                         {errors?.phoneNumber}
                       </Text>
                     </View>
-                    <View
-                      style={{
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        marginTop: h2dp(1),
-                      }}
-                    >
-                      <PrimaryButton
-                        title={localized.t("SUBMIT")}
-                        buttonStyle={styles.buttonStyles}
-                        titleStyle={styles.titleStyle}
-                        onPress={handleSubmit}
-                      />
-                    </View>
+                    <PrimaryButton
+                      title={localized.t("SUBMIT")}
+                      buttonStyle={styles.buttonStyles}
+                      titleStyle={styles.titleStyle}
+                      onPress={handleSubmit}
+                    />
                   </>
                 )}
               </Formik>

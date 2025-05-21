@@ -184,7 +184,7 @@ const FindFoodHomeScreen = ({ route }: any) => {
                               color: "#FC5A56",
                               fontSize: h2dp(1.5),
                               opacity: 0.8,
-                              fontWeight: "500",
+                              fontWeight: "bold",
                             }}
                           >
                             {marker?.name}
@@ -230,7 +230,7 @@ const FindFoodHomeScreen = ({ route }: any) => {
                     style={{
                       marginLeft: w2dp(6),
                       fontSize: h2dp(2.5),
-                      fontWeight: "500",
+                      fontWeight: "bold",
                     }}
                   >
                     {localized.t("FOOD_EVENTS_CALENDAR")}
@@ -255,7 +255,7 @@ const FindFoodHomeScreen = ({ route }: any) => {
                     style={{
                       marginLeft: w2dp(6),
                       fontSize: h2dp(2.5),
-                      fontWeight: "500",
+                      fontWeight: "bold",
                     }}
                   >
                     {localized.t("VEGAN_RECIPES")}

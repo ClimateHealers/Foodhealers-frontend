@@ -1,4 +1,4 @@
-import { MaterialIcons } from "@expo/vector-icons";
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import Constants from "expo-constants";
 import { LinearGradient } from "expo-linear-gradient";
@@ -240,43 +240,24 @@ const MapScreen = ({ route }: any) => {
   return (
     <TouchableWithoutFeedback onPress={handlePressOutside}>
       <LinearGradient
-        colors={["#012e17", "#017439", "#009b4d"]}
+        colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
         style={styles.background}
       >
         <SafeAreaView>
           <ScrollView keyboardShouldPersistTaps="always">
             <View style={styles.container}>
               <FoodhealersHeader />
+
               <View style={styles.root}>
-                <View style={[styles.dropdownContainer, { width: "30%" }]}>
-                  <SelectDropdown
-                    buttonStyle={styles.dropdown1BtnStyle}
-                    buttonTextStyle={styles.dropdown1BtnTxtStyle}
-                    renderDropdownIcon={() => {
-                      return (
-                        <MaterialIcons
-                          name="keyboard-arrow-down"
-                          size={18}
-                          color="#B50000"
-                        />
-                      );
-                    }}
-                    dropdownIconPosition={"right"}
-                    dropdownStyle={styles.dropdown1DropdownStyle}
-                    rowStyle={styles.dropdown1RowStyle}
-                    rowTextStyle={styles.dropdown1RowTxtStyle}
-                    data={lang && lang.map((dd) => dd.label)}
-                    onSelect={changeLanguage}
-                    defaultButtonText={selectedLanguage.toUpperCase()}
-                    buttonTextAfterSelection={(itemValue, index) => {
-                      return languageName.toUpperCase();
-                    }}
-                    rowTextForSelection={(item, index) => {
-                      return item;
-                    }}
-                  />
-                </View>
-                <View style={[styles.item, { marginLeft: w2dp(-15) }]}>
+                <Ionicons
+                  name="chevron-back"
+                  size={32}
+                  color="white"
+                  onPress={() => {
+                    navigation.goBack(), handlePressOutside();
+                  }}
+                />
+                <View style={styles.item}>
                   <Text style={styles.itemText}>
                     {localized.t("FIND_FOOD")}
                   </Text>
@@ -458,7 +439,7 @@ const MapScreen = ({ route }: any) => {
                               color: "#FC5A56",
                               fontSize: h2dp(1.5),
                               opacity: 0.8,
-                              fontWeight: "500",
+                              fontWeight: "bold",
                             }}
                           >
                             {marker?.name}
@@ -509,7 +490,7 @@ const MapScreen = ({ route }: any) => {
                       buttonStyle={styles.buttonStyles}
                       titleStyle={styles.titleStyle}
                       onPress={() => {
-                        navigation.navigate("HomeScreen"), handlePressOutside();
+                        navigation.replace("HomeScreen"), handlePressOutside();
                       }}
                     />
                   </View>

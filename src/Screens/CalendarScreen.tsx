@@ -12,7 +12,10 @@ import {
   View,
 } from "react-native";
 import { Calendar } from "react-native-calendars";
-import { heightPercentageToDP as h2dp } from "react-native-responsive-screen";
+import {
+  heightPercentageToDP as h2dp,
+  widthPercentageToDP as w2dp,
+} from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
@@ -48,12 +51,14 @@ const CalendarScreen = ({ route }: any) => {
             <StatusBar animated={true} backgroundColor="auto" />
             <View style={styles.containerVolunteer}>
               <FoodhealersHeader />
-              <View style={styles.rootVolunteerHome}>
+              <View style={styles.root}>
                 <Ionicons
                   name="chevron-back"
                   size={32}
                   color="white"
-                  onPress={() => {navigation.goBack(), handlePressOutside()}}
+                  onPress={() => {
+                    navigation.goBack(), handlePressOutside();
+                  }}
                 />
                 <View style={styles.item}>
                   <Text style={styles.itemText}>
@@ -111,12 +116,12 @@ const CalendarScreen = ({ route }: any) => {
 
                       if (response?.payload?.foodEvents) {
                         handlePressOutside(),
-                        navigation.navigate("CalendarEventScreen", {
-                          selectedDate: day.dateString,
-                          singleDayEvent: response?.payload?.foodEvents,
-                          latitude: latitude,
-                          longitude: longitude,
-                        });
+                          navigation.navigate("CalendarEventScreen", {
+                            selectedDate: day.dateString,
+                            singleDayEvent: response?.payload?.foodEvents,
+                            latitude: latitude,
+                            longitude: longitude,
+                          });
                       } else {
                       }
                     } catch (error) {

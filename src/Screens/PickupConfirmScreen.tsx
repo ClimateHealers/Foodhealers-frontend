@@ -101,7 +101,7 @@ const PickupConfirmScreen = ({ route }: any) => {
           <ScrollView keyboardShouldPersistTaps="handled">
             <View style={styles.containerVolunteer}>
               <FoodhealersHeader />
-              <View style={styles.rootVolunteerHome}>
+              <View style={styles.root}>
                 <Ionicons
                   name="chevron-back"
                   size={32}
@@ -153,7 +153,7 @@ const PickupConfirmScreen = ({ route }: any) => {
                         marginLeft: w2dp(3),
                         fontSize: h2dp(1.6),
                         // lineHeight: 30,
-                        fontWeight: "500",
+                        fontWeight: "bold",
                         paddingTop: h2dp(0.5),
                         alignSelf: "center",
                         marginVertical: h2dp(1),
@@ -175,7 +175,7 @@ const PickupConfirmScreen = ({ route }: any) => {
                           marginLeft: w2dp(3),
                           fontSize: h2dp(1.6),
                           // lineHeight: 30,
-                          fontWeight: "500",
+                          fontWeight: "bold",
                           paddingTop: h2dp(0.5),
                         }}
                       >
@@ -222,7 +222,7 @@ const PickupConfirmScreen = ({ route }: any) => {
                         marginLeft: w2dp(3),
                         fontSize: h2dp(1.6),
                         // lineHeight: 30,
-                        fontWeight: "500",
+                        fontWeight: "bold",
                         paddingTop: h2dp(0.5),
                         alignSelf: "center",
                         marginVertical: h2dp(1),
@@ -242,7 +242,7 @@ const PickupConfirmScreen = ({ route }: any) => {
                           marginLeft: w2dp(3),
                           fontSize: h2dp(1.6),
                           // lineHeight: 30,
-                          fontWeight: "500",
+                          fontWeight: "bold",
                           paddingTop: h2dp(0.5),
                         }}
                       >

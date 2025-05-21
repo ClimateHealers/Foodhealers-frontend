@@ -11,7 +11,7 @@ import {
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  View
+  View,
 } from "react-native";
 
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -90,12 +90,14 @@ const UploadPhotosScreen = ({ route }: any) => {
           <ScrollView keyboardShouldPersistTaps="handled">
             <View style={styles.containerVolunteer}>
               <FoodhealersHeader />
-              <View style={styles.rootVolunteerHome}>
+              <View style={styles.root}>
                 <Ionicons
                   name="chevron-back"
                   size={32}
                   color="white"
-                  onPress={() => {navigation.goBack(),handlePressOutside()}}
+                  onPress={() => {
+                    navigation.goBack(), handlePressOutside();
+                  }}
                 />
                 <View style={styles.item}>
                   <Text style={styles.itemText}>
@@ -133,7 +135,11 @@ const UploadPhotosScreen = ({ route }: any) => {
                 <Text style={{ fontSize: h2dp(2.0), marginTop: 10 }}>
                   {localized.t("UPLOAD_EVENT_PHOTO")}
                 </Text>
-                <TouchableOpacity onPress={() => {navigation.goBack(),handlePressOutside()}}>
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.goBack(), handlePressOutside();
+                  }}
+                >
                   <Text
                     style={{
                       fontSize: h2dp(2.0),

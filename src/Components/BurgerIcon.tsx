@@ -52,11 +52,11 @@ const BurgerIcon = ({ menuClose, onOutsidePress, menuItem }: any) => {
   const handleMenuItemPress = (item: any) => {
     setMenuOpen(false);
     if (isAuthenticated) {
-      navigation.navigate("HomeScreen");
+      navigation.replace("HomeScreen");
     } else {
       navigation.navigate("SignupScreen");
     }
-    navigation.navigate("HomeScreen");
+    navigation.replace("HomeScreen");
   };
 
   const findFoodMenuItemPress = (item: any) => {

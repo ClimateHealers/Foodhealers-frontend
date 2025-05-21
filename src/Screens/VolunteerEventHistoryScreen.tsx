@@ -159,7 +159,7 @@ const VolunteerEventHistoryScreen = ({ route }: any) => {
           <Text
             style={{
               marginLeft: w2dp(3),
-              fontWeight: "500",
+              fontWeight: "bold",
               fontSize: h2dp(1.6),
               lineHeight: 30,
             }}
@@ -195,7 +195,9 @@ const VolunteerEventHistoryScreen = ({ route }: any) => {
               name="chevron-back"
               size={32}
               color="white"
-              onPress={() => {navigation.goBack(),handlePressOutside()}}
+              onPress={() => {
+                navigation.goBack(), handlePressOutside();
+              }}
             />
             <View style={styles.item}>
               <Text style={styles.itemText}>

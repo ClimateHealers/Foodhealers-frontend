@@ -34,26 +34,21 @@ const BecomeADriverScreen = () => {
   return (
     <TouchableWithoutFeedback onPress={handlePressOutside}>
       <LinearGradient
-        colors={["#6fa200", "#72a400", "#82b200", "#87b500", "#6fa200"]}
+        colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
         style={styles.background}
       >
         <SafeAreaView>
           <ScrollView keyboardShouldPersistTaps="handled">
-            <View style={{ flex: 1, alignItems: "center", marginTop: h2dp(2) }}>
+            <View style={styles.container}>
               <FoodhealersHeader />
-              <View
-                style={[
-                  styles.rootVolunteerHome,
-                  {
-                    marginBottom: h2dp(4),
-                  },
-                ]}
-              >
+              <View style={styles.root}>
                 <Ionicons
                   name="chevron-back"
                   size={32}
                   color="white"
-                  onPress={() => {navigation.goBack(),handlePressOutside()}}
+                  onPress={() => {
+                    navigation.goBack(), handlePressOutside();
+                  }}
                 />
                 <View style={styles.item}>
                   <Text style={styles.itemText}>{localized.t("DRIVE")}</Text>
@@ -64,33 +59,25 @@ const BecomeADriverScreen = () => {
                 />
               </View>
               <View
-                style={{
-                  backgroundColor: "white",
-                  marginBottom: 10,
-                  width: "100%",
-                  height: h2dp(30),
-                }}
+                style={[
+                  styles.centeredView,
+                  {
+                    height: h2dp(60),
+                  },
+                ]}
               >
                 <Image
                   source={require("../../assets/images/shutterstock_1907968996.png")}
-                  style={{ width: "100%", height: h2dp(30) }}
+                  style={{ width: "100%", height: h2dp(30), borderRadius: 10 }}
                 />
-              </View>
-              <View>
                 <PrimaryButton
-                  title={localized.t("BECOME_A_DRIVER_FOR_FOOD_HEALERS")} // {localized.t(// )}
-                  onPress={() => {navigation.navigate("AddDriverScreen"),handlePressOutside()}}
-                  buttonStyle={{
-                    backgroundColor: "white",
-                    color: "black",
-                    borderRadius: 10,
-                    paddingVertical: h2dp(2),
-                    paddingHorizontal: w2dp(10),
-                    justifyContent: "center",
-                    width: w2dp(70),
-                    marginTop: h2dp(7),
+                  title={localized.t("BECOME_A_DRIVER_FOR_FOOD_HEALERS")}
+                  onPress={() => {
+                    navigation.navigate("AddDriverScreen"),
+                      handlePressOutside();
                   }}
-                  titleStyle={styles.titleMainStyle}
+                  buttonStyle={styles.buttonStyles}
+                  titleStyle={styles.titleStyle}
                 />
               </View>
             </View>

@@ -308,8 +308,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingHorizontal: wp(4),
-    marginTop: hp(1),
+    paddingHorizontal: w2dp(4),
+    marginTop: h2dp(2.8),
   },
   title: {
     fontSize: h2dp(2.5),

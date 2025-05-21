@@ -87,12 +87,15 @@ const DriverProfilePhoto = ({ route }: any) => {
           <ScrollView keyboardShouldPersistTaps="handled">
             <View style={styles.containerVolunteer}>
               <FoodhealersHeader />
-              <View style={styles.rootVolunteerHome}>
+              <View style={styles.root}>
                 <Ionicons
                   name="chevron-back"
                   size={32}
                   color="white"
-                  onPress={() => {navigation.navigate("BecomeADriverScreen"),handlePressOutside()}}
+                  onPress={() => {
+                    navigation.navigate("BecomeADriverScreen"),
+                      handlePressOutside();
+                  }}
                 />
                 <View style={styles.item}>
                   <Text style={styles.itemText}>{localized.t("DRIVE")}</Text>
@@ -141,7 +144,10 @@ const DriverProfilePhoto = ({ route }: any) => {
                 title={localized.t("TAKE_PHOTO")}
                 buttonStyle={styles.buttonStyles}
                 titleStyle={styles.titleStyle}
-                onPress={() => {navigation.navigate("TakePictureScreen"),handlePressOutside()}}
+                onPress={() => {
+                  navigation.navigate("TakePictureScreen"),
+                    handlePressOutside();
+                }}
               />
               <PrimaryButton
                 title={localized.t("CHOOSE_FROM_CAMERA_ROLL")}
