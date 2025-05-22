@@ -252,7 +252,6 @@ const AllEventScreen = () => {
           }}
           titleStyle={{
             color: "black",
-            fontWeight: "300",
           }}
         />
       </View>
@@ -354,15 +353,8 @@ const AllEventScreen = () => {
               />
             </View>
           ) : (
-            <View
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                marginTop: h2dp(25),
-              }}
-            >
-              <Text style={styles.itemText}>
+            <View style={styles.centeredView}>
+              <Text style={{ color: "white" }}>
                 {localized.t("NOTHING_TO_SHOW")}
               </Text>
             </View>

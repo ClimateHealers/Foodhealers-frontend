@@ -81,152 +81,154 @@ const AddDriverScreen = ({ route }: any) => {
         colors={["#012e17", "#017439", "#009b4d"]}
         style={styles.background}
       >
-        <SafeAreaView>
-          <ScrollView keyboardShouldPersistTaps="handled">
-            <StatusBar animated={true} backgroundColor="auto" />
-            <View style={styles.root}>
-              <Ionicons
-                name="chevron-back"
-                size={32}
-                color="white"
-                onPress={() => {
-                  navigation.goBack(), handlePressOutside();
-                }}
-              />
-              <View style={styles.item}>
-                <Text style={styles.itemText}>{localized.t("DRIVE")}</Text>
-              </View>
-              <BurgerIcon
-                onOutsidePress={handlePressOutside}
-                menuClose={menuClose}
-              />
+        <SafeAreaView style={{ flex: 1 }}>
+          <StatusBar animated={true} backgroundColor="auto" />
+          <View style={styles.root}>
+            <Ionicons
+              name="chevron-back"
+              size={32}
+              color="white"
+              onPress={() => {
+                navigation.goBack(), handlePressOutside();
+              }}
+            />
+            <View style={styles.item}>
+              <Text style={styles.itemText}>{localized.t("DRIVE")}</Text>
             </View>
-            <View style={styles.container}>
-              <FoodhealersHeader />
+            <BurgerIcon
+              onOutsidePress={handlePressOutside}
+              menuClose={menuClose}
+            />
+          </View>
+          <View style={styles.container}>
+            <FoodhealersHeader />
 
-              <Modal visible={loading} animationType="slide" transparent={true}>
-                <View style={styles.centeredView}>
-                  <View style={styles.modalView}>
-                    <ActivityIndicator size={"large"} />
-                  </View>
+            <Modal visible={loading} animationType="slide" transparent={true}>
+              <View style={styles.centeredView}>
+                <View style={styles.modalView}>
+                  <ActivityIndicator size={"large"} />
                 </View>
-              </Modal>
-              <Formik
-                validationSchema={addDriver}
-                initialValues={{
-                  name: data?.user?.name,
-                  phoneNumber: data?.user?.phoneNumber,
-                  email: data?.user?.email,
-                  lat: data?.user?.address?.lat,
-                  long: data?.user?.address?.lng,
-                  volunteerFullAddress: data?.user?.address?.fullAddress,
-                  city: data?.user?.address?.city,
-                  state: data?.user?.address?.state,
-                  zipCode: data?.user?.address?.postalCode,
-                }}
-                onSubmit={async ({
-                  name,
-                  lat,
-                  email,
-                  long,
-                  volunteerFullAddress,
-                  phoneNumber,
-                  city,
-                  state,
-                  zipCode,
-                }) => {
-                  setLoading(true);
-                  try {
-                    setResponse({
-                      loading: true,
-                      message: "",
-                      error: false,
-                    });
-                    const data = {
-                      name: name,
-                      email: email,
-                      phoneNumber: phoneNumber,
-                      availableFromDate: eventDateTime,
-                      availableToDate: eventEndDateTime,
-                      lat: lat,
-                      lng: long,
-                      fullAddress: volunteerFullAddress,
-                      city: city,
-                      state: state,
-                      postalCode: Number(zipCode) ? Number(zipCode) : 0,
-                    };
-                    const res = await dispatch(
-                      updateProfile(data as any) as any
-                    );
-                    if (res?.payload?.success == true) {
-                      setLoading(false);
-                      setResponse({
-                        loading: false,
-                        message: `${localized.t(
-                          "DRIVER_REGISTERED_SUCCESSFULLY"
-                        )}`,
-                        error: false,
-                      });
-                      setLoading(false);
-                      Alert.alert(
-                        `${localized.t("DRIVER_REGISTERED_SUCCESSFULLY")}`,
-                        `${localized.t(
-                          "YOU_HAVE_BEEN_SUCCEESSFULLY_ADDED_AS_A_DRIVER"
-                        )}`,
-                        [
-                          {
-                            text: "OK",
-                            onPress: () => {
-                              handlePressOutside(),
-                                navigation.navigate("AddVehicleScreen", {
-                                  newVehicle: false,
-                                });
-                            },
-                          },
-                        ],
-                        { cancelable: false }
-                      );
-                    } else {
-                      setLoading(false);
-                      Alert.alert(
-                        `${localized.t("ALERT")}`,
-                        `${res?.payload}`,
-                        [
-                          {
-                            text: `${localized.t("OK")}`,
-                            style: "cancel",
-                          },
-                        ],
-                        { cancelable: true }
-                      );
-                    }
-                  } catch (err: any) {
+              </View>
+            </Modal>
+            <Formik
+              validationSchema={addDriver}
+              initialValues={{
+                name: data?.user?.name,
+                phoneNumber: data?.user?.phoneNumber,
+                email: data?.user?.email,
+                lat: data?.user?.address?.lat,
+                long: data?.user?.address?.lng,
+                volunteerFullAddress: data?.user?.address?.fullAddress,
+                city: data?.user?.address?.city,
+                state: data?.user?.address?.state,
+                zipCode: data?.user?.address?.postalCode,
+              }}
+              onSubmit={async ({
+                name,
+                lat,
+                email,
+                long,
+                volunteerFullAddress,
+                phoneNumber,
+                city,
+                state,
+                zipCode,
+              }) => {
+                setLoading(true);
+                try {
+                  setResponse({
+                    loading: true,
+                    message: "",
+                    error: false,
+                  });
+                  const data = {
+                    name: name,
+                    email: email,
+                    phoneNumber: phoneNumber,
+                    availableFromDate: eventDateTime,
+                    availableToDate: eventEndDateTime,
+                    lat: lat,
+                    lng: long,
+                    fullAddress: volunteerFullAddress,
+                    city: city,
+                    state: state,
+                    postalCode: Number(zipCode) ? Number(zipCode) : 0,
+                  };
+                  const res = await dispatch(updateProfile(data as any) as any);
+                  if (res?.payload?.success == true) {
                     setLoading(false);
                     setResponse({
                       loading: false,
-                      message: err?.message,
-                      error: true,
+                      message: `${localized.t(
+                        "DRIVER_REGISTERED_SUCCESSFULLY"
+                      )}`,
+                      error: false,
                     });
+                    setLoading(false);
                     Alert.alert(
-                      `${localized.t("DRIVER_NOT_ADDED")}`,
-                      `${err.message}`,
-                      [{ text: `${localized.t("OK")}` }],
+                      `${localized.t("DRIVER_REGISTERED_SUCCESSFULLY")}`,
+                      `${localized.t(
+                        "YOU_HAVE_BEEN_SUCCEESSFULLY_ADDED_AS_A_DRIVER"
+                      )}`,
+                      [
+                        {
+                          text: "OK",
+                          onPress: () => {
+                            handlePressOutside(),
+                              navigation.navigate("AddVehicleScreen", {
+                                newVehicle: false,
+                              });
+                          },
+                        },
+                      ],
                       { cancelable: false }
                     );
+                  } else {
+                    setLoading(false);
+                    Alert.alert(
+                      `${localized.t("ALERT")}`,
+                      `${res?.payload}`,
+                      [
+                        {
+                          text: `${localized.t("OK")}`,
+                          style: "cancel",
+                        },
+                      ],
+                      { cancelable: true }
+                    );
                   }
-                }}
-              >
-                {({
-                  handleSubmit,
-                  handleBlur,
-                  handleChange,
-                  values,
-                  setFieldValue,
-                  errors,
-                  touched,
-                  isValid,
-                }) => (
-                  <View style={{ marginTop: h2dp(5) }}>
+                } catch (err: any) {
+                  setLoading(false);
+                  setResponse({
+                    loading: false,
+                    message: err?.message,
+                    error: true,
+                  });
+                  Alert.alert(
+                    `${localized.t("DRIVER_NOT_ADDED")}`,
+                    `${err.message}`,
+                    [{ text: `${localized.t("OK")}` }],
+                    { cancelable: false }
+                  );
+                }
+              }}
+            >
+              {({
+                handleSubmit,
+                handleBlur,
+                handleChange,
+                values,
+                setFieldValue,
+                errors,
+                touched,
+                isValid,
+              }) => (
+                <View style={{ flex: 1 }}>
+                  <ScrollView
+                    keyboardShouldPersistTaps="handled"
+                    contentContainerStyle={{ paddingBottom: 20 }}
+                    style={{ flex: 1 }}
+                  >
                     <TextInput
                       onChangeText={handleChange("name")}
                       onBlur={handleBlur("name")}
@@ -416,17 +418,28 @@ const AddDriverScreen = ({ route }: any) => {
                         {errors?.phoneNumber}
                       </Text>
                     </View>
+                  </ScrollView>
+                  <View
+                    style={{
+                      paddingBottom: h2dp(2),
+                    }}
+                  >
                     <PrimaryButton
                       title={localized.t("NEXT")}
-                      buttonStyle={styles.buttonStyles}
-                      titleStyle={styles.titleStyle}
                       onPress={handleSubmit}
+                      buttonStyle={[
+                        styles.buttonStyles,
+                        {
+                          marginHorizontal: 0,
+                        },
+                      ]}
+                      titleStyle={styles.titleStyle}
                     />
                   </View>
-                )}
-              </Formik>
-            </View>
-          </ScrollView>
+                </View>
+              )}
+            </Formik>
+          </View>
         </SafeAreaView>
       </LinearGradient>
     </TouchableWithoutFeedback>

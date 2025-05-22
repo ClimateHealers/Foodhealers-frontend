@@ -321,7 +321,7 @@ const SeeExistingDonationScreen = ({ route }: any) => {
               </View>
             </View>
           </Modal>
-          <View>
+          <View style={{ flex: 1 }}>
             <View style={styles.itemFilter}>
               <Text style={styles.itemFilterText}>
                 {localized.t("EXISTING")} {item} {localized.t("DONATIONS")}
@@ -366,40 +366,32 @@ const SeeExistingDonationScreen = ({ route }: any) => {
                 />
               </View>
             ) : (
-              <View
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  marginTop: h2dp(10),
-                  marginBottom: h2dp(10),
-                }}
-              >
-                <Text style={styles.itemText}>
+              <View style={styles.centeredView}>
+                <Text style={{ color: "white" }}>
                   {localized.t("NOTHING_TO_SHOW")}
                 </Text>
               </View>
             )}
           </View>
-          <PrimaryButton
-            title={`${localized.t("REQUEST")} ${item}`}
-            onPress={() => {
-              handlePressOutside(),
-                navigation.navigate("AddRequestDonationsScreen", {
-                  itemTypeId: itemTypeId,
-                  title: title,
-                });
-            }}
-            buttonStyle={{
-              backgroundColor: "#FC5A56",
-              color: "black",
-              borderRadius: 5,
-              width: w2dp(70),
-              alignSelf: "center",
-              marginTop: h2dp(3),
-            }}
-            titleStyle={styles.titleStyle}
-          />
+          <View style={{ paddingBottom: h2dp(2) }}>
+            <PrimaryButton
+              title={`${localized.t("REQUEST")} ${item}`}
+              onPress={() => {
+                handlePressOutside(),
+                  navigation.navigate("AddRequestDonationsScreen", {
+                    itemTypeId: itemTypeId,
+                    title: title,
+                  });
+              }}
+              buttonStyle={[
+                styles.buttonStyles,
+                {
+                  marginHorizontal: 0,
+                },
+              ]}
+              titleStyle={styles.titleStyle}
+            />
+          </View>
         </View>
       </LinearGradient>
     </TouchableWithoutFeedback>

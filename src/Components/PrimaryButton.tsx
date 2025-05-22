@@ -35,8 +35,7 @@ const styles = StyleSheet.create({
   },
   titleStyle: {
     color: "black",
-    fontSize: h2dp(2.6),
-    fontWeight: "400",
+    fontSize: h2dp(2.2),
     lineHeight: 35,
   },
 });

@@ -21,6 +21,23 @@ export const styles = StyleSheet.create({
     marginHorizontal: w2dp(4),
     zIndex: 0,
   },
+  header: {
+    position: "absolute",
+    top: 0,
+    left: h2dp(-2.6),
+    right: 0,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: w2dp(4.5),
+    paddingTop: h2dp(3),
+    paddingBottom: h2dp(2),
+  },
+  headerTitle: {
+    fontSize: w2dp(5),
+    color: "white",
+    fontWeight: "bold",
+  },
   containerVolunteer: {
     flex: 1,
     alignItems: "center",
@@ -72,7 +89,6 @@ export const styles = StyleSheet.create({
   titleStyle: {
     color: "white",
     fontSize: h2dp(2.2),
-    fontWeight: "bold",
   },
   HeaderText: {
     fontSize: h2dp(2),
@@ -128,7 +144,7 @@ export const styles = StyleSheet.create({
     color: "black",
   },
   titleMainStyle: {
-    color: "black",
+    color: "white",
     fontSize: h2dp(2.6),
     lineHeight: h2dp(3.5),
     fontFamily: "OpenSans-Regular",
@@ -247,6 +263,7 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
   },
   card: {
+    marginTop: h2dp(5),
     backgroundColor: "white",
     width: w2dp(85),
     marginBottom: h2dp(1),
@@ -392,7 +409,7 @@ export const styles = StyleSheet.create({
     backgroundColor: "#FC5A56",
     borderRadius: w2dp(2),
     marginTop: h2dp(3),
-    marginHorizontal: w2dp(4),
+    marginHorizontal: h2dp(2),
     height: h2dp(6),
     justifyContent: "center",
   },
@@ -407,10 +424,10 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
   },
   buttonHistoryStyles: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: "gray",
     color: "black",
-    borderRadius: w2dp(1.25),
-    width: w2dp(70),
+    borderRadius: w2dp(2),
+    width: w2dp(90),
     marginTop: h2dp(3),
     alignSelf: "center",
     height: h2dp(6),
@@ -419,8 +436,8 @@ export const styles = StyleSheet.create({
   buttonMainStyles: {
     backgroundColor: "#FC5A56",
     color: "black",
-    borderRadius: w2dp(1.25),
-    width: w2dp(70),
+    borderRadius: w2dp(2),
+    width: w2dp(90),
     marginTop: h2dp(5),
     alignSelf: "center",
     height: h2dp(6),
@@ -463,11 +480,17 @@ export const styles = StyleSheet.create({
     padding: w2dp(2),
   },
 
-  // Map styles
   mapContainer: {
     height: h2dp(65),
     marginTop: h2dp(3),
     borderRadius: w2dp(2.5),
+  },
+  fixedButtonContainer: {
+    position: "absolute",
+    bottom: 20,
+    left: 20,
+    right: 20,
+    zIndex: 10,
   },
   toggle: {
     flexDirection: "row",

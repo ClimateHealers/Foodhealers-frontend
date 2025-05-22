@@ -149,94 +149,94 @@ const PostEvent = () => {
         colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
         style={styles.background}
       >
-        <SafeAreaView>
-          <ScrollView keyboardShouldPersistTaps="handled">
-            <StatusBar animated={true} backgroundColor="auto" />
-            <View style={styles.container}>
-              <FoodhealersHeader />
-              <View style={styles.root}>
-                <Ionicons
-                  name="chevron-back"
-                  size={32}
-                  color="white"
-                  onPress={() => {
-                    navigation.goBack(), handlePressOutside();
-                  }}
-                />
-                <View style={styles.item}>
-                  <Text style={styles.itemText}>
-                    {localized.t("POST_AN_EVENT")}
-                  </Text>
-                </View>
-                <BurgerIcon
-                  onOutsidePress={handlePressOutside}
-                  menuClose={menuClose}
-                />
+        <SafeAreaView style={{ flex: 1 }}>
+          <StatusBar animated={true} backgroundColor="auto" />
+          <View style={styles.container}>
+            <FoodhealersHeader />
+            <View style={styles.root}>
+              <Ionicons
+                name="chevron-back"
+                size={32}
+                color="white"
+                onPress={() => {
+                  navigation.goBack(), handlePressOutside();
+                }}
+              />
+              <View style={styles.item}>
+                <Text style={styles.itemText}>
+                  {localized.t("POST_AN_EVENT")}
+                </Text>
               </View>
-              <Modal visible={loading} animationType="slide" transparent={true}>
-                <View style={styles.centeredView}>
-                  <View style={styles.modalView}>
-                    <ActivityIndicator size={"large"} />
-                  </View>
+              <BurgerIcon
+                onOutsidePress={handlePressOutside}
+                menuClose={menuClose}
+              />
+            </View>
+            <Modal visible={loading} animationType="slide" transparent={true}>
+              <View style={styles.centeredView}>
+                <View style={styles.modalView}>
+                  <ActivityIndicator size={"large"} />
                 </View>
-              </Modal>
-              <Formik
-                validationSchema={postEventSchema}
-                initialValues={{
-                  eventName: "",
-                  served: "",
-                  lat: 0,
-                  long: 0,
-                  address: "",
-                  city: "",
-                  state: "",
-                  postalCode: "",
-                  volunteers: 0,
-                }}
-                onSubmit={async ({
-                  eventName,
-                  served,
-                  volunteers,
-                  lat,
-                  long,
-                  address,
-                  city,
-                  state,
-                  postalCode,
-                }) => {
-                  if (!city) {
-                    alert(`${localized.t("PLEASE_ENTER_THE_FULL_ADDRESS")}`);
-                    return;
-                  }
+              </View>
+            </Modal>
+            <Formik
+              validationSchema={postEventSchema}
+              initialValues={{
+                eventName: "",
+                served: "",
+                lat: 0,
+                long: 0,
+                address: "",
+                city: "",
+                state: "",
+                postalCode: "",
+                volunteers: 0,
+              }}
+              onSubmit={async ({
+                eventName,
+                served,
+                volunteers,
+                lat,
+                long,
+                address,
+                city,
+                state,
+                postalCode,
+              }) => {
+                if (!city) {
+                  alert(`${localized.t("PLEASE_ENTER_THE_FULL_ADDRESS")}`);
+                  return;
+                }
 
-                  await navigation.navigate("UploadPhotosScreen", {
-                    eventFormData: {
-                      eventName: eventName,
-                      served: served,
-                      eventDate: eventDateTime,
-                      eventEndDateTime: eventEndDateTime,
-                      lat: lat,
-                      long: long,
-                      address: address,
-                      city: city,
-                      state: state,
-                      postalCode: Number(postalCode) ? Number(postalCode) : 0,
-                      volunteers: Number(volunteers) ? Number(volunteers) : 0,
-                    },
-                  });
-                }}
-              >
-                {({
-                  handleSubmit,
-                  handleBlur,
-                  handleChange,
-                  values,
-                  setFieldValue,
-                  errors,
-                  touched,
-                  isValid,
-                }) => (
-                  <>
+                await navigation.navigate("UploadPhotosScreen", {
+                  eventFormData: {
+                    eventName: eventName,
+                    served: served,
+                    eventDate: eventDateTime,
+                    eventEndDateTime: eventEndDateTime,
+                    lat: lat,
+                    long: long,
+                    address: address,
+                    city: city,
+                    state: state,
+                    postalCode: Number(postalCode) ? Number(postalCode) : 0,
+                    volunteers: Number(volunteers) ? Number(volunteers) : 0,
+                  },
+                });
+              }}
+            >
+              {({
+                handleSubmit,
+                handleBlur,
+                handleChange,
+                values,
+                setFieldValue,
+                errors,
+                touched,
+                isValid,
+              }) => (
+                <>
+                  <ScrollView keyboardShouldPersistTaps="handled">
                     <TextInput
                       onChangeText={handleChange("eventName")}
                       onBlur={handleBlur("eventName")}
@@ -506,17 +506,29 @@ const PostEvent = () => {
                       id={"volunteers"}
                     />
                     <Text style={styles.inputError}>{errors.volunteers}</Text>
+                  </ScrollView>
+
+                  <View
+                    style={{
+                      paddingBottom: h2dp(2),
+                    }}
+                  >
                     <PrimaryButton
                       title={localized.t("SUBMIT")}
-                      buttonStyle={styles.buttonStyles}
+                      buttonStyle={[
+                        styles.buttonStyles,
+                        {
+                          marginHorizontal: 0,
+                        },
+                      ]}
                       titleStyle={styles.titleStyle}
                       onPress={handleSubmit}
                     />
-                  </>
-                )}
-              </Formik>
-            </View>
-          </ScrollView>
+                  </View>
+                </>
+              )}
+            </Formik>
+          </View>
         </SafeAreaView>
       </LinearGradient>
     </TouchableWithoutFeedback>

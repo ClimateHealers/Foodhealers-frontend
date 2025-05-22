@@ -84,7 +84,13 @@ const VolunteerDonateScreen = ({ route }: any) => {
       <View>
         <TouchableOpacity activeOpacity={1}>
           <View
-            style={[styles.card, { height: h2dp(70), borderRadius: h2dp(3) }]}
+            style={[
+              styles.card,
+              {
+                height: h2dp(65),
+                borderRadius: h2dp(3),
+              },
+            ]}
           >
             <View style={styles.cardText}>
               <View>
@@ -117,21 +123,21 @@ const VolunteerDonateScreen = ({ route }: any) => {
               <Text style={{ alignSelf: "center", fontSize: h2dp(2.2) }}>
                 {localized.t("YOU_CAN_MAKE_A_DIFFERENCE")}
               </Text>
-              <PrimaryButton
-                title={localized.t("SELECT")}
-                onPress={() => {
-                  handlePressOutside(),
-                    navigation.navigate(item?.navigation, {
-                      itemTypeId: item?.itemTypeId,
-                      title: item?.title,
-                      latitude: latitude,
-                      longitude: longitude,
-                    });
-                }}
-                buttonStyle={styles.buttonStyles}
-                titleStyle={styles.titleStyle}
-              />
             </View>
+            <PrimaryButton
+              title={localized.t("SELECT")}
+              onPress={() => {
+                handlePressOutside(),
+                  navigation.navigate(item?.navigation, {
+                    itemTypeId: item?.itemTypeId,
+                    title: item?.title,
+                    latitude: latitude,
+                    longitude: longitude,
+                  });
+              }}
+              buttonStyle={styles.buttonStyles}
+              titleStyle={styles.titleStyle}
+            />
           </View>
         </TouchableOpacity>
       </View>
@@ -167,7 +173,7 @@ const VolunteerDonateScreen = ({ route }: any) => {
                   menuClose={menuClose}
                 />
               </View>
-              <View style={{ marginHorizontal: "-4%" }}>
+              <View style={styles.centeredView}>
                 <Carousel
                   ref={sliderRef}
                   data={cardData}

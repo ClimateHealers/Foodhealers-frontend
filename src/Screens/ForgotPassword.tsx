@@ -1,3 +1,5 @@
+// ForgotPassword.tsx
+
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { sendPasswordResetEmail } from "firebase/auth";
@@ -25,6 +27,7 @@ import {
   widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
 import { forgotPasswordValidationSchema } from "../Components/validation";
+import PrimaryButton from "../Components/PrimaryButton";
 
 function ForgotPassword() {
   const [loading, setLoading] = useState(false);
@@ -50,12 +53,9 @@ function ForgotPassword() {
       );
     } catch (err: any) {
       setLoading(false);
-      Alert.alert(
-        localized.t("EMAIL_NOT_FOUND"),
-        err.message,
-        [{ text: localized.t("OK") }],
-        { cancelable: false }
-      );
+      Alert.alert(localized.t("EMAIL_NOT_FOUND"), err.message, [
+        { text: localized.t("OK") },
+      ]);
     }
   };
 
@@ -66,16 +66,14 @@ function ForgotPassword() {
     >
       <StatusBar animated={true} backgroundColor="auto" />
       <SafeAreaView style={styles.safeArea}>
-        <View style={styles.root}>
-          <Ionicons
-            name="chevron-back"
-            size={wp("8%")}
-            color="white"
-            onPress={() => navigation.goBack()}
-          />
-          <Text style={styles.headerText}>
+        <View style={styles.header}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <Ionicons name="chevron-back" size={32} color="white" />
+          </TouchableOpacity>
+          <Text style={styles.headerTitle}>
             {localized.t("FORGOT_PASSWORD")}
           </Text>
+          <View style={{ width: wp(3) }} />
         </View>
 
         <KeyboardAvoidingView
@@ -83,58 +81,56 @@ function ForgotPassword() {
           style={{ flex: 1 }}
         >
           <ScrollView
-            contentContainerStyle={styles.scrollContent}
+            contentContainerStyle={styles.scrollContainer}
             keyboardShouldPersistTaps="handled"
           >
-            <View style={styles.container}>
-              <Text style={styles.instructionText}>
-                {localized.t("ENTER_YOUR_EMAIL")}
-              </Text>
+            <Text style={styles.instructionText}>
+              {localized.t("ENTER_YOUR_EMAIL")}
+            </Text>
 
-              <Formik
-                validationSchema={forgotPasswordValidationSchema}
-                initialValues={{ email: "" }}
-                onSubmit={({ email }) => handleResetPassword(email)}
-              >
-                {({
-                  handleChange,
-                  handleBlur,
-                  handleSubmit,
-                  values,
-                  errors,
-                  touched,
-                  isValid,
-                }) => (
-                  <>
-                    <TextInput
-                      style={styles.textInput}
-                      placeholder={localized.t("EMAIL")}
-                      placeholderTextColor="white"
-                      onChangeText={handleChange("email")}
-                      onBlur={handleBlur("email")}
-                      autoCapitalize="none"
-                      keyboardType="email-address"
-                      value={values.email}
-                    />
-                    {errors.email && touched.email && (
-                      <Text style={styles.errorText}>{errors.email}</Text>
-                    )}
+            <Formik
+              validationSchema={forgotPasswordValidationSchema}
+              initialValues={{ email: "" }}
+              onSubmit={({ email }) => handleResetPassword(email)}
+            >
+              {({
+                handleChange,
+                handleBlur,
+                handleSubmit,
+                values,
+                errors,
+                touched,
+                isValid,
+              }) => (
+                <>
+                  <TextInput
+                    style={styles.input}
+                    placeholder={localized.t("EMAIL")}
+                    placeholderTextColor="#ffffffaa"
+                    onChangeText={handleChange("email")}
+                    onBlur={handleBlur("email")}
+                    autoCapitalize="none"
+                    keyboardType="email-address"
+                    value={values.email}
+                  />
+                  {errors.email && touched.email && (
+                    <Text style={styles.errorText}>{errors.email}</Text>
+                  )}
 
-                    <Spinner visible={loading} textStyle={{ color: "white" }} />
+                  <Spinner visible={loading} textStyle={{ color: "white" }} />
 
-                    <TouchableOpacity
-                      onPress={handleSubmit}
-                      disabled={!isValid}
-                      style={[styles.button, !isValid && styles.buttonDisabled]}
-                    >
-                      <Text style={styles.buttonText}>
-                        {localized.t("SEND_RESET_LINK")}
-                      </Text>
-                    </TouchableOpacity>
-                  </>
-                )}
-              </Formik>
-            </View>
+                  <PrimaryButton
+                    title={localized.t("SEND_RESET_LINK")}
+                    buttonStyle={[
+                      styles.button,
+                      !isValid && styles.buttonDisabled,
+                    ]}
+                    titleStyle={styles.buttonText}
+                    onPress={handleSubmit}
+                  />
+                </>
+              )}
+            </Formik>
           </ScrollView>
         </KeyboardAvoidingView>
       </SafeAreaView>
@@ -148,65 +144,66 @@ const styles = StyleSheet.create({
   },
   safeArea: {
     flex: 1,
-    paddingHorizontal: wp(5),
+    paddingHorizontal: wp(6),
     paddingTop: Platform.OS === "android" ? hp(2) : 0,
   },
-  root: {
+  header: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: hp(3),
+    justifyContent: "space-between",
+    paddingHorizontal: wp(4.5),
+    paddingTop: hp(3),
+    paddingBottom: hp(2),
   },
-  headerText: {
-    fontSize: hp(2.5),
+  headerTitle: {
+    fontSize: wp(5),
     color: "white",
-    marginLeft: wp(2),
     fontWeight: "bold",
   },
-  scrollContent: {
+  scrollContainer: {
     flexGrow: 1,
     justifyContent: "center",
-    alignItems: "center",
-  },
-  container: {
-    width: "100%",
   },
   instructionText: {
-    marginBottom: hp(2),
+    fontSize: hp(2),
+    color: "white",
+    marginBottom: hp(2.5),
+    textAlign: "left",
+  },
+  input: {
+    borderColor: "#ffffff99",
+    borderWidth: 1,
+    borderRadius: wp(2),
+    paddingHorizontal: wp(4),
+    paddingVertical: hp(1.5),
     color: "white",
     fontSize: hp(2),
-  },
-  textInput: {
-    height: hp(6.5),
-    borderColor: "white",
-    borderWidth: 1,
-    paddingLeft: wp(3),
-    fontSize: hp(1.8),
-    color: "white",
-    borderRadius: wp(2),
-    marginBottom: hp(1.5),
+    marginBottom: hp(1),
   },
   errorText: {
     color: "red",
-    marginBottom: hp(1),
     fontSize: hp(1.6),
+    marginBottom: hp(1.5),
   },
   button: {
-    height: hp(6.5),
     backgroundColor: "#FC5A56",
     borderRadius: wp(2),
-    justifyContent: "center",
-    alignItems: "center",
+    paddingVertical: hp(1.5),
     marginTop: hp(2),
-    marginHorizontal: hp(3),
-  },
-  buttonDisabled: {
-    backgroundColor: "grey",
-    opacity: 0.5,
   },
   buttonText: {
     color: "white",
     fontSize: hp(2.2),
     fontWeight: "600",
+    textAlign: "center",
+  },
+  buttonDisabled: {
+    backgroundColor: "grey",
+    opacity: 0.6,
   },
 });
 

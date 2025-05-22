@@ -123,149 +123,149 @@ const AcceptRequestedDonationScreen = ({ route }: any) => {
         colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
         style={styles.background}
       >
-        <SafeAreaView>
-          <ScrollView keyboardShouldPersistTaps="handled">
-            <StatusBar animated={true} backgroundColor="auto" />
-            <View style={styles.container}>
-              <FoodhealersHeader />
-              <View style={styles.root}>
-                <Ionicons
-                  name="chevron-back"
-                  size={32}
-                  color="white"
-                  onPress={() => {
-                    navigation.goBack(), handlePressOutside();
-                  }}
-                />
-                <View style={styles.item}>
-                  <Text style={styles.itemText}>{title}</Text>
-                </View>
-                <BurgerIcon
-                  onOutsidePress={handlePressOutside}
-                  menuClose={menuClose}
-                />
-              </View>
-              <Modal visible={loading} animationType="slide" transparent={true}>
-                <View style={styles.centeredView}>
-                  <View style={styles.modalView}>
-                    <ActivityIndicator size={"large"} />
-                  </View>
-                </View>
-              </Modal>
-              <Formik
-                validationSchema={AddDonations}
-                initialValues={{
-                  foodItem: foodItem,
-                  quantity: quantity,
-                  phoneNumber: "",
-                  flatNo: "",
-                  lat: 0,
-                  long: 0,
-                  address: "",
-                  city: "",
-                  state: "",
-                  postalCode: "",
-                  zipCode: "",
+        <SafeAreaView style={{ flex: 1 }}>
+          <StatusBar animated={true} backgroundColor="auto" />
+          <View style={styles.container}>
+            <FoodhealersHeader />
+            <View style={styles.root}>
+              <Ionicons
+                name="chevron-back"
+                size={32}
+                color="white"
+                onPress={() => {
+                  navigation.goBack(), handlePressOutside();
                 }}
-                onSubmit={async ({
-                  foodItem,
-                  quantity,
-                  lat,
-                  long,
-                  address,
-                  phoneNumber,
-                  flatNo,
-                  city,
-                  state,
-                  zipCode,
-                }) => {
-                  setLoading(true);
-                  try {
-                    setResponse({
-                      loading: true,
-                      message: "",
-                      error: false,
-                    });
-                    const data = {
-                      pickupRequestTypeId: 4,
-                      requestId: id,
-                      foodName: foodItem,
-                      quantity: quantity,
-                      phoneNumber: phoneNumber,
-                      pickupDate: eventDateTime,
-                      lat: lat,
-                      lng: long,
-                      flatNo: flatNo,
-                      fullAddress: address,
-                      city: city,
-                      state: state,
-                      postalCode: Number(zipCode) ? Number(zipCode) : 0,
-                    };
-                    const res = await dispatch(
-                      acceptRequest(data as any) as any
-                    );
-                    if (res?.payload?.success == true) {
-                      setLoading(false);
-                      setResponse({
-                        loading: false,
-                        message: `${localized.t(
-                          "DONATION_ADDED_SUCCESSFULLY"
-                        )}`,
-                        error: false,
-                      });
-                      setLoading(false);
-                      Alert.alert(
-                        `${localized.t("THAN_YOU_FOR_DONATION")}`,
-                        `${localized.t(
-                          "WH_HAVE_SUCCESSFULLY_ADDED_YOUR_DONATION"
-                        )}`,
-                        [
-                          {
-                            text: `${localized.t("OK")}`,
-                            onPress: () => {
-                              handlePressOutside(),
-                                navigation.navigate("VolunteerThankYouScreen", {
-                                  itemTypeId: itemTypeId,
-                                  title: title,
-                                  latitude: latitude,
-                                  longitude: longitude,
-                                });
-                            },
-                          },
-                        ],
-                        { cancelable: false }
-                      );
-                    } else {
-                      setLoading(false);
-                      console.log("ERROR");
-                    }
-                  } catch (err: any) {
+              />
+              <View style={styles.item}>
+                <Text style={styles.itemText}>{title}</Text>
+              </View>
+              <BurgerIcon
+                onOutsidePress={handlePressOutside}
+                menuClose={menuClose}
+              />
+            </View>
+            <Modal visible={loading} animationType="slide" transparent={true}>
+              <View style={styles.centeredView}>
+                <View style={styles.modalView}>
+                  <ActivityIndicator size={"large"} />
+                </View>
+              </View>
+            </Modal>
+            <Formik
+              validationSchema={AddDonations}
+              initialValues={{
+                foodItem: foodItem,
+                quantity: quantity,
+                phoneNumber: "",
+                flatNo: "",
+                lat: 0,
+                long: 0,
+                address: "",
+                city: "",
+                state: "",
+                postalCode: "",
+                zipCode: "",
+              }}
+              onSubmit={async ({
+                foodItem,
+                quantity,
+                lat,
+                long,
+                address,
+                phoneNumber,
+                flatNo,
+                city,
+                state,
+                zipCode,
+              }) => {
+                setLoading(true);
+                try {
+                  setResponse({
+                    loading: true,
+                    message: "",
+                    error: false,
+                  });
+                  const data = {
+                    pickupRequestTypeId: 4,
+                    requestId: id,
+                    foodName: foodItem,
+                    quantity: quantity,
+                    phoneNumber: phoneNumber,
+                    pickupDate: eventDateTime,
+                    lat: lat,
+                    lng: long,
+                    flatNo: flatNo,
+                    fullAddress: address,
+                    city: city,
+                    state: state,
+                    postalCode: Number(zipCode) ? Number(zipCode) : 0,
+                  };
+                  const res = await dispatch(acceptRequest(data as any) as any);
+                  if (res?.payload?.success == true) {
                     setLoading(false);
                     setResponse({
                       loading: false,
-                      message: err.message,
-                      error: true,
+                      message: `${localized.t("DONATION_ADDED_SUCCESSFULLY")}`,
+                      error: false,
                     });
+                    setLoading(false);
                     Alert.alert(
-                      `${localized.t("DONATION_NOT_ADDED")}`,
-                      `${err.message}`,
-                      [{ text: `${localized.t("OK")}` }],
+                      `${localized.t("THAN_YOU_FOR_DONATION")}`,
+                      `${localized.t(
+                        "WH_HAVE_SUCCESSFULLY_ADDED_YOUR_DONATION"
+                      )}`,
+                      [
+                        {
+                          text: `${localized.t("OK")}`,
+                          onPress: () => {
+                            handlePressOutside(),
+                              navigation.navigate("VolunteerThankYouScreen", {
+                                itemTypeId: itemTypeId,
+                                title: title,
+                                latitude: latitude,
+                                longitude: longitude,
+                              });
+                          },
+                        },
+                      ],
                       { cancelable: false }
                     );
+                  } else {
+                    setLoading(false);
+                    console.log("ERROR");
                   }
-                }}
-              >
-                {({
-                  handleSubmit,
-                  handleBlur,
-                  handleChange,
-                  values,
-                  setFieldValue,
-                  errors,
-                  touched,
-                  isValid,
-                }) => (
-                  <>
+                } catch (err: any) {
+                  setLoading(false);
+                  setResponse({
+                    loading: false,
+                    message: err.message,
+                    error: true,
+                  });
+                  Alert.alert(
+                    `${localized.t("DONATION_NOT_ADDED")}`,
+                    `${err.message}`,
+                    [{ text: `${localized.t("OK")}` }],
+                    { cancelable: false }
+                  );
+                }
+              }}
+            >
+              {({
+                handleSubmit,
+                handleBlur,
+                handleChange,
+                values,
+                setFieldValue,
+                errors,
+                touched,
+                isValid,
+              }) => (
+                <>
+                  <ScrollView
+                    keyboardShouldPersistTaps="handled"
+                    contentContainerStyle={{ paddingBottom: 20 }}
+                    style={{ flex: 1 }}
+                  >
                     <TextInput
                       onChangeText={handleChange("foodItem")}
                       onBlur={handleBlur("foodItem")}
@@ -550,17 +550,17 @@ const AcceptRequestedDonationScreen = ({ route }: any) => {
                         {errors?.phoneNumber}
                       </Text>
                     </View>
-                    <PrimaryButton
-                      title={localized.t("SUBMIT")}
-                      buttonStyle={styles.buttonStyles}
-                      titleStyle={styles.titleStyle}
-                      onPress={handleSubmit}
-                    />
-                  </>
-                )}
-              </Formik>
-            </View>
-          </ScrollView>
+                  </ScrollView>
+                  <PrimaryButton
+                    title={localized.t("SUBMIT")}
+                    buttonStyle={styles.buttonStyles}
+                    titleStyle={styles.titleStyle}
+                    onPress={handleSubmit}
+                  />
+                </>
+              )}
+            </Formik>
+          </View>
         </SafeAreaView>
       </LinearGradient>
     </TouchableWithoutFeedback>

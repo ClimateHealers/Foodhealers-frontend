@@ -103,7 +103,7 @@ const LoginScreen = () => {
               <Modal visible={loading} animationType="slide" transparent>
                 <View style={styles.centeredView}>
                   <View style={styles.modalView}>
-                    <ActivityIndicator size="large" color="white" />
+                    <ActivityIndicator size={"large"} />
                   </View>
                 </View>
               </Modal>
@@ -359,12 +359,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#FC5A56",
     borderRadius: w2dp(2),
     marginTop: h2dp(3),
-    marginHorizontal: h2dp(3),
+    marginHorizontal: h2dp(1),
+    height: h2dp(6),
   },
   buttonTitle: {
     color: "white",
     fontSize: h2dp(2.2),
-    fontWeight: "bold",
   },
   signupContainer: {
     flexDirection: "row",

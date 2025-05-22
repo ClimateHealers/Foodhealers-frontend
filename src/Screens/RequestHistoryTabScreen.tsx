@@ -458,7 +458,9 @@ const RequestHistoryTabScreen = ({ route }: any) => {
             marginTop: h2dp(25),
           }}
         >
-          <Text style={styles.itemText}>{localized.t("NOTHING_TO_SHOW")}</Text>
+          <Text style={{ color: "white" }}>
+            {localized.t("NOTHING_TO_SHOW")}
+          </Text>
         </View>
       )}
     </View>

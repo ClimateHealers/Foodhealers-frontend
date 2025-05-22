@@ -370,12 +370,14 @@ const SeeExistingRequestScreen = ({ route }: any) => {
                   marginBottom: h2dp(10),
                 }}
               >
-                <Text style={styles.itemText}>
+                <Text style={{ color: "white" }}>
                   {localized.t("NOTHING_TO_SHOW")}
                 </Text>
               </View>
             )}
           </View>
+        </View>
+        <View style={{ paddingBottom: h2dp(2) }}>
           <PrimaryButton
             title={`${localized.t("DONATE")} ${item}`}
             onPress={() => {
@@ -387,14 +389,7 @@ const SeeExistingRequestScreen = ({ route }: any) => {
                   longitude: longitude,
                 });
             }}
-            buttonStyle={{
-              backgroundColor: "#FC5A56",
-              color: "black",
-              borderRadius: 5,
-              width: w2dp(70),
-              alignSelf: "center",
-              marginTop: h2dp(3),
-            }}
+            buttonStyle={styles.buttonStyles}
             titleStyle={styles.titleStyle}
           />
         </View>

@@ -37,9 +37,13 @@ const BecomeADriverScreen = () => {
         colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
         style={styles.background}
       >
-        <SafeAreaView>
-          <ScrollView keyboardShouldPersistTaps="handled">
-            <View style={styles.container}>
+        <SafeAreaView style={{ flex: 1 }}>
+          <View style={styles.container}>
+            <ScrollView
+              keyboardShouldPersistTaps="handled"
+              contentContainerStyle={{ paddingBottom: 20 }}
+              style={{ flex: 1 }}
+            >
               <FoodhealersHeader />
               <View style={styles.root}>
                 <Ionicons
@@ -70,18 +74,28 @@ const BecomeADriverScreen = () => {
                   source={require("../../assets/images/shutterstock_1907968996.png")}
                   style={{ width: "100%", height: h2dp(30), borderRadius: 10 }}
                 />
+              </View>
+            </ScrollView>
+              <View
+                style={{
+                  paddingBottom: h2dp(2),
+                }}
+              >
                 <PrimaryButton
                   title={localized.t("BECOME_A_DRIVER_FOR_FOOD_HEALERS")}
                   onPress={() => {
-                    navigation.navigate("AddDriverScreen"),
-                      handlePressOutside();
+                    navigation.navigate("AddDriverScreen"), handlePressOutside();
                   }}
-                  buttonStyle={styles.buttonStyles}
+                  buttonStyle={[
+                    styles.buttonStyles,
+                    {
+                      marginHorizontal: 0,
+                    },
+                  ]}
                   titleStyle={styles.titleStyle}
                 />
-              </View>
             </View>
-          </ScrollView>
+          </View>
         </SafeAreaView>
       </LinearGradient>
     </TouchableWithoutFeedback>

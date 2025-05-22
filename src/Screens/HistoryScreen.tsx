@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "100%",
     zIndex: 9999,
-    marginBottom: w2dp(10),
+    marginBottom: w2dp(1),
     marginTop: h2dp(2.5),
   },
   item: {

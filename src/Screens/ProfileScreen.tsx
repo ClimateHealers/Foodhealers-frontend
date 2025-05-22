@@ -177,7 +177,7 @@ const ProfileScreen = () => {
 
   const renderMenuItem = (label: string, onPress: () => void) => (
     <TouchableOpacity onPress={onPress} style={styles.menuItem}>
-      <Text style={styles.menuItemText}>{localized.t(label)}</Text>
+      <Text>{localized.t(label)}</Text>
     </TouchableOpacity>
   );
 
@@ -266,12 +266,6 @@ const ProfileScreen = () => {
                   </TouchableOpacity>
                 </View>
 
-                {/* Optional: Keep this button below the image */}
-                {/* <PrimaryButton
-                  title={localized.t("EDIT")}
-                  buttonStyle={styles.editButton}
-                  titleStyle={styles.editButtonText}
-                /> */}
                 <TouchableOpacity
                   style={styles.editIconContainer}
                   onPress={() =>
@@ -300,51 +294,47 @@ const ProfileScreen = () => {
                 {renderDetailRow("phone", "NUMBER", data?.phoneNumber || "N/A")}
                 <Divider style={styles.divider} />
               </View>
-
-              <PrimaryButton
-                title={localized.t("LOGOUT")}
-                onPress={logout}
-                buttonStyle={styles.logoutButton}
-                titleStyle={styles.logoutButtonText}
-              />
-
-              <TouchableOpacity
-                style={styles.deleteButton}
-                onPress={() => navigation.navigate("DeleteAccount")}
-              >
-                <Text style={styles.deleteButtonText}>
-                  {localized.t("DELETE_MY_ACCOUNT")}
-                </Text>
-              </TouchableOpacity>
-
-              <View style={styles.footer}>
-                <Text style={styles.versionText}>
-                  {localized.t("APP_VERSION")} {appVersion}
-                </Text>
-
-                <View style={styles.supportRow}>
-                  <Text style={styles.supportText}>
-                    Contact us for support:
-                  </Text>
-                  <Text
-                    style={styles.supportLink}
-                    onPress={() =>
-                      Linking.openURL("mailto:support@climatehealers.org")
-                    }
-                  >
-                    support@climatehealers.org
-                  </Text>
-                </View>
-
-                <Text
-                  style={styles.licenseLink}
-                  onPress={() => navigation.navigate("LicenseScreen")}
-                >
-                  Open-Source Licences
-                </Text>
-              </View>
             </View>
           </ScrollView>
+          <PrimaryButton
+            title={localized.t("LOGOUT")}
+            onPress={logout}
+            buttonStyle={styles.logoutButton}
+            titleStyle={styles.logoutButtonText}
+          />
+
+          <TouchableOpacity
+            style={styles.deleteButton}
+            onPress={() => navigation.navigate("DeleteAccount")}
+          >
+            <Text style={styles.deleteButtonText}>
+              {localized.t("DELETE_MY_ACCOUNT")}
+            </Text>
+          </TouchableOpacity>
+          <View style={styles.footer}>
+            <Text style={styles.versionText}>
+              {localized.t("APP_VERSION")} {appVersion}
+            </Text>
+
+            <View style={styles.supportRow}>
+              <Text style={styles.supportText}>Contact us for support:</Text>
+              <Text
+                style={styles.supportLink}
+                onPress={() =>
+                  Linking.openURL("mailto:support@climatehealers.org")
+                }
+              >
+                support@climatehealers.org
+              </Text>
+            </View>
+
+            <Text
+              style={styles.licenseLink}
+              onPress={() => navigation.navigate("LicenseScreen")}
+            >
+              Open-Source Licences
+            </Text>
+          </View>
         </SafeAreaView>
       </LinearGradient>
     </TouchableWithoutFeedback>
@@ -403,7 +393,7 @@ const styles = StyleSheet.create({
   badge: {
     position: "absolute",
     top: -5,
-    right: -5,
+    right: 0,
     backgroundColor: "red",
   },
   menuContainer: {
@@ -414,16 +404,12 @@ const styles = StyleSheet.create({
     borderColor: "black",
     borderWidth: 0.5,
     borderRadius: 5,
-    zIndex: 1,
+    zIndex: 9999,
     elevation: 5,
     minWidth: wp("40%"),
   },
   menuItem: {
     padding: wp("3%"),
-  },
-  menuItemText: {
-    fontSize: wp("3.8%"),
-    fontWeight: "300",
   },
   contentContainer: {
     flex: 1,
@@ -508,27 +494,28 @@ const styles = StyleSheet.create({
     backgroundColor: "#FC5A56",
     borderRadius: wp(2),
     marginTop: hp(3),
-    marginHorizontal: wp(4),
+    height: hp(6),
+    justifyContent: "center",
   },
   logoutButtonText: {
     color: "white",
     fontSize: hp(2.2),
-    fontWeight: "bold",
   },
   deleteButton: {
     borderWidth: 1,
     borderColor: "#ff6e75",
-    borderRadius: 5,
     paddingHorizontal: wp("3%"),
     paddingVertical: hp("1%"),
     marginTop: hp("2%"),
-    width: "50%",
+    width: "100%",
     marginHorizontal: "auto",
+    borderRadius: wp(2),
+    height: hp(6),
   },
   deleteButtonText: {
     textAlign: "center",
     color: "#ff6e75",
-    fontSize: wp("3.2%"),
+    fontSize: hp(2.2),
   },
   footer: {
     alignItems: "center",

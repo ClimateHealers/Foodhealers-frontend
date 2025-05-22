@@ -321,16 +321,8 @@ export default function NotificationScreen() {
               )}
             />
           ) : (
-            <View
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                marginTop: h2dp(35),
-                marginBottom: h2dp(10),
-              }}
-            >
-              <Text style={styles.itemText}>
+            <View style={styles.centeredView}>
+              <Text style={{ color: "white" }}>
                 {localized.t("NOTHING_TO_SHOW")}
               </Text>
             </View>

@@ -26,9 +26,7 @@ import FoodhealersHeader from "../Components/FoodhealersHeader";
 import { styles } from "../Components/Styles";
 import { localized } from "../locales/localization";
 import Carousel from "react-native-reanimated-carousel";
-// import { Pagination } from "react-native-snap-carousel"; // If you want to keep the pagination component
 
-// TypeScript types for props
 interface Volunteer {
   name: string;
   address: {

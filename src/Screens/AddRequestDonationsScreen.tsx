@@ -93,144 +93,148 @@ const AddRequestDonationsScreen = ({ route }: any) => {
         colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
         style={styles.background}
       >
-        <SafeAreaView>
-          <ScrollView keyboardShouldPersistTaps="handled">
-            <StatusBar animated={true} backgroundColor="auto" />
-            <View style={styles.container}>
-              <FoodhealersHeader />
-              <View style={styles.root}>
-                <Ionicons
-                  name="chevron-back"
-                  size={32}
-                  color="white"
-                  onPress={() => {
-                    navigation.goBack(), handlePressOutside();
-                  }}
-                />
-                <View style={styles.item}>
-                  <Text style={styles.itemText}>{title}</Text>
-                </View>
-                <BurgerIcon
-                  onOutsidePress={handlePressOutside}
-                  menuClose={menuClose}
-                  menuItem={menuItem}
-                />
-              </View>
-              <Modal visible={loading} animationType="slide" transparent={true}>
-                <View style={styles.centeredView}>
-                  <View style={styles.modalView}>
-                    <ActivityIndicator size={"large"} />
-                  </View>
-                </View>
-              </Modal>
-              <Formik
-                validationSchema={AddRequest}
-                initialValues={{
-                  foodItem: "",
-                  quantity: "",
-                  phoneNumber: "",
-                  lat: 0,
-                  long: 0,
-                  address: "",
-                  city: "",
-                  state: "",
-                  postalCode: "",
-                  zipCode: "",
+        <SafeAreaView style={{ flex: 1 }}>
+          <StatusBar animated={true} backgroundColor="auto" />
+          <View style={styles.container}>
+            <FoodhealersHeader />
+            <View style={styles.root}>
+              <Ionicons
+                name="chevron-back"
+                size={32}
+                color="white"
+                onPress={() => {
+                  navigation.goBack(), handlePressOutside();
                 }}
-                onSubmit={async ({
-                  foodItem,
-                  quantity,
-                  lat,
-                  long,
-                  address,
-                  phoneNumber,
-                  city,
-                  state,
-                  zipCode,
-                }) => {
-                  setLoading(true);
-                  try {
-                    setResponse({
-                      loading: true,
-                      message: "",
-                      error: false,
-                    });
-                    const data = {
-                      itemTypeId: itemTypeId,
-                      itemName: foodItem,
-                      quantity: quantity,
-                      phoneNumber: phoneNumber,
-                      requiredDate: eventDateTime,
-                      lat: lat,
-                      lng: long,
-                      fullAddress: address,
-                      city: city,
-                      state: state,
-                      postalCode: Number(zipCode) ? Number(zipCode) : 0,
-                    };
-                    const res = await dispatch(postRequest(data as any) as any);
-                    if (res?.payload?.success == true) {
-                      setLoading(false);
-                      setResponse({
-                        loading: false,
-                        message: "REQUEST_ADDED_SUCCESSFULLY",
-                        error: false,
-                      });
-                      setLoading(false);
-                      Alert.alert(
-                        `${localized.t("REQUEST_ADDED_SUCCESSFULLY")}`,
-                        `${localized.t(
-                          "WE_HAVE_SUCCESSFULLY_ADDED_YOUR_REQUEST"
-                        )}`,
-                        [
-                          {
-                            text: `${localized.t("OK")}`,
-                            onPress: () => {
-                              handlePressOutside(),
-                                navigation.navigate("RequestCreatedScreen", {
-                                  itemTypeId: itemTypeId,
-                                  title: title,
-                                  address: address,
-                                  eventDateTime: selectedDate,
-                                  foodItem: foodItem,
-                                  quantity: quantity,
-                                });
-                            },
-                          },
-                        ],
-                        { cancelable: false }
-                      );
-                    } else {
-                      setLoading(false);
-                      console.log("ERROR");
-                    }
-                  } catch (err: any) {
+              />
+              <View style={styles.item}>
+                <Text style={styles.itemText}>{title}</Text>
+              </View>
+              <BurgerIcon
+                onOutsidePress={handlePressOutside}
+                menuClose={menuClose}
+                menuItem={menuItem}
+              />
+            </View>
+            <Modal visible={loading} animationType="slide" transparent={true}>
+              <View style={styles.centeredView}>
+                <View style={styles.modalView}>
+                  <ActivityIndicator size={"large"} />
+                </View>
+              </View>
+            </Modal>
+            <Formik
+              validationSchema={AddRequest}
+              initialValues={{
+                foodItem: "",
+                quantity: "",
+                phoneNumber: "",
+                lat: 0,
+                long: 0,
+                address: "",
+                city: "",
+                state: "",
+                postalCode: "",
+                zipCode: "",
+              }}
+              onSubmit={async ({
+                foodItem,
+                quantity,
+                lat,
+                long,
+                address,
+                phoneNumber,
+                city,
+                state,
+                zipCode,
+              }) => {
+                setLoading(true);
+                try {
+                  setResponse({
+                    loading: true,
+                    message: "",
+                    error: false,
+                  });
+                  const data = {
+                    itemTypeId: itemTypeId,
+                    itemName: foodItem,
+                    quantity: quantity,
+                    phoneNumber: phoneNumber,
+                    requiredDate: eventDateTime,
+                    lat: lat,
+                    lng: long,
+                    fullAddress: address,
+                    city: city,
+                    state: state,
+                    postalCode: Number(zipCode) ? Number(zipCode) : 0,
+                  };
+                  const res = await dispatch(postRequest(data as any) as any);
+                  if (res?.payload?.success == true) {
                     setLoading(false);
                     setResponse({
                       loading: false,
-                      message: err.message,
-                      error: true,
+                      message: "REQUEST_ADDED_SUCCESSFULLY",
+                      error: false,
                     });
+                    setLoading(false);
                     Alert.alert(
-                      `${localized.t("REQUEST_NOT_ADDED")}`,
-                      `${err.message}`,
-                      [{ text: `${localized.t("OK")}` }],
+                      `${localized.t("REQUEST_ADDED_SUCCESSFULLY")}`,
+                      `${localized.t(
+                        "WE_HAVE_SUCCESSFULLY_ADDED_YOUR_REQUEST"
+                      )}`,
+                      [
+                        {
+                          text: `${localized.t("OK")}`,
+                          onPress: () => {
+                            handlePressOutside(),
+                              navigation.navigate("RequestCreatedScreen", {
+                                itemTypeId: itemTypeId,
+                                title: title,
+                                address: address,
+                                eventDateTime: selectedDate,
+                                foodItem: foodItem,
+                                quantity: quantity,
+                              });
+                          },
+                        },
+                      ],
                       { cancelable: false }
                     );
+                  } else {
+                    setLoading(false);
+                    console.log("ERROR");
                   }
-                }}
-              >
-                {({
-                  handleSubmit,
-                  handleBlur,
-                  handleChange,
-                  values,
-                  setFieldValue,
-                  errors,
-                  touched,
-                  isValid,
-                }) => (
-                  <>
+                } catch (err: any) {
+                  setLoading(false);
+                  setResponse({
+                    loading: false,
+                    message: err.message,
+                    error: true,
+                  });
+                  Alert.alert(
+                    `${localized.t("REQUEST_NOT_ADDED")}`,
+                    `${err.message}`,
+                    [{ text: `${localized.t("OK")}` }],
+                    { cancelable: false }
+                  );
+                }
+              }}
+            >
+              {({
+                handleSubmit,
+                handleBlur,
+                handleChange,
+                values,
+                setFieldValue,
+                errors,
+                touched,
+                isValid,
+              }) => (
+                <>
+                  <ScrollView
+                    keyboardShouldPersistTaps="handled"
+                    contentContainerStyle={{ paddingBottom: 20 }}
+                    style={{ flex: 1 }}
+                  >
                     <TextInput
                       onChangeText={handleChange("foodItem")}
                       onBlur={handleBlur("foodItem")}
@@ -319,65 +323,48 @@ const AddRequestDonationsScreen = ({ route }: any) => {
                       }}
                     />
                     <Text style={styles.inputError}>{errors.address}</Text>
+
                     <View
                       style={{
-                        display: "flex",
                         flexDirection: "row",
-                        alignItems: "center",
                         justifyContent: "space-between",
                       }}
                     >
-                      <View
-                        style={[
-                          styles.dateTimePickerContainer,
-                          { backgroundColor: "#deddd9" },
-                        ]}
-                      >
-                        <TextInput
-                          onChangeText={handleChange("city")}
-                          onBlur={handleBlur("city")}
-                          value={values?.city}
-                          placeholder={localized.t("CITY")}
-                          placeholderTextColor={"black"}
-                          style={[
-                            styles.textInput,
-                            { backgroundColor: "#deddd9" },
-                          ]}
-                          editable={false}
-                        />
-                      </View>
-                      <View
-                        style={[
-                          styles.dateTimePickerContainer,
-                          { backgroundColor: "#deddd9" },
-                        ]}
-                      >
-                        <TextInput
-                          onChangeText={handleChange("state")}
-                          onBlur={handleBlur("state")}
-                          value={values?.state}
-                          placeholder={localized.t("STATE")}
-                          placeholderTextColor={"black"}
-                          style={[
-                            styles.textInput,
-                            { backgroundColor: "#deddd9" },
-                          ]}
-                          editable={false}
-                        />
-                      </View>
-                    </View>
-                    <View>
                       <TextInput
-                        onChangeText={handleChange("zipCode")}
-                        onBlur={handleBlur("zipCode")}
-                        value={values?.zipCode}
-                        keyboardType="numeric"
-                        placeholder={localized.t("ZIP_CODE")}
+                        value={values.city}
+                        editable={false}
+                        style={[
+                          styles.textInput,
+                          { flex: 1, backgroundColor: "#deddd9" },
+                        ]}
+                        placeholder={localized.t("CITY")}
                         placeholderTextColor={"black"}
-                        style={[styles.textInput]}
+                      />
+                      <TextInput
+                        value={values.state}
+                        editable={false}
+                        style={[
+                          styles.textInput,
+                          {
+                            flex: 1,
+                            backgroundColor: "#deddd9",
+                            marginLeft: 10,
+                          },
+                        ]}
+                        placeholder={localized.t("STATE")}
+                        placeholderTextColor={"black"}
                       />
                     </View>
 
+                    <TextInput
+                      onChangeText={handleChange("zipCode")}
+                      onBlur={handleBlur("zipCode")}
+                      value={values?.zipCode}
+                      keyboardType="numeric"
+                      placeholder={localized.t("ZIP_CODE")}
+                      placeholderTextColor={"black"}
+                      style={[styles.textInput]}
+                    />
                     <Text style={styles.inputError}>{errors?.zipCode}</Text>
                     <View
                       style={{
@@ -464,12 +451,7 @@ const AddRequestDonationsScreen = ({ route }: any) => {
                         </View>
                       </TouchableOpacity>
                     </View>
-                    <View
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                    >
+                    <View>
                       <PhoneInput
                         ref={phoneInput}
                         placeholder={localized.t("PHONE_NUMBER")}
@@ -482,33 +464,43 @@ const AddRequestDonationsScreen = ({ route }: any) => {
                           styles.textArea,
                           {
                             width: "100%",
-                            alignContent: "center",
-                            justifyContent: "center",
                             borderRadius: w2dp(1),
                             overflow: "hidden",
                           },
                         ]}
                         value={values.phoneNumber}
                         textInputProps={{ placeholderTextColor: "black" }}
-                        textInputStyle={{
-                          height: h2dp(8),
-                        }}
+                        textInputStyle={{ height: h2dp(8) }}
                       />
-                      <Text style={styles.inputError}>
+                      <Text
+                        style={[
+                          styles.inputError,
+                          {
+                            marginTop: 4,
+                          },
+                        ]}
+                      >
                         {errors?.phoneNumber}
                       </Text>
                     </View>
+                  </ScrollView>
+                  <View style={{ paddingBottom: h2dp(2) }}>
                     <PrimaryButton
                       title={localized.t("SUBMIT")}
-                      buttonStyle={styles.buttonStyles}
+                      buttonStyle={[
+                        styles.buttonStyles,
+                        {
+                          marginHorizontal: 0,
+                        },
+                      ]}
                       titleStyle={styles.titleStyle}
                       onPress={handleSubmit}
                     />
-                  </>
-                )}
-              </Formik>
-            </View>
-          </ScrollView>
+                  </View>
+                </>
+              )}
+            </Formik>
+          </View>
         </SafeAreaView>
       </LinearGradient>
     </TouchableWithoutFeedback>
