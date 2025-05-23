@@ -38,6 +38,7 @@ const slides = [
 const IntroSlider = ({ route }: any) => {
   const { latitude, longitude } = route.params;
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+
   const sliderRef: any = useRef(null);
   const navigation: any = useNavigation();
 

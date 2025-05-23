@@ -87,7 +87,7 @@ const UploadPhotosScreen = ({ route }: any) => {
         style={styles.background}
       >
         <SafeAreaView>
-          <ScrollView keyboardShouldPersistTaps="handled">    
+          <ScrollView keyboardShouldPersistTaps="handled">
             <View style={styles.containerVolunteer}>
               <FoodhealersHeader />
               <View style={styles.root}>

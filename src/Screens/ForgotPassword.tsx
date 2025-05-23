@@ -158,7 +158,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: wp(4.5),
     paddingTop: hp(3),
     paddingBottom: hp(2),
-    zIndex: 1,
   },
   headerTitle: {
     fontSize: wp(5),

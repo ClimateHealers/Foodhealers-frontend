@@ -102,139 +102,145 @@ const UpdateVehicleScreen = ({ route }: any) => {
   return (
     <TouchableWithoutFeedback onPress={handlePressOutside}>
       <LinearGradient
-        colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
+        colors={["#6fa200", "#72a400", "#82b200", "#87b500", "#6fa200"]}
         style={styles.background}
       >
-        <SafeAreaView style={{ flex: 1 }}>
-          <View style={styles.container}>
-            <FoodhealersHeader />
-            <View
-              style={[
-                styles.root,
-                {
-                  marginBottom: h2dp(7),
-                },
-              ]}
-            >
-              <Ionicons
-                name="chevron-back"
-                size={32}
-                color="white"
-                onPress={() => {
-                  navigation.goBack(), handlePressOutside();
-                }}
-              />
-              <View style={styles.item}>
-                <Text style={styles.itemText}>{localized.t("DRIVE")}</Text>
-              </View>
-              <BurgerIcon
-                onOutsidePress={handlePressOutside}
-                menuClose={menuClose}
-              />
-            </View>
-            <Modal visible={loading} animationType="slide" transparent={true}>
-              <View style={styles.centeredView}>
-                <View style={styles.modalView}>
-                  <ActivityIndicator size={"large"} />
+        <SafeAreaView>
+          <ScrollView keyboardShouldPersistTaps="handled">
+            <View style={styles.container}>
+              <FoodhealersHeader />
+              <View
+                style={[
+                  styles.root,
+                  {
+                    marginBottom: h2dp(7),
+                  },
+                ]}
+              >
+                <Ionicons
+                  name="chevron-back"
+                  size={32}
+                  color="white"
+                  onPress={() => {
+                    navigation.goBack(), handlePressOutside();
+                  }}
+                />
+                <View style={styles.item}>
+                  <Text style={styles.itemText}>{localized.t("DRIVE")}</Text>
                 </View>
+                <BurgerIcon
+                  onOutsidePress={handlePressOutside}
+                  menuClose={menuClose}
+                />
               </View>
-            </Modal>
-            <Formik
-              validationSchema={adddVehicle}
-              isInitialValid
-              enableReinitialize
-              initialValues={initialValue}
-              onSubmit={async ({
-                carModel,
-                carColor,
-                licencePlate,
-                carMake,
-              }) => {
-                setLoading(true);
-                try {
-                  setResponse({
-                    loading: true,
-                    message: "",
-                    error: false,
-                  });
-                  const data = {
-                    model: carModel,
-                    vehicleColour: carColor,
-                    plateNumber: licencePlate,
-                    make: carMake,
-                    active: true,
-                    vehicleId: changedVehicleId,
-                  };
-                  const res = await dispatch(updateVehicle(data as any) as any);
-                  if (res?.payload?.success == true) {
+              <Modal visible={loading} animationType="slide" transparent={true}>
+                <View style={styles.centeredView}>
+                  <View style={styles.modalView}>
+                    <ActivityIndicator size={"large"} />
+                  </View>
+                </View>
+              </Modal>
+              <Formik
+                validationSchema={adddVehicle}
+                isInitialValid
+                enableReinitialize
+                initialValues={initialValue}
+                onSubmit={async ({
+                  carModel,
+                  carColor,
+                  licencePlate,
+                  carMake,
+                }) => {
+                  setLoading(true);
+                  try {
+                    setResponse({
+                      loading: true,
+                      message: "",
+                      error: false,
+                    });
+                    const data = {
+                      model: carModel,
+                      vehicleColour: carColor,
+                      plateNumber: licencePlate,
+                      make: carMake,
+                      active: true,
+                      vehicleId: changedVehicleId,
+                    };
+                    const res = await dispatch(
+                      updateVehicle(data as any) as any
+                    );
+                    if (res?.payload?.success == true) {
+                      setLoading(false);
+                      setResponse({
+                        loading: false,
+                        message: `${localized.t(
+                          "VEHICLE_UPDATED_SUCCESSFULLY"
+                        )}`,
+                        error: false,
+                      });
+                      setLoading(false);
+                      Alert.alert(
+                        `${localized.t("VEHICLE_UPDATED_SUCCESSFULLY")}`,
+                        `${localized.t(
+                          "YOUR_VEHICLE_HAS_BEEN_UPDATED_SUCCESSFULLY"
+                        )}`,
+                        [
+                          {
+                            text: "OK",
+                            onPress: () => {
+                              handlePressOutside(),
+                                navigation.navigate("DriverRequestScreen");
+                            },
+                          },
+                        ],
+                        { cancelable: false }
+                      );
+                    } else {
+                      setLoading(false);
+                      Alert.alert(
+                        `${localized.t("ALERT")}`,
+                        `${res?.payload}`,
+                        [
+                          {
+                            text: `${localized.t("OK")}`,
+                            style: "cancel",
+                          },
+                        ],
+                        { cancelable: true }
+                      );
+                    }
+                  } catch (err: any) {
                     setLoading(false);
                     setResponse({
                       loading: false,
-                      message: `${localized.t("VEHICLE_UPDATED_SUCCESSFULLY")}`,
-                      error: false,
+                      message: err?.message,
+                      error: true,
                     });
-                    setLoading(false);
                     Alert.alert(
-                      `${localized.t("VEHICLE_UPDATED_SUCCESSFULLY")}`,
-                      `${localized.t(
-                        "YOUR_VEHICLE_HAS_BEEN_UPDATED_SUCCESSFULLY"
-                      )}`,
-                      [
-                        {
-                          text: "OK",
-                          onPress: () => {
-                            handlePressOutside(),
-                              navigation.navigate("DriverRequestScreen");
-                          },
-                        },
-                      ],
+                      `${localized.t("VEHICLE_NOT_UPDATED")}`,
+                      `${err.message}`,
+                      [{ text: `${localized.t("OK")}` }],
                       { cancelable: false }
                     );
-                  } else {
-                    setLoading(false);
-                    Alert.alert(
-                      `${localized.t("ALERT")}`,
-                      `${res?.payload}`,
-                      [
-                        {
-                          text: `${localized.t("OK")}`,
-                          style: "cancel",
-                        },
-                      ],
-                      { cancelable: true }
-                    );
                   }
-                } catch (err: any) {
-                  setLoading(false);
-                  setResponse({
-                    loading: false,
-                    message: err?.message,
-                    error: true,
-                  });
-                  Alert.alert(
-                    `${localized.t("VEHICLE_NOT_UPDATED")}`,
-                    `${err.message}`,
-                    [{ text: `${localized.t("OK")}` }],
-                    { cancelable: false }
-                  );
-                }
-              }}
-            >
-              {({
-                handleSubmit,
-                handleBlur,
-                handleChange,
-                values,
-                setFieldValue,
-                errors,
-                touched,
-                isValid,
-              }) => (
-                <View style={{ flex: 1 }}>
-                  <ScrollView keyboardShouldPersistTaps="handled">
+                }}
+              >
+                {({
+                  handleSubmit,
+                  handleBlur,
+                  handleChange,
+                  values,
+                  setFieldValue,
+                  errors,
+                  touched,
+                  isValid,
+                }) => (
+                  <>
                     <View
                       style={{
+                        display: "flex",
                         flexDirection: "row",
+                        alignItems: "center",
                         justifyContent: "space-between",
                       }}
                     >
@@ -355,50 +361,33 @@ const UpdateVehicleScreen = ({ route }: any) => {
                         }
                         onSelect={changeVehicle}
                         defaultButtonText={selectedVehicle?.toUpperCase()}
-                        rowTextForSelection={(item: any, index: any) => {
+                        rowTextForSelection={(item, index) => {
                           return item;
                         }}
                       />
+                      <PrimaryButton
+                        title={localized.t("UPDATE")}
+                        buttonStyle={styles.nextButtonStyles}
+                        titleStyle={styles.titleStyle}
+                        onPress={handleSubmit}
+                      />
+                      <PrimaryButton
+                        title={localized.t("ADD_NEW_VEHICLE")}
+                        buttonStyle={styles.nextButtonStyles}
+                        titleStyle={styles.titleStyle}
+                        onPress={() => {
+                          handlePressOutside(),
+                            navigation.navigate("AddVehicleScreen", {
+                              newVehicle: true,
+                            });
+                        }}
+                      />
                     </View>
-                  </ScrollView>
-                  <View
-                    style={{
-                      paddingBottom: h2dp(2),
-                    }}
-                  >
-                    <PrimaryButton
-                      title={localized.t("UPDATE")}
-                      buttonStyle={[
-                        styles.buttonStyles,
-                        {
-                          marginHorizontal: 0,
-                        },
-                      ]}
-                      titleStyle={styles.titleStyle}
-                      onPress={handleSubmit}
-                    />
-                    <PrimaryButton
-                      title={localized.t("ADD_NEW_VEHICLE")}
-                      buttonStyle={[
-                        styles.buttonStyles,
-                        {
-                          marginHorizontal: 0,
-                          backgroundColor: "gray",
-                        },
-                      ]}
-                      titleStyle={styles.titleStyle}
-                      onPress={() => {
-                        handlePressOutside(),
-                          navigation.navigate("AddVehicleScreen", {
-                            newVehicle: true,
-                          });
-                      }}
-                    />
-                  </View>
-                </View>
-              )}
-            </Formik>
-          </View>
+                  </>
+                )}
+              </Formik>
+            </View>
+          </ScrollView>
         </SafeAreaView>
       </LinearGradient>
     </TouchableWithoutFeedback>

@@ -176,7 +176,7 @@ const ProfileScreen = () => {
   };
 
   const renderMenuItem = (label: string, onPress: () => void) => (
-    <TouchableOpacity onPress={onPress} style={styles.burgerText}>
+    <TouchableOpacity onPress={onPress} style={styles.menuItem}>
       <Text>{localized.t(label)}</Text>
     </TouchableOpacity>
   );
@@ -406,13 +406,10 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     zIndex: 9999,
     elevation: 5,
-    minWidth: wp("30%"),
+    minWidth: wp("40%"),
   },
-  burgerText: {
-    padding: hp(1.2),
-    fontSize: hp(2),
-    fontWeight: "400",
-    lineHeight: hp(2.7),
+  menuItem: {
+    padding: wp("3%"),
   },
   contentContainer: {
     flex: 1,

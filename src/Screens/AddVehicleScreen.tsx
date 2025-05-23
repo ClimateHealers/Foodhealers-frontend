@@ -33,7 +33,7 @@ import { addVehicle } from "../redux/actions/addVehicle";
 import { adddVehicle } from "../Components/validation";
 
 const AddVehicleScreen = ({ route }: any) => {
-  const newVehicle = true;
+  const { newVehicle } = route?.params;
   const [loading, setLoading] = useState(false);
   const [menuClose, setMenuOpen] = useState(false);
   const [response, setResponse] = useState({
@@ -66,168 +66,172 @@ const AddVehicleScreen = ({ route }: any) => {
   return (
     <TouchableWithoutFeedback onPress={handlePressOutside}>
       <LinearGradient
-        colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
+        colors={["#6fa200", "#72a400", "#82b200", "#87b500", "#6fa200"]}
         style={styles.background}
       >
-        <SafeAreaView style={{ flex: 1 }}>
-          <StatusBar animated={true} backgroundColor="auto" />
-          <View style={styles.container}>
-            <FoodhealersHeader />
-            <View
-              style={[
-                styles.root,
-                {
-                  marginBottom: h2dp(7),
-                },
-              ]}
-            >
-              <Ionicons
-                name="chevron-back"
-                size={32}
-                color="white"
-                onPress={() => {
-                  handlePressOutside(),
-                    newVehicle
-                      ? navigation.navigate("DriverRequestScreen")
-                      : navigation.navigate("BecomeADriverScreen");
-                }}
-              />
-              <View style={styles.item}>
-                <Text style={styles.itemText}>{localized.t("DRIVE")}</Text>
-              </View>
-              <BurgerIcon
-                onOutsidePress={handlePressOutside}
-                menuClose={menuClose}
-              />
-            </View>
-            <Modal visible={loading} animationType="slide" transparent={true}>
-              <View style={styles.centeredView}>
-                <View style={styles.modalView}>
-                  <ActivityIndicator size={"large"} />
+        <SafeAreaView>
+          <ScrollView keyboardShouldPersistTaps="handled">
+            <StatusBar animated={true} backgroundColor="auto" />
+            <View style={styles.container}>
+              <FoodhealersHeader />
+              <View
+                style={[
+                  styles.root,
+                  {
+                    marginBottom: h2dp(7),
+                  },
+                ]}
+              >
+                <Ionicons
+                  name="chevron-back"
+                  size={32}
+                  color="white"
+                  onPress={() => {
+                    handlePressOutside(),
+                      newVehicle
+                        ? navigation.navigate("DriverRequestScreen")
+                        : navigation.navigate("BecomeADriverScreen");
+                  }}
+                />
+                <View style={styles.item}>
+                  <Text style={styles.itemText}>{localized.t("DRIVE")}</Text>
                 </View>
+                <BurgerIcon
+                  onOutsidePress={handlePressOutside}
+                  menuClose={menuClose}
+                />
               </View>
-            </Modal>
-            <Formik
-              // validationSchema={adddVehicle}
-              initialValues={{
-                carModel: "",
-                carColor: "",
-                licencePlate: "",
-                carMake: "",
-              }}
-              onSubmit={async ({
-                carModel,
-                carColor,
-                licencePlate,
-                carMake,
-              }) => {
-                setLoading(true);
-                try {
-                  setResponse({
-                    loading: true,
-                    message: "",
-                    error: false,
-                  });
-                  const data = {
-                    model: carModel,
-                    vehicleColour: carColor,
-                    plateNumber: licencePlate,
-                    make: carMake,
-                    active: true,
-                  };
-                  const res = await dispatch(addVehicle(data as any) as any);
-                  if (res?.payload?.success == true) {
-                    if (newVehicle) {
-                      setLoading(false);
-                      setResponse({
-                        loading: false,
-                        message: `${localized.t("VEHICLE_ADDED_SUCCESSFULLY")}`,
-                        error: false,
-                      });
-                      setLoading(false);
-                      Alert.alert(
-                        `${localized.t("VEHICLE_ADDED_SUCCESSFULLY")}`,
-                        `${localized.t(
-                          "YOUR_VEHICLE_HAS_BEEN_ADDED_SUCCESSFULLY"
-                        )}`,
-                        [
-                          {
-                            text: "OK",
-                            onPress: () => {
-                              navigation.navigate("DriverRequestScreen");
-                              handlePressOutside();
+              <Modal visible={loading} animationType="slide" transparent={true}>
+                <View style={styles.centeredView}>
+                  <View style={styles.modalView}>
+                    <ActivityIndicator size={"large"} />
+                  </View>
+                </View>
+              </Modal>
+              <Formik
+                validationSchema={adddVehicle}
+                initialValues={{
+                  carModel: "",
+                  carColor: "",
+                  licencePlate: "",
+                  carMake: "",
+                }}
+                onSubmit={async ({
+                  carModel,
+                  carColor,
+                  licencePlate,
+                  carMake,
+                }) => {
+                  setLoading(true);
+                  try {
+                    setResponse({
+                      loading: true,
+                      message: "",
+                      error: false,
+                    });
+                    const data = {
+                      model: carModel,
+                      vehicleColour: carColor,
+                      plateNumber: licencePlate,
+                      make: carMake,
+                      active: true,
+                    };
+                    const res = await dispatch(addVehicle(data as any) as any);
+                    if (res?.payload?.success == true) {
+                      if (newVehicle) {
+                        setLoading(false);
+                        setResponse({
+                          loading: false,
+                          message: `${localized.t(
+                            "VEHICLE_ADDED_SUCCESSFULLY"
+                          )}`,
+                          error: false,
+                        });
+                        setLoading(false);
+                        Alert.alert(
+                          `${localized.t("VEHICLE_ADDED_SUCCESSFULLY")}`,
+                          `${localized.t(
+                            "YOUR_VEHICLE_HAS_BEEN_ADDED_SUCCESSFULLY"
+                          )}`,
+                          [
+                            {
+                              text: "OK",
+                              onPress: () => {
+                                navigation.navigate("DriverRequestScreen");
+                                handlePressOutside();
+                              },
                             },
-                          },
-                        ],
-                        { cancelable: false }
-                      );
+                          ],
+                          { cancelable: false }
+                        );
+                      } else {
+                        setLoading(false);
+                        setResponse({
+                          loading: false,
+                          message: `${localized.t(
+                            "VEHICLE_ADDED_SUCCESSFULLY"
+                          )}`,
+                          error: false,
+                        });
+                        setLoading(false);
+                        Alert.alert(
+                          `${localized.t("VEHICLE_ADDED_SUCCESSFULLY")}`,
+                          `${localized.t(
+                            "YOUR_VEHICLE_HAS_BEEN_ADDED_SUCCESSFULLY"
+                          )}`,
+                          [
+                            {
+                              text: "OK",
+                              onPress: () => {
+                                navigation.navigate("DriverProfilePhoto");
+                                handlePressOutside();
+                              },
+                            },
+                          ],
+                          { cancelable: false }
+                        );
+                      }
                     } else {
                       setLoading(false);
-                      setResponse({
-                        loading: false,
-                        message: `${localized.t("VEHICLE_ADDED_SUCCESSFULLY")}`,
-                        error: false,
-                      });
-                      setLoading(false);
                       Alert.alert(
-                        `${localized.t("VEHICLE_ADDED_SUCCESSFULLY")}`,
-                        `${localized.t(
-                          "YOUR_VEHICLE_HAS_BEEN_ADDED_SUCCESSFULLY"
-                        )}`,
+                        `${localized.t("ALERT")}`,
+                        `${res?.payload}`,
                         [
                           {
-                            text: "OK",
-                            onPress: () => {
-                              navigation.navigate("DriverProfilePhoto");
-                              handlePressOutside();
-                            },
+                            text: `${localized.t("OK")}`,
+                            style: "cancel",
                           },
                         ],
-                        { cancelable: false }
+                        { cancelable: true }
                       );
                     }
-                  } else {
+                  } catch (err: any) {
                     setLoading(false);
+                    setResponse({
+                      loading: false,
+                      message: err?.message,
+                      error: true,
+                    });
                     Alert.alert(
-                      `${localized.t("ALERT")}`,
-                      `${res?.payload}`,
-                      [
-                        {
-                          text: `${localized.t("OK")}`,
-                          style: "cancel",
-                        },
-                      ],
-                      { cancelable: true }
+                      `${localized.t("VEHICLE_NOT_ADDED")}`,
+                      `${err.message}`,
+                      [{ text: `${localized.t("OK")}` }],
+                      { cancelable: false }
                     );
                   }
-                } catch (err: any) {
-                  setLoading(false);
-                  setResponse({
-                    loading: false,
-                    message: err?.message,
-                    error: true,
-                  });
-                  Alert.alert(
-                    `${localized.t("VEHICLE_NOT_ADDED")}`,
-                    `${err.message}`,
-                    [{ text: `${localized.t("OK")}` }],
-                    { cancelable: false }
-                  );
-                }
-              }}
-            >
-              {({
-                handleSubmit,
-                handleBlur,
-                handleChange,
-                values,
-                setFieldValue,
-                errors,
-                touched,
-                isValid,
-              }) => (
-                <>
-                  <ScrollView keyboardShouldPersistTaps="handled">
+                }}
+              >
+                {({
+                  handleSubmit,
+                  handleBlur,
+                  handleChange,
+                  values,
+                  setFieldValue,
+                  errors,
+                  touched,
+                  isValid,
+                }) => (
+                  <>
                     <View
                       style={{
                         display: "flex",
@@ -293,29 +297,17 @@ const AddVehicleScreen = ({ route }: any) => {
                     <Text style={styles.inputError}>
                       {errors?.licencePlate}
                     </Text>
-                  </ScrollView>
-
-                  <View
-                    style={{
-                      paddingBottom: h2dp(2),
-                    }}
-                  >
                     <PrimaryButton
                       title={localized.t("NEXT")}
-                      buttonStyle={[
-                        styles.buttonStyles,
-                        {
-                          marginHorizontal: 0,
-                        },
-                      ]}
+                      buttonStyle={styles.nextButtonStyles}
                       titleStyle={styles.titleStyle}
                       onPress={handleSubmit}
                     />
-                  </View>
-                </>
-              )}
-            </Formik>
-          </View>
+                  </>
+                )}
+              </Formik>
+            </View>
+          </ScrollView>
         </SafeAreaView>
       </LinearGradient>
     </TouchableWithoutFeedback>

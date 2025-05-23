@@ -79,7 +79,7 @@ const LoginScreen = () => {
           <View style={styles.header}>
             <TouchableOpacity
               onPress={() => {
-                navigation.replace("HomeScreen");
+                navigation.goBack();
                 handlePressOutside();
               }}
             >

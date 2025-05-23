@@ -216,7 +216,7 @@ const PickupDetailsScreen = ({ route }: any) => {
   return (
     <TouchableWithoutFeedback onPress={handlePressOutside}>
       <LinearGradient
-        colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
+        colors={["#6fa200", "#72a400", "#82b200", "#87b500", "#6fa200"]}
         style={styles.background}
       >
         <SafeAreaView>
@@ -331,20 +331,8 @@ const PickupDetailsScreen = ({ route }: any) => {
                     </View>
                   </View>
                 ) : (
-                  <View
-                    style={{
-                      flex: 1,
-                      justifyContent: "center",
-                      alignItems: "center",
-                      minHeight: h2dp(80),
-                    }}
-                  >
-                    <Text
-                      style={{
-                        color: "white",
-                        textAlign: "center",
-                      }}
-                    >
+                  <View style={styles.centeredView}>
+                    <Text style={{ color: "white" }}>
                       {localized.t("NOTHING_TO_SHOW")}
                     </Text>
                   </View>

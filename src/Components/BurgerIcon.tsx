@@ -51,6 +51,11 @@ const BurgerIcon = ({ menuClose, onOutsidePress, menuItem }: any) => {
 
   const handleMenuItemPress = (item: any) => {
     setMenuOpen(false);
+    if (isAuthenticated) {
+      navigation.replace("HomeScreen");
+    } else {
+      navigation.navigate("SignupScreen");
+    }
     navigation.replace("HomeScreen");
   };
 
@@ -76,9 +81,27 @@ const BurgerIcon = ({ menuClose, onOutsidePress, menuItem }: any) => {
         size={40}
         color="white"
         onPress={() => toggleMenu()}
+        style={{
+          zIndex: 2,
+          right: 0,
+        }}
       />
       {menuOpen && (
-        <View ref={burgerRef} style={styles.menuContainer}>
+        <View
+          ref={burgerRef}
+          style={{
+            position: "absolute",
+            right: w2dp("5%"),
+            top: Platform.OS === "ios" ? h2dp("6%") : h2dp("5%"),
+            backgroundColor: "white",
+            borderColor: "black",
+            borderWidth: 0.5,
+            borderRadius: 5,
+            zIndex: 9999,
+            elevation: 5,
+            minWidth: w2dp("40%"),
+          }}
+        >
           <TouchableOpacity onPress={() => handleMenuItemPress("Home")}>
             <Text style={styles.burgerText}>{localized.t("HOME")}</Text>
           </TouchableOpacity>

@@ -29,6 +29,7 @@ import { customFonts } from "./src/font";
 import { persistor, store } from "./src/redux/store";
 import "react-native-get-random-values";
 
+// Disable font scaling globally
 (TextRN as any).defaultProps ??= {};
 (Text as any).defaultProps ??= {};
 (TextInput as any).defaultProps ??= {};
@@ -37,6 +38,7 @@ import "react-native-get-random-values";
   (TextInput as any).defaultProps.allowFontScaling =
     false;
 
+// Suppress logs
 LogBox.ignoreAllLogs();
 
 export default function App() {
@@ -51,10 +53,10 @@ export default function App() {
 
   const notificationListener = useRef<any>();
   const responseListener = useRef<any>();
-  let lastBackPressed: number = 0;
 
   const netInfo = useNetInfo();
 
+  // Load fonts
   useEffect(() => {
     (async () => {
       await Font.loadAsync(customFonts);
@@ -63,6 +65,7 @@ export default function App() {
     })();
   }, []);
 
+  // Handle no internet alert
   useEffect(() => {
     if (netInfo?.isConnected === false && !isAlertShown) {
       setAlertShown(true);
@@ -79,24 +82,21 @@ export default function App() {
     }
   }, [netInfo?.isConnected, isAlertShown]);
 
+  // Handle back button
   useEffect(() => {
     const backAction = () => {
       const currentRoute = navigationRef.getCurrentRoute()?.name;
-      const now = Date.now();
+      console.log("Current route:", currentRoute);
 
       if (currentRoute === "HomeScreen") {
-        if (lastBackPressed && now - lastBackPressed < 2000) {
-          BackHandler.exitApp();
-        } else {
-          lastBackPressed = now;
-          ToastAndroid.show("Press back again to exit", ToastAndroid.SHORT);
-        }
+        BackHandler.exitApp();
         return true;
       }
 
-      // For all other screens, go back normally
-      navigationRef.goBack();
-      return true;
+      if (currentRoute !== "HomeScreen") {
+        navigationRef.goBack();
+        return true;
+      }
     };
 
     const backHandler = BackHandler.addEventListener(
@@ -106,6 +106,8 @@ export default function App() {
 
     return () => backHandler.remove();
   }, []);
+
+  // Push notifications
   useEffect(() => {
     const setupNotifications = async () => {
       if (!Device.isDevice) {

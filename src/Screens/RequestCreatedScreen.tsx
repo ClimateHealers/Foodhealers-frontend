@@ -56,97 +56,97 @@ const RequestCreatedScreen = ({ route }: any) => {
         colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
         style={styles.background}
       >
-        <SafeAreaView style={{ flex: 1 }}>
-          <View style={styles.containerVolunteer}>
-            <FoodhealersHeader />
-            <View style={styles.root}>
-              <Ionicons
-                name="chevron-back"
-                size={32}
-                color="white"
-                onPress={() => {
-                  navigation.navigate("TeamHomeScreen"), handlePressOutside();
-                }}
-              />
-              <View style={styles.item}>
-                <Text style={styles.itemText}>{title}</Text>
+        <SafeAreaView>
+          <ScrollView keyboardShouldPersistTaps="handled">
+            <View style={styles.containerVolunteer}>
+              <FoodhealersHeader />
+              <View style={styles.root}>
+                <Ionicons
+                  name="chevron-back"
+                  size={32}
+                  color="white"
+                  onPress={() => {
+                    navigation.navigate("TeamHomeScreen"), handlePressOutside();
+                  }}
+                />
+                <View style={styles.item}>
+                  <Text style={styles.itemText}>{title}</Text>
+                </View>
+                <BurgerIcon
+                  onOutsidePress={handlePressOutside}
+                  menuClose={menuClose}
+                  menuItem={menuItem}
+                />
               </View>
-              <BurgerIcon
-                onOutsidePress={handlePressOutside}
-                menuClose={menuClose}
-                menuItem={menuItem}
-              />
-            </View>
-            <ScrollView keyboardShouldPersistTaps="handled">
-              <View style={[styles.cardContainer, { width: w2dp(90) }]}>
-                <ScrollView showsVerticalScrollIndicator={false}>
-                  <Text
-                    style={{
-                      marginLeft: w2dp(3),
-                      fontSize: h2dp(1.6),
-                      lineHeight: 30,
-                      paddingTop: h2dp(0.5),
-                    }}
-                  >
-                    {formatted}
-                  </Text>
-                  <Text
-                    style={{
-                      marginLeft: w2dp(3),
-                      fontWeight: "bold",
-                      fontSize: h2dp(1.6),
-                      lineHeight: 30,
-                    }}
-                  >
-                    {foodItem} {quantity}
-                  </Text>
+              <View style={{ height: h2dp(25), marginTop: h2dp(5) }}>
+                <View style={[styles.cardContainer, { width: w2dp(85) }]}>
                   <ScrollView showsVerticalScrollIndicator={false}>
                     <Text
                       style={{
                         marginLeft: w2dp(3),
-                        fontWeight: "300",
                         fontSize: h2dp(1.6),
-                        lineHeight: 20,
-                        paddingBottom: h2dp(1),
+                        lineHeight: 30,
+                        paddingTop: h2dp(0.5),
                       }}
                     >
-                      {address}
+                      {formatted}
                     </Text>
+                    <Text
+                      style={{
+                        marginLeft: w2dp(3),
+                        fontWeight: "bold",
+                        fontSize: h2dp(1.6),
+                        lineHeight: 30,
+                      }}
+                    >
+                      {foodItem} {quantity}
+                    </Text>
+                    <ScrollView showsVerticalScrollIndicator={false}>
+                      <Text
+                        style={{
+                          marginLeft: w2dp(3),
+                          fontWeight: "300",
+                          fontSize: h2dp(1.6),
+                          lineHeight: 20,
+                          paddingBottom: h2dp(1),
+                        }}
+                      >
+                        {address}
+                      </Text>
+                    </ScrollView>
                   </ScrollView>
-                </ScrollView>
+                </View>
               </View>
-            </ScrollView>
-          </View>
-          <View style={{ paddingBottom: h2dp(2) }}>
-            <View>
-              <PrimaryButton
-                title={localized.t("REQUEST_MORE")}
-                onPress={() => {
-                  handlePressOutside(),
-                    navigation.navigate("AddRequestDonationsScreen", {
-                      itemTypeId: itemTypeId,
-                      title: title,
-                    });
-                }}
-                buttonStyle={styles.buttonStyles}
-                titleStyle={styles.titleStyle}
-              />
+              <View>
+                <PrimaryButton
+                  title={localized.t("REQUEST_MORE")}
+                  onPress={() => {
+                    handlePressOutside(),
+                      navigation.navigate("AddRequestDonationsScreen", {
+                        itemTypeId: itemTypeId,
+                        title: title,
+                      });
+                  }}
+                  buttonStyle={styles.buttonStyles}
+                  titleStyle={styles.titleStyle}
+                />
+              </View>
+              <View>
+                <PrimaryButton
+                  title={localized.t("SEE_ALL_REQUESTS")}
+                  onPress={() => {
+                    handlePressOutside(),
+                      navigation.navigate("RequestHistoryScreen", {
+                        itemTypeId: itemTypeId,
+                        title: title,
+                      });
+                  }}
+                  buttonStyle={styles.buttonHistoryStyles}
+                  titleStyle={styles.titleMainStyle}
+                />
+              </View>
             </View>
-            <View>
-              <PrimaryButton
-                title={localized.t("SEE_ALL_REQUESTS")}
-                onPress={() => {
-                  handlePressOutside(),
-                    navigation.navigate("RequestHistoryScreen", {
-                      itemTypeId: itemTypeId,
-                      title: title,
-                    });
-                }}
-                buttonStyle={styles.buttonHistoryStyles}
-                titleStyle={styles.titleMainStyle}
-              />
-            </View>
-          </View>
+          </ScrollView>
         </SafeAreaView>
       </LinearGradient>
     </TouchableWithoutFeedback>

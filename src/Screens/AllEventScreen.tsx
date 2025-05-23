@@ -353,7 +353,7 @@ const AllEventScreen = () => {
               />
             </View>
           ) : (
-            <View style={[styles.centeredView, { flex: 1 }]}>
+            <View style={styles.centeredView}>
               <Text style={{ color: "white" }}>
                 {localized.t("NOTHING_TO_SHOW")}
               </Text>

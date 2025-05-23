@@ -105,8 +105,6 @@ const MapScreen = ({ route }: any) => {
   };
 
   const getAddressFromCoordinates = async (latitude: any, longitude: any) => {
-    console.log(latitude, longitude);
-
     try {
       const response = await fetch(
         `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${API_KEY}`

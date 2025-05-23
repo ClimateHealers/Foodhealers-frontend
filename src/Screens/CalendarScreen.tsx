@@ -26,7 +26,6 @@ import { calendarEvent } from "../redux/actions/calendarEventAction";
 
 const CalendarScreen = ({ route }: any) => {
   const { latitude, longitude } = route?.params;
-
   const navigation: any = useNavigation();
 
   const [menuClose, setMenuOpen] = useState(false);

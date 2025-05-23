@@ -28,10 +28,9 @@ import { styles } from "../Components/Styles";
 import { getLocation } from "../Components/getCurrentLocation";
 import { fetchVehicle } from "../redux/actions/addVehicle";
 import { fetchUser, updatePhoto } from "../redux/actions/authAction";
-import BurgerIcon from "../Components/BurgerIcon";
 
 const DriverRequestScreen = ({ route }: any) => {
-  const [menuClose, setMenuOpen] = useState<boolean>(false);
+  const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState(false);
   const [vehicleDetails, setVehicleDetails] = useState<any>();
   const [data, setData] = useState<any>();
@@ -40,7 +39,7 @@ const DriverRequestScreen = ({ route }: any) => {
   const navigation: any = useNavigation<string>();
   const handlePressOutside = () => {
     Keyboard.dismiss();
-    setMenuOpen(!menuClose);
+    setMenuOpen(false);
   };
   const [response, setResponse] = useState({
     loading: false,
@@ -80,6 +79,27 @@ const DriverRequestScreen = ({ route }: any) => {
     const indexLength = response?.payload?.vehicleDetails?.length;
     const data = response?.payload?.vehicleDetails[indexLength - 1];
     setVehicleDetails(data);
+  };
+
+  const handleMenuItemPress = (item: any) => {
+    setMenuOpen(false);
+    if (isAuthenticated) {
+      navigation.replace("HomeScreen");
+    } else {
+      navigation.navigate("SignupScreen");
+    }
+  };
+
+  const findFoodMenuItemPress = (item: any) => {
+    getLocation().then((res) => {
+      if (res) {
+        navigation?.navigate("MapScreen", {
+          latitude: res?.latitude,
+          longitude: res?.longitude,
+        });
+      }
+    });
+    setMenuOpen(false);
   };
 
   const openImagePickerAsync = async () => {
@@ -140,48 +160,116 @@ const DriverRequestScreen = ({ route }: any) => {
   );
 
   const toggleMenu = () => {
-    setMenuOpen(!menuClose);
+    setMenuOpen(!menuOpen);
   };
 
   return (
     <TouchableWithoutFeedback onPress={handlePressOutside}>
       <LinearGradient
-        colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
+        colors={["#ffffff", "#ffffff", "#ffffff"]}
         style={styles.background}
       >
-        <SafeAreaView style={{ flex: 1 }}>
-          <View style={styles.containerVolunteer}>
-            <FoodhealersHeader />
-            <View style={styles.root}>
-              <Ionicons
-                name="chevron-back"
-                size={32}
-                color="white"
-                onPress={() => {
-                  navigation.navigate("TeamHomeScreen"), handlePressOutside();
-                }}
-              />
-              <View style={styles.item}>
-                <Text style={styles.itemText}> {localized.t("DRIVE")}</Text>
+        <SafeAreaView>
+          <ScrollView keyboardShouldPersistTaps="handled">
+            <View style={styles.containerVolunteer}>
+              <FoodhealersHeader />
+              <View style={styles.root}>
+                <Ionicons
+                  name="chevron-back"
+                  size={32}
+                  color="#00693D"
+                  onPress={() => {
+                    navigation.goBack(), handlePressOutside();
+                  }}
+                />
+                <View style={styles.item}>
+                  <Text style={{ fontSize: h2dp(2.5), color: "#00693D" }}>
+                    {localized.t("DRIVE")}
+                  </Text>
+                </View>
+                <MaterialCommunityIcons
+                  name="menu"
+                  size={40}
+                  color="#00693D"
+                  onPress={() => toggleMenu()}
+                  style={{
+                    zIndex: 9999,
+                    right: 0,
+                  }}
+                />
+                {menuOpen && (
+                  <View
+                    style={{
+                      position: "absolute",
+                      right: w2dp(8.5),
+                      top: h2dp(5.5),
+                      backgroundColor: "white",
+                      borderColor: "black",
+                      borderWidth: 0.5,
+                      borderRadius: 5,
+                      zIndex: 1,
+                    }}
+                  >
+                    <TouchableOpacity
+                      onPress={() => handleMenuItemPress("Home")}
+                    >
+                      <Text style={styles.burgerText}>
+                        {localized.t("HOME")}
+                      </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => findFoodMenuItemPress("Find Food")}
+                    >
+                      <Text style={styles.burgerText}>
+                        {localized.t("FIND_FOOD")}
+                      </Text>
+                    </TouchableOpacity>
+                    {isAuthenticated && (
+                      <View>
+                        <TouchableOpacity
+                          onPress={() => {
+                            navigation.navigate("HistoryScreen"),
+                              setMenuOpen(false);
+                          }}
+                        >
+                          <Text style={styles.burgerText}>
+                            {localized.t("HISTORY")}
+                          </Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                          onPress={() => {
+                            navigation.navigate("ProfileScreen");
+                            setMenuOpen(false);
+                          }}
+                        >
+                          <Text style={styles.burgerText}>
+                            {localized.t("ACCOUNT")}
+                          </Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                          onPress={() => {
+                            navigation.navigate("TeamHomeScreen");
+                            setMenuOpen(false);
+                          }}
+                        >
+                          <Text style={styles.burgerText}>
+                            {localized.t("TEAM")}
+                          </Text>
+                        </TouchableOpacity>
+                      </View>
+                    )}
+                  </View>
+                )}
               </View>
-              <BurgerIcon
-                onOutsidePress={handlePressOutside}
-                menuClose={menuClose}
-              />
-            </View>
-
-            <ScrollView keyboardShouldPersistTaps="handled">
               <View
                 style={{
-                  height: h2dp(30),
-                  width: h2dp(30),
+                  height: h2dp(35),
+                  width: h2dp(35),
                   borderRadius: h2dp(50),
                   alignItems: "center",
                   backgroundColor: "white",
                   overflow: "hidden",
                   marginBottom: h2dp(3),
-                  borderRightColor: "red",
-                  marginHorizontal: "auto",
                 }}
               >
                 <TouchableOpacity
@@ -200,46 +288,38 @@ const DriverRequestScreen = ({ route }: any) => {
                     <View>
                       <Image
                         source={{ uri: data?.profilePhoto }}
-                        style={{ width: h2dp(30), height: h2dp(30) }}
+                        style={{ width: h2dp(35), height: h2dp(35) }}
                       />
                     </View>
                   )}
                 </TouchableOpacity>
               </View>
-              <Text
-                style={[
-                  styles.itemText,
-                  {
-                    textAlign: "center",
-                  },
-                ]}
-              >
+              <Text style={{ fontSize: h2dp(3.6), color: "#00693D" }}>
                 {localized.t("HELLO")}, {data?.name}
               </Text>
-              <View style={styles.vehicledetailsCard}>
-                <Text
-                  style={[
-                    styles.itemText,
-                    {
-                      color: "black",
-                      textAlign: "center",
-                    },
-                  ]}
-                >
-                  {vehicleDetails?.make} {vehicleDetails?.model}
-                </Text>
-
+              <View
+                style={{
+                  backgroundColor: "#00693D",
+                  borderRadius: 5,
+                  width: w2dp(70),
+                  marginTop: h2dp(5),
+                  alignItems: "center",
+                  justifyContent: "center",
+                  display: "flex",
+                }}
+              >
                 <Text
                   style={{
-                    fontSize: h2dp(1.8),
-                    color: "#555",
-                    textAlign: "center",
+                    fontSize: h2dp(2.4),
+                    color: "white",
+                    marginVertical: h2dp(1),
+                    alignItems: "center",
+                    display: "flex",
                   }}
                 >
-                  {vehicleDetails?.vehicleColour} |{" "}
-                  {vehicleDetails?.plateNumber}
+                  {vehicleDetails?.make} {vehicleDetails?.model},{" "}
+                  {vehicleDetails?.vehicleColour}, {vehicleDetails?.plateNumber}
                 </Text>
-
                 <PrimaryButton
                   title={localized.t("EDIT_VEHICLE_DETAILS")}
                   onPress={() => {
@@ -252,46 +332,67 @@ const DriverRequestScreen = ({ route }: any) => {
                         plateNumber: vehicleDetails?.plateNumber,
                       });
                   }}
-                  buttonStyle={[
-                    styles.buttonStyles,
-                    {
-                      height: h2dp(5),
-                    },
-                  ]}
-                  titleStyle={styles.titleStyle}
+                  buttonStyle={{
+                    backgroundColor: "#D1D1D6",
+                    color: "white",
+                    borderRadius: 5,
+                    right: 0,
+                    marginBottom: h2dp(2),
+                    paddingHorizontal: w2dp(6),
+                  }}
+                  titleStyle={{
+                    color: "black",
+                    fontSize: h2dp(1.8),
+                    // lineHeight: 20,
+                    fontFamily: "OpenSans-Regular",
+                  }}
                 />
               </View>
-            </ScrollView>
-          </View>
-          <View style={{ paddingBottom: h2dp(2) }}>
-            <PrimaryButton
-              title={localized.t("SEE_PICKUP_REQUESTS")}
-              onPress={() => {
-                handlePressOutside(),
-                  navigation.navigate("PickupDetailsScreen", {
-                    itemTypeId: 4,
-                  });
-              }}
-              buttonStyle={styles.buttonStyles}
-              titleStyle={styles.titleStyle}
-            />
-            <PrimaryButton
-              title={localized.t("HISTORY")}
-              onPress={() => {
-                handlePressOutside(),
-                  navigation.navigate("PickupHistoryScreen", {
-                    itemTypeId: 4,
-                  });
-              }}
-              buttonStyle={[
-                styles.buttonStyles,
-                {
-                  backgroundColor: "gray",
-                },
-              ]}
-              titleStyle={styles.titleStyle}
-            />
-          </View>
+              <PrimaryButton
+                title={localized.t("SEE_PICKUP_REQUESTS")}
+                onPress={() => {
+                  handlePressOutside(),
+                    navigation.navigate("PickupDetailsScreen", {
+                      itemTypeId: 4,
+                    });
+                }}
+                buttonStyle={{
+                  backgroundColor: "#00693D",
+                  color: "black",
+                  borderRadius: 5,
+                  width: w2dp(70),
+                  marginTop: h2dp(5),
+                  alignSelf: "center",
+                }}
+                titleStyle={[
+                  styles.titleMainStyle,
+                  {
+                    color: "white",
+                  },
+                ]}
+              />
+              <PrimaryButton
+                title={localized.t("HISTORY")}
+                onPress={() => {
+                  handlePressOutside(),
+                    navigation.navigate("PickupHistoryScreen", {
+                      itemTypeId: 4,
+                    });
+                }}
+                buttonStyle={{
+                  backgroundColor: "#D1D1D6",
+                  color: "black",
+                  borderRadius: 5,
+                  borderColor: "black",
+                  borderWidth: 1,
+                  width: w2dp(70),
+                  marginTop: h2dp(5),
+                  alignSelf: "center",
+                }}
+                titleStyle={styles.titleMainStyle}
+              />
+            </View>
+          </ScrollView>
         </SafeAreaView>
       </LinearGradient>
     </TouchableWithoutFeedback>

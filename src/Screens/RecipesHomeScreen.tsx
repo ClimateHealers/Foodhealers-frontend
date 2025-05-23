@@ -41,16 +41,6 @@ const RecipesHomeScreen = () => {
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(2);
   const [hasMoreData, setHasMoreData] = useState(true);
-
-  const desiredOrder = ["Breakfast", "Lunch", "Dinner"];
-  const sortedRecipes = [...recipesCategory].sort((a: any, b: any) => {
-    const indexA = desiredOrder.indexOf(a.name);
-    const indexB = desiredOrder.indexOf(b.name);
-    if (indexA !== -1 && indexB !== -1) return indexA - indexB;
-    if (indexB !== -1) return 1;
-    return 0;
-  });
-
   const [response, setResponse] = useState({
     loading: false,
     error: false,
@@ -312,7 +302,7 @@ const RecipesHomeScreen = () => {
                           </View>
                         </TouchableOpacity>
                       ))
-                    : sortedRecipes.map((recipe: any) => (
+                    : recipesCategory.map((recipe: any) => (
                         <TouchableOpacity
                           onPress={() => {
                             handlePressOutside(),
@@ -345,23 +335,15 @@ const RecipesHomeScreen = () => {
                         </TouchableOpacity>
                       ))}
                   {filteredData?.length == undefined && textChange ? (
-                    <View
+                    <Text
                       style={{
-                        flex: 1,
-                        justifyContent: "center",
-                        alignItems: "center",
-                        minHeight: h2dp(80),
+                        color: "white",
+                        fontSize: h2dp(1.5),
+                        marginBottom: h2dp(1.5),
                       }}
                     >
-                      <Text
-                        style={{
-                          color: "white",
-                          textAlign: "center",
-                        }}
-                      >
-                        {localized.t("NOTHING_TO_SHOW")}
-                      </Text>
-                    </View>
+                      No results found
+                    </Text>
                   ) : null}
                 </View>
               </TouchableOpacity>
