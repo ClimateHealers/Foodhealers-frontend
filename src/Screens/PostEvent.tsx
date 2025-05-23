@@ -253,7 +253,7 @@ const PostEvent = () => {
                       listViewDisplayed="auto"
                       textInputProps={{ placeholderTextColor: "#000000" }}
                       query={{
-                        key: API_KEY,
+                        key: "AIzaSyAVrMSlcMWyuRyCbSTZDABAS_XG6FcScYQ",
                         language: "en",
                       }}
                       enablePoweredByContainer={false}

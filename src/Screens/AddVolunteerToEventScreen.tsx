@@ -139,154 +139,154 @@ const AddVolunteerToEvent = ({ route }: any) => {
         colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
         style={styles.background}
       >
-        <SafeAreaView>
-          <ScrollView keyboardShouldPersistTaps="handled">
-            <StatusBar animated={true} backgroundColor="auto" />
-            <View style={styles.container}>
-              <FoodhealersHeader />
-              <View style={styles.root}>
-                <Ionicons
-                  name="chevron-back"
-                  size={32}
-                  color="white"
-                  onPress={() => {
-                    navigation.goBack(), handlePressOutside();
-                  }}
-                />
-                <View style={styles.item}>
-                  <Text style={styles.itemText}>{title}</Text>
-                </View>
-                <BurgerIcon
-                  onOutsidePress={handlePressOutside}
-                  menuClose={menuClose}
-                />
-              </View>
-              <Modal visible={loading} animationType="slide" transparent={true}>
-                <View style={styles.centeredView}>
-                  <View style={styles.modalView}>
-                    <ActivityIndicator size={"large"} />
-                  </View>
-                </View>
-              </Modal>
-              <Formik
-                validationSchema={addVolunteer}
-                initialValues={{
-                  name: data?.user?.name,
-                  phoneNumber: data?.user?.phoneNumber,
-                  lat: data?.user?.address?.lat,
-                  long: data?.user?.address?.lng,
-                  volunteerFullAddress: data?.user?.address?.fullAddress,
-                  city: data?.user?.address?.city,
-                  state: data?.user?.address?.state,
-                  postalCode: data?.user?.address?.postalCode,
-                  zipCode: data?.user?.address?.postalCode,
+        <SafeAreaView style={{ flex: 1 }}>
+          <StatusBar animated={true} backgroundColor="auto" />
+          <View style={styles.container}>
+            <FoodhealersHeader />
+            <View style={styles.root}>
+              <Ionicons
+                name="chevron-back"
+                size={32}
+                color="white"
+                onPress={() => {
+                  navigation.goBack(), handlePressOutside();
                 }}
-                onSubmit={async ({
-                  name,
-                  lat,
-                  long,
-                  volunteerFullAddress,
-                  phoneNumber,
-                  city,
-                  state,
-                  zipCode,
-                }) => {
-                  setLoading(true);
-                  try {
-                    setResponse({
-                      loading: true,
-                      message: "",
-                      error: false,
-                    });
-                    const data = {
-                      eventId: id,
-                      volunteerName: name,
-                      volunteerPhoneNumber: phoneNumber,
-                      availableFromDate: eventDateTime,
-                      availableToDate: eventEndDateTime,
-                      lat: lat,
-                      lng: long,
-                      volunteerFullAddress: volunteerFullAddress,
-                      city: city,
-                      state: state,
-                      postalCode: Number(zipCode) ? Number(zipCode) : 0,
-                    };
-                    const res = await dispatch(
-                      volunteerAtEvent(data as any) as any
-                    );
-                    if (res?.payload?.success == true) {
-                      setLoading(false);
-                      setResponse({
-                        loading: false,
-                        message: `${localized.t(
-                          "VOLUNTEER_REGISTERED_SUCCESSFULLY"
-                        )}`,
-                        error: false,
-                      });
-                      setLoading(false);
-                      Alert.alert(
-                        `${localized.t("THANK_YOU_FOR_YOUR_SUPPORT")}`,
-                        `${localized.t(
-                          "YOU_HAVE_BEEN_SUCCESSFULLY_ADDED_TO_VOLUNTEER"
-                        )}`,
-                        [
-                          {
-                            text: `${localized.t("OK")}`,
-                            onPress: () => {
-                              handlePressOutside(),
-                                navigation.navigate("VolunteerThankYouScreen", {
-                                  id: id,
-                                  itemTypeId: itemTypeId,
-                                  title: title,
-                                  logitude: longitude,
-                                  latitude: latitude,
-                                });
-                            },
-                          },
-                        ],
-                        { cancelable: false }
-                      );
-                    } else {
-                      setLoading(false);
-                      Alert.alert(
-                        `${localized.t("ALERT")}`,
-                        `${res?.payload}`,
-                        [
-                          {
-                            text: `${localized.t("OK")}`,
-                            style: "cancel",
-                          },
-                        ],
-                        { cancelable: true }
-                      );
-                    }
-                  } catch (err: any) {
+              />
+              <View style={styles.item}>
+                <Text style={styles.itemText}>{title}</Text>
+              </View>
+              <BurgerIcon
+                onOutsidePress={handlePressOutside}
+                menuClose={menuClose}
+              />
+            </View>
+            <Modal visible={loading} animationType="slide" transparent={true}>
+              <View style={styles.centeredView}>
+                <View style={styles.modalView}>
+                  <ActivityIndicator size={"large"} />
+                </View>
+              </View>
+            </Modal>
+            <Formik
+              validationSchema={addVolunteer}
+              initialValues={{
+                name: data?.user?.name,
+                phoneNumber: data?.user?.phoneNumber,
+                lat: data?.user?.address?.lat,
+                long: data?.user?.address?.lng,
+                volunteerFullAddress: data?.user?.address?.fullAddress,
+                city: data?.user?.address?.city,
+                state: data?.user?.address?.state,
+                postalCode: data?.user?.address?.postalCode,
+                zipCode: data?.user?.address?.postalCode,
+              }}
+              onSubmit={async ({
+                name,
+                lat,
+                long,
+                volunteerFullAddress,
+                phoneNumber,
+                city,
+                state,
+                zipCode,
+              }) => {
+                setLoading(true);
+                try {
+                  setResponse({
+                    loading: true,
+                    message: "",
+                    error: false,
+                  });
+                  const data = {
+                    eventId: id,
+                    volunteerName: name,
+                    volunteerPhoneNumber: phoneNumber,
+                    availableFromDate: eventDateTime,
+                    availableToDate: eventEndDateTime,
+                    lat: lat,
+                    lng: long,
+                    volunteerFullAddress: volunteerFullAddress,
+                    city: city,
+                    state: state,
+                    postalCode: Number(zipCode) ? Number(zipCode) : 0,
+                  };
+                  const res = await dispatch(
+                    volunteerAtEvent(data as any) as any
+                  );
+                  if (res?.payload?.success == true) {
                     setLoading(false);
                     setResponse({
                       loading: false,
-                      message: err?.message,
-                      error: true,
+                      message: `${localized.t(
+                        "VOLUNTEER_REGISTERED_SUCCESSFULLY"
+                      )}`,
+                      error: false,
                     });
+                    setLoading(false);
                     Alert.alert(
-                      `${localized.t("VOLUNTEER_NOT_ADDED")}`,
-                      `${err.message}`,
-                      [{ text: `${localized.t("OK")}` }],
+                      `${localized.t("THANK_YOU_FOR_YOUR_SUPPORT")}`,
+                      `${localized.t(
+                        "YOU_HAVE_BEEN_SUCCESSFULLY_ADDED_TO_VOLUNTEER"
+                      )}`,
+                      [
+                        {
+                          text: `${localized.t("OK")}`,
+                          onPress: () => {
+                            handlePressOutside(),
+                              navigation.navigate("VolunteerThankYouScreen", {
+                                id: id,
+                                itemTypeId: itemTypeId,
+                                title: title,
+                                logitude: longitude,
+                                latitude: latitude,
+                              });
+                          },
+                        },
+                      ],
                       { cancelable: false }
                     );
+                  } else {
+                    setLoading(false);
+                    Alert.alert(
+                      `${localized.t("ALERT")}`,
+                      `${res?.payload}`,
+                      [
+                        {
+                          text: `${localized.t("OK")}`,
+                          style: "cancel",
+                        },
+                      ],
+                      { cancelable: true }
+                    );
                   }
-                }}
-              >
-                {({
-                  handleSubmit,
-                  handleBlur,
-                  handleChange,
-                  values,
-                  setFieldValue,
-                  errors,
-                  touched,
-                  isValid,
-                }) => (
-                  <>
+                } catch (err: any) {
+                  setLoading(false);
+                  setResponse({
+                    loading: false,
+                    message: err?.message,
+                    error: true,
+                  });
+                  Alert.alert(
+                    `${localized.t("VOLUNTEER_NOT_ADDED")}`,
+                    `${err.message}`,
+                    [{ text: `${localized.t("OK")}` }],
+                    { cancelable: false }
+                  );
+                }
+              }}
+            >
+              {({
+                handleSubmit,
+                handleBlur,
+                handleChange,
+                values,
+                setFieldValue,
+                errors,
+                touched,
+                isValid,
+              }) => (
+                <>
+                  <ScrollView keyboardShouldPersistTaps="handled">
                     <TextInput
                       onChangeText={handleChange("name")}
                       onBlur={handleBlur("name")}
@@ -429,7 +429,6 @@ const AddVolunteerToEvent = ({ route }: any) => {
                         style={[styles.textInput]}
                       />
                     </View>
-
                     <Text style={styles.inputError}>{errors?.zipCode}</Text>
                     <View
                       style={{
@@ -634,21 +633,40 @@ const AddVolunteerToEvent = ({ route }: any) => {
                           height: h2dp(8),
                         }}
                       />
-                      <Text style={styles.inputError}>
-                        {errors?.phoneNumber}
-                      </Text>
                     </View>
-                      <PrimaryButton
-                        title={localized.t("SUBMIT")}
-                        buttonStyle={styles.buttonStyles}
-                        titleStyle={styles.titleStyle}
-                        onPress={handleSubmit}
-                      />
-                  </>
-                )}
-              </Formik>
-            </View>
-          </ScrollView>
+                    <Text
+                      style={[
+                        styles.inputError,
+                        {
+                          marginTop: 1,
+                        },
+                      ]}
+                    >
+                      {errors?.phoneNumber}
+                    </Text>
+                  </ScrollView>
+
+                  <View
+                    style={{
+                      paddingBottom: h2dp(2),
+                    }}
+                  >
+                    <PrimaryButton
+                      title={localized.t("SUBMIT")}
+                      buttonStyle={[
+                        styles.buttonStyles,
+                        {
+                          marginHorizontal: 0,
+                        },
+                      ]}
+                      titleStyle={styles.titleStyle}
+                      onPress={handleSubmit}
+                    />
+                  </View>
+                </>
+              )}
+            </Formik>
+          </View>
         </SafeAreaView>
       </LinearGradient>
     </TouchableWithoutFeedback>

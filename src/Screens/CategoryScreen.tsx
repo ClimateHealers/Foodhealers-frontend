@@ -394,15 +394,23 @@ const CategoryScreen = ({ route }: any) => {
                       Loading...
                     </Text>
                   ) : (
-                    <Text
+                    <View
                       style={{
-                        color: "white",
-                        fontSize: h2dp(1.5),
-                        marginBottom: h2dp(1.5),
+                        flex: 1,
+                        justifyContent: "center",
+                        alignItems: "center",
+                        minHeight: h2dp(80),
                       }}
                     >
-                      No results found
-                    </Text>
+                      <Text
+                        style={{
+                          color: "white",
+                          textAlign: "center",
+                        }}
+                      >
+                        {localized.t("NOTHING_TO_SHOW")}
+                      </Text>
+                    </View>
                   )}
                 </View>
               </TouchableOpacity>

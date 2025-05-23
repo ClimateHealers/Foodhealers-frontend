@@ -171,16 +171,14 @@ const SingleRecipeScreen = ({ route }: any) => {
                   >
                     {localized.t("INGREDIIENTS")}
                   </Text>
-                  {ingredients.map((ingredient: any, index: any) => (
-                    <View
-                      style={{ flexDirection: "row", alignItems: "center" }}
-                    >
-                      <Entypo name="dot-single" size={24} color="white" />
+                  {ingredients
+                    .filter((ingredient: any) => ingredient?.trim())
+                    .map((ingredient: any, index: number) => (
                       <Text key={index} style={styles.ingredient}>
+                        <Entypo name="dot-single" size={20} color="white" />
                         {ingredient}
                       </Text>
-                    </View>
-                  ))}
+                    ))}
                 </View>
                 <View>
                   <Text
