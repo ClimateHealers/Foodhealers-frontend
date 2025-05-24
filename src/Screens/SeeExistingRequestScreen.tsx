@@ -363,14 +363,18 @@ const SeeExistingRequestScreen = ({ route }: any) => {
             ) : (
               <View
                 style={{
-                  display: "flex",
+                  flex: 1,
                   justifyContent: "center",
                   alignItems: "center",
-                  marginTop: h2dp(10),
-                  marginBottom: h2dp(10),
+                  minHeight: h2dp(80),
                 }}
               >
-                <Text style={{ color: "white" }}>
+                <Text
+                  style={{
+                    color: "white",
+                    textAlign: "center",
+                  }}
+                >
                   {localized.t("NOTHING_TO_SHOW")}
                 </Text>
               </View>

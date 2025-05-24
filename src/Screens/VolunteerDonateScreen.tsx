@@ -160,7 +160,11 @@ const VolunteerDonateScreen = ({ route }: any) => {
                   size={32}
                   color="white"
                   onPress={() => {
-                    navigation.goBack(), handlePressOutside();
+                    navigation.navigate("VolunteerHomeScreen", {
+                      latitude,
+                      longitude,
+                    }),
+                      handlePressOutside();
                   }}
                 />
                 <View style={styles.item}>

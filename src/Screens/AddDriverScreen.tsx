@@ -227,7 +227,6 @@ const AddDriverScreen = ({ route }: any) => {
                   <ScrollView
                     keyboardShouldPersistTaps="handled"
                     contentContainerStyle={{ paddingBottom: 20 }}
-                    style={{ flex: 1 }}
                   >
                     <TextInput
                       onChangeText={handleChange("name")}
@@ -369,55 +368,56 @@ const AddDriverScreen = ({ route }: any) => {
                         />
                       </View>
                     </View>
-                    <View>
-                      <TextInput
-                        onChangeText={handleChange("zipCode")}
-                        onBlur={handleBlur("zipCode")}
-                        value={values?.zipCode}
-                        keyboardType="numeric"
-                        placeholder={localized.t("ZIP_CODE")}
-                        placeholderTextColor={"black"}
-                        style={[styles.textInput]}
-                      />
-                    </View>
-                    <Text style={styles.inputError}>{errors?.zipCode}</Text>
-                    <View
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                      }}
+                    <TextInput
+                      onChangeText={handleChange("zipCode")}
+                      onBlur={handleBlur("zipCode")}
+                      value={values?.zipCode}
+                      keyboardType="numeric"
+                      placeholder={localized.t("ZIP_CODE")}
+                      placeholderTextColor={"black"}
+                      style={[styles.textInput]}
+                    />
+                    <Text
+                      style={[
+                        styles.inputError,
+                        {
+                          marginTop: w2dp(-2),
+                        },
+                      ]}
                     >
-                      <PhoneInput
-                        ref={phoneInput}
-                        placeholder={localized.t("PHONE_NUMBER")}
-                        onChangeText={(text) => {
-                          const callingCode =
-                            phoneInput.current?.getCallingCode();
-                          setFieldValue("phoneNumber", `${callingCode}${text}`);
-                        }}
-                        containerStyle={[
-                          styles.textArea,
-                          {
-                            width: "100%",
-                            alignContent: "center",
-                            justifyContent: "center",
-                            borderRadius: w2dp(1),
-                            overflow: "hidden",
-                          },
-                        ]}
-                        value={values.phoneNumber}
-                        textInputProps={{
-                          placeholderTextColor: "black",
-                        }}
-                        textInputStyle={{
-                          height: h2dp(8),
-                          paddingVertical: "auto",
-                        }}
-                      />
-                      <Text style={styles.inputError}>
-                        {errors?.phoneNumber}
-                      </Text>
-                    </View>
+                      {errors?.zipCode}
+                    </Text>
+
+                    <PhoneInput
+                      ref={phoneInput}
+                      placeholder={localized.t("PHONE_NUMBER")}
+                      onChangeText={(text) => {
+                        const callingCode =
+                          phoneInput.current?.getCallingCode();
+                        setFieldValue("phoneNumber", `${callingCode}${text}`);
+                      }}
+                      containerStyle={[
+                        styles.textArea,
+                        {
+                          width: "100%",
+                          borderRadius: w2dp(1),
+                          overflow: "hidden",
+                        },
+                      ]}
+                      value={values.phoneNumber}
+                      textInputProps={{ placeholderTextColor: "black" }}
+                      textInputStyle={{ height: h2dp(8) }}
+                    />
+                    <Text
+                      style={[
+                        styles.inputError,
+                        {
+                          marginTop: w2dp(1),
+                        },
+                      ]}
+                    >
+                      {errors?.phoneNumber}
+                    </Text>
                   </ScrollView>
                   <View
                     style={{
