@@ -92,7 +92,7 @@ const AddVolunteerToEvent = ({ route }: any) => {
 
   const dispatch = useDispatch();
 
-  const API_KEY = Constants?.manifest?.extra?.googleMapsApiKey;
+  const API_KEY = Constants.expoConfig?.extra?.googleMapsApiKey;
 
   const handlePressOutside = () => {
     setlangOpen(false);

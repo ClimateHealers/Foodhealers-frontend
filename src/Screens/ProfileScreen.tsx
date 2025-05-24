@@ -139,7 +139,7 @@ const ProfileScreen = () => {
     }, [])
   );
 
-  const appVersion = Constants?.manifest?.version;
+  const appVersion = Constants?.expoConfig?.version;
   const profilePhotoSize = Math.min(width * 0.3, height * 0.2);
 
   const renderProfileImage = () => {

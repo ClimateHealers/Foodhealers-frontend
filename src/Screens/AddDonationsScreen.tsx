@@ -61,7 +61,9 @@ const AddDonationsScreen = ({ route }: any) => {
 
   const dispatch = useDispatch();
 
-  const API_KEY = "";
+  const API_KEY = Constants?.expoConfig?.extra?.googleMapsApiKey;
+
+
   const eventDateTime = moment(selectedDate).utc().unix();
 
   const handlePressOutside = () => {
