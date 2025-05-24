@@ -81,7 +81,7 @@ const MapScreen = ({ route }: any) => {
 
   const mapRef = useRef<any>(null);
 
-  const API_KEY = Constants?.manifest?.extra?.googleMapsApiKey;
+  const API_KEY = Constants.expoConfig?.extra?.googleMapsApiKey;
 
   const dispatch = useDispatch();
   const languageName = useSelector((state: any) => state.language);
