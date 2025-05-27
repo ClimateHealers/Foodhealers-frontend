@@ -63,7 +63,6 @@ const AddDonationsScreen = ({ route }: any) => {
 
   const API_KEY = Constants?.expoConfig?.extra?.googleMapsApiKey;
 
-
   const eventDateTime = moment(selectedDate).utc().unix();
 
   const handlePressOutside = () => {
@@ -457,6 +456,7 @@ const AddDonationsScreen = ({ route }: any) => {
 
                     <PhoneInput
                       ref={phoneInput}
+                      defaultCode="US"
                       placeholder={localized.t("PHONE_NUMBER")}
                       onChangeText={(text) => {
                         const callingCode =

@@ -359,7 +359,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#FC5A56",
     borderRadius: w2dp(2),
     marginTop: h2dp(3),
-    marginHorizontal: h2dp(1),
     height: h2dp(6),
   },
   buttonTitle: {

@@ -454,6 +454,7 @@ const AddRequestDonationsScreen = ({ route }: any) => {
                     <View>
                       <PhoneInput
                         ref={phoneInput}
+                        defaultCode="US"
                         placeholder={localized.t("PHONE_NUMBER")}
                         onChangeText={(text) => {
                           const callingCode =

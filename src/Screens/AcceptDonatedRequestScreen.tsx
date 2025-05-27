@@ -514,6 +514,7 @@ const AcceptDonatedRequestScreen = ({ route }: any) => {
                       <PhoneInput
                         ref={phoneInput}
                         placeholder={localized.t("PHONE_NUMBER")}
+                        defaultCode="US"
                         onChangeText={(text) => {
                           const callingCode =
                             phoneInput.current?.getCallingCode();

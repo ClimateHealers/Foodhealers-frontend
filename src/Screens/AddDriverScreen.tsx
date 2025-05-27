@@ -390,6 +390,7 @@ const AddDriverScreen = ({ route }: any) => {
 
                     <PhoneInput
                       ref={phoneInput}
+                      defaultCode="US"
                       placeholder={localized.t("PHONE_NUMBER")}
                       onChangeText={(text) => {
                         const callingCode =
