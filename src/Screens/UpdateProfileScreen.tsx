@@ -82,152 +82,150 @@ const UpdateProfileScreen = ({ route }: any) => {
         colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
         style={styles.background}
       >
-        <SafeAreaView>
-          <ScrollView keyboardShouldPersistTaps="handled">
-            <StatusBar animated={true} backgroundColor="auto" />
-            <View style={styles.container}>
-              <FoodhealersHeader />
-              <View style={styles.root}>
-                <Ionicons
-                  name="chevron-back"
-                  size={32}
-                  color="white"
-                  onPress={() => {
-                    navigation.goBack(), handlePressOutside();
-                  }}
-                />
-                <View style={styles.item}>
-                  <Text style={styles.itemText}>
-                    {localized.t("PROFILE_UPDATE")}
-                  </Text>
-                </View>
-                <BurgerIcon
-                  onOutsidePress={handlePressOutside}
-                  menuClose={menuClose}
-                  menuItem={menuItem}
-                />
-              </View>
-              <Modal visible={loading} animationType="slide" transparent={true}>
-                <View style={styles.centeredView}>
-                  <View style={styles.modalView}>
-                    <ActivityIndicator size={"large"} />
-                  </View>
-                </View>
-              </Modal>
-              <Formik
-                validationSchema={addDriver}
-                initialValues={{
-                  name: name,
-                  phoneNumber: phoneNumber,
-                  email: email,
-                  lat: lat,
-                  long: long,
-                  volunteerFullAddress: volunteerFullAddress,
-                  city: city,
-                  state: state,
-                  zipCode: zipCode,
+        <SafeAreaView
+          style={{
+            flex: 1,
+          }}
+        >
+          <StatusBar animated={true} backgroundColor="auto" />
+          <View style={styles.container}>
+            <FoodhealersHeader />
+            <View style={styles.root}>
+              <Ionicons
+                name="chevron-back"
+                size={32}
+                color="white"
+                onPress={() => {
+                  navigation.goBack(), handlePressOutside();
                 }}
-                onSubmit={async ({
-                  name,
-                  lat,
-                  email,
-                  long,
-                  volunteerFullAddress,
-                  phoneNumber,
-                  city,
-                  state,
-                  zipCode,
-                }) => {
-                  setLoading(true);
-                  try {
-                    setResponse({
-                      loading: true,
-                      message: "",
-                      error: false,
-                    });
-                    const data = {
-                      name: name,
-                      email: email,
-                      phoneNumber: phoneNumber,
-                      lat: lat,
-                      lng: long,
-                      fullAddress: volunteerFullAddress,
-                      city: city,
-                      state: state,
-                      postalCode: Number(zipCode) ? Number(zipCode) : 0,
-                    };
-                    const res = await dispatch(
-                      updateProfile(data as any) as any
-                    );
-                    if (res?.payload?.success == true) {
-                      setLoading(false);
-                      setResponse({
-                        loading: false,
-                        message: `${localized.t("PROFILE_UPDATE_SUCCESS")}`,
-                        error: false,
-                      });
-                      setLoading(false);
-                      Alert.alert(
-                        `${localized.t("PROFILE_UPDATE_SUCCESS")}`,
-                        `${localized.t(
-                          "YOUR_PROFILE_HAS_BEEN_UPDATED_SUCCESSFULLY"
-                        )}`,
-                        [
-                          {
-                            text: "OK",
-                            onPress: () => {
-                              navigation.navigate("ProfileScreen"),
-                                handlePressOutside();
-                            },
-                          },
-                        ],
-                        { cancelable: false }
-                      );
-                    } else {
-                      setLoading(false);
-                      Alert.alert(
-                        `${localized.t("ALERT")}`,
-                        `${res?.payload}`,
-                        [
-                          {
-                            text: `${localized.t("OK")}`,
-                            style: "cancel",
-                          },
-                        ],
-                        { cancelable: true }
-                      );
-                    }
-                  } catch (err: any) {
+              />
+              <View style={styles.item}>
+                <Text style={styles.itemText}>
+                  {localized.t("PROFILE_UPDATE")}
+                </Text>
+              </View>
+              <BurgerIcon
+                onOutsidePress={handlePressOutside}
+                menuClose={menuClose}
+                menuItem={menuItem}
+              />
+            </View>
+            <Modal visible={loading} animationType="slide" transparent={true}>
+              <View style={styles.centeredView}>
+                <View style={styles.modalView}>
+                  <ActivityIndicator size={"large"} />
+                </View>
+              </View>
+            </Modal>
+            <Formik
+              validationSchema={addDriver}
+              initialValues={{
+                name: name,
+                phoneNumber: phoneNumber,
+                email: email,
+                lat: lat,
+                long: long,
+                volunteerFullAddress: volunteerFullAddress,
+                city: city,
+                state: state,
+                zipCode: zipCode,
+              }}
+              onSubmit={async ({
+                name,
+                lat,
+                email,
+                long,
+                volunteerFullAddress,
+                phoneNumber,
+                city,
+                state,
+                zipCode,
+              }) => {
+                setLoading(true);
+                try {
+                  setResponse({
+                    loading: true,
+                    message: "",
+                    error: false,
+                  });
+                  const data = {
+                    name: name,
+                    email: email,
+                    phoneNumber: phoneNumber,
+                    lat: lat,
+                    lng: long,
+                    fullAddress: volunteerFullAddress,
+                    city: city,
+                    state: state,
+                    postalCode: Number(zipCode) ? Number(zipCode) : 0,
+                  };
+                  const res = await dispatch(updateProfile(data as any) as any);
+                  if (res?.payload?.success == true) {
                     setLoading(false);
                     setResponse({
                       loading: false,
-                      message: err?.message,
-                      error: true,
+                      message: `${localized.t("PROFILE_UPDATE_SUCCESS")}`,
+                      error: false,
                     });
+                    setLoading(false);
                     Alert.alert(
-                      `${localized.t("PROFILE_NOT_UPDATED")}`,
-                      `${err.message}`,
-                      [{ text: `${localized.t("OK")}` }],
+                      `${localized.t("PROFILE_UPDATE_SUCCESS")}`,
+                      `${localized.t(
+                        "YOUR_PROFILE_HAS_BEEN_UPDATED_SUCCESSFULLY"
+                      )}`,
+                      [
+                        {
+                          text: "OK",
+                          onPress: () => {
+                            navigation.navigate("ProfileScreen"),
+                              handlePressOutside();
+                          },
+                        },
+                      ],
                       { cancelable: false }
                     );
+                  } else {
+                    setLoading(false);
+                    Alert.alert(
+                      `${localized.t("ALERT")}`,
+                      `${res?.payload}`,
+                      [
+                        {
+                          text: `${localized.t("OK")}`,
+                          style: "cancel",
+                        },
+                      ],
+                      { cancelable: true }
+                    );
                   }
-                }}
-              >
-                {({
-                  handleSubmit,
-                  handleBlur,
-                  handleChange,
-                  values,
-                  setFieldValue,
-                  errors,
-                  touched,
-                  isValid,
-                }) => (
-                  <View
-                    style={{
-                      marginTop: h2dp(5),
-                    }}
-                  >
+                } catch (err: any) {
+                  setLoading(false);
+                  setResponse({
+                    loading: false,
+                    message: err?.message,
+                    error: true,
+                  });
+                  Alert.alert(
+                    `${localized.t("PROFILE_NOT_UPDATED")}`,
+                    `${err.message}`,
+                    [{ text: `${localized.t("OK")}` }],
+                    { cancelable: false }
+                  );
+                }
+              }}
+            >
+              {({
+                handleSubmit,
+                handleBlur,
+                handleChange,
+                values,
+                setFieldValue,
+                errors,
+                touched,
+                isValid,
+              }) => (
+                <>
+                  <ScrollView keyboardShouldPersistTaps="handled">
                     <TextInput
                       onChangeText={handleChange("name")}
                       onBlur={handleBlur("name")}
@@ -389,6 +387,7 @@ const UpdateProfileScreen = ({ route }: any) => {
                     >
                       <PhoneInput
                         ref={phoneInput}
+                        defaultCode="US"
                         placeholder={
                           phoneNumber
                             ? phoneNumber?.slice(2, 12)
@@ -419,18 +418,29 @@ const UpdateProfileScreen = ({ route }: any) => {
                         {errors?.phoneNumber}
                       </Text>
                     </View>
+                  </ScrollView>
 
+                  <View
+                    style={{
+                      marginBottom: h2dp(2),
+                    }}
+                  >
                     <PrimaryButton
                       title={localized.t("UPDATE")}
-                      buttonStyle={styles.buttonStyles}
+                      buttonStyle={[
+                        styles.buttonStyles,
+                        {
+                          marginHorizontal: 0,
+                        },
+                      ]}
                       titleStyle={styles.titleStyle}
                       onPress={handleSubmit}
                     />
                   </View>
-                )}
-              </Formik>
-            </View>
-          </ScrollView>
+                 </>
+              )}
+            </Formik>
+          </View>
         </SafeAreaView>
       </LinearGradient>
     </TouchableWithoutFeedback>
