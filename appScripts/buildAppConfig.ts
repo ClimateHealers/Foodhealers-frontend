@@ -76,14 +76,10 @@ const appConfig = {
     ],
     extra: {
       eas: {
-        projectId:
-          process.env.PROJECT_ID || "e0f0f8a7-ffa0-4792-8f06-fc991a1d09fc",
-        apikey:
-          process.env.FIREBASE_FCM_API_KEY ||
-          "e0f0f8a7-ffa0-4792-8f06-fc991a1d09fc",
+        projectId: process.env.PROJECT_ID || "",
+        apikey: process.env.FIREBASE_FCM_API_KEY || "",
       },
-      googleMapsApiKey:
-        process.env.GOOGLE_API_KEY || "AIzaSyAVrMSlcMWyuRyCbSTZDABAS_XG6FcScYQ",
+      googleMapsApiKey: process.env.GOOGLE_API_KEY || "",
     },
     owner: "food-healers",
   },

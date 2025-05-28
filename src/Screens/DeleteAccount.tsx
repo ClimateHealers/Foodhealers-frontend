@@ -59,6 +59,7 @@ const DeleteAccount = () => {
           </Text>
           <View style={{ width: wp2dp(3) }} />
         </View>
+
         <ScrollView style={styles.ScrollView}>
           <View style={styles.profile}>
             <Text style={styles.profileName}>{userInfo?.name}</Text>
@@ -90,50 +91,24 @@ const DeleteAccount = () => {
               {localized.t("THIS_CANNOT_BE_UNDONE")}
             </Text>
           </View>
-
-          <Modal visible={showModal}>
-            <View style={styles.centeredView}>
-              <View style={styles.modalView}>
-                <View>
-                  <Text
-                    style={{
-                      fontSize: hp2dp(1.8),
-                      fontWeight: "bold",
-                      marginVertical: hp2dp("2%"),
-                    }}
-                  >
-                    {localized.t("ALMOST_DONE")}
-                  </Text>
-                </View>
-                <View>
-                  <Text style={{ fontSize: hp2dp(1.8), color: "black" }}>
-                    {localized.t("WE_RECEIVED__YOUR_REQUEST_TO_DELETE")}{" "}
-                    {localized.t("TO_COMPLETE_YOUR_DELETION")}
-                  </Text>
-                </View>
-                <View style={{ alignItems: "center", marginTop: hp2dp("2%") }}>
-                  <TouchableOpacity onPress={navigateToLoginScreen}>
-                    <View
-                      style={[
-                        {
-                          height: 45,
-                          width: 100,
-                          backgroundColor: "#4facf7",
-                          borderRadius: 10,
-                        },
-                        styles.centeredView,
-                      ]}
-                    >
-                      <Text style={{ color: "#ffff", fontWeight: "bold" }}>
-                        {localized.t("CLOSE")}
-                      </Text>
-                    </View>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            </View>
-          </Modal>
         </ScrollView>
+        <Modal visible={showModal} animationType="fade">
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Text style={styles.modalText}>{localized.t("ALMOST_DONE")}</Text>
+              <Text style={styles.modalSubText}>
+                {localized.t("WE_RECEIVED__YOUR_REQUEST_TO_DELETE")}
+                {localized.t("TO_COMPLETE_YOUR_DELETION")}
+              </Text>
+              <TouchableOpacity
+                onPress={navigateToLoginScreen}
+                style={styles.modalButton}
+              >
+                <Text style={styles.buttonText}>{localized.t("CLOSE")}</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
         <View style={{ paddingBottom: hp2dp(2) }}>
           <PrimaryButton
             title={localized.t("DELETE_ACCOUNT")}
@@ -201,17 +176,41 @@ const styles = StyleSheet.create({
     fontSize: hp2dp(2.2),
   },
   modalView: {
-    margin: 20,
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-    borderRadius: 20,
-    padding: 30,
+    backgroundColor: "white",
+    padding: 20,
+    borderRadius: 12,
     alignItems: "center",
+    justifyContent: "center",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
   },
+  modalText: {
+    fontSize: hp2dp(1.8),
+    fontWeight: "bold",
+    color: "black",
+    marginBottom: hp2dp(1.5),
+    textAlign: "center",
+  },
+  modalSubText: {
+    fontSize: hp2dp(1.8),
+    color: "black",
+    textAlign: "center",
+  },
+  modalButton: {
+    marginTop: hp2dp(3),
+    backgroundColor: "#28a745",
+    borderRadius: 8,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+  },
+  buttonText: {
+    color: "white",
+    fontWeight: "bold",
+    fontSize: hp2dp(1.6),
+  },
+
   googleBtn: {
     backgroundColor: "#FC5A56",
     borderRadius: wp2dp(2),

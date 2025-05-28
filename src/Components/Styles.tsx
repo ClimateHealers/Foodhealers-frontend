@@ -205,11 +205,12 @@ export const styles = StyleSheet.create({
     elevation: 5,
   },
   modalContent: {
-    backgroundColor: "rgba(0,0,0,0.7)",
     paddingHorizontal: w2dp(5),
     marginHorizontal: w2dp(5),
     paddingVertical: h2dp(2),
     borderRadius: w2dp(2),
+    backgroundColor: "white",
+    padding: h2dp(3),
   },
   headerContainer: {
     flexDirection: "column",

@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
   },
   safeArea: {
     flex: 1,
-    paddingHorizontal: wp(6),
+    paddingHorizontal: wp(4),
     paddingTop: Platform.OS === "android" ? hp(2) : 0,
   },
   header: {
@@ -186,7 +186,7 @@ const styles = StyleSheet.create({
     marginBottom: hp(1),
   },
   errorText: {
-    color: "red",
+    color: "#FC5A56",
     fontSize: hp(1.6),
     marginBottom: hp(1.5),
   },

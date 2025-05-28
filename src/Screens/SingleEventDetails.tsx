@@ -134,43 +134,47 @@ Join me using https://play.google.com/store/apps/details?id=com.foodhealers.clim
         colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
         style={styles.background}
       >
-        <SafeAreaView>
-          <ScrollView keyboardShouldPersistTaps="handled">
-            <StatusBar animated={true} backgroundColor="auto" />
-            <View style={styles.containerVolunteer}>
-              <FoodhealersHeader />
-              <View style={styles.root}>
-                <Ionicons
-                  name="chevron-back"
-                  size={32}
-                  color="white"
-                  onPress={() => {
-                    navigation.goBack(), handlePressOutside();
-                  }}
-                />
-                <View style={styles.item}>
-                  <Text style={styles.itemText}>{eventDetails.name}</Text>
-                </View>
-                <BurgerIcon
-                  onOutsidePress={handlePressOutside}
-                  menuClose={menuClose}
-                />
+        <SafeAreaView
+          style={{
+            flex: 1,
+          }}
+        >
+          <View style={styles.containerVolunteer}>
+            <View style={styles.root}>
+              <Ionicons
+                name="chevron-back"
+                size={32}
+                color="white"
+                onPress={() => {
+                  navigation.goBack(), handlePressOutside();
+                }}
+              />
+              <View style={styles.item}>
+                <Text style={styles.itemText}>{eventDetails.name}</Text>
               </View>
+              <BurgerIcon
+                onOutsidePress={handlePressOutside}
+                menuClose={menuClose}
+              />
+            </View>
+            <ScrollView keyboardShouldPersistTaps="handled">
+              <View>
+                <FoodhealersHeader />
+              </View>
+              <StatusBar animated={true} backgroundColor="auto" />
+
               <View
-                style={[
-                  styles.card,
-                  {
-                    backgroundColor: expired ? "#bab7b6" : "white",
-                    borderRadius: h2dp(1),
-                  },
-                ]}
+                style={{
+                  backgroundColor: expired ? "#bab7b6" : "white",
+                  borderRadius: h2dp(1),
+                  width: w2dp(90),
+                }}
               >
                 <View>
                   <Image
                     source={{ uri: eventDetails?.eventPhoto }}
                     style={{
-                      width: "100%",
-                      height: 250,
+                      height: h2dp(30),
                       borderTopLeftRadius: 10,
                       borderTopRightRadius: 10,
                       opacity: expired ? 0.3 : 1,
@@ -181,7 +185,7 @@ Join me using https://play.google.com/store/apps/details?id=com.foodhealers.clim
                   <View
                     style={{
                       marginBottom: h2dp(2),
-                      paddingHorizontal: w2dp(1),
+                      paddingHorizontal: w2dp(2),
                     }}
                   >
                     <Text style={styles.boldText}>
@@ -198,7 +202,6 @@ Join me using https://play.google.com/store/apps/details?id=com.foodhealers.clim
                       style={{
                         backgroundColor: "black",
                         height: 1,
-                        width: "95%",
                       }}
                     />
                   </View>
@@ -217,7 +220,6 @@ Join me using https://play.google.com/store/apps/details?id=com.foodhealers.clim
                       style={{
                         backgroundColor: "black",
                         height: 1,
-                        width: "95%",
                       }}
                     />
                   </View>
@@ -232,7 +234,6 @@ Join me using https://play.google.com/store/apps/details?id=com.foodhealers.clim
                       style={{
                         backgroundColor: "black",
                         height: 1,
-                        width: "95%",
                       }}
                     />
                   </View>
@@ -252,7 +253,6 @@ Join me using https://play.google.com/store/apps/details?id=com.foodhealers.clim
                       style={{
                         backgroundColor: "black",
                         height: 1,
-                        width: "95%",
                       }}
                     />
                   </View>
@@ -272,59 +272,54 @@ Join me using https://play.google.com/store/apps/details?id=com.foodhealers.clim
                       style={{
                         backgroundColor: "black",
                         height: 1,
-                        width: "95%",
                       }}
                     />
                   </View>
                 </View>
               </View>
+            </ScrollView>
+          </View>
+          <View
+            style={{
+              paddingBottom: h2dp(2),
+            }}
+          >
+            <PrimaryButton
+              disabled={expired || !approved}
+              title={
+                expired
+                  ? `${localized.t("EVENT_EXPIRED")}`
+                  : `${localized.t("VOLUNTEER")}`
+              }
+              onPress={() => {
+                handlePressOutside();
+                navigation.navigate("AddVolunteerToEventScreen", {
+                  id: eventDetails.id,
+                  title: `${localized.t("VOLUNTEER_AT_EVENT")}`,
+                  itemTypeId: 3,
+                  longitude: eventDetails.longitude,
+                  latitude: eventDetails.latitude,
+                  eventStartDate: eventDetails?.eventStartDate,
+                  eventEndDate: eventDetails?.eventEndDate,
+                });
+              }}
+              buttonStyle={styles.buttonStyles}
+              titleStyle={styles.titleStyle}
+            />
+            {!expired && (
               <View>
-                <View
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
+                <PrimaryButton
+                  disabled={expired}
+                  title={localized.t("SHARE")}
+                  onPress={() => {
+                    handlePressOutside(), shareAsSocialPost();
                   }}
-                >
-                  <PrimaryButton
-                    disabled={expired || !approved}
-                    title={
-                      expired
-                        ? `${localized.t("EVENT_EXPIRED")}`
-                        : `${localized.t("VOLUNTEER")}`
-                    }
-                    onPress={() => {
-                      handlePressOutside();
-                      navigation.navigate("AddVolunteerToEventScreen", {
-                        id: eventDetails.id,
-                        title: `${localized.t("VOLUNTEER_AT_EVENT")}`,
-                        itemTypeId: 3,
-                        longitude: eventDetails.longitude,
-                        latitude: eventDetails.latitude,
-                        eventStartDate: eventDetails?.eventStartDate,
-                        eventEndDate: eventDetails?.eventEndDate,
-                      });
-                    }}
-                    buttonStyle={styles.buttonStyles}
-                    titleStyle={styles.titleStyle}
-                  />
-                  {!expired && (
-                    <View>
-                      <PrimaryButton
-                        disabled={expired}
-                        title={localized.t("SHARE")}
-                        onPress={() => {
-                          handlePressOutside(), shareAsSocialPost();
-                        }}
-                        buttonStyle={styles.buttonStyles}
-                        titleStyle={styles.titleStyle}
-                      />
-                    </View>
-                  )}
-                </View>
+                  buttonStyle={styles.buttonStyles}
+                  titleStyle={styles.titleStyle}
+                />
               </View>
-            </View>
-          </ScrollView>
+            )}
+          </View>
         </SafeAreaView>
       </LinearGradient>
     </TouchableWithoutFeedback>

@@ -134,7 +134,7 @@ Join me using https://play.google.com/store/apps/details?id=com.foodhealers.clim
   return (
     <TouchableWithoutFeedback onPress={handlePressOutside}>
       <LinearGradient
-        colors={["#012e17", "#017439", "#009b4d"]}
+        colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
         style={styles.background}
       >
         <SafeAreaView>
