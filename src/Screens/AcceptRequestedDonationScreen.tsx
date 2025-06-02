@@ -232,7 +232,13 @@ const AcceptRequestedDonationScreen = ({ route }: any) => {
                     );
                   } else {
                     setLoading(false);
-                    console.log("ERROR");
+                    Alert.alert(
+                      `${localized.t("ALERT")}`,
+                      `${res.payload}`,
+                      [{ text: `${localized.t("OK")}` }],
+                      { cancelable: false }
+                    );
+                    console.log(res.payload, "ERROR");
                   }
                 } catch (err: any) {
                   setLoading(false);
@@ -550,12 +556,23 @@ const AcceptRequestedDonationScreen = ({ route }: any) => {
                     </View>
                     <Text style={styles.inputError}>{errors?.phoneNumber}</Text>
                   </ScrollView>
-                  <PrimaryButton
-                    title={localized.t("SUBMIT")}
-                    buttonStyle={styles.buttonStyles}
-                    titleStyle={styles.titleStyle}
-                    onPress={handleSubmit}
-                  />
+                  <View
+                    style={{
+                      paddingBottom: h2dp(2),
+                    }}
+                  >
+                    <PrimaryButton
+                      title={localized.t("SUBMIT")}
+                      buttonStyle={[
+                        styles.buttonStyles,
+                        {
+                          marginHorizontal: 0,
+                        },
+                      ]}
+                      titleStyle={styles.titleStyle}
+                      onPress={handleSubmit}
+                    />
+                  </View>
                 </>
               )}
             </Formik>

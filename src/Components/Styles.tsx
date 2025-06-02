@@ -420,7 +420,7 @@ export const styles = StyleSheet.create({
   buttonStyles: {
     backgroundColor: "#FC5A56",
     borderRadius: w2dp(2),
-    marginTop: h2dp(3),
+    marginTop: h2dp(2),
     marginHorizontal: h2dp(2),
     height: h2dp(6),
     justifyContent: "center",

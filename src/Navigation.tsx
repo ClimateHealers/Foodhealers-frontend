@@ -1,6 +1,10 @@
-import { NavigationContainer } from "@react-navigation/native";
+import {
+  CommonActions,
+  NavigationContainer,
+  useNavigation,
+} from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import IntroSlider from "./Components/IntroSlider";
 import AddDonationsScreen from "./Screens/AddDonationsScreen";
 import AddDriverScreen from "./Screens/AddDriverScreen";
@@ -66,9 +70,55 @@ import HistoryScreen from "./Screens/HistoryScreen";
 import UpdateVehicleScreen from "./Screens/UpdateVehicleScreen";
 import UpdateProfileScreen from "./Screens/UpdateProfileScreen";
 import LicenseScreen from "./Screens/LicenseScreen";
+import { getAuthData, removeAuthData } from "./redux/actions/authAction";
+import moment from "moment";
+import { Alert } from "react-native";
+import { logOut } from "./redux/reducers/authreducers";
+import { useDispatch } from "react-redux";
 
 const Navigation = () => {
   const Stack = createNativeStackNavigator();
+  const [sessionAlertShown, setSessionAlertShown] = useState(false);
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    (async () => {
+      if (sessionAlertShown) return;
+      const response = await getAuthData();
+      const lastLogin = response?.user?.lastLogin;
+
+      if (lastLogin) {
+        const expireDate = moment(lastLogin).add(29, "days");
+        const now = moment();
+
+        if (now.isAfter(expireDate)) {
+          setSessionAlertShown(true);
+          Alert.alert(
+            "Session Expired",
+            "Your session has expired. Please log in again.",
+            [
+              {
+                text: "LOGIN",
+                onPress: () => {
+                  (async () => {
+                    await dispatch(logOut());
+                    await removeAuthData();
+                    navigation.dispatch(
+                      CommonActions.reset({
+                        index: 0,
+                        routes: [{ name: "LoginScreen" }],
+                      })
+                    );
+                  })();
+                },
+              },
+            ]
+          );
+        }
+      }
+    })();
+  }, [sessionAlertShown]);
 
   return (
     <>

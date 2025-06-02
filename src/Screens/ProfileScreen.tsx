@@ -46,6 +46,7 @@ import {
 import { logOut } from "../redux/reducers/authreducers";
 import { localized } from "../locales/localization";
 import { notfifications } from "../redux/actions/notificationAction";
+import { dev } from "../Utils/APIUtils";
 
 const { width, height } = Dimensions.get("window");
 
@@ -311,7 +312,7 @@ const ProfileScreen = () => {
           />
           <View style={styles.footer}>
             <Text style={styles.versionText}>
-              {localized.t("APP_VERSION")} {appVersion}
+              {localized.t("APP_VERSION")} {appVersion} ({dev ? "Dev" : "Prod"})
             </Text>
 
             <View style={styles.supportRow}>

@@ -314,7 +314,12 @@ Join me using https://play.google.com/store/apps/details?id=com.foodhealers.clim
                   onPress={() => {
                     handlePressOutside(), shareAsSocialPost();
                   }}
-                  buttonStyle={styles.buttonStyles}
+                  buttonStyle={[
+                    styles.buttonStyles,
+                    {
+                      backgroundColor: "gray",
+                    },
+                  ]}
                   titleStyle={styles.titleStyle}
                 />
               </View>
