@@ -5,7 +5,6 @@ import React, { useCallback, useState } from "react";
 import {
   Image,
   Keyboard,
-  SafeAreaView,
   ScrollView,
   Text,
   TouchableOpacity,
@@ -23,6 +22,7 @@ import { styles } from "../Components/Styles";
 import { localized } from "../locales/localization";
 import { allEvents } from "../redux/actions/allEvents";
 import { VeganRecipesCategory } from "../redux/actions/veganRecipesCategory";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const RequestFoodHomeScreen = ({ route }: any) => {
   const { itemTypeId, title } = route?.params;

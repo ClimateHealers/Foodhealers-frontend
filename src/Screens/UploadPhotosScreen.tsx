@@ -58,8 +58,8 @@ const UploadPhotosScreen = ({ route }: any) => {
       });
 
       if (!result.canceled) {
-        const multipleImages = result.assets.map((image) => image.uri);
-        const singlePhoto = result.assets[0].uri;
+        const multipleImages = result.assets?.map((image) => image?.uri);
+        const singlePhoto = result?.assets[0]?.uri;
 
         navigation.navigate("EventPhotosScreen", {
           eventFormData: eventFormData,
@@ -84,7 +84,8 @@ const UploadPhotosScreen = ({ route }: any) => {
   return (
     <TouchableWithoutFeedback onPress={handlePressOutside}>
       <LinearGradient
-s        style={styles.background}
+        colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
+        style={styles.background}
       >
         <SafeAreaView style={{ flex: 1 }}>
           <View

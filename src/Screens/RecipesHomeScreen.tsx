@@ -5,7 +5,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { useDebounce } from "../Components/Debounce";
 import {
   Keyboard,
-  SafeAreaView,
   ScrollView,
   Text,
   TextInput,
@@ -28,6 +27,7 @@ import { Image } from "expo-image";
 import { VeganAllRecipes } from "../redux/actions/veganRecipesCategory";
 import { decode } from "html-entities";
 import API from "../Utils/APIUtils";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const blurhash = "LBE~3[-;j[oy_MoMfQj[offQfQfQ";
 

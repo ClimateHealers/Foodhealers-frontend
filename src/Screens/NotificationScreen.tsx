@@ -8,7 +8,6 @@ import {
   FlatList,
   Keyboard,
   Modal,
-  SafeAreaView,
   ScrollView,
   Text,
   TouchableOpacity,
@@ -29,6 +28,7 @@ import {
   notfifications,
   putNotifications,
 } from "../redux/actions/notificationAction";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function NotificationScreen() {
   const navigation: any = useNavigation();
@@ -294,6 +294,7 @@ export default function NotificationScreen() {
                       backgroundColor: "green",
                       paddingHorizontal: 20,
                       paddingVertical: 10,
+                      borderRadius: 5,
                     }}
                     titleStyle={{
                       fontSize: h2dp(2),

@@ -1,5 +1,5 @@
 import React from "react";
-import { SafeAreaView, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { FlatList } from "react-native";
 import { Text } from "react-native-paper";
 import MaterialIcon from "react-native-vector-icons/MaterialIcons";
@@ -10,6 +10,7 @@ import {
   heightPercentageToDP as h2dp,
   widthPercentageToDP as w2dp,
 } from "react-native-responsive-screen";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const NotificationFlatlist = ({ data }: any) => {
   const renderItem = ({ item }: any) => {

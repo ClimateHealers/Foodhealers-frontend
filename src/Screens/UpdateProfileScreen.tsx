@@ -437,7 +437,7 @@ const UpdateProfileScreen = ({ route }: any) => {
                       onPress={handleSubmit}
                     />
                   </View>
-                 </>
+                </>
               )}
             </Formik>
           </View>

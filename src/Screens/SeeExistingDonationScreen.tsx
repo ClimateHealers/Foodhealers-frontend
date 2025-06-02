@@ -35,6 +35,7 @@ import PrimaryButton from "../Components/PrimaryButton";
 import { styles } from "../Components/Styles";
 import { localized } from "../locales/localization";
 import { allDonations } from "../redux/actions/allDonations";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const SeeExistingDonationScreen = ({ route }: any) => {
   const { itemTypeId, title, latitude, longitude } = route?.params;
@@ -292,7 +293,7 @@ const SeeExistingDonationScreen = ({ route }: any) => {
         colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
         style={styles.background}
       >
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
           <FoodhealersHeader />
           <View style={styles.root}>
             <Ionicons
@@ -392,7 +393,7 @@ const SeeExistingDonationScreen = ({ route }: any) => {
               titleStyle={styles.titleStyle}
             />
           </View>
-        </View>
+        </SafeAreaView>
       </LinearGradient>
     </TouchableWithoutFeedback>
   );

@@ -108,7 +108,7 @@ const AddVehicleScreen = ({ route }: any) => {
               </View>
             </Modal>
             <Formik
-              // validationSchema={adddVehicle}
+              validationSchema={adddVehicle}
               initialValues={{
                 carModel: "",
                 carColor: "",

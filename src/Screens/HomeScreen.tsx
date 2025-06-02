@@ -209,27 +209,18 @@ const HomeScreen = ({ route }: any) => {
             <PrimaryButton
               title={localized.t("FIND_FOOD")}
               onPress={navigateToMapScreen}
-              buttonStyle={[
-                styles.postEventButton,
-                {
-                  backgroundColor: "#5FBB3F",
-                  marginTop: h2dp(4),
-                },
-              ]}
+              buttonStyle={styles.postEventButton}
               titleStyle={styles.titleStyle}
             />
             <PrimaryButton
               title={localized.t("POST_EVENT")}
-              buttonStyle={styles.postEventButton}
+              buttonStyle={styles.postEventButtonStyle}
               onPress={postEvent}
-              titleStyle={[styles.titleStyle, { color: "green" }]}
+              titleStyle={styles.eventButtonTitleStyle}
             />
             <PrimaryButton
               title={localized.t("VOLUNTEER")}
-              buttonStyle={[
-                styles.postEventButton,
-                { backgroundColor: "#5FBB3F" },
-              ]}
+              buttonStyle={styles.postEventButton}
               onPress={() => {
                 if (data.isAuthenticated) {
                   if (volunteerData?.length > 0 || donationData?.length > 0) {
@@ -341,8 +332,14 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 10,
   },
   postEventButton: {
+    backgroundColor: "#5FBB3F",
+    borderRadius: 5,
+    marginBottom: h2dp(2),
+    minWidth: 190,
+    maxHeight: h2dp(6),
+  },
+  postEventButtonStyle: {
     backgroundColor: "white",
-    color: "black",
     borderRadius: 5,
     marginBottom: h2dp(2),
     minWidth: 190,
@@ -357,7 +354,13 @@ const styles = StyleSheet.create({
   titleStyle: {
     color: "white",
     fontSize: h2dp(2.2),
-    fontWeight: "200",
+    fontWeight: Platform.OS === "ios" ? "500" : "200",
+    fontFamily: "OpenSans-bold",
+  },
+  eventButtonTitleStyle: {
+    color: "green",
+    fontSize: h2dp(2.2),
+    fontWeight: Platform.OS === "ios" ? "500" : "200",
     fontFamily: "OpenSans-bold",
   },
   centeredView: {

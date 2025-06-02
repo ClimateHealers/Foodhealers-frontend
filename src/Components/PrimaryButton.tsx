@@ -20,23 +20,8 @@ const PrimaryButton = ({
       titleStyle={titleStyle}
       onPress={onPress}
       disabled={disabled}
-      style={styles.buttonStyles}
     />
   );
 };
 
-const styles = StyleSheet.create({
-  buttonStyles: {
-    color: "black",
-    borderRadius: 5,
-    width: 190,
-    marginBottom: 20,
-    marginTop: 40,
-  },
-  titleStyle: {
-    color: "black",
-    fontSize: h2dp(2.2),
-    lineHeight: 35,
-  },
-});
 export default PrimaryButton;

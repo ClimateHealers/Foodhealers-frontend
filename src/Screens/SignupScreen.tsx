@@ -17,7 +17,6 @@ import {
   TouchableWithoutFeedback,
   View,
   KeyboardAvoidingView,
-  SafeAreaView,
   Dimensions,
 } from "react-native";
 import {
@@ -39,6 +38,7 @@ import {
 import * as Notifications from "expo-notifications";
 import BurgerIcon from "../Components/BurgerIcon";
 import Constants from "expo-constants";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const { width, height } = Dimensions.get("window");
 const wp = (percentage) => (width * percentage) / 100;

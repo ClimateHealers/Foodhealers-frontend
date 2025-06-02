@@ -31,6 +31,7 @@ import { styles } from "../Components/Styles";
 import { localized } from "../locales/localization";
 import { allEvents } from "../redux/actions/allEvents";
 import { myEvents } from "../redux/actions/myEvents";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const AllEventScreen = () => {
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -264,7 +265,7 @@ const AllEventScreen = () => {
         colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
         style={styles.background}
       >
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
           <FoodhealersHeader />
           <View style={styles.root}>
             <Ionicons
@@ -359,7 +360,7 @@ const AllEventScreen = () => {
               </Text>
             </View>
           )}
-        </View>
+        </SafeAreaView>
       </LinearGradient>
     </TouchableWithoutFeedback>
   );

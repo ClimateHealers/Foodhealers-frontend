@@ -11,7 +11,6 @@ import {
   KeyboardAvoidingView,
   Modal,
   Platform,
-  SafeAreaView,
   ScrollView,
   StatusBar,
   StyleSheet,
@@ -39,6 +38,7 @@ import {
 import * as Notifications from "expo-notifications";
 import Constants from "expo-constants";
 import BurgerIcon from "../Components/BurgerIcon";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const LoginScreen = () => {
   const [showPassword, setShowPassword] = useState(false);

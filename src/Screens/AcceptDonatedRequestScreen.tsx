@@ -122,7 +122,7 @@ const AcceptDonatedRequestScreen = ({ route }: any) => {
         colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
         style={styles.background}
       >
-        <SafeAreaView>
+        <SafeAreaView style={{ flex: 1 }}>
           <StatusBar animated={true} backgroundColor="auto" />
           <View style={styles.container}>
             <FoodhealersHeader />
@@ -536,18 +536,22 @@ const AcceptDonatedRequestScreen = ({ route }: any) => {
                           height: h2dp(8),
                         }}
                       />
-                      <Text style={styles.inputError}>
-                        {errors?.phoneNumber}
-                      </Text>
                     </View>
+                    <Text style={styles.inputError}>{errors?.phoneNumber}</Text>
                   </ScrollView>
-
-                  <PrimaryButton
-                    title={localized.t("SUBMIT")}
-                    buttonStyle={styles.buttonStyles}
-                    titleStyle={styles.titleStyle}
-                    onPress={handleSubmit}
-                  />
+                  <View style={{ paddingBottom: h2dp(2) }}>
+                    <PrimaryButton
+                      title={localized.t("SUBMIT")}
+                      buttonStyle={[
+                        styles.buttonStyles,
+                        {
+                          marginHorizontal: 0,
+                        },
+                      ]}
+                      titleStyle={styles.titleStyle}
+                      onPress={handleSubmit}
+                    />
+                  </View>
                 </>
               )}
             </Formik>

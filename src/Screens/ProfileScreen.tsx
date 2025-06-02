@@ -303,14 +303,12 @@ const ProfileScreen = () => {
             titleStyle={styles.logoutButtonText}
           />
 
-          <TouchableOpacity
-            style={styles.deleteButton}
+          <PrimaryButton
+            buttonStyle={styles.deleteButton}
             onPress={() => navigation.navigate("DeleteAccount")}
-          >
-            <Text style={styles.deleteButtonText}>
-              {localized.t("DELETE_MY_ACCOUNT")}
-            </Text>
-          </TouchableOpacity>
+            title={localized.t("DELETE_MY_ACCOUNT")}
+            titleStyle={styles.deleteButtonText}
+          />
           <View style={styles.footer}>
             <Text style={styles.versionText}>
               {localized.t("APP_VERSION")} {appVersion}
@@ -514,6 +512,7 @@ const styles = StyleSheet.create({
     marginHorizontal: "auto",
     borderRadius: wp(2),
     height: hp(6),
+    backgroundColor: "transparent",
   },
   deleteButtonText: {
     textAlign: "center",

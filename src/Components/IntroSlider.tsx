@@ -6,7 +6,6 @@ import {
   Button,
   Image,
   StatusBar,
-  SafeAreaView,
   StyleSheet,
 } from "react-native";
 import AppIntroSlider from "react-native-app-intro-slider";
@@ -15,6 +14,7 @@ import {
   widthPercentageToDP as w2dp,
 } from "react-native-responsive-screen";
 import { localized } from "../locales/localization";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const slides = [
   {

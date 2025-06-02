@@ -1,5 +1,3 @@
-// ForgotPassword.tsx
-
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { sendPasswordResetEmail } from "firebase/auth";
@@ -8,7 +6,6 @@ import { Ionicons } from "@expo/vector-icons";
 import React, { useState } from "react";
 import {
   Platform,
-  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
@@ -16,18 +13,18 @@ import {
   TouchableOpacity,
   TextInput,
   Alert,
-  StatusBar,
   KeyboardAvoidingView,
 } from "react-native";
 import { auth } from "../firebase/firebaseConfig";
 import { localized } from "../locales/localization";
-import Spinner from "react-native-loading-spinner-overlay/lib";
+import Spinner from "react-native-loading-spinner-overlay";
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
 import { forgotPasswordValidationSchema } from "../Components/validation";
 import PrimaryButton from "../Components/PrimaryButton";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 function ForgotPassword() {
   const [loading, setLoading] = useState(false);
@@ -37,7 +34,6 @@ function ForgotPassword() {
     setLoading(true);
     try {
       await sendPasswordResetEmail(auth, email.toLowerCase());
-      setLoading(false);
       Alert.alert(
         localized.t("RESET_LINK_SENT_SUCCESSFULLY"),
         localized.t(
@@ -52,10 +48,11 @@ function ForgotPassword() {
         { cancelable: false }
       );
     } catch (err: any) {
-      setLoading(false);
       Alert.alert(localized.t("EMAIL_NOT_FOUND"), err.message, [
         { text: localized.t("OK") },
       ]);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -64,7 +61,6 @@ function ForgotPassword() {
       colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
       style={styles.background}
     >
-      <StatusBar animated={true} backgroundColor="auto" />
       <SafeAreaView style={styles.safeArea}>
         <View style={styles.header}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -73,12 +69,12 @@ function ForgotPassword() {
           <Text style={styles.headerTitle}>
             {localized.t("FORGOT_PASSWORD")}
           </Text>
-          <View style={{ width: wp(3) }} />
+          <View style={{ width: wp(10) }} />
         </View>
 
         <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
           style={{ flex: 1 }}
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
           <ScrollView
             contentContainerStyle={styles.scrollContainer}
@@ -126,7 +122,7 @@ function ForgotPassword() {
                       !isValid && styles.buttonDisabled,
                     ]}
                     titleStyle={styles.buttonText}
-                    onPress={handleSubmit}
+                    onPress={handleSubmit as () => void}
                   />
                 </>
               )}
@@ -144,21 +140,14 @@ const styles = StyleSheet.create({
   },
   safeArea: {
     flex: 1,
-    paddingHorizontal: wp(4),
-    paddingTop: Platform.OS === "android" ? hp(2) : 0,
+    paddingHorizontal: wp(5),
   },
   header: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
     flexDirection: "row",
-    alignItems: "center",
     justifyContent: "space-between",
-    paddingHorizontal: wp(4.5),
-    paddingTop: hp(3),
-    paddingBottom: hp(2),
-    zIndex: 1,
+    alignItems: "center",
+    marginTop: hp(3),
+    marginBottom: hp(2),
   },
   headerTitle: {
     fontSize: wp(5),
@@ -173,7 +162,6 @@ const styles = StyleSheet.create({
     fontSize: hp(2),
     color: "white",
     marginBottom: hp(2.5),
-    textAlign: "left",
   },
   input: {
     borderColor: "#ffffff99",
@@ -196,15 +184,15 @@ const styles = StyleSheet.create({
     paddingVertical: hp(1.5),
     marginTop: hp(2),
   },
+  buttonDisabled: {
+    backgroundColor: "grey",
+    opacity: 0.6,
+  },
   buttonText: {
     color: "white",
     fontSize: hp(2.2),
     fontWeight: "600",
     textAlign: "center",
-  },
-  buttonDisabled: {
-    backgroundColor: "grey",
-    opacity: 0.6,
   },
 });
 

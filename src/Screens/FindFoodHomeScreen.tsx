@@ -7,7 +7,6 @@ import {
   Image,
   Keyboard,
   Platform,
-  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
@@ -26,6 +25,7 @@ import FoodhealersHeader from "../Components/FoodhealersHeader";
 import mapStyle from "../Components/MapStyle";
 import { localized } from "../locales/localization";
 import { VeganRecipesCategories } from "../redux/actions/veganRecipes";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const FindFoodHomeScreen = ({ route }: any) => {
   const {

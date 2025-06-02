@@ -547,10 +547,8 @@ const AcceptRequestedDonationScreen = ({ route }: any) => {
                           height: h2dp(8),
                         }}
                       />
-                      <Text style={styles.inputError}>
-                        {errors?.phoneNumber}
-                      </Text>
                     </View>
+                    <Text style={styles.inputError}>{errors?.phoneNumber}</Text>
                   </ScrollView>
                   <PrimaryButton
                     title={localized.t("SUBMIT")}

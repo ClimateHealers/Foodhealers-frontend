@@ -6,7 +6,6 @@ import React, { useState } from "react";
 import {
   Keyboard,
   Linking,
-  SafeAreaView,
   ScrollView,
   Text,
   TouchableOpacity,
@@ -23,6 +22,7 @@ import { styles } from "../Components/Styles";
 import { localized } from "../locales/localization";
 import * as WebBrowser from "expo-web-browser";
 import { Image } from "expo-image";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const blurhash = "LBE~3[-;j[oy_MoMfQj[offQfQfQ";
 

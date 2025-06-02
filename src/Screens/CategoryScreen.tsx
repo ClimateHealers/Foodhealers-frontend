@@ -8,7 +8,6 @@ import {
   ActivityIndicator,
   Keyboard,
   Modal,
-  SafeAreaView,
   ScrollView,
   Text,
   TextInput,
@@ -32,6 +31,7 @@ import {
   VeganRecipesCategory,
 } from "../redux/actions/veganRecipesCategory";
 import { useDebounce } from "../Components/Debounce";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const blurhash = "LBE~3[-;j[oy_MoMfQj[offQfQfQ";
 

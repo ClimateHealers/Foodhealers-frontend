@@ -23,6 +23,7 @@ import { localized } from "../locales/localization";
 import { allEvents } from "../redux/actions/allEvents";
 import { fetchUser } from "../redux/actions/authAction";
 import { VeganRecipesCategory } from "../redux/actions/veganRecipesCategory";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const VolunteerHomeScreen = ({ route }: any) => {
   const { latitude, longitude } = route.params;
@@ -73,7 +74,7 @@ const VolunteerHomeScreen = ({ route }: any) => {
           colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
           style={styles.background}
         >
-          <View style={styles.containerVolunteer}>
+          <SafeAreaView style={styles.containerVolunteer}>
             <FoodhealersHeader />
             <View style={styles.root}>
               <Ionicons
@@ -279,7 +280,7 @@ const VolunteerHomeScreen = ({ route }: any) => {
                 </View>
               </TouchableOpacity>
             </ScrollView>
-          </View>
+          </SafeAreaView>
         </LinearGradient>
       </TouchableWithoutFeedback>
     </>

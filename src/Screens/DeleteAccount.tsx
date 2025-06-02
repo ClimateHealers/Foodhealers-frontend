@@ -49,8 +49,8 @@ const DeleteAccount = () => {
       colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
       style={styles.background}
     >
-      <SafeAreaView style={styles.mainContainer}>
-        <View style={styles.header}>
+      <SafeAreaView style={styles.safeArea}>
+        <View style={styles.headerContainer}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <Ionicons name="chevron-back" size={32} color="white" />
           </TouchableOpacity>
@@ -59,57 +59,42 @@ const DeleteAccount = () => {
           </Text>
           <View style={{ width: wp2dp(3) }} />
         </View>
-
-        <ScrollView style={styles.ScrollView}>
-          <View style={styles.profile}>
-            <Text style={styles.profileName}>{userInfo?.name}</Text>
-            <Text style={{ color: "white", fontSize: hp2dp(2.0) }}>
-              {userInfo?.email}
-            </Text>
-          </View>
-          <View style={{ alignSelf: "center", marginVertical: 30 }}>
-            <AntDesign name="deleteuser" size={150} color="#faf5f5" />
-          </View>
-          <View style={{ alignSelf: "center" }}>
-            <Text
-              style={{
-                fontSize: hp2dp(2.8),
-                fontWeight: "bold",
-                alignSelf: "center",
-                marginBottom: 20,
-                color: "white",
-              }}
-            >
-              {localized.t("ATTENTION")}
-            </Text>
-            <Text
-              style={{
-                color: "white",
-              }}
-            >
-              {localized.t("DELETE_YOUR_ACCOUNT_WILL_REMOVE_DATABASE")}{" "}
-              {localized.t("THIS_CANNOT_BE_UNDONE")}
-            </Text>
-          </View>
-        </ScrollView>
-        <Modal visible={showModal} animationType="fade">
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <Text style={styles.modalText}>{localized.t("ALMOST_DONE")}</Text>
-              <Text style={styles.modalSubText}>
-                {localized.t("WE_RECEIVED__YOUR_REQUEST_TO_DELETE")}
-                {localized.t("TO_COMPLETE_YOUR_DELETION")}
+        <View style={styles.mainContainer}>
+          <ScrollView style={styles.ScrollView}>
+            <View style={styles.profile}>
+              <Text style={styles.profileName}>{userInfo?.name}</Text>
+              <Text style={{ color: "white", fontSize: hp2dp(2.0) }}>
+                {userInfo?.email}
               </Text>
-              <TouchableOpacity
-                onPress={navigateToLoginScreen}
-                style={styles.modalButton}
-              >
-                <Text style={styles.buttonText}>{localized.t("CLOSE")}</Text>
-              </TouchableOpacity>
             </View>
-          </View>
-        </Modal>
-        <View style={{ paddingBottom: hp2dp(2) }}>
+            <View style={{ alignSelf: "center", marginVertical: 30 }}>
+              <AntDesign name="deleteuser" size={150} color="#faf5f5" />
+            </View>
+            <View style={{ alignSelf: "center" }}>
+              <Text
+                style={{
+                  fontSize: hp2dp(2.8),
+                  fontWeight: "bold",
+                  alignSelf: "center",
+                  marginBottom: 20,
+                  color: "white",
+                }}
+              >
+                {localized.t("ATTENTION")}
+              </Text>
+              <Text
+                style={{
+                  color: "white",
+                }}
+              >
+                {localized.t("DELETE_YOUR_ACCOUNT_WILL_REMOVE_DATABASE")}{" "}
+                {localized.t("THIS_CANNOT_BE_UNDONE")}
+              </Text>
+            </View>
+          </ScrollView>
+        </View>
+
+        <View style={{ paddingBottom: hp2dp(2), paddingHorizontal: hp2dp(2) }}>
           <PrimaryButton
             title={localized.t("DELETE_ACCOUNT")}
             buttonStyle={styles.googleBtn}
@@ -129,30 +114,45 @@ const DeleteAccount = () => {
           />
         </View>
       </SafeAreaView>
+      <Modal visible={showModal} animationType="fade">
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>{localized.t("ALMOST_DONE")}</Text>
+            <Text style={styles.modalSubText}>
+              {localized.t("WE_RECEIVED__YOUR_REQUEST_TO_DELETE")}
+              {localized.t("TO_COMPLETE_YOUR_DELETION")}
+            </Text>
+            <TouchableOpacity
+              onPress={navigateToLoginScreen}
+              style={styles.modalButton}
+            >
+              <Text style={styles.buttonText}>{localized.t("CLOSE")}</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </LinearGradient>
   );
 };
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+  },
   background: {
     flex: 1,
   },
   mainContainer: {
     flex: 1,
     marginHorizontal: wp2dp(4.5),
-    paddingTop: hp2dp(8),
   },
-  header: {
-    position: "absolute",
-    top: 0,
-    left: hp2dp(-2.6),
-    right: 0,
+  headerContainer: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     paddingHorizontal: wp2dp(4.5),
-    paddingTop: hp2dp(3),
-    paddingBottom: hp2dp(2),
+    paddingTop: hp2dp(4),
+    paddingBottom: hp2dp(1.5),
   },
   headerTitle: {
     fontSize: wp2dp(5),
@@ -177,14 +177,11 @@ const styles = StyleSheet.create({
   },
   modalView: {
     backgroundColor: "white",
-    padding: 20,
-    borderRadius: 12,
-    alignItems: "center",
-    justifyContent: "center",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 4,
-    elevation: 5,
+    paddingHorizontal: 20,
+    marginHorizontal: 20,
+    paddingVertical: 20,
+    borderRadius: 8,
+    height: hp2dp(25),
   },
   modalText: {
     fontSize: hp2dp(1.8),
@@ -200,17 +197,18 @@ const styles = StyleSheet.create({
   },
   modalButton: {
     marginTop: hp2dp(3),
-    backgroundColor: "#28a745",
-    borderRadius: 8,
+    backgroundColor: "green",
+    borderRadius: 5,
     paddingVertical: 10,
     paddingHorizontal: 20,
+    marginHorizontal: "auto",
   },
   buttonText: {
     color: "white",
     fontWeight: "bold",
     fontSize: hp2dp(1.6),
+    textAlign: "center",
   },
-
   googleBtn: {
     backgroundColor: "#FC5A56",
     borderRadius: wp2dp(2),
@@ -224,8 +222,11 @@ const styles = StyleSheet.create({
     fontSize: hp2dp(2.1),
   },
   centeredView: {
+    flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "rgba( 0,0,0,0.1)",
+    paddingHorizontal: wp2dp(4),
   },
 });
 
