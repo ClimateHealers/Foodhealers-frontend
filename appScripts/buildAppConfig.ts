@@ -75,6 +75,7 @@ const appConfig = {
       "expo-build-properties",
     ],
     extra: {
+      publishedAt: process.env.PUBLISHED_AT || "",
       eas: {
         projectId: process.env.PROJECT_ID || "",
         apikey: process.env.FIREBASE_FCM_API_KEY || "",

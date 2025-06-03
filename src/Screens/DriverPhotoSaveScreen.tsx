@@ -115,7 +115,7 @@ const DriverPhotoSaveScreen = ({ route }: any) => {
         colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
         style={styles.background}
       >
-        <SafeAreaView>
+        <SafeAreaView style={{ flex: 1 }}>
           <ScrollView keyboardShouldPersistTaps="handled">
             <View style={styles.containerVolunteer}>
               <FoodhealersHeader />
@@ -165,33 +165,38 @@ const DriverPhotoSaveScreen = ({ route }: any) => {
                   </View>
                 </TouchableOpacity>
               </View>
-              <PrimaryButton
-                title={localized.t("SAVE")}
-                buttonStyle={styles.buttonStyles}
-                titleStyle={styles.titleStyle}
-                onPress={navigateToProfileScreen}
-              />
-              <PrimaryButton
-                title={
-                  fromCameraRoll
-                    ? localized.t("TAKE_PHOTO")
-                    : localized.t("RETAKE")
-                }
-                buttonStyle={styles.buttonHistoryStyles}
-                titleStyle={styles.titleMainStyle}
-                onPress={() => {
-                  navigation.navigate("TakePictureScreen"),
-                    handlePressOutside();
-                }}
-              />
-              <PrimaryButton
-                title={localized.t("CHOOSE_FROM_CAMERA_ROLL")}
-                onPress={openImagePickerAsync}
-                buttonStyle={styles.buttonHistoryStyles}
-                titleStyle={styles.titleMainStyle}
-              />
             </View>
           </ScrollView>
+          <View
+            style={{
+              paddingBottom: h2dp(2),
+            }}
+          >
+            <PrimaryButton
+              title={localized.t("SAVE")}
+              buttonStyle={styles.buttonStyles}
+              titleStyle={styles.titleStyle}
+              onPress={navigateToProfileScreen}
+            />
+            <PrimaryButton
+              title={
+                fromCameraRoll
+                  ? localized.t("TAKE_PHOTO")
+                  : localized.t("RETAKE")
+              }
+              buttonStyle={styles.buttonHistoryStyles}
+              titleStyle={styles.titleMainStyle}
+              onPress={() => {
+                navigation.navigate("TakePictureScreen"), handlePressOutside();
+              }}
+            />
+            <PrimaryButton
+              title={localized.t("CHOOSE_FROM_CAMERA_ROLL")}
+              onPress={openImagePickerAsync}
+              buttonStyle={styles.buttonHistoryStyles}
+              titleStyle={styles.titleMainStyle}
+            />
+          </View>
         </SafeAreaView>
       </LinearGradient>
     </TouchableWithoutFeedback>

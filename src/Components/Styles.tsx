@@ -364,7 +364,7 @@ export const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: w2dp(0.75),
     paddingVertical: h2dp(0.5),
-    marginBottom: h2dp(3),
+    marginBottom: h2dp(2),
     height: h2dp(6),
     width: w2dp(45),
   },

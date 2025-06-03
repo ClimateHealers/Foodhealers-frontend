@@ -71,6 +71,14 @@ const ProfileScreen = () => {
     setData(response?.payload?.userDetails);
   };
 
+  const publishDate = Constants.expoConfig?.extra?.publishedAt;
+  const newDate = new Date(publishDate);
+  const formattedDate = newDate.toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+
   const fetchingNotificationsData = async () => {
     const response = await dispatch(notfifications({} as any) as any);
     const filterRead = response?.payload?.notifications?.filter(
@@ -314,7 +322,9 @@ const ProfileScreen = () => {
             <Text style={styles.versionText}>
               {localized.t("APP_VERSION")} {appVersion} ({dev ? "Dev" : "Prod"})
             </Text>
-
+            <Text style={styles.publishdateText}>
+              Publish Date: {formattedDate}
+            </Text>
             <View style={styles.supportRow}>
               <Text style={styles.supportText}>Contact us for support:</Text>
               <Text
@@ -548,7 +558,12 @@ const styles = StyleSheet.create({
     fontSize: wp("3.5%"),
     color: "white",
     textDecorationLine: "underline",
-    marginBottom: hp("3%"),
+    marginBottom: hp("1%"),
+  },
+  publishdateText: {
+    fontSize: wp("3.5%"),
+    color: "white",
+    marginBottom: hp("1%"),
   },
 });
 
