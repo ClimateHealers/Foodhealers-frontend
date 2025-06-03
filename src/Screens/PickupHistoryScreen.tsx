@@ -177,18 +177,10 @@ const PickupHistoryScreen = ({ route }: any) => {
         style={styles.background}
       >
         <SafeAreaView style={{ flex: 1 }}>
-          <View style={{ flex: 1 }}>
+          <View style={styles.container}>
             <StatusBar animated={true} backgroundColor="auto" />
             <FoodhealersHeader />
-            <View
-              style={[
-                styles.root,
-                {
-                  marginHorizontal: h2dp(2),
-                  width: "auto",
-                },
-              ]}
-            >
+            <View style={[styles.root]}>
               <Ionicons
                 name="chevron-back"
                 size={32}
