@@ -46,7 +46,6 @@ Create a `.env` file at the root with the following:
 ```env
 GOOGLE_MAPS_API_KEY=your_google_api_key
 FIREBASE_FCM_API_KEY=your_firebase_fcm_key
-PROJECT_ID=your_project_id
 ```
 
 ## 📦 Getting Started

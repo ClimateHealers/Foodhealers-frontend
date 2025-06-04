@@ -1,5 +1,5 @@
 import axios from "axios";
-export const dev = false;
+export const dev = true;
 const api_endPoint = dev
   ? "https://api.climatehealers.com/"
   : "https://foodhealers.climatehealers.com/";
@@ -12,4 +12,3 @@ const API = axios.create({
 });
 
 export default API;
-
