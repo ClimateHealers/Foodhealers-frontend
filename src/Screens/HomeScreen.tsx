@@ -158,6 +158,35 @@ const HomeScreen = ({ route }: any) => {
     }
   };
 
+
+  const onRecipeClicked = () => {
+    if (data.token) {
+      navigation.navigate("RecipesHomeScreen");
+    } else {
+      Alert.alert(
+        `${localized.t("REGISTRATION_REQUIRED")}`,
+        `${localized.t("ONLY_A_REGISTERED")}`,
+        [
+          {
+            text: `${localized.t("LOGIN")}`,
+            onPress: () => {
+              navigation.navigate("LoginScreen");
+            },
+            style: "default",
+          },
+          {
+            text: `${localized.t("CANCEL")}`,
+            onPress: () => {},
+            style: "default",
+          },
+        ],
+        {
+          cancelable: true,
+        }
+      );
+    }
+  }
+
   const navigation: any = useNavigation();
   return (
     <TouchableWithoutFeedback onPress={handlePressOutside}>
@@ -205,6 +234,10 @@ const HomeScreen = ({ route }: any) => {
               </View>
             </View>
           </Modal>
+          <View style={styles.banner}>
+            <Text style={styles.title}>Food Healers</Text>
+            <Text style={styles.subtitle}>Serving Free Plant-Based Food</Text>
+          </View>
           <View style={styles.headerContainer}>
             <PrimaryButton
               title={localized.t("FIND_FOOD")}
@@ -259,6 +292,12 @@ const HomeScreen = ({ route }: any) => {
                 }
               }}
               titleStyle={styles.titleStyle}
+            />
+            <PrimaryButton
+              title={localized.t("RECIPES")}
+              buttonStyle={styles.postEventButtonStyle}
+              onPress={onRecipeClicked}
+              titleStyle={styles.eventButtonTitleStyle}
             />
             <View style={{ marginBottom: h2dp(6) }}>
               {data?.user?.name ? (
@@ -416,6 +455,29 @@ const styles = StyleSheet.create({
     color: "black",
     textAlign: "center",
     fontSize: h2dp(1.0),
+  },
+
+  banner: {
+    backgroundColor: "#A8D5BA", // soft plant green
+    padding: 24,
+    borderRadius: 16,
+    margin: 16,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 4,
+  },
+  title: {
+    fontSize: 28,
+    fontWeight: "bold",
+    color: "#2D4739", // darker green for contrast
+    marginBottom: 8,
+  },
+  subtitle: {
+    fontSize: 18,
+    color: "#2D4739",
+    textAlign: "center",
   },
 });
 
