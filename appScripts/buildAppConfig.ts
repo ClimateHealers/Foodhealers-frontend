@@ -10,9 +10,9 @@ dotenv.config();
 
 const appConfig = {
   expo: {
-    name: "food-healers",
+    name: "Food-Healers",
     slug: "food-healers",
-    version: "1.4.0",
+    version: "1.4.2",
     orientation: "portrait",
 
     icon: "./assets/FH-androidLogo.png",
@@ -52,7 +52,7 @@ const appConfig = {
       },
     },
     android: {
-      versionCode: 18,
+      versionCode: 20,
       permissions: [
         "android.permission.ACCESS_COARSE_LOCATION",
         "android.permission.ACCESS_FINE_LOCATION",

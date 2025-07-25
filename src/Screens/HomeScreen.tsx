@@ -33,6 +33,7 @@ import { volunteerHistory } from "../redux/actions/volunteerHistoryAction";
 import { setLanguage } from "../redux/reducers/langReducer";
 import axios from "axios";
 import { fetchUser, getExpoPushToken } from "../redux/actions/authAction";
+import { Image } from "react-native-elements";
 import { allRequests } from "../redux/actions/allRequests";
 import { myRequests } from "../redux/actions/myRequests";
 
@@ -51,7 +52,7 @@ const HomeScreen = ({ route }: any) => {
   const [selectedLanguage, setSelectedLanguage] = useState(localized.locale);
   const [lat, setLat] = useState(0);
   const [long, setLong] = useState(0);
-  const [lang, setLang] = useState([
+  const [lang] = useState([
     { id: 1, label: "Bengali", value: "be" },
     { id: 2, label: "Chinese", value: "ch" },
     { id: 3, label: "English", value: "en" },
@@ -65,15 +66,13 @@ const HomeScreen = ({ route }: any) => {
   const handlePressOutside = () => {
     setlangOpen(false);
   };
+
   const changeLanguage = (itemValue: any, index: any) => {
     const selectedLanguage = lang[index].value;
     dispatch(setLanguage(selectedLanguage));
     localized.locale = selectedLanguage;
     setSelectedLanguage(selectedLanguage);
   };
-
-  const line_height_multiplier = 1.5;
-  const default_font_size = 13;
 
   useFocusEffect(
     useCallback(() => {
@@ -199,61 +198,67 @@ const HomeScreen = ({ route }: any) => {
           source={require("../../assets/homeImage21.jpg")}
           style={styles.backgroundImage}
         >
-          <View style={styles.dropdownContainer}>
-            <SelectDropdown
-              buttonStyle={styles.dropdown1BtnStyle}
-              buttonTextStyle={styles.dropdown1BtnTxtStyle}
-              renderDropdownIcon={() => {
-                return (
+          <View style={styles.topContainer}>
+            <View style={styles.dropdownContainer}>
+              <SelectDropdown
+                buttonStyle={styles.dropdownBtnStyle}
+                buttonTextStyle={styles.dropdownBtnTxtStyle}
+                renderDropdownIcon={() => (
                   <MaterialIcons
                     name="keyboard-arrow-down"
                     size={18}
                     color="#B50000"
                   />
-                );
-              }}
-              dropdownIconPosition={"right"}
-              dropdownStyle={styles.dropdown1DropdownStyle}
-              rowStyle={styles.dropdown1RowStyle}
-              rowTextStyle={styles.dropdown1RowTxtStyle}
-              data={lang && lang.map((dd) => dd.label)}
-              onSelect={changeLanguage}
-              defaultButtonText={selectedLanguage.toUpperCase()}
-              buttonTextAfterSelection={(itemValue, index) => {
-                return languageName.toUpperCase();
-              }}
-              rowTextForSelection={(item, index) => {
-                return item;
-              }}
-            />
+                )}
+                dropdownIconPosition="right"
+                dropdownStyle={styles.dropdownStyle}
+                rowStyle={styles.dropdownRowStyle}
+                rowTextStyle={styles.dropdownRowTxtStyle}
+                data={lang.map((dd) => dd.label)}
+                onSelect={changeLanguage}
+                defaultButtonText={selectedLanguage.toUpperCase()}
+                buttonTextAfterSelection={() => languageName.toUpperCase()}
+                rowTextForSelection={(item) => item}
+              />
+            </View>
+
+            <View style={styles.banner}>
+              <View style={styles.imageContainer}>
+                <Image
+                  source={require("../../assets/Food-Healers-Logo-preview.png")}
+                  style={styles.logoImage}
+                  resizeMode="contain"
+                />
+                <Text style={styles.title}>Food Healers</Text>
+              </View>
+              <Text style={styles.subtitle}>Serving Free Plant-Based Food</Text>
+            </View>
           </View>
-          <Modal visible={loading} animationType="slide" transparent={true}>
+
+          <Modal visible={loading} animationType="slide" transparent>
             <View style={styles.centeredView}>
               <View style={styles.modalView}>
-                <ActivityIndicator size={"large"} />
+                <ActivityIndicator size="large" />
               </View>
             </View>
           </Modal>
-          <View style={styles.banner}>
-            <Text style={styles.title}>Food Healers</Text>
-            <Text style={styles.subtitle}>Serving Free Plant-Based Food</Text>
-          </View>
-          <View style={styles.headerContainer}>
+
+          <View style={styles.buttonContainer}>
             <PrimaryButton
               title={localized.t("FIND_FOOD")}
               onPress={navigateToMapScreen}
-              buttonStyle={styles.postEventButton}
-              titleStyle={styles.titleStyle}
+              buttonStyle={styles.greenButton}
+              titleStyle={styles.buttonTitle}
             />
             <PrimaryButton
               title={localized.t("POST_EVENT")}
-              buttonStyle={styles.postEventButtonStyle}
+              buttonStyle={styles.whiteButton}
               onPress={postEvent}
-              titleStyle={styles.eventButtonTitleStyle}
+              titleStyle={[styles.buttonTitle, styles.greenText]}
             />
             <PrimaryButton
               title={localized.t("VOLUNTEER")}
-              buttonStyle={styles.postEventButton}
+              buttonStyle={styles.greenButton}
               onPress={() => {
                 if (data.isAuthenticated) {
                   if (volunteerData?.length > 0 || donationData?.length > 0) {
@@ -291,57 +296,35 @@ const HomeScreen = ({ route }: any) => {
                   );
                 }
               }}
-              titleStyle={styles.titleStyle}
+              titleStyle={styles.buttonTitle}
             />
             <PrimaryButton
               title={localized.t("RECIPES")}
-              buttonStyle={styles.postEventButtonStyle}
+              buttonStyle={styles.whiteButton}
               onPress={onRecipeClicked}
-              titleStyle={styles.eventButtonTitleStyle}
+              titleStyle={[styles.buttonTitle, styles.greenText]}
             />
-            <View style={{ marginBottom: h2dp(6) }}>
-              {data?.user?.name ? (
-                <Text
-                  style={{
-                    color: "white",
-                    fontSize: h2dp(1.8),
-                    marginBottom: h2dp(4),
-                    fontFamily: "OpenSans-bold",
-                  }}
-                >
-                  {localized.t("WELCOME")}{" "}
-                  {data?.user?.name ? userData?.name : ""}
+
+            {data?.user?.name ? (
+              <Text style={styles.welcomeText}>
+                {localized.t("WELCOME")} {userData?.name}
+              </Text>
+            ) : (
+              <View style={styles.authPrompt}>
+                <Text style={styles.authText}>
+                  {localized.t("ALREADY_HAVE_AN_ACCOUNT")}
                 </Text>
-              ) : (
-                <View>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate("LoginScreen")}
+                >
                   <Text
-                    style={{
-                      color: "white",
-                      fontSize: h2dp(1.8),
-                      marginBottom: h2dp(1.5),
-                      fontFamily: "OpenSans-Regular",
-                    }}
+                    style={[styles.authText, styles.underline, styles.bold]}
                   >
-                    {localized.t("ALREADY_HAVE_AN_ACCOUNT")}
+                    {localized.t("SIGN_IN")}
                   </Text>
-                  <TouchableOpacity
-                    onPress={() => navigation.navigate("LoginScreen")}
-                  >
-                    <Text
-                      style={{
-                        color: "white",
-                        fontSize: h2dp(1.8),
-                        textDecorationLine: "underline",
-                        fontFamily: "OpenSans-Bold",
-                        alignSelf: "center",
-                      }}
-                    >
-                      {localized.t("SIGN_IN")}
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-              )}
-            </View>
+                </TouchableOpacity>
+              </View>
+            )}
           </View>
         </ImageBackground>
       </View>
@@ -356,128 +339,138 @@ const styles = StyleSheet.create({
   backgroundImage: {
     flex: 1,
     width: "100%",
-    height: "100%",
-    resizeMode: "cover",
-    justifyContent: "flex-end",
-    alignItems: "center",
+    justifyContent: "space-between",
   },
-  headerContainer: {
-    display: "flex",
-    flexDirection: "column",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  topContainer: {
+    height: "20%",
+    justifyContent: "center",
     alignItems: "center",
+    paddingTop: Platform.OS === "ios" ? h2dp(5) : h2dp(3),
+  },
+  banner: {
+    backgroundColor: "#e2eae5ff",
+    padding: 16,
+    borderRadius: 16,
+    marginTop: h2dp(2),
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 4,
+    width:w2dp(70)
+  },
+  imageContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: 3,
+  },
+  title: {
+    fontSize: 28,
+    fontWeight: "bold",
+    color: "#2D4739",
+    marginBottom: 4,
+  },
+  subtitle: {
+    fontSize: 16,
+    color: "#2D4739",
+    textAlign: "center",
+  },
+  logoImage: {
+    width: w2dp(8),
+    height: h2dp(6),
+  },
+  buttonContainer: {
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
     width: "100%",
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
-  },
-  postEventButton: {
-    backgroundColor: "#5FBB3F",
-    borderRadius: 5,
-    marginBottom: h2dp(2),
-    minWidth: 190,
-    maxHeight: h2dp(6),
-  },
-  postEventButtonStyle: {
-    backgroundColor: "white",
-    borderRadius: 5,
-    marginBottom: h2dp(2),
-    minWidth: 190,
-    maxHeight: h2dp(6),
+    paddingVertical: h2dp(2),
+    alignItems: "center",
   },
   dropdownContainer: {
     position: "absolute",
-    top: Platform.OS === "ios" ? h2dp(10) : h2dp(7),
-    left: "10%",
-    width: "70%",
+    top: Platform.OS === "ios" ? h2dp(1) : 0,
+    right: w2dp(5),
+    zIndex: 1,
   },
-  titleStyle: {
-    color: "white",
-    fontSize: h2dp(2.2),
-    fontWeight: Platform.OS === "ios" ? "500" : "200",
-    fontFamily: "OpenSans-bold",
-  },
-  eventButtonTitleStyle: {
-    color: "green",
-    fontSize: h2dp(2.2),
-    fontWeight: Platform.OS === "ios" ? "500" : "200",
-    fontFamily: "OpenSans-bold",
-  },
-  centeredView: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: h2dp(2.2),
-  },
-  modalView: {
-    margin: 20,
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-    borderRadius: 20,
-    padding: 35,
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  dropdown1BtnStyle: {
-    marginTop: 15,
-    width: "30%",
+  dropdownBtnStyle: {
+    width: w2dp(20),
     height: h2dp(5),
     backgroundColor: "#FFF",
     borderRadius: 5,
     borderWidth: 1,
     borderColor: "#D1D1D6",
   },
-  dropdown1BtnTxtStyle: {
+  dropdownBtnTxtStyle: {
     color: "#B50000",
-    textAlign: "left",
     fontSize: h2dp(1.4),
   },
-  dropdown1DropdownStyle: {
+  dropdownStyle: {
     backgroundColor: "#EFEFEF",
-    color: "black",
     borderRadius: 4,
-    height: 180,
-    fontSize: h2dp(1.4),
-    borderColor: "blue",
   },
-  dropdown1RowStyle: {
+  dropdownRowStyle: {
     backgroundColor: "#EFEFEF",
-    color: "#B50000",
     borderBottomColor: "#D1D1D6",
-    borderRadius: 5,
   },
-  dropdown1RowTxtStyle: {
+  dropdownRowTxtStyle: {
     color: "black",
-    textAlign: "center",
-    fontSize: h2dp(1.0),
+    fontSize: h2dp(1.4),
   },
-
-  banner: {
-    backgroundColor: "#A8D5BA", // soft plant green
-    padding: 24,
-    borderRadius: 16,
-    margin: 16,
+  greenButton: {
+    backgroundColor: "#5FBB3F",
+    borderRadius: 5,
+    marginBottom: h2dp(2),
+    minWidth: w2dp(50),
+    height: h2dp(6),
+  },
+  whiteButton: {
+    backgroundColor: "white",
+    borderRadius: 5,
+    marginBottom: h2dp(2),
+    minWidth: w2dp(50),
+    height: h2dp(6),
+  },
+  buttonTitle: {
+    fontSize: h2dp(2.2),
+    fontFamily: "OpenSans-Bold",
+  },
+  greenText: {
+    color: "green",
+  },
+  welcomeText: {
+    color: "white",
+    fontSize: h2dp(1.8),
+    marginVertical: h2dp(2),
+    fontFamily: "OpenSans-Bold",
+  },
+  authPrompt: {
     alignItems: "center",
-    shadowColor: "#000",
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 4,
+    marginBottom: h2dp(2),
   },
-  title: {
-    fontSize: 28,
-    fontWeight: "bold",
-    color: "#2D4739", // darker green for contrast
-    marginBottom: 8,
+  authText: {
+    color: "white",
+    fontSize: h2dp(1.8),
+    fontFamily: "OpenSans-Regular",
+    marginBottom: h2dp(1),
   },
-  subtitle: {
-    fontSize: 18,
-    color: "#2D4739",
-    textAlign: "center",
+  underline: {
+    textDecorationLine: "underline",
+  },
+  bold: {
+    fontFamily: "OpenSans-Bold",
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modalView: {
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
   },
 });
 
