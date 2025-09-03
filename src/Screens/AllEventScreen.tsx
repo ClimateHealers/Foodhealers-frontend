@@ -42,8 +42,12 @@ const AllEventScreen = () => {
 
   const navigation: any = useNavigation();
   const fetchingEventData = async () => {
-    const response = await dispatch(myEvents({} as any) as any);
-    setEventData(response?.payload?.foodEvents);
+    const res = await dispatch(allEvents({} as any) as any);
+    const foodEvents = res?.payload?.foodEvents;
+    const verifiedFoodEvents = foodEvents?.filter(
+      (event: any) => event.status === "approved"
+    );
+    setEventData(verifiedFoodEvents);
   };
 
   useEffect(() => {
@@ -90,17 +94,15 @@ const AllEventScreen = () => {
   const handleSingleIndexSelect = async (index: any) => {
     setSelectedIndex(index);
     if (index === 0) {
-      fetchingEventData();
-    } else if (index === 1) {
       const res = await dispatch(allEvents({} as any) as any);
       const foodEvents = res?.payload?.foodEvents;
       const verifiedFoodEvents = foodEvents?.filter(
         (event: any) => event.status === "approved"
       );
-      const activeFoodEvents = verifiedFoodEvents?.filter(
-        (event: any) => event.active === true
-      );
-      setEventData(activeFoodEvents);
+      setEventData(verifiedFoodEvents);
+    } else if (index === 1) {
+      const response = await dispatch(myEvents({} as any) as any);
+      setEventData(response?.payload?.foodEvents);
     }
   };
 
@@ -289,8 +291,8 @@ const AllEventScreen = () => {
           <View style={styles.toggle}>
             <SegmentedControlTab
               values={[
-                `${localized.t("MY_EVENTS")}`,
                 `${localized.t("ALL_EVENTS")}`,
+                `${localized.t("MY_EVENTS")}`,
               ]}
               selectedIndex={selectedIndex}
               tabsContainerStyle={{

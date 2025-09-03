@@ -251,7 +251,7 @@ const HomeScreen = ({ route }: any) => {
               titleStyle={styles.buttonTitle}
             />
             <PrimaryButton
-              title={localized.t("POST_EVENT")}
+              title={localized.t("EVENTS")}
               buttonStyle={styles.whiteButton}
               onPress={postEvent}
               titleStyle={[styles.buttonTitle, styles.greenText]}

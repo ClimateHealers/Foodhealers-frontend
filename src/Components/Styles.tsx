@@ -369,7 +369,7 @@ export const styles = StyleSheet.create({
     width: w2dp(45),
   },
   calendarView: {
-    width: w2dp(85),
+    width: w2dp(90),
     alignSelf: "center",
     marginTop: h2dp(1),
     borderRadius: w2dp(2.5),

@@ -74,7 +74,7 @@ const CalendarScreen = ({ route }: any) => {
                 style={[
                   styles.calendarView,
                   {
-                    marginTop: h2dp(7),
+                    marginTop: h2dp(20),
                   },
                 ]}
               >
