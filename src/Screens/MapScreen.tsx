@@ -78,7 +78,6 @@ const MapScreen = ({ route }: any) => {
   const [postalCode, setPostalCode] = useState<string>("");
   const [emptyEvents, setEmptyEvents] = useState<boolean>(false);
   const [loading, setLoading] = useState(false);
-  console.log(events, "emptyEventsemptyEventsemptyEvents");
 
   const mapRef = useRef<any>(null);
 
@@ -126,7 +125,6 @@ const MapScreen = ({ route }: any) => {
 
         eventEndDate: endDate ? endDate : 0,
       };
-      console.log(findFoodData, "findFoodDatafindFoodData");
 
       const res = await dispatch(findFood(findFoodData as any) as any);
       const foodEvents = res?.payload?.results?.foodEvents;
