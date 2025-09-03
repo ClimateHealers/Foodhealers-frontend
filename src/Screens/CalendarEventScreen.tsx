@@ -63,7 +63,7 @@ const CalendarEventScreen = ({ route }: any) => {
         <SafeAreaView
           style={[
             styles.container,
-            { marginTop: h2dp(3), marginHorizontal: "4%" },
+            { marginHorizontal: "4%" },
           ]}
         >
           <FoodhealersHeader />

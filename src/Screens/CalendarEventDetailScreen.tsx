@@ -130,9 +130,9 @@ Join me using https://play.google.com/store/apps/details?id=com.foodhealers.clim
         colors={["#012e17", "#017439", "#009b4d"]}
         style={styles.background}
       >
-        <SafeAreaView>
+        <SafeAreaView style={styles.container}>
           <ScrollView>
-            <View style={styles.containerVolunteer}>
+            <View>
               <FoodhealersHeader />
               <View style={styles.root}>
                 <Ionicons
@@ -154,13 +154,11 @@ Join me using https://play.google.com/store/apps/details?id=com.foodhealers.clim
                 />
               </View>
               <View
-                style={[
-                  styles.card,
-                  {
-                    backgroundColor: expired ? "#bab7b6" : "white",
-                    borderRadius: h2dp(1),
-                  },
-                ]}
+                style={{
+                  backgroundColor: expired ? "#bab7b6" : "white",
+                  borderRadius: h2dp(1),
+                  top: w2dp(10),
+                }}
               >
                 <View>
                   <Image
@@ -251,58 +249,72 @@ Join me using https://play.google.com/store/apps/details?id=com.foodhealers.clim
                 </View>
               </View>
             </View>
-            <View
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
+          </ScrollView>
+          <View
+            style={{
+              paddingBottom: h2dp(2),
+            }}
+          >
+            <PrimaryButton
+              disabled={expired}
+              title={
+                expired
+                  ? `${localized.t("EVENT_EXPIRED")}`
+                  : `${localized.t("GET_DIRECTIONS")}`
+              }
+              onPress={navigationHandler}
+              buttonStyle={[
+                styles.buttonStyles,
+                {
+                  marginHorizontal: 0,
+                },
+              ]}
+              titleStyle={styles.titleStyle}
+            />
+
+            <PrimaryButton
+              disabled={
+                !volunteersRequired || eventDetails?.status === "Rejected"
+              }
+              title={`${localized.t("VOLUNTEER")}`}
+              onPress={() => {
+                handlePressOutside();
+                navigation.navigate("AddVolunteerToEventScreen", {
+                  id: eventDetails.id,
+                  title: `${localized.t("VOLUNTEER_AT_EVENT")}`,
+                  itemTypeId: 3,
+                  longitude: longitude,
+                  latitude: latitude,
+                  eventStartDate: eventDetails?.eventStartDate,
+                  eventEndDate: eventDetails?.eventEndDate,
+                });
               }}
-            >
+              buttonStyle={[
+                styles.buttonStyles,
+                {
+                  marginHorizontal: 0,
+                },
+              ]}
+              titleStyle={styles.titleStyle}
+            />
+            {!expired && (
               <PrimaryButton
                 disabled={expired}
-                title={
-                  expired
-                    ? `${localized.t("EVENT_EXPIRED")}`
-                    : `${localized.t("GET_DIRECTIONS")}`
-                }
-                onPress={navigationHandler}
-                buttonStyle={styles.buttonStyles}
-                titleStyle={styles.titleStyle}
-              />
-
-              <PrimaryButton
-                disabled={
-                  !volunteersRequired || eventDetails?.status === "Rejected"
-                }
-                title={`${localized.t("VOLUNTEER")}`}
+                title={localized.t("SHARE")}
+                buttonStyle={[
+                  styles.buttonStyles,
+                  {
+                    marginHorizontal: 0,
+                    backgroundColor: "gray",
+                  },
+                ]}
                 onPress={() => {
-                  handlePressOutside();
-                  navigation.navigate("AddVolunteerToEventScreen", {
-                    id: eventDetails.id,
-                    title: `${localized.t("VOLUNTEER_AT_EVENT")}`,
-                    itemTypeId: 3,
-                    longitude: longitude,
-                    latitude: latitude,
-                    eventStartDate: eventDetails?.eventStartDate,
-                    eventEndDate: eventDetails?.eventEndDate,
-                  });
+                  handlePressOutside(), shareAsSocialPost();
                 }}
-                buttonStyle={styles.buttonStyles}
                 titleStyle={styles.titleStyle}
               />
-              {!expired && (
-                <PrimaryButton
-                  disabled={expired}
-                  title={localized.t("SHARE")}
-                  onPress={() => {
-                    handlePressOutside(), shareAsSocialPost();
-                  }}
-                  buttonStyle={styles.buttonStyles}
-                  titleStyle={styles.titleStyle}
-                />
-              )}
-            </View>
-          </ScrollView>
+            )}
+          </View>
         </SafeAreaView>
       </LinearGradient>
     </TouchableWithoutFeedback>
