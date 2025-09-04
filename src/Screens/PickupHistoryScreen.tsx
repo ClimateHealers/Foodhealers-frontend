@@ -97,61 +97,58 @@ const PickupHistoryScreen = ({ route }: any) => {
   }: any) => (
     <TouchableOpacity activeOpacity={1}>
       <View style={styles.cardContainer}>
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <Text
-            style={{
-              marginLeft: w2dp(3),
-              fontSize: h2dp(1.6),
-              lineHeight: 30,
-              paddingTop: h2dp(0.5),
-              fontWeight: "500",
-            }}
-          >
-            {pickupTiming}
-          </Text>
-          <Text
-            style={{
-              marginLeft: w2dp(3),
-              fontWeight: "300",
-              fontSize: h2dp(1.6),
-              lineHeight: 20,
-              paddingBottom: h2dp(1),
-            }}
-          >
-            {pickAddress}
-          </Text>
-        </ScrollView>
+        <Text
+          style={{
+            marginLeft: w2dp(3),
+            fontSize: h2dp(1.6),
+            lineHeight: 30,
+            paddingTop: h2dp(0.5),
+            fontWeight: "bold",
+          }}
+        >
+          {pickupTiming}
+        </Text>
+        <Text
+          style={{
+            marginLeft: w2dp(3),
+            fontWeight: "300",
+            fontSize: h2dp(1.6),
+            lineHeight: 20,
+            paddingBottom: h2dp(1),
+          }}
+        >
+          {pickAddress}
+        </Text>
         <Button
           title={localized.t("DETAILS")}
           onPress={() => {
-            handlePressOutside(),
-            console.log(active);
+            handlePressOutside();
             active === false
               ? navigation.navigate("PickupConfirmScreen", {
-                  pickAddress: pickAddress,
-                  pickupTiming: pickupTiming,
-                  picklat: picklat,
-                  picklng: picklng,
-                  droplat: droplat,
-                  droplng: droplng,
-                  dropTiming: dropTiming,
-                  dropAddress: dropAddress,
+                  pickAddress,
+                  pickupTiming,
+                  picklat,
+                  picklng,
+                  droplat,
+                  droplng,
+                  dropTiming,
+                  dropAddress,
                   pickupId: id,
-                  active: active,
-                  fullfilled: fullfilled,
+                  active,
+                  fullfilled,
                 })
               : navigation.navigate("PickupSelectedDetailsScreen", {
-                  pickAddress: pickAddress,
-                  pickupTiming: pickupTiming,
-                  picklat: picklat,
-                  picklng: picklng,
-                  droplat: droplat,
-                  droplng: droplng,
-                  dropTiming: dropTiming,
-                  dropAddress: dropAddress,
+                  pickAddress,
+                  pickupTiming,
+                  picklat,
+                  picklng,
+                  droplat,
+                  droplng,
+                  dropTiming,
+                  dropAddress,
                   pickupId: id,
-                  active: active,
-                  fullfilled: fullfilled,
+                  active,
+                  fullfilled,
                 });
           }}
           buttonStyle={{
@@ -176,109 +173,95 @@ const PickupHistoryScreen = ({ route }: any) => {
   return (
     <TouchableWithoutFeedback onPress={handlePressOutside}>
       <LinearGradient
-        colors={["#6fa200", "#72a400", "#82b200", "#87b500", "#6fa200"]}
+        colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
         style={styles.background}
       >
-        <SafeAreaView>
-          <TouchableOpacity activeOpacity={1}>
-            <ScrollView keyboardShouldPersistTaps="handled">
-              <StatusBar animated={true} backgroundColor="auto" />
-              <View style={styles.container}>
-                <FoodhealersHeader />
-                <View style={styles.root}>
-                  <Ionicons
-                    name="chevron-back"
-                    size={32}
-                    color="white"
-                    onPress={() => {navigation.navigate("DriverRequestScreen"),handlePressOutside()}}
-                  />
-                  <View style={styles.item}>
-                    <Text style={styles.itemText}>
-                      {localized.t("PICKUP_HISTORY")}
-                    </Text>
-                  </View>
-                  <BurgerIcon
-                    onOutsidePress={handlePressOutside}
-                    menuClose={menuClose}
-                  />
-                </View>
-                {pickupData?.length > 0 ? (
-                  <View>
-                    <View style={styles.itemFilter}>
-                      <Text style={styles.itemFilterText}>
-                        {localized.t("PICKUP_HISTORY")}
-                      </Text>
-                      <TouchableOpacity
-                        style={{
-                          display: "flex",
-                          flexDirection: "row",
-                          justifyContent: "center",
-                          alignItems: "center",
-                        }}
-                        onPress={sortByDate}
-                      >
-                        <Text style={styles.itemFilterText}>
-                          {localized.t("FILTER")}
-                        </Text>
-                        <Text style={styles.filterNameText}>
-                          ({filterName})
-                        </Text>
-                        <MaterialIcons
-                          name="filter-list-alt"
-                          style={styles.itemFilterText}
-                        />
-                      </TouchableOpacity>
-                    </View>
-                    <FlatList
-                      showsVerticalScrollIndicator={false}
-                      data={pickupData}
-                      renderItem={({ item }: any) => (
-                        <Item
-                          name={item?.name}
-                          pickupTiming={`${moment(
-                            item?.deliver?.pickupDate
-                          ).format("DD,  ddd, hh:mm A")}`}
-                          pickAddress={
-                            item?.deliver?.pickupAddress?.fullAddress
-                          }
-                          dropAddress={item?.deliver?.dropAddress?.fullAddress}
-                          picklat={item?.deliver?.pickupAddress?.lat}
-                          picklng={item?.deliver?.pickupAddress?.lng}
-                          eventStartDate={item?.eventStartDate}
-                          eventEndDate={item?.eventEndDate}
-                          id={item?.id}
-                          status={item?.status}
-                          droplat={item?.deliver?.dropAddress?.lat}
-                          droplng={item?.deliver?.dropAddress?.lng}
-                          dropTiming={`${moment(item?.deliver?.dropDate).format(
-                            "DD,  ddd, hh:mm A"
-                          )}`}
-                          active={item?.active}
-                          fullfilled={item?.fullfilled}
-                        />
-                      )}
-                      keyExtractor={(item): any => {
-                        item?.id;
-                      }}
-                    />
-                  </View>
-                ) : (
-                  <View
+        <SafeAreaView style={{ flex: 1 }}>
+          <View style={styles.container}>
+            <StatusBar animated={true} backgroundColor="auto" />
+            <FoodhealersHeader />
+            <View style={[styles.root]}>
+              <Ionicons
+                name="chevron-back"
+                size={32}
+                color="white"
+                onPress={() => {
+                  navigation.navigate("DriverRequestScreen");
+                  handlePressOutside();
+                }}
+              />
+              <View style={styles.item}>
+                <Text style={styles.itemText}>
+                  {localized.t("PICKUP_HISTORY")}
+                </Text>
+              </View>
+              <BurgerIcon
+                onOutsidePress={handlePressOutside}
+                menuClose={menuClose}
+              />
+            </View>
+            {pickupData?.length > 0 ? (
+              <View style={{ flex: 1 }}>
+                <View style={styles.itemFilter}>
+                  <Text style={styles.itemFilterText}>
+                    {localized.t("PICKUP_HISTORY")}
+                  </Text>
+                  <TouchableOpacity
                     style={{
                       display: "flex",
+                      flexDirection: "row",
                       justifyContent: "center",
                       alignItems: "center",
-                      marginTop: h2dp(25),
                     }}
+                    onPress={sortByDate}
                   >
-                    <Text style={styles.itemText}>
-                      {localized.t("NOTHING_TO_SHOW")}
+                    <Text style={styles.itemFilterText}>
+                      {localized.t("FILTER")}
                     </Text>
-                  </View>
-                )}
+                    <Text style={styles.filterNameText}>({filterName})</Text>
+                    <MaterialIcons
+                      name="filter-list-alt"
+                      style={styles.itemFilterText}
+                    />
+                  </TouchableOpacity>
+                </View>
+                <FlatList
+                  showsVerticalScrollIndicator={false}
+                  data={pickupData}
+                  renderItem={({ item }: any) => (
+                    <Item
+                      name={item?.name}
+                      pickupTiming={`${moment(item?.deliver?.pickupDate).format(
+                        "DD,  ddd, hh:mm A"
+                      )}`}
+                      pickAddress={item?.deliver?.pickupAddress?.fullAddress}
+                      dropAddress={item?.deliver?.dropAddress?.fullAddress}
+                      picklat={item?.deliver?.pickupAddress?.lat}
+                      picklng={item?.deliver?.pickupAddress?.lng}
+                      eventStartDate={item?.eventStartDate}
+                      eventEndDate={item?.eventEndDate}
+                      id={item?.id}
+                      status={item?.status}
+                      droplat={item?.deliver?.dropAddress?.lat}
+                      droplng={item?.deliver?.dropAddress?.lng}
+                      dropTiming={`${moment(item?.deliver?.dropDate).format(
+                        "DD,  ddd, hh:mm A"
+                      )}`}
+                      active={item?.active}
+                      fullfilled={item?.fullfilled}
+                    />
+                  )}
+                  keyExtractor={(item): any => item?.id.toString()}
+                />
               </View>
-            </ScrollView>
-          </TouchableOpacity>
+            ) : (
+              <View style={[styles.centeredView, { flex: 1 }]}>
+                <Text style={{ color: "white" }}>
+                  {localized.t("NOTHING_TO_SHOW")}
+                </Text>
+              </View>
+            )}
+          </View>
         </SafeAreaView>
       </LinearGradient>
     </TouchableWithoutFeedback>

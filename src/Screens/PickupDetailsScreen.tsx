@@ -143,7 +143,7 @@ const PickupDetailsScreen = ({ route }: any) => {
               fontSize: h2dp(1.6),
               lineHeight: 30,
               paddingTop: h2dp(0.5),
-              fontWeight: "500",
+              fontWeight: "bold",
             }}
           >
             {pickupTiming}
@@ -164,35 +164,35 @@ const PickupDetailsScreen = ({ route }: any) => {
           title={localized.t("DETAILS")}
           onPress={() => {
             handlePressOutside(),
-            active === false
-              ? navigation.navigate("PickupConfirmScreen", {
-                  pickAddress: pickAddress,
-                  pickupTiming: pickupTiming,
-                  picklat: picklat,
-                  picklng: picklng,
-                  droplat: droplat,
-                  droplng: droplng,
-                  dropTiming: dropTiming,
-                  dropAddress: dropAddress,
-                  pickupId: id,
-                  active: active,
-                  pickedup: pickedup,
-                  delivered: delivered,
-                })
-              : navigation.navigate("PickupSelectedDetailsScreen", {
-                  pickAddress: pickAddress,
-                  pickupTiming: pickupTiming,
-                  picklat: picklat,
-                  picklng: picklng,
-                  droplat: droplat,
-                  droplng: droplng,
-                  dropTiming: dropTiming,
-                  dropAddress: dropAddress,
-                  pickupId: id,
-                  active: active,
-                  pickedup: pickedup,
-                  delivered: delivered,
-                });
+              active === false
+                ? navigation.navigate("PickupConfirmScreen", {
+                    pickAddress: pickAddress,
+                    pickupTiming: pickupTiming,
+                    picklat: picklat,
+                    picklng: picklng,
+                    droplat: droplat,
+                    droplng: droplng,
+                    dropTiming: dropTiming,
+                    dropAddress: dropAddress,
+                    pickupId: id,
+                    active: active,
+                    pickedup: pickedup,
+                    delivered: delivered,
+                  })
+                : navigation.navigate("PickupSelectedDetailsScreen", {
+                    pickAddress: pickAddress,
+                    pickupTiming: pickupTiming,
+                    picklat: picklat,
+                    picklng: picklng,
+                    droplat: droplat,
+                    droplng: droplng,
+                    dropTiming: dropTiming,
+                    dropAddress: dropAddress,
+                    pickupId: id,
+                    active: active,
+                    pickedup: pickedup,
+                    delivered: delivered,
+                  });
           }}
           buttonStyle={{
             marginLeft: w2dp(3),
@@ -216,7 +216,7 @@ const PickupDetailsScreen = ({ route }: any) => {
   return (
     <TouchableWithoutFeedback onPress={handlePressOutside}>
       <LinearGradient
-        colors={["#6fa200", "#72a400", "#82b200", "#87b500", "#6fa200"]}
+        colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
         style={styles.background}
       >
         <SafeAreaView>
@@ -230,7 +230,10 @@ const PickupDetailsScreen = ({ route }: any) => {
                     name="chevron-back"
                     size={32}
                     color="white"
-                    onPress={() => {navigation.navigate("DriverRequestScreen"),handlePressOutside()}}
+                    onPress={() => {
+                      navigation.navigate("DriverRequestScreen"),
+                        handlePressOutside();
+                    }}
                   />
                   <View style={styles.item}>
                     <Text style={styles.itemText}>
@@ -330,13 +333,18 @@ const PickupDetailsScreen = ({ route }: any) => {
                 ) : (
                   <View
                     style={{
-                      display: "flex",
+                      flex: 1,
                       justifyContent: "center",
                       alignItems: "center",
-                      marginTop: h2dp(25),
+                      minHeight: h2dp(80),
                     }}
                   >
-                    <Text style={styles.itemText}>
+                    <Text
+                      style={{
+                        color: "white",
+                        textAlign: "center",
+                      }}
+                    >
                       {localized.t("NOTHING_TO_SHOW")}
                     </Text>
                   </View>

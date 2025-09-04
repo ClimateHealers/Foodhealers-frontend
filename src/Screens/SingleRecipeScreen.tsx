@@ -1,4 +1,4 @@
-import { Ionicons } from "@expo/vector-icons";
+import { Entypo, Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { decode } from "html-entities";
@@ -6,7 +6,6 @@ import React, { useState } from "react";
 import {
   Keyboard,
   Linking,
-  SafeAreaView,
   ScrollView,
   Text,
   TouchableOpacity,
@@ -23,6 +22,7 @@ import { styles } from "../Components/Styles";
 import { localized } from "../locales/localization";
 import * as WebBrowser from "expo-web-browser";
 import { Image } from "expo-image";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const blurhash = "LBE~3[-;j[oy_MoMfQj[offQfQfQ";
 
@@ -63,7 +63,9 @@ const SingleRecipeScreen = ({ route }: any) => {
               name="chevron-back"
               size={32}
               color="white"
-              onPress={() => {navigation.goBack(),handlePressOutside()}}
+              onPress={() => {
+                navigation.goBack(), handlePressOutside();
+              }}
             />
             <ScrollView showsVerticalScrollIndicator={false}>
               <View style={[{ alignSelf: "center", justifyContent: "center" }]}>
@@ -141,7 +143,7 @@ const SingleRecipeScreen = ({ route }: any) => {
                       marginTop: h2dp(1),
                     }}
                   >
-                    <Ionicons name="ios-time-outline" size={20} color="white" />
+                    <Ionicons name="time-outline" size={20} color="white" />
                     <Text
                       style={{
                         marginLeft: 4,
@@ -169,11 +171,14 @@ const SingleRecipeScreen = ({ route }: any) => {
                   >
                     {localized.t("INGREDIIENTS")}
                   </Text>
-                  {ingredients.map((ingredient: any, index: any) => (
-                    <Text key={index} style={styles.ingredient}>
-                      {ingredient}
-                    </Text>
-                  ))}
+                  {ingredients
+                    .filter((ingredient: any) => ingredient?.trim())
+                    .map((ingredient: any, index: number) => (
+                      <Text key={index} style={styles.ingredient}>
+                        <Entypo name="dot-single" size={20} color="white" />
+                        {ingredient}
+                      </Text>
+                    ))}
                 </View>
                 <View>
                   <Text

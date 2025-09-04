@@ -1,4 +1,4 @@
-import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import { CommonActions, useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { signInWithEmailAndPassword } from "firebase/auth";
@@ -8,7 +8,9 @@ import {
   ActivityIndicator,
   Alert,
   Keyboard,
+  KeyboardAvoidingView,
   Modal,
+  Platform,
   ScrollView,
   StatusBar,
   StyleSheet,
@@ -22,12 +24,10 @@ import {
   heightPercentageToDP as h2dp,
   widthPercentageToDP as w2dp,
 } from "react-native-responsive-screen";
-import SelectDropdown from "react-native-select-dropdown";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useDispatch, useSelector } from "react-redux";
-import { getLocation } from "../Components/GetCurrentLocation";
 import PrimaryButton from "../Components/PrimaryButton";
-import { loginSchema } from "../Components/Validation";
+import { loginSchema } from "../Components/validation";
 import { auth } from "../firebase/firebaseConfig";
 import { localized } from "../locales/localization";
 import {
@@ -35,34 +35,19 @@ import {
   login,
   updateExpoPushToken,
 } from "../redux/actions/authAction";
-import { setLanguage } from "../redux/reducers/langReducer";
 import * as Notifications from "expo-notifications";
 import Constants from "expo-constants";
+import BurgerIcon from "../Components/BurgerIcon";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const LoginScreen = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [selectedLanguage, setSelectedLanguage] = useState(localized.locale);
   const [loading, setLoading] = useState(false);
-  const [langOpen, setlangOpen] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [lang, setLang] = useState([
-    { id: 1, label: "Bengali", value: "be" },
-    { id: 2, label: "Chinese", value: "ch" },
-    { id: 3, label: "English", value: "en" },
-    { id: 4, label: "French", value: "fr" },
-    { id: 5, label: "Hindi", value: "hi" },
-    { id: 6, label: "Mandarin", value: "ma" },
-    { id: 7, label: "Punjabi", value: "pu" },
-    { id: 8, label: "Spanish", value: "es" },
-  ]);
+  const [menuClose, setMenuOpen] = useState(false);
   const [error, setError] = useState("");
-  const navigation: any = useNavigation<string>();
-  const [expoPushToken, setExpoPushToken] = useState<any>("");
-
+  const [expoPushToken, setExpoPushToken] = useState("");
   const dispatch = useDispatch();
-
-  const data = useSelector((state: any) => state.auth.data);
-  const languageName = useSelector((state: any) => state.language);
+  const navigation = useNavigation();
 
   useEffect(() => {
     const getExpoPushToken = async () => {
@@ -79,131 +64,50 @@ const LoginScreen = () => {
   }, []);
 
   const handlePressOutside = () => {
-    setlangOpen(false);
     Keyboard.dismiss();
-    setMenuOpen(false);
-  };
-
-  const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
-  };
-  const handleMenuItemPress = (item: any) => {
-    setMenuOpen(false);
-    navigation.navigate("HomeScreen");
-  };
-  const findFoodMenuItemPress = (item: any) => {
-    getLocation().then((res) => {
-      if (res) {
-        navigation?.navigate("MapScreen", {
-          latitude: res?.latitude,
-          longitude: res?.longitude,
-        });
-      }
-    });
-    setMenuOpen(false);
-  };
-
-  const changeLanguage = (itemValue: any, index: any) => {
-    const selectedLanguage = lang[index].value;
-    dispatch(setLanguage(selectedLanguage));
-    localized.locale = selectedLanguage;
-    setSelectedLanguage(selectedLanguage);
+    setMenuOpen(!menuClose);
   };
 
   return (
-    <TouchableWithoutFeedback onPress={() => handlePressOutside()}>
+    <TouchableWithoutFeedback onPress={handlePressOutside}>
       <LinearGradient
         colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
         style={styles.background}
       >
-        <ScrollView>
-          <View style={styles.container}>
-            <StatusBar animated={true} backgroundColor="auto" />
-            {menuOpen && (
-              <View
-                style={{
-                  position: "absolute",
-                  right: w2dp(14),
-                  top: h2dp(12),
-                  backgroundColor: "white",
-                  borderColor: "white",
-                  borderRadius: 5,
-                  zIndex: 9999,
-                }}
-              >
-                <TouchableOpacity onPress={() => handleMenuItemPress("Home")}>
-                  <Text
-                    style={{
-                      padding: 10,
-                      fontSize: h2dp(2.0),
-                      fontWeight: "300",
-                      lineHeight: 27.24,
-                    }}
-                  >
-                    {localized.t("HOME")}
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => findFoodMenuItemPress("Find Food")}
-                >
-                  <Text
-                    style={{
-                      padding: 10,
-                      fontSize: h2dp(2.0),
-                      fontWeight: "300",
-                      lineHeight: 27.24,
-                    }}
-                  >
-                    {localized.t("FIND_FOOD")}
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            )}
-            <View style={styles.dropdownContainer}>
-              <SelectDropdown
-                buttonStyle={styles.dropdown1BtnStyle}
-                buttonTextStyle={styles.dropdown1BtnTxtStyle}
-                renderDropdownIcon={() => {
-                  return (
-                    <MaterialIcons
-                      name="keyboard-arrow-down"
-                      size={18}
-                      color="#B50000"
-                    />
-                  );
-                }}
-                dropdownIconPosition={"right"}
-                dropdownStyle={styles.dropdown1DropdownStyle}
-                rowStyle={styles.dropdown1RowStyle}
-                rowTextStyle={styles.dropdown1RowTxtStyle}
-                data={lang && lang.map((dd) => dd.label)}
-                onSelect={changeLanguage}
-                defaultButtonText={languageName.toUpperCase()}
-                buttonTextAfterSelection={(itemValue, index) => {
-                  return languageName.toUpperCase();
-                }}
-                rowTextForSelection={(item, index) => {
-                  return item;
-                }}
-              />
-              <MaterialCommunityIcons
-                name="menu"
-                size={40}
-                color="white"
-                onPress={toggleMenu}
-                style={{
-                  marginRight: 20,
-                }}
-              />
-            </View>
-            <Modal visible={loading} animationType="slide" transparent={true}>
-              <View style={styles.centeredView}>
-                <View style={styles.modalView}>
-                  <ActivityIndicator size={"large"} />
+        <StatusBar backgroundColor="auto" />
+        <SafeAreaView style={{ flex: 1 }}>
+          <View style={styles.header}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.replace("HomeScreen");
+                handlePressOutside();
+              }}
+            >
+              <Ionicons name="chevron-back" size={32} color="white" />
+            </TouchableOpacity>
+            <Text style={styles.title}>{localized.t("LOGIN")}</Text>
+            <BurgerIcon
+              onOutsidePress={handlePressOutside}
+              menuClose={menuClose}
+            />
+          </View>
+
+          <KeyboardAvoidingView
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            style={{ flex: 1 }}
+          >
+            <ScrollView
+              contentContainerStyle={styles.scrollContent}
+              keyboardShouldPersistTaps="handled"
+            >
+              <Modal visible={loading} animationType="slide" transparent>
+                <View style={styles.centeredView}>
+                  <View style={styles.modalView}>
+                    <ActivityIndicator size={"large"} />
+                  </View>
                 </View>
-              </View>
-            </Modal>
-            <View style={{ marginTop: 30 }}>
+              </Modal>
+
               <Formik
                 initialValues={{
                   email: "",
@@ -315,223 +219,161 @@ const LoginScreen = () => {
                   values,
                   errors,
                 }) => (
-                  <View style={{ marginTop: 100 }}>
+                  <View style={styles.formContainer}>
                     <TextInput
+                      value={values.email}
                       onChangeText={handleChange("email")}
                       onBlur={handleBlur("email")}
-                      value={values.email.toLocaleLowerCase()}
                       placeholder={localized.t("EMAIL")}
-                      placeholderTextColor={"black"}
-                      style={styles.textInput}
+                      placeholderTextColor="black"
+                      style={styles.input}
                     />
                     <Text style={styles.inputError}>{errors.email}</Text>
-                    <View style={styles.inputContainer}>
+                    <View style={styles.passwordContainer}>
                       <TextInput
-                        secureTextEntry={showPassword ? false : true}
+                        secureTextEntry={!showPassword}
+                        value={values.password}
                         onChangeText={handleChange("password")}
                         onBlur={handleBlur("password")}
-                        value={values.password}
                         placeholder={localized.t("PASSWORD")}
-                        placeholderTextColor={"black"}
-                        style={styles.textInput}
+                        placeholderTextColor="black"
+                        style={styles.input}
                       />
                       <Icon
-                        name={"eye"}
+                        name="eye"
                         size={20}
                         color="#A5A5A5"
-                        style={styles.icon}
+                        style={styles.eyeIcon}
                         onPress={() => setShowPassword(!showPassword)}
                       />
                     </View>
+                    <Text style={styles.inputError}>{errors.password}</Text>
 
-                    <View style={{ display: "flex", flexDirection: "column" }}>
-                      <Text style={styles.inputError}>{errors.password}</Text>
-                      <TouchableOpacity
-                        onPress={() => navigation.navigate("ForgotPassword")}
-                        style={{ alignSelf: "flex-end" }}
-                      >
-                        <Text
-                          style={{
-                            color: "white",
-                            fontSize: h2dp(1.5),
-                            textDecorationLine: "underline",
-                          }}
-                        >
-                          {localized.t("FORGOT_PASSWORD")}?
-                        </Text>
-                      </TouchableOpacity>
-                    </View>
-                    <View
-                      style={{
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        marginTop: h2dp("5"),
-                      }}
+                    <TouchableOpacity
+                      style={styles.forgotPassword}
+                      onPress={() => navigation.navigate("ForgotPassword")}
                     >
-                      <PrimaryButton
-                        title={localized.t("SIGN_IN")}
-                        buttonStyle={styles.buttonStyles}
-                        titleStyle={styles.titleStyle}
-                        onPress={handleSubmit}
-                      />
-                    </View>
-                    <View
-                      style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        marginTop: h2dp("20"),
-                      }}
-                    >
-                      <Text
-                        style={{
-                          textAlign: "center",
-                          color: "white",
-                          fontSize: h2dp(1.8),
-                          marginTop: 10,
-                        }}
-                      >
+                      <Text style={styles.link}>
+                        {localized.t("FORGOT_PASSWORD")}
+                      </Text>
+                    </TouchableOpacity>
+
+                    <PrimaryButton
+                      title={localized.t("SIGN_IN")}
+                      buttonStyle={styles.button}
+                      titleStyle={styles.buttonTitle}
+                      onPress={handleSubmit}
+                    />
+
+                    <View style={styles.signupContainer}>
+                      <Text style={styles.signupText}>
                         {localized.t("NOT_AN_USER")}
                       </Text>
                       <TouchableOpacity
                         onPress={() => {
-                          handlePressOutside(),
-                            navigation.navigate("SignupScreen");
+                          handlePressOutside();
+                          navigation.navigate("SignupScreen");
                         }}
                       >
-                        <Text
-                          style={{
-                            color: "white",
-                            fontSize: h2dp(1.8),
-                            textDecorationLine: "underline",
-                            fontFamily: "OpenSans-Bold",
-                            textAlign: "center",
-                            marginTop: 10,
-                          }}
-                        >
-                          {`${" "}${localized.t("SIGN_UP")}`}
+                        <Text style={styles.link}>
+                          {localized.t("SIGN_UP")}
                         </Text>
                       </TouchableOpacity>
                     </View>
                   </View>
                 )}
               </Formik>
-            </View>
-          </View>
-        </ScrollView>
+            </ScrollView>
+          </KeyboardAvoidingView>
+        </SafeAreaView>
       </LinearGradient>
     </TouchableWithoutFeedback>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  background: {
     flex: 1,
-    justifyContent: "flex-start",
-    padding: 16,
   },
-  input: {
-    height: 50,
-    marginBottom: 10,
-    background: "#FFFFFF",
-    borderRadius: 4,
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: w2dp(4),
+    marginTop: h2dp(2.8),
+  },
+  title: {
+    fontSize: h2dp(2.5),
+    color: "white",
+    fontWeight: "bold",
+  },
+  scrollContent: {
+    flexGrow: 1,
+    justifyContent: "center",
+    padding: w2dp(4),
   },
   centeredView: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 22,
   },
   modalView: {
-    margin: 20,
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-    borderRadius: 20,
-    padding: 35,
+    backgroundColor: "rgba(0, 0, 0, 0.7)",
+    borderRadius: 10,
+    padding: 20,
     alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
   },
-  background: {
-    flex: 1,
-    resizeMode: "cover",
+  formContainer: {
+    width: "100%",
   },
-  buttonStyles: {
-    backgroundColor: "#FC5A56",
-    color: "black",
-    borderRadius: 5,
-    width: 190,
+  input: {
+    backgroundColor: "white",
+    height: h2dp(6),
+    marginBottom: h2dp(1),
+    paddingHorizontal: w2dp(2),
   },
-  titleStyle: {
-    color: "white",
-    fontSize: h2dp(2.6),
-    fontWeight: "400",
-    lineHeight: 35,
-    fontFamily: "OpenSans-Regular",
-  },
-  dropdownContainer: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginTop: 60,
-  },
-  dropdown1BtnStyle: {
-    marginTop: 15,
-    width: "22%",
-    height: 50,
-    backgroundColor: "#FFF",
-    borderRadius: 5,
-    borderWidth: 1,
-    borderColor: "#D1D1D6",
-  },
-  dropdown1BtnTxtStyle: {
-    color: "#B50000",
-    textAlign: "left",
-    fontSize: h2dp(1.4),
-  },
-  dropdown1DropdownStyle: {
-    backgroundColor: "#EFEFEF",
-    color: "black",
-    borderRadius: 4,
-    height: 180,
-    fontSize: h2dp(1.4),
-    borderColor: "blue",
-  },
-  dropdown1RowStyle: {
-    backgroundColor: "#EFEFEF",
-    color: "#B50000",
-    borderBottomColor: "#D1D1D6",
-    borderRadius: 5,
-  },
-  dropdown1RowTxtStyle: {
-    color: "black",
-    textAlign: "center",
-    fontSize: h2dp(1.0),
-  },
-  inputError: {
-    color: "red",
-    marginBottom: 10,
-  },
-  inputContainer: {
+  passwordContainer: {
     position: "relative",
   },
-  textInput: {
-    height: 45,
-    marginBottom: 1,
-    backgroundColor: "white",
-  },
-  icon: {
+  eyeIcon: {
     position: "absolute",
-    top: h2dp(1.5),
-    left: w2dp("80%"),
+    top: h2dp(2),
+    right: w2dp(4),
+  },
+  inputError: {
+    color: "#ff6e60",
+    fontSize: h2dp(1.5),
+    marginBottom: h2dp(1),
+  },
+  forgotPassword: {
+    alignSelf: "flex-end",
+    marginBottom: h2dp(2),
+  },
+  link: {
+    color: "white",
+    textDecorationLine: "underline",
+    fontFamily: "OpenSans-Bold",
+    fontSize: h2dp(1.8),
+  },
+  button: {
+    backgroundColor: "#FC5A56",
+    borderRadius: w2dp(2),
+    marginTop: h2dp(3),
+    height: h2dp(6),
+  },
+  buttonTitle: {
+    color: "white",
+    fontSize: h2dp(2.2),
+  },
+  signupContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: h2dp(4),
+  },
+  signupText: {
+    color: "white",
+    fontSize: h2dp(1.8),
   },
 });
 

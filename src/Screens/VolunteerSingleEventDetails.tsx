@@ -26,7 +26,7 @@ import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
 import PrimaryButton from "../Components/PrimaryButton";
 import { styles } from "../Components/Styles";
-import { getLocation } from "../Components/GetCurrentLocation";
+import { getLocation } from "../Components/getCurrentLocation";
 import { localized } from "../locales/localization";
 import * as FileSystem from "expo-file-system";
 import * as Sharing from "expo-sharing";
@@ -163,7 +163,7 @@ Join me using https://play.google.com/store/apps/details?id=com.foodhealers.clim
             <StatusBar animated={true} backgroundColor="auto" />
             <View style={styles.containerVolunteer}>
               <FoodhealersHeader />
-              <View style={styles.rootVolunteerHome}>
+              <View style={styles.root}>
                 <Ionicons
                   name="chevron-back"
                   size={32}

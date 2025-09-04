@@ -60,13 +60,13 @@ const HistoryScreen = ({ route }: any) => {
                     name="chevron-back"
                     size={32}
                     color="white"
-                    onPress={() => {navigation.goBack(),handlePressOutside()}}
+                    onPress={() => {
+                      navigation.goBack(), handlePressOutside();
+                    }}
                   />
                 </View>
                 <View style={styles.item}>
-                  <Text style={[styles.itemText, { marginTop: h2dp(-0.5) }]}>
-                    {localized.t("HISTORY")}
-                  </Text>
+                  <Text style={styles.itemText}>{localized.t("HISTORY")}</Text>
                 </View>
                 <BurgerIcon
                   onOutsidePress={handlePressOutside}
@@ -101,7 +101,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     marginHorizontal: w2dp(4),
-    marginTop: h2dp(3),
   },
   background: {
     flex: 1,
@@ -111,18 +110,19 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    width: w2dp(95),
+    width: "100%",
     zIndex: 9999,
+    marginBottom: w2dp(1),
+    marginTop: h2dp(2.5),
   },
   item: {
-    height: h2dp(10),
     justifyContent: "center",
     alignItems: "center",
   },
   itemText: {
     fontSize: h2dp(2.5),
     color: "white",
-    marginTop: h2dp(3),
+    fontWeight: "bold",
   },
   card: {
     backgroundColor: "white",

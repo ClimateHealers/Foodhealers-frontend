@@ -10,10 +10,11 @@ import {
   View,
   Linking,
   TouchableWithoutFeedback,
+  Dimensions,
 } from "react-native";
 import {
-  heightPercentageToDP as h2dp,
-  widthPercentageToDP as w2dp,
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
 import {
   AntDesign,
@@ -29,17 +30,13 @@ import Constants from "expo-constants";
 import { LinearGradient } from "expo-linear-gradient";
 import { Button, Divider } from "react-native-elements";
 import { Badge } from "react-native-paper";
-import {
-  heightPercentageToDP as hp2dp,
-  widthPercentageToDP as wp2dp,
-} from "react-native-responsive-screen";
 import * as MediaLibrary from "expo-media-library";
 import * as ImagePicker from "expo-image-picker";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { iOSColors, systemWeights } from "react-native-typography";
 import MaterialIcon from "react-native-vector-icons/MaterialIcons";
 import { useDispatch, useSelector } from "react-redux";
-import { getLocation } from "../Components/GetCurrentLocation";
+import { getLocation } from "../Components/getCurrentLocation";
 import PrimaryButton from "../Components/PrimaryButton";
 import {
   fetchUser,
@@ -49,18 +46,18 @@ import {
 import { logOut } from "../redux/reducers/authreducers";
 import { localized } from "../locales/localization";
 import { notfifications } from "../redux/actions/notificationAction";
+import { dev } from "../Utils/APIUtils";
+
+const { width, height } = Dimensions.get("window");
 
 const ProfileScreen = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
-  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
-  const [alert, setAlert] = useState(false);
   const [notificationData, setNotificationData] = useState<any>();
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const [data, setData] = useState<any>();
-  let date = new Date().getTime();
   const [image, setImage] = useState<any>();
-  const navigation: any = useNavigation();
+  const navigation = useNavigation();
   const isAuthenticated = useSelector(
     (state: any) => state.auth.data.isAuthenticated
   );
@@ -71,37 +68,28 @@ const ProfileScreen = () => {
 
   const fetchingUserData = async () => {
     const response = await dispatch(fetchUser({} as any) as any);
-    const data = response?.payload?.userDetails;
-    setData(data);
+    setData(response?.payload?.userDetails);
   };
 
-  const [response, setResponse] = useState({
-    loading: false,
-    error: false,
-    message: "",
+  const publishDate = Constants.expoConfig?.extra?.publishedAt;
+  const newDate = new Date(publishDate);
+  const formattedDate = newDate.toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
   });
 
-  const appVersion = Constants?.manifest?.version;
-
-  const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
+  const fetchingNotificationsData = async () => {
+    const response = await dispatch(notfifications({} as any) as any);
+    const filterRead = response?.payload?.notifications?.filter(
+      (event: any) => event?.is_unread === true
+    );
+    setNotificationData(filterRead?.length);
   };
 
-  const handleMenuItemPress = (item: any) => {
-    setMenuOpen(false);
-    navigation.navigate("HomeScreen");
-  };
-  const findFoodMenuItemPress = (item: any) => {
-    getLocation().then((res) => {
-      if (res) {
-        navigation?.navigate("MapScreen", {
-          latitude: res?.latitude,
-          longitude: res?.longitude,
-        });
-      }
-    });
-    setMenuOpen(false);
-  };
+  const toggleMenu = () => setMenuOpen(!menuOpen);
+  const handlePressOutside = () => setMenuOpen(false);
+
   const logout = async () => {
     await dispatch(logOut({} as any) as any);
     await removeAuthData();
@@ -112,17 +100,45 @@ const ProfileScreen = () => {
       })
     );
   };
-  const fetchingNotificationsData = async () => {
-    const response = await dispatch(notfifications({} as any) as any);
-    const filterRead = response?.payload?.notifications?.filter(
-      (event: any) => event?.is_unread === true
-    );
 
-    setNotificationData(filterRead?.length);
-  };
+  const openImagePickerAsync = async () => {
+    const res = await MediaLibrary.requestPermissionsAsync();
+    if (res?.granted) {
+      const result = await ImagePicker.launchImageLibraryAsync({
+        allowsMultipleSelection: false,
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [1, 1],
+        quality: 0.8,
+      });
 
-  const handlePressOutside = () => {
-    setMenuOpen(false);
+      if (!result?.canceled && result.assets?.[0]?.uri) {
+        const singlePhoto = result.assets[0].uri;
+        const formData = new FormData();
+        setImage(singlePhoto);
+        formData.append("profilePhoto", {
+          uri: singlePhoto,
+          type: "image/jpeg",
+          name: `${data?.name}${new Date().getTime()}.jpg`,
+        });
+
+        try {
+          setLoading(true);
+          await dispatch(updatePhoto(formData as any) as any);
+        } catch (error) {
+          console.log("ERROR", error);
+        } finally {
+          setLoading(false);
+        }
+      }
+    } else {
+      Alert.alert(
+        localized.t("MEDIA_LIBRARY_ACCESS"),
+        localized.t("FOODHEALERS_APP_NEEDS_PHOTOLIBRARY"),
+        [{ text: localized.t("OK") }],
+        { cancelable: true }
+      );
+    }
   };
 
   useFocusEffect(
@@ -132,58 +148,47 @@ const ProfileScreen = () => {
     }, [])
   );
 
-  const openImagePickerAsync = async () => {
-    const res = await MediaLibrary.requestPermissionsAsync();
-    if (res?.granted) {
-      const result = await ImagePicker.launchImageLibraryAsync({
-        allowsMultipleSelection: true,
-        selectionLimit: 1,
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        allowsEditing: false,
-        aspect: [4, 3],
-        quality: 1,
-      });
+  const appVersion = Constants?.expoConfig?.version;
+  const profilePhotoSize = Math.min(width * 0.3, height * 0.2);
 
-      if (!result?.canceled) {
-        const multipleImages = result?.assets?.map((image) => image.uri);
-        const singlePhoto = result?.assets[0].uri;
-        const formData = new FormData();
-        setImage(singlePhoto);
-        formData.append("profilePhoto", {
-          uri: singlePhoto,
-          type: "image/jpeg",
-          name: `${data?.name}${date}.jpg`,
-        });
-        try {
-          setLoading(true);
-          const response = await dispatch(updatePhoto(formData as any) as any);
-          if (response?.payload?.success === true) {
-            setLoading(false);
-            setResponse({
-              loading: false,
-              message: `${localized.t("PHOTO_UPDATED")}`,
-              error: true,
-            });
-          } else {
-            setLoading(false);
-          }
-        } catch (error) {
-          console.log("ERROR", error);
-        }
-      }
-    } else if (!res.granted) {
-      Alert.alert(
-        `${localized.t("MEDIA_LIBRARY_ACCESS")}`,
-        `${localized.t("FOODHEALERS_APP_NEEDS_PHOTOLIBRARY")}`,
-        [
-          {
-            text: `${localized.t("OK")}`,
-          },
-        ],
-        { cancelable: true }
+  const renderProfileImage = () => {
+    if (image) {
+      return (
+        <Image
+          source={{ uri: image }}
+          style={{ width: profilePhotoSize, height: profilePhotoSize }}
+        />
       );
     }
+
+    if (
+      !data?.profilePhoto ||
+      data?.profilePhoto === "Profile Photo not available"
+    ) {
+      return (
+        <View style={styles.placeholderContainer}>
+          <AntDesign
+            name="user"
+            size={profilePhotoSize * 0.7}
+            color="#B01D19"
+          />
+        </View>
+      );
+    }
+
+    return (
+      <Image
+        source={{ uri: data?.profilePhoto }}
+        style={{ width: profilePhotoSize, height: profilePhotoSize }}
+      />
+    );
   };
+
+  const renderMenuItem = (label: string, onPress: () => void) => (
+    <TouchableOpacity onPress={onPress} style={styles.burgerText}>
+      <Text>{localized.t(label)}</Text>
+    </TouchableOpacity>
+  );
 
   return (
     <TouchableWithoutFeedback onPress={handlePressOutside}>
@@ -193,123 +198,55 @@ const ProfileScreen = () => {
       >
         <SafeAreaView style={styles.mainContainer}>
           {menuOpen && (
-            <View
-              style={{
-                position: "absolute",
-                right: wp2dp(10.5),
-                top: Platform.OS === "ios" ? hp2dp(8) : hp2dp(6),
-                backgroundColor: "white",
-                borderColor: "black",
-                borderWidth: 0.5,
-                borderRadius: 5,
-                zIndex: 9999,
-              }}
-            >
-              <TouchableOpacity onPress={() => handleMenuItemPress("Home")}>
-                <Text
-                  style={{
-                    padding: 10,
-                    fontSize: h2dp(2),
-                    fontWeight: "300",
-                    lineHeight: 27.24,
-                  }}
-                >
-                  {localized.t("HOME")}
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => findFoodMenuItemPress("Find Food")}
-              >
-                <Text
-                  style={{
-                    padding: 10,
-                    fontSize: h2dp(2),
-                    fontWeight: "300",
-                    lineHeight: 27.24,
-                  }}
-                >
-                  {localized.t("FIND_FOOD")}
-                </Text>
-              </TouchableOpacity>
+            <View style={styles.menuContainer}>
+              {renderMenuItem("HOME", () => navigation.replace("HomeScreen"))}
+              {renderMenuItem("FIND_FOOD", () => {
+                getLocation().then((res) => {
+                  if (res) {
+                    navigation.navigate("MapScreen", {
+                      latitude: res?.latitude,
+                      longitude: res?.longitude,
+                    });
+                  }
+                });
+                setMenuOpen(false);
+              })}
               {isAuthenticated && (
-                <View>
-                  <TouchableOpacity
-                    onPress={() => {
-                      navigation.navigate("HistoryScreen");
-                      setMenuOpen(false);
-                    }}
-                  >
-                    <Text
-                      style={{
-                        padding: 10,
-                        fontSize: h2dp(2),
-                        fontWeight: "300",
-                        lineHeight: 27.24,
-                      }}
-                    >
-                      {localized.t("HISTORY")}
-                    </Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    onPress={() => {
-                      navigation.navigate("TeamHomeScreen");
-                      setMenuOpen(false);
-                    }}
-                  >
-                    <Text
-                      style={{
-                        padding: 10,
-                        fontSize: h2dp(2),
-                        fontWeight: "300",
-                        lineHeight: 27.24,
-                      }}
-                    >
-                      {localized.t("TEAM")}
-                    </Text>
-                  </TouchableOpacity>
-                </View>
+                <>
+                  {renderMenuItem("HISTORY", () => {
+                    navigation.navigate("HistoryScreen");
+                    setMenuOpen(false);
+                  })}
+                  {renderMenuItem("TEAM", () => {
+                    navigation.navigate("TeamHomeScreen");
+                    setMenuOpen(false);
+                  })}
+                </>
               )}
             </View>
           )}
-          <View style={styles.row}>
-            <View
-              style={{
-                height: 100,
-                justifyContent: "center",
-                width: wp2dp(20),
-              }}
-            >
-              <Ionicons
-                name="chevron-back"
-                size={32}
-                color="white"
-                onPress={() => navigation.navigate("HomeScreen")}
-              />
-            </View>
-            <View style={{ height: 100, justifyContent: "center" }}>
-              <Text style={styles.itemText}>{localized.t("ACCOUNT")}</Text>
-            </View>
-            <View
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-              }}
-            >
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate("NotificationScreen");
-                }}
-                style={styles.circleAvatar}
-              >
-                <Badge style={styles.notificatioAvatarLogo}>
-                  {notificationData}
-                </Badge>
 
+          <View style={styles.header}>
+            <TouchableOpacity
+              style={styles.backButton}
+              onPress={() => navigation.navigate("HomeScreen")}
+            >
+              <Ionicons name="chevron-back" size={32} color="white" />
+            </TouchableOpacity>
+
+            <Text style={styles.headerTitle}>{localized.t("ACCOUNT")}</Text>
+
+            <View style={styles.headerIcons}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("NotificationScreen")}
+                style={styles.notificationIcon}
+              >
+                <Badge style={styles.badge}>{notificationData}</Badge>
                 <Ionicons
-                  name="md-notifications-outline"
-                  style={styles.avatarLogo}
-                  size={28}
+                  name="notifications-outline"
+                  color="white"
+                  style={styles.notificationIcon}
+                  size={30}
                 />
               </TouchableOpacity>
               <MaterialCommunityIcons
@@ -320,525 +257,313 @@ const ProfileScreen = () => {
               />
             </View>
           </View>
+
           <ScrollView
-            style={styles.ScrollView}
+            style={styles.contentContainer}
             showsVerticalScrollIndicator={false}
           >
             <View>
-              <View>
+              <View style={styles.profileImageContainer}>
                 <View
-                  style={{
-                    display: "flex",
-                    justifyContent: "flex-end",
-                    alignItems: "center",
-                    flexDirection: "row",
-                  }}
+                  style={[
+                    styles.profileImageWrapper,
+                    { width: profilePhotoSize, height: profilePhotoSize },
+                  ]}
                 >
-                  <View
-                    style={{
-                      height: hp2dp(20),
-                      width: hp2dp(20),
-                      borderRadius: hp2dp(50),
-                      alignItems: "center",
-                      backgroundColor: "white",
-                      overflow: "hidden",
-                      marginTop: hp2dp(1),
-                      alignSelf: "center",
-                    }}
-                  >
-                    <TouchableOpacity
-                      onPress={() => {
-                        handlePressOutside(), openImagePickerAsync();
-                      }}
-                    >
-                      {image ? (
-                        <View>
-                          <Image
-                            source={{ uri: image }}
-                            style={{ width: hp2dp(20), height: hp2dp(20) }}
-                          />
-                        </View>
-                      ) : (
-                        <View>
-                          {!data?.profilePhoto ||
-                          data?.profilePhoto ===
-                            "Profile Photo not available" ? (
-                            <View
-                              style={{
-                                paddingVertical: hp2dp(2),
-                                justifyContent: "center",
-                                marginBottom: hp2dp(1),
-                                position: "relative",
-                              }}
-                            >
-                              <AntDesign
-                                name="user"
-                                size={150}
-                                color="#B01D19"
-                              />
-                            </View>
-                          ) : (
-                            <View>
-                              <Image
-                                source={{ uri: data?.profilePhoto }}
-                                style={{ width: hp2dp(20), height: hp2dp(20) }}
-                              />
-                            </View>
-                          )}
-                        </View>
-                      )}
-                    </TouchableOpacity>
-                  </View>
-                  <PrimaryButton
-                    title={localized.t("EDIT")}
-                    onPress={() => {
-                      handlePressOutside(),
-                        navigation.navigate("UpdateProfileScreen", {
-                          name: data?.name,
-                          phoneNumber: data?.phoneNumber,
-                          email: data?.email,
-                          lat: data?.address?.lat,
-                          long: data?.address?.lng,
-                          volunteerFullAddress: data?.address?.fullAddress,
-                          city: data?.address?.city,
-                          state: data?.address?.state,
-                          zipCode: data?.address?.postalCode,
-                        });
-                    }}
-                    buttonStyle={{
-                      backgroundColor: "#D1D1D6",
-                      color: "white",
-                      borderRadius: 5,
-                      right: 0,
-                      float: "right",
-                      paddingHorizontal: wp2dp(6),
-                      marginLeft: wp2dp(2),
-                    }}
-                    titleStyle={{
-                      color: "black",
-                      fontSize: h2dp(1.8),
-                      lineHeight: 20,
-                      fontFamily: "OpenSans-Regular",
-                    }}
-                  />
+                  <TouchableOpacity onPress={openImagePickerAsync}>
+                    {renderProfileImage()}
+                  </TouchableOpacity>
                 </View>
-                <View style={styles.rowItem}>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      display: "flex",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <MaterialCommunityIcons
-                      color="white"
-                      size={24}
-                      style={{
-                        justifyContent: "center",
-                        alignSelf: "center",
-                        marginRight: 5,
-                      }}
-                      name="account"
-                    />
-                    <View style={{ justifyContent: "center" }}>
-                      <Text style={styles.profileDetailsText3}>
-                        {localized.t("NAME")}
-                      </Text>
-                      <Text style={[styles.profileDetailsText2]}>
-                        {data?.name}
-                      </Text>
-                    </View>
-                  </View>
-                  <View
-                    style={{
-                      width: wp2dp("28%"),
-                    }}
-                  ></View>
-                </View>
-                <Divider
-                  style={{
-                    backgroundColor: "white",
-                    height: 1,
-                    padding: 0.8,
-                    marginTop: hp2dp("0.5%"),
-                  }}
-                />
-                <View style={styles.rowItem}>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      display: "flex",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <MaterialIcon
-                      color="white"
-                      size={24}
-                      style={{
-                        justifyContent: "center",
-                        alignSelf: "center",
-                        marginRight: 5,
-                      }}
-                      name="email"
-                    />
-                    <View style={{ justifyContent: "center" }}>
-                      <Text style={styles.profileDetailsText3}>
-                        {localized.t("EMAIL")}
-                      </Text>
-                      <Text style={[styles.profileDetailsText2]}>
-                        {data?.email}
-                      </Text>
-                    </View>
-                  </View>
-                  <View
-                    style={{
-                      width: wp2dp("28%"),
-                    }}
-                  ></View>
-                </View>
-                <Divider
-                  style={{
-                    backgroundColor: "white",
-                    height: 1,
-                    padding: 0.8,
-                    marginTop: hp2dp("0.5%"),
-                  }}
-                />
-                <View style={styles.rowItem}>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      display: "flex",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <MaterialCommunityIcons
-                      color="white"
-                      size={24}
-                      style={{
-                        justifyContent: "center",
-                        alignSelf: "center",
-                        marginRight: 5,
-                      }}
-                      name="phone"
-                    />
-                    <View style={{ justifyContent: "center" }}>
-                      <Text style={styles.profileDetailsText3}>
-                        {localized.t("NUMBER")}
-                      </Text>
-                      <Text style={[styles.profileDetailsText2]}>
-                        {data?.phoneNumber ? data.phoneNumber : "N/A"}
-                      </Text>
-                    </View>
-                  </View>
-                  <View
-                    style={{
-                      width: wp2dp("28%"),
-                    }}
-                  ></View>
-                </View>
-                <Divider
-                  style={{
-                    backgroundColor: "white",
-                    height: 1,
-                    padding: 0.8,
-                    marginTop: hp2dp("0.5%"),
-                  }}
-                />
-              </View>
 
-              <View style={[styles.logout, { alignSelf: "center" }]}>
-                <PrimaryButton
-                  title={localized.t("LOGOUT")}
-                  onPress={() => {
-                    handlePressOutside(), logout();
-                  }}
-                  buttonStyle={styles.buttonStyles}
-                  titleStyle={styles.titleStyle}
-                />
-              </View>
-              <View style={[styles.deleteProfile, { alignSelf: "center" }]}>
                 <TouchableOpacity
-                  style={styles.deleteProfileTextContainer}
-                  onPress={() => {
-                    handlePressOutside(), navigation.navigate("DeleteAccount");
-                  }}
+                  style={styles.editIconContainer}
+                  onPress={() =>
+                    navigation.navigate("UpdateProfileScreen", {
+                      name: data?.name,
+                      phoneNumber: data?.phoneNumber,
+                      email: data?.email,
+                      lat: data?.address?.lat,
+                      long: data?.address?.lng,
+                      volunteerFullAddress: data?.address?.fullAddress,
+                      city: data?.address?.city,
+                      state: data?.address?.state,
+                      zipCode: data?.address?.postalCode,
+                    })
+                  }
                 >
-                  <Text style={styles.deleteProfileText}>
-                    {localized.t("DELETE_MY_ACCOUNT")}
-                  </Text>
+                  <AntDesign name="edit" size={20} color="white" />
                 </TouchableOpacity>
               </View>
-              <Text style={styles.appVersion}>
-                {localized.t("APP_VERSION")} {appVersion}
-              </Text>
-              <View
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "center",
-                  alignContent: "center",
-                }}
-              >
-                <Text style={styles.support}>Contact us for support :</Text>
-                <Text
-                  style={{
-                    textDecorationLine: "underline",
-                    color: "white",
-                    fontSize: hp2dp(1.5),
-                    marginLeft: wp2dp(1),
-                    marginRight: wp2dp(4),
-                  }}
-                  onPress={() => {
-                    handlePressOutside(),
-                      Linking.openURL("mailto:support@climatehealers.org");
-                  }}
-                >
-                  support@climatehealers.org
-                </Text>
+
+              <View style={styles.detailsSection}>
+                {renderDetailRow("account", "NAME", data?.name)}
+                <Divider style={styles.divider} />
+                {renderDetailRow("email", "EMAIL", data?.email)}
+                <Divider style={styles.divider} />
+                {renderDetailRow("phone", "NUMBER", data?.phoneNumber || "N/A")}
+                <Divider style={styles.divider} />
               </View>
-              <Text
-                style={{
-                  textDecorationLine: "underline",
-                  textAlign: "center",
-                  color: "white",
-                  fontSize: h2dp(1.5),
-                  marginBottom: hp2dp(3),
-                }}
-                onPress={() => {
-                  handlePressOutside(), navigation.navigate("LicenseScreen");
-                }}
-              >
-                Open-Source Licences
-              </Text>
             </View>
           </ScrollView>
+          <PrimaryButton
+            title={localized.t("LOGOUT")}
+            onPress={logout}
+            buttonStyle={styles.logoutButton}
+            titleStyle={styles.logoutButtonText}
+          />
+
+          <PrimaryButton
+            buttonStyle={styles.deleteButton}
+            onPress={() => navigation.navigate("DeleteAccount")}
+            title={localized.t("DELETE_MY_ACCOUNT")}
+            titleStyle={styles.deleteButtonText}
+          />
+          <View style={styles.footer}>
+            <Text style={styles.versionText}>
+              {localized.t("APP_VERSION")} {appVersion} ({dev ? "Dev" : "Prod"})
+            </Text>
+            <Text style={styles.publishdateText}>
+              Publish Date: {formattedDate}
+            </Text>
+            <View style={styles.supportRow}>
+              <Text style={styles.supportText}>Contact us for support:</Text>
+              <Text
+                style={styles.supportLink}
+                onPress={() =>
+                  Linking.openURL("mailto:support@climatehealers.org")
+                }
+              >
+                support@climatehealers.org
+              </Text>
+            </View>
+
+            <Text
+              style={styles.licenseLink}
+              onPress={() => navigation.navigate("LicenseScreen")}
+            >
+              Open-Source Licences
+            </Text>
+          </View>
         </SafeAreaView>
       </LinearGradient>
     </TouchableWithoutFeedback>
   );
 };
 
+const renderDetailRow = (iconName: string, label: string, value: string) => (
+  <View style={styles.detailRow}>
+    <MaterialCommunityIcons
+      name={iconName}
+      color="white"
+      size={wp("6%")}
+      style={styles.detailIcon}
+    />
+    <View style={styles.detailTextContainer}>
+      <Text style={styles.detailLabel}>{localized.t(label)}</Text>
+      <Text style={styles.detailValue}>{value}</Text>
+    </View>
+  </View>
+);
+
 const styles = StyleSheet.create({
   background: {
     flex: 1,
-    resizeMode: "cover",
-  },
-  row: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginHorizontal: w2dp(2),
-    zIndex: 1,
-  },
-  item: {
-    marginRight: wp2dp(5),
-    height: 100,
-    justifyContent: "center",
-  },
-  itemText: {
-    fontSize: h2dp(2.5),
-    color: "white",
   },
   mainContainer: {
-    display: "flex",
-    flexDirection: "column",
     flex: 1,
-    marginHorizontal: wp2dp("4.5%"),
+    marginHorizontal: wp("4%"),
   },
-  EditContainer: {
-    backgroundColor: "#0ACF83",
-    borderRadius: 50,
-    justifyContent: "center",
-    alignItems: "center",
-    paddingHorizontal: 10,
-  },
-  rowItem: {
-    borderColor: "black",
-    marginTop: hp2dp(4.5),
-    borderRadius: 5,
+  header: {
     flexDirection: "row",
-    alignItems: "center",
-    display: "flex",
     justifyContent: "space-between",
-  },
-  ScrollView: {
-    marginHorizontal: 5,
-    borderRadius: 10,
-    marginBottom: 20,
-    paddingHorizontal: 15,
-    paddingTop: 15,
-  },
-  profile: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
     alignItems: "center",
-    padding: 10,
+    width: "100%",
+    zIndex: 1,
+    marginBottom: hp(1),
+    marginTop: hp(2.8),
   },
-  profileDetails: {
-    marginBottom: 50,
-    backgroundColor: "blue",
+  backButton: {
+    width: wp("15%"),
+    justifyContent: "center",
   },
-  profileName: {
-    paddingTop: 10,
-  },
-  profileDetailsText: {
-    paddingVertical: 8,
-    paddingLeft: 5,
-  },
-  profileDetailsText2: {
-    paddingLeft: 5,
-    marginTop: -2,
-    fontSize: h2dp(2),
+  headerTitle: {
+    fontSize: wp("5%"),
     color: "white",
+    fontWeight: "bold",
   },
-  profileDetailsText3: {
-    ...systemWeights.regular,
-    fontSize: h2dp(1.5),
-    paddingLeft: 5,
-    color: "white",
-  },
-  iconandText: {
-    marginTop: 5,
-    display: "flex",
+  headerIcons: {
     flexDirection: "row",
     alignItems: "center",
   },
-  profileDetailsText1: {
-    paddingTop: 8,
-    fontSize: h2dp(2.5),
-    textAlign: "center",
-    color: "white",
+  notificationIcon: {
+    position: "relative",
+    marginRight: wp("3%"),
   },
-  appVersion: {
-    paddingTop: hp2dp(5),
-    fontSize: h2dp(1.5),
-    textAlign: "center",
-    color: "white",
-    marginBottom: hp2dp(2),
+  badge: {
+    position: "absolute",
+    top: -5,
+    right: 0,
+    backgroundColor: "red",
   },
-  support: {
-    fontSize: h2dp(1.5),
-    textAlign: "center",
-    color: "white",
-    marginBottom: hp2dp(2),
-  },
-  editProfileRoot: {
-    marginTop: 10,
-    width: wp2dp("35%"),
-    marginVertical: 5,
-  },
-  editProfile: {
-    alignItems: "center",
-    justifyContent: "center",
-    flexDirection: "row",
-    borderRadius: 30,
-    borderWidth: 1,
-    borderColor: "#0198ff",
-    paddingVertical: 4,
-  },
-  buttonStyles: {
-    backgroundColor: "#FC5A56",
-    color: "white",
+  menuContainer: {
+    position: "absolute",
+    right: wp("5%"),
+    top: Platform.OS === "ios" ? hp("6%") : hp("5%"),
+    backgroundColor: "white",
+    borderColor: "black",
+    borderWidth: 0.5,
     borderRadius: 5,
-    paddingHorizontal: wp2dp(5),
-    marginTop: hp2dp("1.5"),
+    zIndex: 9999,
+    elevation: 5,
+    minWidth: wp("30%"),
   },
-  titleStyle: {
-    color: "white",
-    fontSize: h2dp(2.6),
-    // lineHeight: h35,
+  burgerText: {
+    padding: hp(1.2),
+    fontSize: hp(2),
+    fontWeight: "400",
+    lineHeight: hp(2.7),
+  },
+  contentContainer: {
+    flex: 1,
+    borderRadius: 10,
+    marginBottom: hp("2%"),
+    paddingHorizontal: wp("3%"),
+    top: hp(4),
+  },
+  profileSection: {
+    alignItems: "center",
+  },
+  profileImageWrapper: {
+    borderRadius: 100,
+    backgroundColor: "white",
+    overflow: "hidden",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  profileImageContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  editIconContainer: {
+    position: "absolute",
+    bottom: 0,
+    right: hp(15),
+    backgroundColor: "#FC5A56",
+    borderRadius: 20,
+    padding: 6,
+    justifyContent: "center",
+    alignItems: "center",
+    borderColor: "white",
+    borderWidth: 2,
+  },
+
+  placeholderContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  editButton: {
+    backgroundColor: "white",
+    borderRadius: 5,
+    paddingHorizontal: wp("4%"),
+    paddingVertical: hp("1%"),
+  },
+  editButtonText: {
+    color: "black",
+    fontSize: wp("3.5%"),
     fontFamily: "OpenSans-Regular",
   },
-  verifyContainer: {
-    alignItems: "center",
-    justifyContent: "center",
+  detailsSection: {
+    width: "100%",
+    marginTop: hp("2%"),
+  },
+  detailRow: {
     flexDirection: "row",
-    borderRadius: 30,
-    borderWidth: 1,
-    borderColor: "#0198ff",
-    paddingVertical: 2,
-  },
-  UpdateProfileIcon: {
-    paddingRight: 5,
-    color: "#0198ff",
-  },
-  UpdateprofileText: {},
-  blue: {
-    color: iOSColors.blue,
-  },
-  cardText: {
-    marginTop: 3,
-    ...systemWeights.semibold,
-    color: "black",
-  },
-
-  modalView: {
-    margin: 20,
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-    borderRadius: 20,
-    padding: 35,
     alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
+    paddingVertical: hp("1%"),
   },
-
-  centeredView: {
-    justifyContent: "center",
-    alignItems: "center",
+  detailIcon: {
+    marginRight: wp("3%"),
   },
-  absolute: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    bottom: 0,
-    right: 0,
+  detailTextContainer: {
+    flex: 1,
   },
-  logout: {
-    marginTop: hp2dp(5),
-  },
-  deleteProfile: {
-    marginTop: hp2dp(5),
-  },
-  deleteProfileTextContainer: {
-    alignItems: "center",
-    justifyContent: "center",
-    flexDirection: "row",
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: "red",
-    paddingVertical: 4,
-    paddingHorizontal: 5,
-  },
-  deleteProfileText: {
+  detailLabel: {
     ...systemWeights.regular,
-    paddingRight: 5,
-    color: "red",
-    fontSize: h2dp(1.2),
-  },
-  circleAvatar: {
-    borderRadius: 50,
-    width: Platform?.OS == "ios" ? wp2dp("17%") : wp2dp("10.5%"),
-    height: hp2dp("5%"),
-    alignItems: "center",
-    justifyContent: "center",
-    zIndex: 1,
-  },
-  notificatioAvatarLogo: {
-    position: "absolute",
-    top: -4,
-    right: 11,
-    zIndex: 1000,
-  },
-  avatarLogo: {
+    fontSize: wp("3.2%"),
     color: "white",
+  },
+  detailValue: {
+    fontSize: wp("4%"),
+    color: "white",
+    marginTop: hp("0.5%"),
+  },
+  divider: {
+    backgroundColor: "white",
+    height: 1,
+    marginVertical: hp("0.5%"),
+  },
+  logoutButton: {
+    backgroundColor: "#FC5A56",
+    borderRadius: wp(2),
+    marginTop: hp(3),
+    height: hp(6),
+    justifyContent: "center",
+  },
+  logoutButtonText: {
+    color: "white",
+    fontSize: hp(2.2),
+  },
+  deleteButton: {
+    borderWidth: 1,
+    borderColor: "#ff6e75",
+    paddingHorizontal: wp("3%"),
+    paddingVertical: hp("1%"),
+    marginTop: hp("2%"),
+    width: "100%",
+    marginHorizontal: "auto",
+    borderRadius: wp(2),
+    height: hp(6),
+    backgroundColor: "transparent",
+  },
+  deleteButtonText: {
+    textAlign: "center",
+    color: "#ff6e75",
+    fontSize: hp(2.2),
+  },
+  footer: {
+    alignItems: "center",
+    marginTop: hp("4%"),
+  },
+  versionText: {
+    fontSize: wp("3.2%"),
+    color: "white",
+    marginBottom: hp("1%"),
+  },
+  supportRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: hp("1%"),
+  },
+  supportText: {
+    fontSize: wp("3.2%"),
+    color: "white",
+  },
+  supportLink: {
+    fontSize: wp("3.2%"),
+    color: "white",
+    textDecorationLine: "underline",
+    marginLeft: wp("1%"),
+  },
+  licenseLink: {
+    fontSize: wp("3.5%"),
+    color: "white",
+    textDecorationLine: "underline",
+    marginBottom: hp("1%"),
+  },
+  publishdateText: {
+    fontSize: wp("3.5%"),
+    color: "white",
+    marginBottom: hp("1%"),
   },
 });
 

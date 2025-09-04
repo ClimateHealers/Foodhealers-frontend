@@ -27,13 +27,14 @@ import { useDispatch, useSelector } from "react-redux";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
 import PrimaryButton from "../Components/PrimaryButton";
 import { styles } from "../Components/Styles";
-import { getLocation } from "../Components/GetCurrentLocation";
+import { getLocation } from "../Components/getCurrentLocation";
 import { localized } from "../locales/localization";
 import { fetchVehicle } from "../redux/actions/addVehicle";
 import { fetchUser } from "../redux/actions/authAction";
+import BurgerIcon from "../Components/BurgerIcon";
 
 const DriverProfileScreen = ({ route }: any) => {
-  const [menuOpen, setMenuOpen] = useState<boolean>(false);
+  const [menuClose, setMenuOpen] = useState<boolean>(false);
   const [loc, setLoc] = useState(false);
   const [vehicleDetails, setVehicleDetails] = useState<any>();
   const [loading, setLoading] = useState(false);
@@ -76,7 +77,7 @@ const DriverProfileScreen = ({ route }: any) => {
   const handleMenuItemPress = (item: any) => {
     setMenuOpen(false);
     if (isAuthenticated) {
-      navigation.navigate("HomeScreen");
+      navigation.replace("HomeScreen");
     } else {
       navigation.navigate("SignupScreen");
     }
@@ -93,13 +94,9 @@ const DriverProfileScreen = ({ route }: any) => {
     setMenuOpen(false);
   };
 
-  const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
-  };
-
   const handlePressOutside = () => {
     Keyboard.dismiss();
-    setMenuOpen(false);
+    setMenuOpen(!menuClose);
   };
 
   const openImagePickerAsync = async () => {
@@ -139,103 +136,31 @@ const DriverProfileScreen = ({ route }: any) => {
   return (
     <TouchableWithoutFeedback onPress={handlePressOutside}>
       <LinearGradient
-        colors={["#ffffff", "#ffffff", "#ffffff"]}
+        colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
         style={styles.background}
       >
-        <SafeAreaView>
+        <SafeAreaView style={{ flex: 1 }}>
           <ScrollView keyboardShouldPersistTaps="handled">
             <View style={styles.containerVolunteer}>
               <FoodhealersHeader />
-              <View style={styles.rootVolunteerHome}>
+              <View style={styles.root}>
                 <Ionicons
                   name="chevron-back"
                   size={32}
-                  color="#00693D"
+                  color="white"
                   onPress={() => {
                     navigation.navigate("DriverRequestScreen"),
                       handlePressOutside();
                   }}
                 />
                 <View style={styles.item}>
-                  <Text style={styles.itemText}></Text>
+                  <Text style={styles.itemText}>{localized.t("DRIVE")}</Text>
                 </View>
-                <MaterialCommunityIcons
-                  name="menu"
-                  size={40}
-                  color="#00693D"
-                  onPress={() => toggleMenu()}
-                  style={{
-                    zIndex: 9999,
-                    right: 0,
-                  }}
+                <BurgerIcon
+                  onOutsidePress={handlePressOutside}
+                  menuClose={menuClose}
                 />
-                {menuOpen && (
-                  <View
-                    style={{
-                      position: "absolute",
-                      right: w2dp(8.5),
-                      top: h2dp(5.5),
-                      backgroundColor: "white",
-                      borderColor: "black",
-                      borderWidth: 0.5,
-                      borderRadius: 5,
-                      zIndex: 1,
-                    }}
-                  >
-                    <TouchableOpacity
-                      onPress={() => handleMenuItemPress("Home")}
-                    >
-                      <Text style={styles.burgerText}>
-                        {localized.t("HOME")}
-                      </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={() => findFoodMenuItemPress("Find Food")}
-                    >
-                      <Text style={styles.burgerText}>
-                        {localized.t("FIND_FOOD")}
-                      </Text>
-                    </TouchableOpacity>
-                    {isAuthenticated && (
-                      <View>
-                        <TouchableOpacity
-                          onPress={() => {
-                            navigation.navigate("HistoryScreen");
-                            setMenuOpen(false);
-                          }}
-                        >
-                          <Text style={styles.burgerText}>
-                            {localized.t("HISTORY")}
-                          </Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                          onPress={() => {
-                            navigation.navigate("ProfileScreen");
-                            setMenuOpen(false);
-                          }}
-                        >
-                          <Text style={styles.burgerText}>
-                            {localized.t("ACCOUNT")}
-                          </Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                          onPress={() => {
-                            navigation.navigate("TeamHomeScreen");
-                            setMenuOpen(false);
-                          }}
-                        >
-                          <Text style={styles.burgerText}>
-                            {localized.t("TEAM")}
-                          </Text>
-                        </TouchableOpacity>
-                      </View>
-                    )}
-                  </View>
-                )}
               </View>
-              <Text style={{ fontSize: h2dp(3.6), color: "#00693D" }}>
-                {localized.t("DRIVE")}
-              </Text>
               <View
                 style={{
                   height: h2dp(20),
@@ -288,29 +213,66 @@ const DriverProfileScreen = ({ route }: any) => {
               <Text
                 style={{
                   fontSize: h2dp(2.4),
-                  fontWeight: "500",
+                  fontWeight: "bold",
                   marginTop: h2dp(2),
+                  color: "white",
                 }}
               >
                 {data?.name}
               </Text>
-              <Text style={{ fontSize: h2dp(2.4), marginTop: h2dp(2) }}>
+              <Text
+                style={{
+                  fontSize: h2dp(2.4),
+                  marginTop: h2dp(2),
+                  color: "white",
+                }}
+              >
                 {data?.email}
               </Text>
-              <Text style={{ fontSize: h2dp(2.4), marginTop: h2dp(2) }}>
+              <Text
+                style={{
+                  fontSize: h2dp(2.4),
+                  marginTop: h2dp(2),
+                  color: "white",
+                }}
+              >
                 {data?.address?.fullAddress}
               </Text>
-              <Text style={{ fontSize: h2dp(2.4), marginTop: h2dp(2) }}>
+              <Text
+                style={{
+                  fontSize: h2dp(2.4),
+                  marginTop: h2dp(2),
+                  color: "white",
+                }}
+              >
                 {data?.phoneNumber}
               </Text>
-              <Text style={{ fontSize: h2dp(2.4), marginTop: h2dp(2) }}>
+              <Text
+                style={{
+                  fontSize: h2dp(2.4),
+                  marginTop: h2dp(2),
+                  color: "white",
+                }}
+              >
                 {vehicleDetails?.make} {vehicleDetails?.model},{" "}
                 {vehicleDetails?.vehicleColour}
               </Text>
-              <Text style={{ fontSize: h2dp(2.4), marginTop: h2dp(2) }}>
+              <Text
+                style={{
+                  fontSize: h2dp(2.4),
+                  marginTop: h2dp(2),
+                  color: "white",
+                }}
+              >
                 {vehicleDetails?.plateNumber}
               </Text>
             </View>
+          </ScrollView>
+          <View
+            style={{
+              paddingBottom: h2dp(2),
+            }}
+          >
             <PrimaryButton
               title={localized.t("ACCEPT_RIDES")}
               onPress={() => {
@@ -319,20 +281,10 @@ const DriverProfileScreen = ({ route }: any) => {
                     itemTypeId: 4,
                   });
               }}
-              buttonStyle={[
-                styles.nextButtonStyles,
-                {
-                  backgroundColor: "#00693D",
-                },
-              ]}
-              titleStyle={[
-                styles.titleMainStyle,
-                {
-                  color: "white",
-                },
-              ]}
+              buttonStyle={[styles.buttonStyles]}
+              titleStyle={[styles.titleMainStyle]}
             />
-          </ScrollView>
+          </View>
         </SafeAreaView>
       </LinearGradient>
     </TouchableWithoutFeedback>

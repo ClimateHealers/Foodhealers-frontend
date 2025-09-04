@@ -1,9 +1,4 @@
-import { useIsFocused, useNavigation } from "@react-navigation/native";
-import { Camera, CameraCapturedPicture, CameraType } from "expo-camera";
-import { FlipType, SaveFormat, manipulateAsync } from "expo-image-manipulator";
-import * as MediaLibrary from "expo-media-library";
-import * as Permissions from "expo-permissions";
-import React, { useCallback, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   ActivityIndicator,
   Button,
@@ -13,155 +8,111 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { localized } from "../locales/localization";
-
-import {
-  heightPercentageToDP as h2dp,
-  widthPercentageToDP as w2dp,
-} from "react-native-responsive-screen";
+import { useNavigation } from "@react-navigation/native";
+import { CameraView, useCameraPermissions } from "expo-camera";
+import { FlipType, SaveFormat, manipulateAsync } from "expo-image-manipulator";
+import * as MediaLibrary from "expo-media-library";
 
 export default function TakePictureScreen() {
-  const [type, setType] = useState(CameraType.front);
+  const [facing, setFacing] = useState<"front" | "back">("back");
   const [loading, setLoading] = useState(false);
-  const [permission, requestPermission] = Camera.useCameraPermissions();
-  const [imageUri, setImageUri] = useState<any | null>(null);
-  const cameraRef = useRef<Camera | null>(null);
-  const isFocused = useIsFocused();
-  const navigation: any = useNavigation<string>();
+  const [isCameraReady, setIsCameraReady] = useState(false);
+  const [permission, requestPermission] = useCameraPermissions();
+  const navigation = useNavigation();
+  const cameraRef = useRef<CameraView>(null);
 
-  const setCameraRef = useCallback((ref: any) => {
-    cameraRef.current = ref;
-  }, []);
+  const takePicture = async () => {
+    if (!cameraRef.current || !isCameraReady) return;
 
-  const requestCameraPermission = async () => {
-    const { status } = await Permissions.askAsync(Permissions.CAMERA);
-
-    if (status === "granted") {
-      requestPermission();
-    } else {
-      requestPermission();
+    try {
+      setLoading(true);
+      const photo = await cameraRef.current.takePictureAsync();
+      const adjusted = await manipulateAsync(
+        photo.uri,
+        facing === "front" ? [{ flip: FlipType.Horizontal }] : [],
+        { compress: 1, format: SaveFormat.JPEG }
+      );
+      await MediaLibrary.saveToLibraryAsync(adjusted.uri);
+      navigation.navigate("DriverPhotoSaveScreen", {
+        selectedImage: adjusted.uri,
+        fromCameraRoll: false,
+      });
+    } catch (error) {
+      console.error("Error taking picture:", error);
+    } finally {
+      setLoading(false);
     }
   };
-  if (!permission) {
-    return <View />;
-  }
 
+  const toggleCamera = () => {
+    setFacing((current) => (current === "back" ? "front" : "back"));
+  };
+
+  if (!permission) return <View />;
   if (!permission.granted) {
     return (
       <View style={styles.container}>
-        <Text style={{ textAlign: "center" }}>
-          {localized.t("WE_NEED_YOUR_PERMISSION_TO_SHOW_THE_CAMERA")}
-        </Text>
-        <Button onPress={requestPermission} title="grant permission" />
+        <Text>We need your permission to access the camera</Text>
+        <Button title="Grant Permission" onPress={requestPermission} />
       </View>
-    );
-  }
-
-  const takePicture = async () => {
-    if (cameraRef?.current) {
-      try {
-        setLoading(true);
-        const { uri }: CameraCapturedPicture =
-          await cameraRef?.current?.takePictureAsync();
-        setImageUri(uri);
-        const adjustedImage = await manipulateAsync(
-          uri,
-          [{ flip: FlipType.Horizontal }],
-          {
-            compress: 1,
-            format: SaveFormat.JPEG,
-          }
-        );
-        MediaLibrary.saveToLibraryAsync(adjustedImage.uri);
-        navigation.navigate("DriverPhotoSaveScreen", {
-          selectedImage: adjustedImage.uri,
-          fromCameraRoll : false,
-        });
-        setLoading(false);
-      } catch (error) {
-        console.error("Error taking picture:", error);
-      }
-    }
-  };
-
-  function toggleCameraType() {
-    setType((current) =>
-      current === CameraType.back ? CameraType.front : CameraType.back
     );
   }
 
   return (
     <View style={styles.container}>
-      <Modal visible={loading} animationType="slide" transparent={true}>
+      <Modal visible={loading} transparent>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <ActivityIndicator size={"large"} />
+            <ActivityIndicator size="large" color="#fff" />
           </View>
         </View>
       </Modal>
-      {isFocused && (
-        <Camera
-          ref={setCameraRef}
-          style={styles.camera}
-          type={type}
-          onCameraReady={requestCameraPermission}
-        >
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.button} onPress={toggleCameraType}>
-              <Text style={styles.text}>{localized.t("FLIP_CAMERA")}</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={takePicture}>
-              <Text style={styles.text}>{localized.t("CAPTURE")}</Text>
-            </TouchableOpacity>
-          </View>
-        </Camera>
-      )}
+
+      <CameraView
+        ref={cameraRef}
+        style={styles.camera}
+        facing={facing}
+        onCameraReady={() => setIsCameraReady(true)}
+        onMountError={(err) => console.error("Camera error", err)}
+      >
+        <View style={styles.controls}>
+          <TouchableOpacity onPress={toggleCamera}>
+            <Text style={styles.buttonText}>Flip</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={takePicture} disabled={!isCameraReady}>
+            <Text style={styles.buttonText}>Capture</Text>
+          </TouchableOpacity>
+        </View>
+      </CameraView>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-  },
-  camera: {
-    flex: 1,
-  },
-  buttonContainer: {
+  container: { flex: 1 },
+  camera: { flex: 1 },
+  controls: {
     flex: 1,
     flexDirection: "row",
-    backgroundColor: "transparent",
-    margin: 64,
+    justifyContent: "space-around",
+    alignItems: "flex-end",
+    marginBottom: 30,
   },
-  button: {
-    flex: 1,
-    alignSelf: "flex-end",
-    alignItems: "center",
-  },
-  text: {
-    fontSize: h2dp(2.4),
-    fontWeight: "bold",
+  buttonText: {
+    fontSize: 20,
     color: "white",
+    backgroundColor: "black",
+    padding: 10,
+    borderRadius: 10,
   },
   centeredView: {
     flex: 1,
-    alignItems: "center",
     justifyContent: "center",
+    alignItems: "center",
   },
   modalView: {
-    margin: 20,
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    backgroundColor: "rgba(0,0,0,0.6)",
+    padding: 40,
     borderRadius: 20,
-    padding: 35,
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
   },
 });

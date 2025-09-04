@@ -22,7 +22,7 @@ import {
 } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useSelector } from "react-redux";
-import { getLocation } from "../Components/GetCurrentLocation";
+import { getLocation } from "../Components/getCurrentLocation";
 import moment from "moment";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
 import BurgerIcon from "../Components/BurgerIcon";
@@ -63,7 +63,7 @@ const CalendarEventScreen = ({ route }: any) => {
         <SafeAreaView
           style={[
             styles.container,
-            { marginTop: h2dp(3), marginHorizontal: "4%" },
+            { marginHorizontal: "4%" },
           ]}
         >
           <FoodhealersHeader />
@@ -222,7 +222,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#D1D1D6",
   },
-  dropdown1BtnTxtStyle: { color: "#B50000", textAlign: "left", fontSize: h2dp(1.4) },
+  dropdown1BtnTxtStyle: {
+    color: "#B50000",
+    textAlign: "left",
+    fontSize: h2dp(1.4),
+  },
   dropdown1DropdownStyle: {
     backgroundColor: "#EFEFEF",
     color: "black",
@@ -237,7 +241,11 @@ const styles = StyleSheet.create({
     borderBottomColor: "#D1D1D6",
     borderRadius: 5,
   },
-  dropdown1RowTxtStyle: { color: "black", textAlign: "center", fontSize: h2dp(1.0) },
+  dropdown1RowTxtStyle: {
+    color: "black",
+    textAlign: "center",
+    fontSize: h2dp(1.0),
+  },
   buttonStyles: {
     backgroundColor: "#FC5A56",
     color: "white",

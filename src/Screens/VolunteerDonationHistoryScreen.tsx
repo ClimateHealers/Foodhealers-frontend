@@ -30,6 +30,7 @@ import FoodhealersHeader from "../Components/FoodhealersHeader";
 import { styles } from "../Components/Styles";
 import { localized } from "../locales/localization";
 import { myDonations } from "../redux/actions/myDonations";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const VolunteerDonationHistoryScreen = ({ route }: any) => {
   const { itemTypeId, title } = route?.params;
@@ -355,7 +356,7 @@ const VolunteerDonationHistoryScreen = ({ route }: any) => {
           <Text
             style={{
               marginLeft: w2dp(3),
-              fontWeight: "500",
+              fontWeight: "bold",
               fontSize: h2dp(1.6),
               lineHeight: 30,
               paddingTop: h2dp(0.7),
@@ -385,14 +386,16 @@ const VolunteerDonationHistoryScreen = ({ route }: any) => {
         colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
         style={styles.background}
       >
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
           <FoodhealersHeader />
           <View style={styles.root}>
             <Ionicons
               name="chevron-back"
               size={32}
               color="white"
-              onPress={() => {navigation.goBack(),handlePressOutside()}}
+              onPress={() => {
+                navigation.goBack(), handlePressOutside();
+              }}
             />
             <View style={styles.item}>
               <Text style={styles.itemText}>
@@ -442,7 +445,7 @@ const VolunteerDonationHistoryScreen = ({ route }: any) => {
               />
             )}
           />
-        </View>
+        </SafeAreaView>
       </LinearGradient>
     </TouchableWithoutFeedback>
   );

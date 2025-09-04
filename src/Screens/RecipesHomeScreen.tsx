@@ -5,7 +5,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { useDebounce } from "../Components/Debounce";
 import {
   Keyboard,
-  SafeAreaView,
   ScrollView,
   Text,
   TextInput,
@@ -13,18 +12,22 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import { heightPercentageToDP as h2dp } from "react-native-responsive-screen";
+import {
+  heightPercentageToDP as h2dp,
+  widthPercentageToDP as w2dp,
+} from "react-native-responsive-screen";
 import { useDispatch, useSelector } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
 import { styles } from "../Components/Styles";
-import { getLocation } from "../Components/GetCurrentLocation";
+import { getLocation } from "../Components/getCurrentLocation";
 import { localized } from "../locales/localization";
 import { VeganRecipesCategories } from "../redux/actions/veganRecipes";
 import { Image } from "expo-image";
 import { VeganAllRecipes } from "../redux/actions/veganRecipesCategory";
 import { decode } from "html-entities";
 import API from "../Utils/APIUtils";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const blurhash = "LBE~3[-;j[oy_MoMfQj[offQfQfQ";
 
@@ -38,6 +41,16 @@ const RecipesHomeScreen = () => {
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(2);
   const [hasMoreData, setHasMoreData] = useState(true);
+
+  const desiredOrder = ["Breakfast", "Lunch", "Dinner"];
+  const sortedRecipes = [...recipesCategory].sort((a: any, b: any) => {
+    const indexA = desiredOrder.indexOf(a.name);
+    const indexB = desiredOrder.indexOf(b.name);
+    if (indexA !== -1 && indexB !== -1) return indexA - indexB;
+    if (indexB !== -1) return 1;
+    return 0;
+  });
+
   const [response, setResponse] = useState({
     loading: false,
     error: false,
@@ -158,7 +171,7 @@ const RecipesHomeScreen = () => {
         >
           <SafeAreaView style={styles.containerVolunteer}>
             <FoodhealersHeader />
-            <View style={styles.rootVolunteerHome}>
+            <View style={styles.root}>
               <Ionicons
                 name="chevron-back"
                 size={32}
@@ -282,7 +295,7 @@ const RecipesHomeScreen = () => {
                                 }}
                               >
                                 <Ionicons
-                                  name="ios-time-outline"
+                                  name="time-outline"
                                   size={20}
                                   color="#8A8686"
                                 />
@@ -299,7 +312,7 @@ const RecipesHomeScreen = () => {
                           </View>
                         </TouchableOpacity>
                       ))
-                    : recipesCategory.map((recipe: any) => (
+                    : sortedRecipes.map((recipe: any) => (
                         <TouchableOpacity
                           onPress={() => {
                             handlePressOutside(),
@@ -331,17 +344,25 @@ const RecipesHomeScreen = () => {
                           </View>
                         </TouchableOpacity>
                       ))}
-                  {filteredData?.length == undefined && textChange ? <Text
+                  {filteredData?.length == undefined && textChange ? (
+                    <View
                       style={{
-                        color: "white",
-                        fontSize: h2dp(1.5),
-                        marginBottom: h2dp(1.5),
+                        flex: 1,
+                        justifyContent: "center",
+                        alignItems: "center",
+                        minHeight: h2dp(80),
                       }}
                     >
-                      No results found
-                    </Text> : (
-                    null
-                  )}
+                      <Text
+                        style={{
+                          color: "white",
+                          textAlign: "center",
+                        }}
+                      >
+                        {localized.t("NOTHING_TO_SHOW")}
+                      </Text>
+                    </View>
+                  ) : null}
                 </View>
               </TouchableOpacity>
             </ScrollView>

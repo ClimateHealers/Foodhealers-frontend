@@ -19,7 +19,10 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { localized } from "../locales/localization";
 
-import { heightPercentageToDP as h2dp } from "react-native-responsive-screen";
+import {
+  heightPercentageToDP as h2dp,
+  widthPercentageToDP as w2dp,
+} from "react-native-responsive-screen";
 import { useDispatch, useSelector } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
@@ -109,19 +112,22 @@ const DriverPhotoSaveScreen = ({ route }: any) => {
   return (
     <TouchableWithoutFeedback onPress={handlePressOutside}>
       <LinearGradient
-        colors={["#6fa200", "#72a400", "#82b200", "#87b500", "#6fa200"]}
+        colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
         style={styles.background}
       >
-        <SafeAreaView>
+        <SafeAreaView style={{ flex: 1 }}>
           <ScrollView keyboardShouldPersistTaps="handled">
             <View style={styles.containerVolunteer}>
               <FoodhealersHeader />
-              <View style={styles.rootVolunteerHome}>
+              <View style={styles.root}>
                 <Ionicons
                   name="chevron-back"
                   size={32}
                   color="white"
-                  onPress={() => {navigation.navigate("DriverProfilePhoto"),handlePressOutside()}}
+                  onPress={() => {
+                    navigation.navigate("DriverProfilePhoto"),
+                      handlePressOutside();
+                  }}
                 />
                 <View style={styles.item}>
                   <Text style={styles.itemText}>{localized.t("DRIVE")}</Text>
@@ -159,30 +165,38 @@ const DriverPhotoSaveScreen = ({ route }: any) => {
                   </View>
                 </TouchableOpacity>
               </View>
-              <PrimaryButton
-                title={localized.t("SAVE")}
-                buttonStyle={styles.buttonStyles}
-                titleStyle={styles.titleStyle}
-                onPress={navigateToProfileScreen}
-              />
-              <PrimaryButton
-                title={
-                  fromCameraRoll
-                    ? localized.t("TAKE_PHOTO")
-                    : localized.t("RETAKE")
-                }
-                buttonStyle={styles.buttonHistoryStyles}
-                titleStyle={styles.titleMainStyle}
-                onPress={() => {navigation.navigate("TakePictureScreen"), handlePressOutside()}}
-              />
-              <PrimaryButton
-                title={localized.t("CHOOSE_FROM_CAMERA_ROLL")}
-                onPress={openImagePickerAsync}
-                buttonStyle={styles.buttonHistoryStyles}
-                titleStyle={styles.titleMainStyle}
-              />
             </View>
           </ScrollView>
+          <View
+            style={{
+              paddingBottom: h2dp(2),
+            }}
+          >
+            <PrimaryButton
+              title={localized.t("SAVE")}
+              buttonStyle={styles.buttonStyles}
+              titleStyle={styles.titleStyle}
+              onPress={navigateToProfileScreen}
+            />
+            <PrimaryButton
+              title={
+                fromCameraRoll
+                  ? localized.t("TAKE_PHOTO")
+                  : localized.t("RETAKE")
+              }
+              buttonStyle={styles.buttonHistoryStyles}
+              titleStyle={styles.titleMainStyle}
+              onPress={() => {
+                navigation.navigate("TakePictureScreen"), handlePressOutside();
+              }}
+            />
+            <PrimaryButton
+              title={localized.t("CHOOSE_FROM_CAMERA_ROLL")}
+              onPress={openImagePickerAsync}
+              buttonStyle={styles.buttonHistoryStyles}
+              titleStyle={styles.titleMainStyle}
+            />
+          </View>
         </SafeAreaView>
       </LinearGradient>
     </TouchableWithoutFeedback>

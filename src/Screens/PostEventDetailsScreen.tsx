@@ -19,7 +19,7 @@ import {
   widthPercentageToDP as w2dp,
 } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { getLocation } from "../Components/GetCurrentLocation";
+import { getLocation } from "../Components/getCurrentLocation";
 import PrimaryButton from "../Components/PrimaryButton";
 import { localized } from "../locales/localization";
 import { useSelector } from "react-redux";
@@ -52,7 +52,7 @@ const PostEventDetailsScreen = ({ route }: any) => {
   };
   const handleMenuItemPress = (item: any) => {
     setMenuOpen(false);
-    navigation.navigate("HomeScreen");
+    navigation.replace("HomeScreen");
   };
 
   const findFoodMenuItemPress = (item: any) => {
@@ -327,6 +327,7 @@ const styles = StyleSheet.create({
   itemText: {
     fontSize: h2dp(2.5),
     color: "white",
+    fontWeight: "bold",
   },
   cardContainer: {
     marginTop: 10,

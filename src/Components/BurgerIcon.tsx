@@ -14,7 +14,7 @@ import {
 } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
-import { getLocation } from "./GetCurrentLocation";
+import { getLocation } from "./getCurrentLocation";
 import { styles } from "./Styles";
 import { localized } from "../locales/localization";
 
@@ -51,11 +51,7 @@ const BurgerIcon = ({ menuClose, onOutsidePress, menuItem }: any) => {
 
   const handleMenuItemPress = (item: any) => {
     setMenuOpen(false);
-    if (isAuthenticated) {
-      navigation.navigate("HomeScreen");
-    } else {
-      navigation.navigate("SignupScreen");
-    }
+    navigation.replace("HomeScreen");
   };
 
   const findFoodMenuItemPress = (item: any) => {
@@ -80,25 +76,9 @@ const BurgerIcon = ({ menuClose, onOutsidePress, menuItem }: any) => {
         size={40}
         color="white"
         onPress={() => toggleMenu()}
-        style={{
-          zIndex: 2,
-          right: 0,
-        }}
       />
       {menuOpen && (
-        <View
-          ref={burgerRef}
-          style={{
-            position: "absolute",
-            right: w2dp(8.5),
-            top: h2dp(5.5),
-            backgroundColor: "white",
-            borderColor: "black",
-            borderWidth: 0.5,
-            borderRadius: 5,
-            zIndex: 10,
-          }}
-        >
+        <View ref={burgerRef} style={styles.menuContainer}>
           <TouchableOpacity onPress={() => handleMenuItemPress("Home")}>
             <Text style={styles.burgerText}>{localized.t("HOME")}</Text>
           </TouchableOpacity>

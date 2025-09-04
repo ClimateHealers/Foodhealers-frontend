@@ -12,14 +12,17 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import { heightPercentageToDP as h2dp } from "react-native-responsive-screen";
+import {
+  heightPercentageToDP as h2dp,
+  widthPercentageToDP as w2dp,
+} from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
-import Carousel, { Pagination } from "react-native-snap-carousel";
 import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
 import PrimaryButton from "../Components/PrimaryButton";
 import { styles } from "../Components/Styles";
 import { localized } from "../locales/localization";
+import Carousel from "react-native-reanimated-carousel";
 
 const VolunteerDonateScreen = ({ route }: any) => {
   const { latitude, longitude } = route.params;
@@ -81,7 +84,13 @@ const VolunteerDonateScreen = ({ route }: any) => {
       <View>
         <TouchableOpacity activeOpacity={1}>
           <View
-            style={[styles.card, { height: h2dp(70), borderRadius: h2dp(3) }]}
+            style={[
+              styles.card,
+              {
+                height: h2dp(65),
+                borderRadius: h2dp(3),
+              },
+            ]}
           >
             <View style={styles.cardText}>
               <View>
@@ -114,21 +123,21 @@ const VolunteerDonateScreen = ({ route }: any) => {
               <Text style={{ alignSelf: "center", fontSize: h2dp(2.2) }}>
                 {localized.t("YOU_CAN_MAKE_A_DIFFERENCE")}
               </Text>
-              <PrimaryButton
-                title={localized.t("SELECT")}
-                onPress={() => {
-                  handlePressOutside(),
+            </View>
+            <PrimaryButton
+              title={localized.t("SELECT")}
+              onPress={() => {
+                handlePressOutside(),
                   navigation.navigate(item?.navigation, {
                     itemTypeId: item?.itemTypeId,
                     title: item?.title,
                     latitude: latitude,
                     longitude: longitude,
-                  })
-                }}
-                buttonStyle={styles.buttonStyles}
-                titleStyle={styles.titleStyle}
-              />
-            </View>
+                  });
+              }}
+              buttonStyle={styles.buttonStyles}
+              titleStyle={styles.titleStyle}
+            />
           </View>
         </TouchableOpacity>
       </View>
@@ -150,7 +159,13 @@ const VolunteerDonateScreen = ({ route }: any) => {
                   name="chevron-back"
                   size={32}
                   color="white"
-                  onPress={() => {navigation.goBack(),handlePressOutside()}}
+                  onPress={() => {
+                    navigation.navigate("VolunteerHomeScreen", {
+                      latitude,
+                      longitude,
+                    }),
+                      handlePressOutside();
+                  }}
                 />
                 <View style={styles.item}>
                   <Text style={styles.itemText}>
@@ -162,36 +177,15 @@ const VolunteerDonateScreen = ({ route }: any) => {
                   menuClose={menuClose}
                 />
               </View>
-              <View style={{ marginHorizontal: "-4%" }}>
+              <View style={styles.centeredView}>
                 <Carousel
                   ref={sliderRef}
                   data={cardData}
                   renderItem={renderItem}
-                  sliderWidth={screenWidth}
-                  sliderHeight={screenWidth}
-                  itemWidth={screenWidth}
-                  layout={"default"}
-                  inactiveSlideScale={0.8}
-                  inactiveSlideOpacity={0.8}
-                  firstItem={0}
-                  loopClonesPerSide={2}
+                  width={screenWidth}
+                  height={h2dp(70)}
+                  loop
                   onSnapToItem={(index) => setActiveSlide(index)}
-                  pagingEnabled={true}
-                />
-                <Pagination
-                  dotsLength={cardData?.length}
-                  activeDotIndex={activeSlide}
-                  dotStyle={{
-                    width: 10,
-                    height: 10,
-                    borderRadius: 5,
-                    backgroundColor: "#CDDE85",
-                  }}
-                  inactiveDotStyle={{
-                    backgroundColor: "#CDDE85",
-                  }}
-                  inactiveDotOpacity={0.4}
-                  inactiveDotScale={0.6}
                 />
               </View>
             </View>

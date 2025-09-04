@@ -58,19 +58,21 @@ const PickupSelectedDetailsScreen = ({ route }: any) => {
   return (
     <TouchableWithoutFeedback onPress={handlePressOutside}>
       <LinearGradient
-        colors={["#6fa200", "#72a400", "#82b200", "#87b500", "#6fa200"]}
+        colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
         style={styles.background}
       >
         <SafeAreaView>
           <ScrollView keyboardShouldPersistTaps="handled">
             <View style={styles.containerVolunteer}>
               <FoodhealersHeader />
-              <View style={styles.rootVolunteerHome}>
+              <View style={styles.root}>
                 <Ionicons
                   name="chevron-back"
                   size={32}
                   color="white"
-                  onPress={() =>{handlePressOutside(),navigation.goBack()}}
+                  onPress={() => {
+                    handlePressOutside(), navigation.goBack();
+                  }}
                 />
                 <View style={styles.item}>
                   <Text style={styles.itemText}>{localized.t("DRIVE")}</Text>
@@ -104,7 +106,7 @@ const PickupSelectedDetailsScreen = ({ route }: any) => {
                         marginLeft: w2dp(3),
                         fontSize: h2dp(1.6),
                         lineHeight: 30,
-                        fontWeight: "500",
+                        fontWeight: "bold",
                         paddingTop: h2dp(0.5),
                         alignSelf: "center",
                         marginVertical: h2dp(1),
@@ -125,7 +127,7 @@ const PickupSelectedDetailsScreen = ({ route }: any) => {
                           marginLeft: w2dp(3),
                           fontSize: h2dp(1.6),
                           lineHeight: 30,
-                          fontWeight: "500",
+                          fontWeight: "bold",
                           paddingTop: h2dp(0.5),
                         }}
                       >
@@ -151,7 +153,7 @@ const PickupSelectedDetailsScreen = ({ route }: any) => {
                         marginLeft: w2dp(3),
                         fontSize: h2dp(1.6),
                         lineHeight: 30,
-                        fontWeight: "500",
+                        fontWeight: "bold",
                         paddingTop: h2dp(0.5),
                         alignSelf: "center",
                         marginVertical: h2dp(1),
@@ -171,7 +173,7 @@ const PickupSelectedDetailsScreen = ({ route }: any) => {
                           marginLeft: w2dp(3),
                           fontSize: h2dp(1.6),
                           lineHeight: 30,
-                          fontWeight: "500",
+                          fontWeight: "bold",
                           paddingTop: h2dp(0.5),
                         }}
                       >
@@ -229,23 +231,23 @@ const PickupSelectedDetailsScreen = ({ route }: any) => {
                             text: "OK",
                             onPress: () => {
                               handlePressOutside(),
-                              navigation.navigate("PickupConfirmScreen", {
-                                pickAddress: pickAddress,
-                                pickupTiming: pickupTiming,
-                                picklat: picklat,
-                                picklng: picklng,
-                                droplat: droplat,
-                                droplng: droplng,
-                                dropTiming: dropTiming,
-                                dropAddress: dropAddress,
-                                pickupId: pickupId,
-                                active: active,
-                                fullfilled: fullfilled,
-                                pickedup: pickedup,
-                                delivered: delivered,
-                              })
+                                navigation.navigate("PickupConfirmScreen", {
+                                  pickAddress: pickAddress,
+                                  pickupTiming: pickupTiming,
+                                  picklat: picklat,
+                                  picklng: picklng,
+                                  droplat: droplat,
+                                  droplng: droplng,
+                                  dropTiming: dropTiming,
+                                  dropAddress: dropAddress,
+                                  pickupId: pickupId,
+                                  active: active,
+                                  fullfilled: fullfilled,
+                                  pickedup: pickedup,
+                                  delivered: delivered,
+                                });
                             },
-                          }
+                          },
                         ],
                         { cancelable: false }
                       );

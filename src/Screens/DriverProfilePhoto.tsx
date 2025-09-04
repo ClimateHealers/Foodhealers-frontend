@@ -4,7 +4,6 @@ import * as ImagePicker from "expo-image-picker";
 import { LinearGradient } from "expo-linear-gradient";
 import * as MediaLibrary from "expo-media-library";
 import React, { useEffect, useState } from "react";
-import { Camera, CameraType } from "expo-camera";
 import {
   ActivityIndicator,
   Alert,
@@ -80,19 +79,22 @@ const DriverProfilePhoto = ({ route }: any) => {
   return (
     <TouchableWithoutFeedback onPress={handlePressOutside}>
       <LinearGradient
-        colors={["#6fa200", "#72a400", "#82b200", "#87b500", "#6fa200"]}
+        colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
         style={styles.background}
       >
-        <SafeAreaView>
+        <SafeAreaView style={{ flex: 1 }}>
           <ScrollView keyboardShouldPersistTaps="handled">
             <View style={styles.containerVolunteer}>
               <FoodhealersHeader />
-              <View style={styles.rootVolunteerHome}>
+              <View style={styles.root}>
                 <Ionicons
                   name="chevron-back"
                   size={32}
                   color="white"
-                  onPress={() => {navigation.navigate("BecomeADriverScreen"),handlePressOutside()}}
+                  onPress={() => {
+                    navigation.navigate("BecomeADriverScreen"),
+                      handlePressOutside();
+                  }}
                 />
                 <View style={styles.item}>
                   <Text style={styles.itemText}>{localized.t("DRIVE")}</Text>
@@ -134,23 +136,37 @@ const DriverProfilePhoto = ({ route }: any) => {
                   )}
                 </TouchableOpacity>
               </View>
-              <Text style={{ fontSize: h2dp(2.6), marginTop: h2dp(3) }}>
+              <Text
+                style={{
+                  fontSize: h2dp(2.6),
+                  marginTop: h2dp(3),
+                  color: "white",
+                }}
+              >
                 {localized.t("A_PHOTO_OF_YOU")}
               </Text>
-              <PrimaryButton
-                title={localized.t("TAKE_PHOTO")}
-                buttonStyle={styles.buttonStyles}
-                titleStyle={styles.titleStyle}
-                onPress={() => {navigation.navigate("TakePictureScreen"),handlePressOutside()}}
-              />
-              <PrimaryButton
-                title={localized.t("CHOOSE_FROM_CAMERA_ROLL")}
-                onPress={openImagePickerAsync}
-                buttonStyle={styles.buttonHistoryStyles}
-                titleStyle={styles.titleMainStyle}
-              />
             </View>
           </ScrollView>
+          <View
+            style={{
+              marginBottom: h2dp(2),
+            }}
+          >
+            <PrimaryButton
+              title={localized.t("TAKE_PHOTO")}
+              buttonStyle={styles.buttonStyles}
+              titleStyle={styles.titleStyle}
+              onPress={() => {
+                navigation.navigate("TakePictureScreen"), handlePressOutside();
+              }}
+            />
+            <PrimaryButton
+              title={localized.t("CHOOSE_FROM_CAMERA_ROLL")}
+              onPress={openImagePickerAsync}
+              buttonStyle={styles.buttonHistoryStyles}
+              titleStyle={styles.titleMainStyle}
+            />
+          </View>
         </SafeAreaView>
       </LinearGradient>
     </TouchableWithoutFeedback>

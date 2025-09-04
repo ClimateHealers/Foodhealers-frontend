@@ -11,7 +11,10 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import { heightPercentageToDP as h2dp } from "react-native-responsive-screen";
+import {
+  heightPercentageToDP as h2dp,
+  widthPercentageToDP as w2dp,
+} from "react-native-responsive-screen";
 import { useDispatch } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
@@ -20,6 +23,7 @@ import { localized } from "../locales/localization";
 import { allEvents } from "../redux/actions/allEvents";
 import { fetchUser } from "../redux/actions/authAction";
 import { VeganRecipesCategory } from "../redux/actions/veganRecipesCategory";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const VolunteerHomeScreen = ({ route }: any) => {
   const { latitude, longitude } = route.params;
@@ -70,23 +74,23 @@ const VolunteerHomeScreen = ({ route }: any) => {
           colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
           style={styles.background}
         >
-          <View style={styles.containerVolunteer}>
+          <SafeAreaView style={styles.containerVolunteer}>
             <FoodhealersHeader />
-            <View style={styles.rootVolunteerHome}>
+            <View style={styles.root}>
               <Ionicons
                 name="chevron-back"
                 size={32}
                 color="white"
-                onPress={() => navigation.navigate("HomeScreen")}
+                onPress={() => navigation.replace("HomeScreen")}
               />
               <View style={styles.item}>
                 <Text style={styles.itemText}>{localized.t("HOME")}</Text>
               </View>
-                <BurgerIcon
-                  style={{ zIndex: 10 }}
-                  onOutsidePress={handlePressOutside}
-                  menuClose={menuClose}
-                />
+              <BurgerIcon
+                style={{ zIndex: 10 }}
+                onOutsidePress={handlePressOutside}
+                menuClose={menuClose}
+              />
             </View>
             <ScrollView
               keyboardShouldPersistTaps="handled"
@@ -96,10 +100,10 @@ const VolunteerHomeScreen = ({ route }: any) => {
                 <TouchableOpacity
                   onPress={() => {
                     handlePressOutside(),
-                    navigation.navigate("VolunteerDonateScreen", {
-                      latitude: latitude,
-                      longitude: longitude,
-                    })
+                      navigation.navigate("VolunteerDonateScreen", {
+                        latitude: latitude,
+                        longitude: longitude,
+                      });
                   }}
                 >
                   <View
@@ -123,9 +127,9 @@ const VolunteerHomeScreen = ({ route }: any) => {
                 <TouchableOpacity
                   onPress={() => {
                     handlePressOutside(),
-                    data?.isDriver
-                      ? navigation.navigate("DriverRequestScreen")
-                      : navigation.navigate("BecomeADriverScreen");
+                      data?.isDriver
+                        ? navigation.navigate("DriverRequestScreen")
+                        : navigation.navigate("BecomeADriverScreen");
                   }}
                 >
                   <View
@@ -168,17 +172,17 @@ const VolunteerHomeScreen = ({ route }: any) => {
                         <TouchableOpacity
                           onPress={() => {
                             handlePressOutside(),
-                            navigation?.navigate("WeekScreen", {
-                              currentlatitude: latitude,
-                              currentlongitude: longitude,
-                              city: event?.address?.city,
-                              state: event?.address?.state,
-                              fullAddress: event?.address?.fullAddress,
-                              postalCode: event?.address?.postalCode,
-                              lat: event?.address?.lat,
-                              lng: event?.address?.lng,
-                              address: event?.address,
-                            })
+                              navigation?.navigate("WeekScreen", {
+                                currentlatitude: latitude,
+                                currentlongitude: longitude,
+                                city: event?.address?.city,
+                                state: event?.address?.state,
+                                fullAddress: event?.address?.fullAddress,
+                                postalCode: event?.address?.postalCode,
+                                lat: event?.address?.lat,
+                                lng: event?.address?.lng,
+                                address: event?.address,
+                              });
                           }}
                         >
                           <View
@@ -225,18 +229,18 @@ const VolunteerHomeScreen = ({ route }: any) => {
                           <TouchableOpacity
                             onPress={() => {
                               handlePressOutside(),
-                              navigation.navigate("RecipesHomeScreen", {
-                                recipeData: {
-                                  recipeImage: recipe?.foodImage,
-                                  recipeIngredient: recipe?.ingredients,
-                                  recipeName: recipe?.foodName,
-                                  recipeInstructions:
-                                    recipe?.cookingInstructions,
-                                  cookingTime: recipe?.preparationTime,
-                                  recipeSource: recipe?.recipeSource,
-                                  recipeCredits: recipe?.recipeCredits,
-                                },
-                              })
+                                navigation.navigate("RecipesHomeScreen", {
+                                  recipeData: {
+                                    recipeImage: recipe?.foodImage,
+                                    recipeIngredient: recipe?.ingredients,
+                                    recipeName: recipe?.foodName,
+                                    recipeInstructions:
+                                      recipe?.cookingInstructions,
+                                    cookingTime: recipe?.preparationTime,
+                                    recipeSource: recipe?.recipeSource,
+                                    recipeCredits: recipe?.recipeCredits,
+                                  },
+                                });
                             }}
                           >
                             <View
@@ -276,7 +280,7 @@ const VolunteerHomeScreen = ({ route }: any) => {
                 </View>
               </TouchableOpacity>
             </ScrollView>
-          </View>
+          </SafeAreaView>
         </LinearGradient>
       </TouchableWithoutFeedback>
     </>

@@ -33,6 +33,7 @@ import PrimaryButton from "../Components/PrimaryButton";
 import { styles } from "../Components/Styles";
 import { localized } from "../locales/localization";
 import { allRequests } from "../redux/actions/allRequests";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const SeeExistingRequestScreen = ({ route }: any) => {
   const { itemTypeId, title, latitude, longitude } = route?.params;
@@ -173,7 +174,7 @@ const SeeExistingRequestScreen = ({ route }: any) => {
           <Text
             style={{
               marginLeft: w2dp(3),
-              fontWeight: "500",
+              fontWeight: "bold",
               fontSize: h2dp(1.6),
               lineHeight: 30,
               paddingTop: h2dp(0.7),
@@ -243,16 +244,16 @@ const SeeExistingRequestScreen = ({ route }: any) => {
                   text: "Yes",
                   onPress: () => {
                     handlePressOutside(),
-                    navigation.navigate("AcceptRequestedDonationScreen", {
-                      quantity: quantity,
-                      itemTypeId: itemTypeId,
-                      title: title,
-                      foodItem: foodItem,
-                      latitude: latitude,
-                      longitude: longitude,
-                      requiredDate: requiredDate,
-                      id: id,
-                    });
+                      navigation.navigate("AcceptRequestedDonationScreen", {
+                        quantity: quantity,
+                        itemTypeId: itemTypeId,
+                        title: title,
+                        foodItem: foodItem,
+                        latitude: latitude,
+                        longitude: longitude,
+                        requiredDate: requiredDate,
+                        id: id,
+                      });
                   },
                   style: "default",
                 },
@@ -288,116 +289,117 @@ const SeeExistingRequestScreen = ({ route }: any) => {
         colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
         style={styles.background}
       >
-        <View style={styles.container}>
-          <FoodhealersHeader />
-          <View style={styles.root}>
-            <Ionicons
-              name="chevron-back"
-              size={32}
-              color="white"
-              onPress={() => {
-                handlePressOutside(),
-                navigation.navigate("VolunteerDonateScreen", {
-                  latitude: latitude,
-                  longitude: longitude,
-                  itemTypeId: itemTypeId,
-                  title: title,
-                })
-              }}
-            />
-            <View style={styles.item}>
-              <Text style={styles.itemText}>
-                {localized.t("EXISTING")} {localized.t("REQUESTS")}
-              </Text>
+        <SafeAreaView style={{ flex: 1 }}>
+          <View style={styles.container}>
+            <FoodhealersHeader />
+            <View style={styles.root}>
+              <Ionicons
+                name="chevron-back"
+                size={32}
+                color="white"
+                onPress={() => {
+                  handlePressOutside(),
+                    navigation.navigate("VolunteerDonateScreen", {
+                      latitude: latitude,
+                      longitude: longitude,
+                      itemTypeId: itemTypeId,
+                      title: title,
+                    });
+                }}
+              />
+              <View style={styles.item}>
+                <Text style={styles.itemText}>
+                  {localized.t("EXISTING")} {localized.t("REQUESTS")}
+                </Text>
+              </View>
+              <BurgerIcon
+                onOutsidePress={handlePressOutside}
+                menuClose={menuClose}
+              />
             </View>
-            <BurgerIcon
-              onOutsidePress={handlePressOutside}
-              menuClose={menuClose}
-            />
+
+            <View>
+              <View style={styles.itemFilter}>
+                <Text style={styles.itemFilterText}>
+                  {localized.t("EXISTING")} {item} {localized.t("DONATIONS")}
+                </Text>
+                <TouchableOpacity
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                  }}
+                  onPress={sortByDate}
+                >
+                  <Text style={styles.itemFilterText}>
+                    {localized.t("FILTER")}
+                  </Text>
+                  <Text style={styles.filterNameText}>({filterName})</Text>
+                  <MaterialIcons
+                    name="filter-list-alt"
+                    style={styles.itemFilterText}
+                  />
+                </TouchableOpacity>
+              </View>
+
+              {requestData?.length > 0 ? (
+                <View style={{ height: h2dp(60), marginTop: h2dp(1) }}>
+                  <FlatList
+                    showsVerticalScrollIndicator={false}
+                    data={requestData}
+                    renderItem={({ item }: any) => (
+                      <Item
+                        status={item?.status}
+                        type={item?.type}
+                        id={item.id}
+                        foodItem={item.foodItem}
+                        quantity={item.quantity}
+                        foodName={`${item?.foodItem}  (${item?.quantity})`}
+                        delivery={item?.deliver?.dropAddress?.fullAddress}
+                        requiredDate={item?.deliver?.dropDate}
+                        phoneNumber={item?.createdBy?.phoneNumber}
+                      />
+                    )}
+                  />
+                </View>
+              ) : (
+                <View
+                  style={{
+                    flex: 1,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    minHeight: h2dp(80),
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: "white",
+                      textAlign: "center",
+                    }}
+                  >
+                    {localized.t("NOTHING_TO_SHOW")}
+                  </Text>
+                </View>
+              )}
+            </View>
           </View>
 
-          <View>
-            <View style={styles.itemFilter}>
-              <Text style={styles.itemFilterText}>
-                {localized.t("EXISTING")} {item} {localized.t("DONATIONS")}
-              </Text>
-              <TouchableOpacity
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-                onPress={sortByDate}
-              >
-                <Text style={styles.itemFilterText}>
-                  {localized.t("FILTER")}
-                </Text>
-                <Text style={styles.filterNameText}>({filterName})</Text>
-                <MaterialIcons
-                  name="filter-list-alt"
-                  style={styles.itemFilterText}
-                />
-              </TouchableOpacity>
-            </View>
-            {requestData?.length > 0 ? (
-              <View style={{ height: h2dp(60), marginTop: h2dp(1) }}>
-                <FlatList
-                  showsVerticalScrollIndicator={false}
-                  data={requestData}
-                  renderItem={({ item }: any) => (
-                    <Item
-                      status={item?.status}
-                      type={item?.type}
-                      id={item.id}
-                      foodItem={item.foodItem}
-                      quantity={item.quantity}
-                      foodName={`${item?.foodItem}  (${item?.quantity})`}
-                      delivery={item?.deliver?.dropAddress?.fullAddress}
-                      requiredDate={item?.deliver?.dropDate}
-                      phoneNumber={item?.createdBy?.phoneNumber}
-                    />
-                  )}
-                />
-              </View>
-            ) : (
-              <View
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  marginTop: h2dp(10),
-                  marginBottom: h2dp(10),
-                }}
-              >
-                <Text style={styles.itemText}>
-                  {localized.t("NOTHING_TO_SHOW")}
-                </Text>
-              </View>
-            )}
+          <View style={{ paddingBottom: h2dp(2) }}>
+            <PrimaryButton
+              title={`${localized.t("DONATE")} ${item}`}
+              onPress={() => {
+                handlePressOutside(),
+                  navigation.navigate("AddDonationsScreen", {
+                    itemTypeId: itemTypeId,
+                    title: title,
+                    latitude: latitude,
+                    longitude: longitude,
+                  });
+              }}
+              buttonStyle={styles.buttonStyles}
+              titleStyle={styles.titleStyle}
+            />
           </View>
-          <PrimaryButton
-            title={`${localized.t("DONATE")} ${item}`}
-            onPress={() => {
-              handlePressOutside(),
-              navigation.navigate("AddDonationsScreen", {
-                itemTypeId: itemTypeId,
-                title: title,
-                latitude: latitude,
-                longitude: longitude,
-              })
-            }}
-            buttonStyle={{
-              backgroundColor: "#FC5A56",
-              color: "black",
-              borderRadius: 5,
-              width: w2dp(70),
-              alignSelf: "center",
-              marginTop: h2dp(3),
-            }}
-            titleStyle={styles.titleStyle}
-          />
-        </View>
+        </SafeAreaView>
       </LinearGradient>
     </TouchableWithoutFeedback>
   );

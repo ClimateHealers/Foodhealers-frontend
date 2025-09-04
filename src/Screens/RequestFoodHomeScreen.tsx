@@ -5,14 +5,16 @@ import React, { useCallback, useState } from "react";
 import {
   Image,
   Keyboard,
-  SafeAreaView,
   ScrollView,
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import { heightPercentageToDP as h2dp } from "react-native-responsive-screen";
+import {
+  heightPercentageToDP as h2dp,
+  widthPercentageToDP as w2dp,
+} from "react-native-responsive-screen";
 import { useDispatch } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
@@ -20,6 +22,7 @@ import { styles } from "../Components/Styles";
 import { localized } from "../locales/localization";
 import { allEvents } from "../redux/actions/allEvents";
 import { VeganRecipesCategory } from "../redux/actions/veganRecipesCategory";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const RequestFoodHomeScreen = ({ route }: any) => {
   const { itemTypeId, title } = route?.params;
@@ -66,12 +69,14 @@ const RequestFoodHomeScreen = ({ route }: any) => {
               <TouchableOpacity activeOpacity={1}>
                 <View style={styles.containerVolunteer}>
                   <FoodhealersHeader />
-                  <View style={styles.rootVolunteerHome}>
+                  <View style={styles.root}>
                     <Ionicons
                       name="chevron-back"
                       size={32}
                       color="white"
-                      onPress={() => {navigation.goBack(),handlePressOutside()}}
+                      onPress={() => {
+                        navigation.goBack(), handlePressOutside();
+                      }}
                     />
                     <View style={styles.item}>
                       <Text style={styles.itemText}>{title}</Text>
@@ -85,10 +90,10 @@ const RequestFoodHomeScreen = ({ route }: any) => {
                   <TouchableOpacity
                     onPress={() => {
                       handlePressOutside(),
-                      navigation.navigate("SeeExistingDonationScreen", {
-                        itemTypeId: itemTypeId,
-                        title: title,
-                      })
+                        navigation.navigate("SeeExistingDonationScreen", {
+                          itemTypeId: itemTypeId,
+                          title: title,
+                        });
                     }}
                   >
                     <View
@@ -112,9 +117,9 @@ const RequestFoodHomeScreen = ({ route }: any) => {
                   <TouchableOpacity
                     onPress={() => {
                       handlePressOutside(),
-                      navigation.navigate("RequestHistoryScreen", {
-                        itemTypeId: itemTypeId,
-                      })
+                        navigation.navigate("RequestHistoryScreen", {
+                          itemTypeId: itemTypeId,
+                        });
                     }}
                   >
                     <View

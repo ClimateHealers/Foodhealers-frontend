@@ -3,7 +3,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import React, { useState } from "react";
 import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 
-import { AntDesign } from "@expo/vector-icons";
+import { AntDesign, Ionicons } from "@expo/vector-icons";
 import { Modal, Text } from "react-native-paper";
 import {
   heightPercentageToDP as hp2dp,
@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { deleteUser, removeAuthData } from "../redux/actions/authAction";
 import { logOut } from "../redux/reducers/authreducers";
 import { localized } from "../locales/localization";
+import PrimaryButton from "../Components/PrimaryButton";
 
 const DeleteAccount = () => {
   const [showModal, setShowModal] = useState<Boolean>(false);
@@ -48,192 +49,184 @@ const DeleteAccount = () => {
       colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
       style={styles.background}
     >
-      <SafeAreaView style={styles.mainContainer}>
-        <ScrollView style={styles.ScrollView}>
-          <View style={styles.profile}>
-            <Text style={styles.profileName}>{userInfo?.name}</Text>
-            <Text style={{ color: "white", fontSize: hp2dp(2.0) }}>
-              {userInfo?.email}
-            </Text>
-          </View>
-          <View style={{ alignSelf: "center", marginVertical: 30 }}>
-            <AntDesign name="deleteuser" size={150} color="#faf5f5" />
-          </View>
-          <View style={{ alignSelf: "center" }}>
-            <Text
-              style={{
-                fontSize: hp2dp(2.8),
-                fontWeight: "bold",
-                alignSelf: "center",
-                marginBottom: 20,
-                color: "white",
-              }}
-            >
-              {localized.t("ATTENTION")}
-            </Text>
-            <Text style={{ fontSize: hp2dp(1.8), color: "white" }}>
-              {localized.t("DELETE_YOUR_ACCOUNT_WILL_REMOVE_DATABASE")}{" "}
-              {localized.t("THIS_CANNOT_BE_UNDONE")}
-            </Text>
-          </View>
-          <View style={{ marginVertical: hp2dp("8%") }}>
-            <View
-              style={{
-                alignSelf: "center",
-              }}
-            >
-              <TouchableOpacity
-                style={styles.googleBtn}
-                onPress={deleteAccount}
-              >
-                <View style={{ flexDirection: "row" }}>
-                  <View>
-                    <Text style={styles.googletext}>
-                      {localized.t("DELETE_ACCOUNT")}
-                    </Text>
-                  </View>
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[styles.googleBtn, { backgroundColor: "#4facf7" }]}
-                onPress={() => navigation.goBack()}
-              >
-                <View style={{ flexDirection: "row" }}>
-                  <View>
-                    <Text
-                      style={{
-                        ...systemWeights.semibold,
-                        color: "white",
-                        fontSize: hp2dp(1.8),
-                      }}
-                    >
-                      {localized.t("KEEP_ACCOUNT")}
-                    </Text>
-                  </View>
-                </View>
-              </TouchableOpacity>
+      <SafeAreaView style={styles.safeArea}>
+        <View style={styles.headerContainer}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <Ionicons name="chevron-back" size={32} color="white" />
+          </TouchableOpacity>
+          <Text style={styles.headerTitle}>
+            {localized.t("DELETE_ACCOUNT")}
+          </Text>
+          <View style={{ width: wp2dp(3) }} />
+        </View>
+        <View style={styles.mainContainer}>
+          <ScrollView style={styles.ScrollView}>
+            <View style={styles.profile}>
+              <Text style={styles.profileName}>{userInfo?.name}</Text>
+              <Text style={{ color: "white", fontSize: hp2dp(2.0) }}>
+                {userInfo?.email}
+              </Text>
             </View>
-          </View>
-          <Modal visible={showModal}>
-            <View style={styles.centeredView}>
-              <View style={styles.modalView}>
-                <View>
-                  <Text
-                    style={{
-                      fontSize: hp2dp(1.8),
-                      fontWeight: "bold",
-                      marginVertical: hp2dp("2%"),
-                    }}
-                  >
-                    {localized.t("ALMOST_DONE")}
-                  </Text>
-                </View>
-                <View>
-                  <Text style={{ fontSize: hp2dp(1.8), color: "black" }}>
-                    {localized.t("WE_RECEIVED__YOUR_REQUEST_TO_DELETE")}{" "}
-                    {localized.t("TO_COMPLETE_YOUR_DELETION")}
-                  </Text>
-                </View>
-                <View style={{ alignItems: "center", marginTop: hp2dp("2%") }}>
-                  <TouchableOpacity
-                    onPress={
-                      navigateToLoginScreen
-                    }
-                  >
-                    <View
-                      style={[
-                        {
-                          height: 45,
-                          width: 100,
-                          backgroundColor: "#4facf7",
-                          borderRadius: 10,
-                        },
-                        styles.centeredView,
-                      ]}
-                    >
-                      <Text style={{ color: "#ffff", fontWeight: "bold" }}>
-                        {localized.t("CLOSE")}
-                      </Text>
-                    </View>
-                  </TouchableOpacity>
-                </View>
-              </View>
+            <View style={{ alignSelf: "center", marginVertical: 30 }}>
+              <AntDesign name="deleteuser" size={150} color="#faf5f5" />
             </View>
-          </Modal>
-        </ScrollView>
+            <View style={{ alignSelf: "center" }}>
+              <Text
+                style={{
+                  fontSize: hp2dp(2.8),
+                  fontWeight: "bold",
+                  alignSelf: "center",
+                  marginBottom: 20,
+                  color: "white",
+                }}
+              >
+                {localized.t("ATTENTION")}
+              </Text>
+              <Text
+                style={{
+                  color: "white",
+                }}
+              >
+                {localized.t("DELETE_YOUR_ACCOUNT_WILL_REMOVE_DATABASE")}{" "}
+                {localized.t("THIS_CANNOT_BE_UNDONE")}
+              </Text>
+            </View>
+          </ScrollView>
+        </View>
+
+        <View style={{ paddingBottom: hp2dp(2), paddingHorizontal: hp2dp(2) }}>
+          <PrimaryButton
+            title={localized.t("DELETE_ACCOUNT")}
+            buttonStyle={styles.googleBtn}
+            titleStyle={styles.googletext}
+            onPress={deleteAccount}
+          />
+          <PrimaryButton
+            title={localized.t("KEEP_ACCOUNT")}
+            buttonStyle={[
+              styles.googleBtn,
+              {
+                backgroundColor: "gray",
+              },
+            ]}
+            titleStyle={styles.googletext}
+            onPress={() => navigation.goBack()}
+          />
+        </View>
       </SafeAreaView>
+      <Modal visible={showModal} animationType="fade">
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>{localized.t("ALMOST_DONE")}</Text>
+            <Text style={styles.modalSubText}>
+              {localized.t("WE_RECEIVED__YOUR_REQUEST_TO_DELETE")}
+              {localized.t("TO_COMPLETE_YOUR_DELETION")}
+            </Text>
+            <TouchableOpacity
+              onPress={navigateToLoginScreen}
+              style={styles.modalButton}
+            >
+              <Text style={styles.buttonText}>{localized.t("CLOSE")}</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </LinearGradient>
   );
 };
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+  },
   background: {
     flex: 1,
-    resizeMode: "cover",
   },
-
   mainContainer: {
-    display: "flex",
-    flexDirection: "column",
     flex: 1,
-    marginHorizontal: wp2dp("4.5%"),
+    marginHorizontal: wp2dp(4.5),
+  },
+  headerContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: wp2dp(4.5),
+    paddingTop: hp2dp(4),
+    paddingBottom: hp2dp(1.5),
+  },
+  headerTitle: {
+    fontSize: wp2dp(5),
+    color: "white",
+    fontWeight: "bold",
   },
   ScrollView: {
-    marginHorizontal: 5,
-    borderRadius: 10,
-    marginBottom: 20,
-    paddingHorizontal: 15,
-    paddingTop: 15,
+    flex: 1,
+    paddingHorizontal: wp2dp(3),
+    paddingTop: hp2dp(2),
+    marginBottom: hp2dp(2),
   },
   profile: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
     alignItems: "center",
-    paddingVertical: hp2dp("2%"),
+    marginVertical: hp2dp(2),
   },
-
   profileName: {
-    paddingTop: 10,
+    paddingTop: hp2dp(1),
     ...systemWeights.bold,
     color: "white",
-    fontSize: hp2dp(2.0),
+    fontSize: hp2dp(2.2),
   },
-
   modalView: {
-    margin: 20,
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-    borderRadius: 20,
-    padding: 35,
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
+    backgroundColor: "white",
+    paddingHorizontal: 20,
+    marginHorizontal: 20,
+    paddingVertical: 20,
+    borderRadius: 8,
+    height: hp2dp(25),
+  },
+  modalText: {
+    fontSize: hp2dp(1.8),
+    fontWeight: "bold",
+    color: "black",
+    marginBottom: hp2dp(1.5),
+    textAlign: "center",
+  },
+  modalSubText: {
+    fontSize: hp2dp(1.8),
+    color: "black",
+    textAlign: "center",
+  },
+  modalButton: {
+    marginTop: hp2dp(3),
+    backgroundColor: "green",
+    borderRadius: 5,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    marginHorizontal: "auto",
+  },
+  buttonText: {
+    color: "white",
+    fontWeight: "bold",
+    fontSize: hp2dp(1.6),
+    textAlign: "center",
   },
   googleBtn: {
     backgroundColor: "#FC5A56",
-    alignItems: "center",
+    borderRadius: wp2dp(2),
+    marginTop: hp2dp(2),
+    height: hp2dp(6),
     justifyContent: "center",
-    borderRadius: 4,
-    borderColor: "red",
-    height: 50,
-    marginTop: 10,
-    width: wp2dp("80%"),
-    fontSize: hp2dp(2.5),
+    alignItems: "center",
   },
   googletext: {
-    ...systemWeights.semibold,
     color: "white",
-    fontSize: hp2dp(1.8),
+    fontSize: hp2dp(2.1),
   },
   centeredView: {
+    flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "rgba( 0,0,0,0.1)",
+    paddingHorizontal: wp2dp(4),
   },
 });
 

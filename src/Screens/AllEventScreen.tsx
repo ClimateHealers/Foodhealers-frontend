@@ -31,6 +31,7 @@ import { styles } from "../Components/Styles";
 import { localized } from "../locales/localization";
 import { allEvents } from "../redux/actions/allEvents";
 import { myEvents } from "../redux/actions/myEvents";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const AllEventScreen = () => {
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -41,8 +42,12 @@ const AllEventScreen = () => {
 
   const navigation: any = useNavigation();
   const fetchingEventData = async () => {
-    const response = await dispatch(myEvents({} as any) as any);
-    setEventData(response?.payload?.foodEvents);
+    const res = await dispatch(allEvents({} as any) as any);
+    const foodEvents = res?.payload?.foodEvents;
+    const verifiedFoodEvents = foodEvents?.filter(
+      (event: any) => event.status === "approved"
+    );
+    setEventData(verifiedFoodEvents);
   };
 
   useEffect(() => {
@@ -89,17 +94,15 @@ const AllEventScreen = () => {
   const handleSingleIndexSelect = async (index: any) => {
     setSelectedIndex(index);
     if (index === 0) {
-      fetchingEventData();
-    } else if (index === 1) {
       const res = await dispatch(allEvents({} as any) as any);
       const foodEvents = res?.payload?.foodEvents;
       const verifiedFoodEvents = foodEvents?.filter(
         (event: any) => event.status === "approved"
       );
-      const activeFoodEvents = verifiedFoodEvents?.filter(
-        (event: any) => event.active === true
-      );
-      setEventData(activeFoodEvents);
+      setEventData(verifiedFoodEvents);
+    } else if (index === 1) {
+      const response = await dispatch(myEvents({} as any) as any);
+      setEventData(response?.payload?.foodEvents);
     }
   };
 
@@ -116,7 +119,7 @@ const AllEventScreen = () => {
     eventPhoto,
     name,
     requiredVolunteers,
-    eventSharingPhoto
+    eventSharingPhoto,
   }: any) => (
     <TouchableOpacity activeOpacity={1}>
       <View style={styles.cardContainer}>
@@ -199,7 +202,7 @@ const AllEventScreen = () => {
             style={{
               marginLeft: w2dp(5),
               width: w2dp(52),
-              fontWeight: "500",
+              fontWeight: "bold",
               fontSize: h2dp(1.6),
               lineHeight: 30,
             }}
@@ -236,7 +239,7 @@ const AllEventScreen = () => {
                   eventPhoto: eventPhoto,
                   requiredVolunteers: requiredVolunteers,
                   status: status,
-                  eventSharingPhoto: eventSharingPhoto
+                  eventSharingPhoto: eventSharingPhoto,
                 },
               });
           }}
@@ -252,7 +255,6 @@ const AllEventScreen = () => {
           }}
           titleStyle={{
             color: "black",
-            fontWeight: "300",
           }}
         />
       </View>
@@ -265,7 +267,7 @@ const AllEventScreen = () => {
         colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
         style={styles.background}
       >
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
           <FoodhealersHeader />
           <View style={styles.root}>
             <Ionicons
@@ -289,8 +291,8 @@ const AllEventScreen = () => {
           <View style={styles.toggle}>
             <SegmentedControlTab
               values={[
-                `${localized.t("MY_EVENTS")}`,
                 `${localized.t("ALL_EVENTS")}`,
+                `${localized.t("MY_EVENTS")}`,
               ]}
               selectedIndex={selectedIndex}
               tabsContainerStyle={{
@@ -347,27 +349,20 @@ const AllEventScreen = () => {
                     status={item?.status}
                     eventPhoto={item?.eventPhoto}
                     requiredVolunteers={item?.requiredVolunteers}
-                    eventSharingPhoto= {item?.eventSharingPhoto}
+                    eventSharingPhoto={item?.eventSharingPhoto}
                   />
                 )}
                 keyExtractor={(item: any) => item?.id}
               />
             </View>
           ) : (
-            <View
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                marginTop: h2dp(25),
-              }}
-            >
-              <Text style={styles.itemText}>
+            <View style={[styles.centeredView, { flex: 1 }]}>
+              <Text style={{ color: "white" }}>
                 {localized.t("NOTHING_TO_SHOW")}
               </Text>
             </View>
           )}
-        </View>
+        </SafeAreaView>
       </LinearGradient>
     </TouchableWithoutFeedback>
   );

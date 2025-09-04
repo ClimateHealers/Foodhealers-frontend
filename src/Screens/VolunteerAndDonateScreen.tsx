@@ -16,7 +16,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { SceneMap, TabBar, TabView } from "react-native-tab-view";
 import { useDispatch } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
-import { getLocation } from "../Components/GetCurrentLocation";
+import { getLocation } from "../Components/getCurrentLocation";
 import { localized } from "../locales/localization";
 import DonationTabScreen from "./DonationTabScreen";
 import VolunteerTabScreen from "./VolunteerTabScreen";
@@ -121,7 +121,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     marginHorizontal: w2dp(4),
-    marginTop: h2dp(3),
   },
   background: {
     flex: 1,
@@ -131,8 +130,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    width: w2dp(95),
-    zIndex: 9999,
+    width: "100%",
+    zIndex: 1,
+    marginBottom: h2dp(1),
   },
   item: {
     height: h2dp(10),

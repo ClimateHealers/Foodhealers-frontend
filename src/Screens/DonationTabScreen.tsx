@@ -356,7 +356,7 @@ const DonationTabScreen = () => {
           <Text
             style={{
               marginLeft: w2dp(3),
-              fontWeight: "500",
+              fontWeight: "bold",
               fontSize: h2dp(1.6),
               lineHeight: 30,
               paddingTop: h2dp(0.7),
@@ -449,15 +449,8 @@ const DonationTabScreen = () => {
             />
           </View>
         ) : (
-          <View
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              marginTop: h2dp(25),
-            }}
-          >
-            <Text style={styles.itemText}>
+          <View style={styles.centeredView}>
+            <Text style={{ color: "white" }}>
               {localized.t("NOTHING_TO_SHOW")}
             </Text>
           </View>

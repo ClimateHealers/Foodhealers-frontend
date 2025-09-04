@@ -11,7 +11,7 @@ import {
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  View
+  View,
 } from "react-native";
 
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -25,6 +25,7 @@ import { useDispatch, useSelector } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
 import { styles } from "../Components/Styles";
+import PrimaryButton from "../Components/PrimaryButton";
 
 const UploadPhotosScreen = ({ route }: any) => {
   const { eventFormData } = route.params;
@@ -57,8 +58,8 @@ const UploadPhotosScreen = ({ route }: any) => {
       });
 
       if (!result.canceled) {
-        const multipleImages = result.assets.map((image) => image.uri);
-        const singlePhoto = result.assets[0].uri;
+        const multipleImages = result.assets?.map((image) => image?.uri);
+        const singlePhoto = result?.assets[0]?.uri;
 
         navigation.navigate("EventPhotosScreen", {
           eventFormData: eventFormData,
@@ -81,72 +82,93 @@ const UploadPhotosScreen = ({ route }: any) => {
   };
 
   return (
-    <TouchableWithoutFeedback onPress={() => handlePressOutside()}>
+    <TouchableWithoutFeedback onPress={handlePressOutside}>
       <LinearGradient
         colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
         style={styles.background}
       >
-        <SafeAreaView>
-          <ScrollView keyboardShouldPersistTaps="handled">
-            <View style={styles.containerVolunteer}>
-              <FoodhealersHeader />
-              <View style={styles.rootVolunteerHome}>
-                <Ionicons
-                  name="chevron-back"
-                  size={32}
-                  color="white"
-                  onPress={() => {navigation.goBack(),handlePressOutside()}}
-                />
-                <View style={styles.item}>
-                  <Text style={styles.itemText}>
-                    {localized.t("POST_AN_EVENT")}
-                  </Text>
-                </View>
-                <BurgerIcon
-                  onOutsidePress={handlePressOutside}
-                  menuClose={menuClose}
-                />
-              </View>
-              <View
-                style={[
-                  styles.card,
-                  {
-                    height: h2dp(40),
-                    borderRadius: h2dp(1),
-                    alignItems: "center",
-                  },
-                ]}
-              >
-                <TouchableOpacity
-                  style={{
-                    backgroundColor: "#FC5A56",
-                    paddingVertical: h2dp(1),
-                    paddingHorizontal: w2dp(5),
-                    marginBottom: h2dp(1),
-                    marginTop: h2dp(12),
-                  }}
-                  onPress={openImagePickerAsync}
-                >
-                  <AntDesign name="upload" size={24} color="black" />
-                </TouchableOpacity>
-
-                <Text style={{ fontSize: h2dp(2.0), marginTop: 10 }}>
-                  {localized.t("UPLOAD_EVENT_PHOTO")}
+        <SafeAreaView style={{ flex: 1 }}>
+          <View
+            style={{
+              marginHorizontal: w2dp(4),
+            }}
+          >
+            <FoodhealersHeader />
+            <View style={styles.root}>
+              <Ionicons
+                name="chevron-back"
+                size={32}
+                color="white"
+                onPress={() => {
+                  navigation.goBack();
+                  handlePressOutside();
+                }}
+              />
+              <View style={styles.item}>
+                <Text style={styles.itemText}>
+                  {localized.t("POST_AN_EVENT")}
                 </Text>
-                <TouchableOpacity onPress={() => {navigation.goBack(),handlePressOutside()}}>
-                  <Text
-                    style={{
-                      fontSize: h2dp(2.0),
-                      marginTop: 40,
-                      textDecorationLine: "underline",
-                    }}
-                  >
-                    {localized.t("BACK")}
-                  </Text>
-                </TouchableOpacity>
               </View>
+              <BurgerIcon
+                onOutsidePress={handlePressOutside}
+                menuClose={menuClose}
+              />
+            </View>
+          </View>
+
+          <ScrollView
+            keyboardShouldPersistTaps="handled"
+            contentContainerStyle={{
+              flexGrow: 1,
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <View
+              style={{
+                backgroundColor: "white",
+                borderRadius: w2dp(2),
+                alignItems: "center",
+                padding: h2dp(4),
+                width: w2dp(90),
+                height: h2dp(30),
+                justifyContent: "center",
+              }}
+            >
+              <TouchableOpacity
+                style={{
+                  backgroundColor: "#FC5A56",
+                  paddingVertical: h2dp(1.5),
+                  paddingHorizontal: w2dp(5),
+                  borderRadius: 10,
+                }}
+                onPress={openImagePickerAsync}
+              >
+                <AntDesign name="upload" size={24} color="white" />
+              </TouchableOpacity>
+
+              <Text
+                style={{
+                  fontSize: h2dp(2.0),
+                  marginTop: h2dp(2),
+                }}
+              >
+                {localized.t("UPLOAD_EVENT_PHOTO")}
+              </Text>
             </View>
           </ScrollView>
+
+          <View style={{ paddingBottom: h2dp(2) }}>
+            <PrimaryButton
+              title={localized.t("BACK")}
+              buttonStyle={styles.buttonStyles}
+              titleStyle={styles.titleStyle}
+              onPress={() => {
+                navigation.goBack();
+                handlePressOutside();
+              }}
+            />
+          </View>
         </SafeAreaView>
       </LinearGradient>
     </TouchableWithoutFeedback>

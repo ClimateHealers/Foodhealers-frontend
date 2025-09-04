@@ -32,6 +32,7 @@ import { styles } from "../Components/Styles";
 import { localized } from "../locales/localization";
 import { allRequests } from "../redux/actions/allRequests";
 import { myRequests } from "../redux/actions/myRequests";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const RequestHistoryScreen = ({ route }: any) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -390,7 +391,7 @@ const RequestHistoryScreen = ({ route }: any) => {
           <Text
             style={{
               marginLeft: w2dp(3),
-              fontWeight: "500",
+              fontWeight: "bold",
               fontSize: h2dp(1.6),
               lineHeight: 30,
               paddingTop: h2dp(0.7),
@@ -420,14 +421,16 @@ const RequestHistoryScreen = ({ route }: any) => {
         colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
         style={styles.background}
       >
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
           <FoodhealersHeader />
           <View style={styles.root}>
             <Ionicons
               name="chevron-back"
               size={32}
               color="white"
-              onPress={() => {navigation.goBack(),handlePressOutside()}}
+              onPress={() => {
+                navigation.goBack(), handlePressOutside();
+              }}
             />
             <View style={styles.item}>
               <Text style={styles.itemText}>
@@ -485,40 +488,32 @@ const RequestHistoryScreen = ({ route }: any) => {
             </TouchableOpacity>
           </View>
           {requestData?.length > 0 ? (
-            <View style={{ flex: 1 }}>
-              <FlatList
-                showsVerticalScrollIndicator={false}
-                data={requestData}
-                renderItem={({ item }: any) => (
-                  <Item
-                    status={item?.status}
-                    type={item?.type}
-                    id={item.id}
-                    foodItem={`${item?.foodItem}  (${item?.quantity})`}
-                    delivery={item?.deliver?.dropAddress?.fullAddress}
-                    requiredDate={item?.requiredDate}
-                    delivered={item?.deliver?.delivered}
-                    driver={item?.deliver?.driver}
-                    pickupDate={item?.deliver?.pickupDate}
-                  />
-                )}
-              />
-            </View>
+            <FlatList
+              data={requestData}
+              keyExtractor={(item, index) => index.toString()}
+              renderItem={({ item }) => (
+                <Item
+                  foodItem={item.foodItem}
+                  status={item.status}
+                  delivery={item.delivery}
+                  requiredDate={item.requiredDate}
+                  type={item.type}
+                  delivered={item.delivered}
+                  driver={item.driver}
+                  pickupDate={item.pickupDate}
+                />
+              )}
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{ paddingBottom: h2dp(2) }}
+            />
           ) : (
-            <View
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                marginTop: h2dp(25),
-              }}
-            >
-              <Text style={styles.itemText}>
+            <View style={styles.centeredView}>
+              <Text style={{ color: "white" }}>
                 {localized.t("NOTHING_TO_SHOW")}
               </Text>
             </View>
           )}
-        </View>
+        </SafeAreaView>
       </LinearGradient>
     </TouchableWithoutFeedback>
   );

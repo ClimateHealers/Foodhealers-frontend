@@ -1,4 +1,4 @@
-import { MaterialIcons } from "@expo/vector-icons";
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import Constants from "expo-constants";
 import { LinearGradient } from "expo-linear-gradient";
@@ -81,7 +81,7 @@ const MapScreen = ({ route }: any) => {
 
   const mapRef = useRef<any>(null);
 
-  const API_KEY = Constants?.manifest?.extra?.googleMapsApiKey;
+  const API_KEY = Constants.expoConfig?.extra?.googleMapsApiKey;
 
   const dispatch = useDispatch();
   const languageName = useSelector((state: any) => state.language);
@@ -125,6 +125,7 @@ const MapScreen = ({ route }: any) => {
 
         eventEndDate: endDate ? endDate : 0,
       };
+
       const res = await dispatch(findFood(findFoodData as any) as any);
       const foodEvents = res?.payload?.results?.foodEvents;
       const verifiedFoodEvents = foodEvents?.filter(
@@ -240,292 +241,285 @@ const MapScreen = ({ route }: any) => {
   return (
     <TouchableWithoutFeedback onPress={handlePressOutside}>
       <LinearGradient
-        colors={["#012e17", "#017439", "#009b4d"]}
+        colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
         style={styles.background}
       >
-        <SafeAreaView>
-          <ScrollView keyboardShouldPersistTaps="always">
-            <View style={styles.container}>
-              <FoodhealersHeader />
-              <View style={styles.root}>
-                <View style={[styles.dropdownContainer, { width: "30%" }]}>
-                  <SelectDropdown
-                    buttonStyle={styles.dropdown1BtnStyle}
-                    buttonTextStyle={styles.dropdown1BtnTxtStyle}
-                    renderDropdownIcon={() => {
-                      return (
-                        <MaterialIcons
-                          name="keyboard-arrow-down"
-                          size={18}
-                          color="#B50000"
-                        />
-                      );
-                    }}
-                    dropdownIconPosition={"right"}
-                    dropdownStyle={styles.dropdown1DropdownStyle}
-                    rowStyle={styles.dropdown1RowStyle}
-                    rowTextStyle={styles.dropdown1RowTxtStyle}
-                    data={lang && lang.map((dd) => dd.label)}
-                    onSelect={changeLanguage}
-                    defaultButtonText={selectedLanguage.toUpperCase()}
-                    buttonTextAfterSelection={(itemValue, index) => {
-                      return languageName.toUpperCase();
-                    }}
-                    rowTextForSelection={(item, index) => {
-                      return item;
+        <SafeAreaView style={{ flex: 1 }}>
+          <View style={{ flex: 1 }}>
+            <ScrollView keyboardShouldPersistTaps="always">
+              <View style={styles.container}>
+                <FoodhealersHeader />
+                <View style={styles.root}>
+                  <Ionicons
+                    name="chevron-back"
+                    size={32}
+                    color="white"
+                    onPress={() => {
+                      navigation.goBack(), handlePressOutside();
                     }}
                   />
+                  <View style={styles.item}>
+                    <Text style={styles.itemText}>
+                      {localized.t("FIND_FOOD")}
+                    </Text>
+                  </View>
+                  <BurgerIcon
+                    onOutsidePress={handlePressOutside}
+                    menuClose={menuClose}
+                    menuItem={menuItem}
+                  />
                 </View>
-                <View style={[styles.item, { marginLeft: w2dp(-15) }]}>
-                  <Text style={styles.itemText}>
-                    {localized.t("FIND_FOOD")}
-                  </Text>
+                <Modal
+                  visible={loading}
+                  animationType="slide"
+                  transparent={true}
+                >
+                  <View style={styles.centeredView}>
+                    <View style={styles.modalView}>
+                      <ActivityIndicator size={"large"} />
+                    </View>
+                  </View>
+                </Modal>
+                <GooglePlacesAutocomplete
+                  placeholder={
+                    emptyEvents
+                      ? localized.t("ADDRESS_OR_NEAREST_CROSS_STREETS")
+                      : `${currentLocation?.slice(0, 50)}...`
+                  }
+                  listHoverColor="red"
+                  onPress={async (data, details) => {
+                    setAddress(details);
+                    setLat(details?.geometry?.location?.lat);
+                    setLong(details?.geometry?.location?.lng);
+                    setButtonVisibility(true);
+                    setfullAddress(details?.formatted_address);
+                    const addressComponents = details?.address_components || [];
+                    addressComponents.forEach((component) => {
+                      if (
+                        component.types.includes("administrative_area_level_1")
+                      ) {
+                        const state = component.long_name;
+                        setState(state);
+                      } else {
+                        setState("");
+                      }
+
+                      if (component.types.includes("locality")) {
+                        const city = component.long_name;
+                        setCity(city);
+                      } else {
+                        setCity("");
+                      }
+
+                      if (component.types.includes("postal_code")) {
+                        const postalCode = component.long_name;
+                        setPostalCode(postalCode);
+                      }
+                    });
+                    const findFoodData = {
+                      lat: details?.geometry?.location?.lat
+                        ? details?.geometry?.location?.lat
+                        : 0,
+                      lng: details?.geometry?.location?.lng
+                        ? details?.geometry?.location?.lng
+                        : 0,
+                      alt: 0,
+                      eventStartDate: startDate ? startDate : 0,
+                      fullAddress: details?.formatted_address,
+                      city: city,
+                      state: state,
+                      postalCode: postalCode ? Number(postalCode) : 0,
+
+                      eventEndDate: endDate ? endDate : 0,
+                    };
+                    const response = await dispatch(
+                      findFood(findFoodData as any) as any
+                    );
+                    const foodEvents = response?.payload?.results?.foodEvents;
+                    const verifiedFoodEvents = foodEvents?.filter(
+                      (event: any) => event.status === "approved"
+                    );
+                    if (verifiedFoodEvents?.length > 0) {
+                      setEvents(verifiedFoodEvents);
+                      setEmptyEvents(false);
+                    } else {
+                      setEmptyEvents(true);
+                    }
+                  }}
+                  fetchDetails={true}
+                  textInputProps={{ placeholderTextColor: "#000000" }}
+                  listUnderlayColor="blue"
+                  query={{
+                    key: API_KEY,
+                    language: "en",
+                  }}
+                  styles={{
+                    textInputContainer: {
+                      borderColor: "black",
+                      borderRadius: 3,
+                      marginTop: 12,
+                      width: "100%",
+                    },
+                    description: {
+                      color: "black",
+                      fontSize: h2dp(1.4),
+                      width: "80%",
+                    },
+                    listView: {
+                      width: "100%",
+                      borderRadius: 3,
+                      // zIndex: 100,
+                    },
+                    row: {
+                      height: 40,
+                    },
+                    poweredContainer: {
+                      display: "none",
+                    },
+                    textInput: {
+                      color: "black",
+                      height: 50,
+                      backgroundColor: "white",
+                      paddingLeft: 16,
+                    },
+
+                    predefinedPlacesDescription: { color: "#FFFFFF" },
+                  }}
+                />
+
+                <View
+                  style={[
+                    styles.mapContainer,
+                    {
+                      marginHorizontal: w2dp(-4),
+                    },
+                  ]}
+                >
+                  <MapView
+                    ref={mapRef}
+                    style={{
+                      alignSelf: "stretch",
+                      height: Platform.OS === "ios" ? "55%" : "60%",
+                    }}
+                    initialRegion={{
+                      latitude: latitude ? latitude : 0,
+                      longitude: longitude ? longitude : 0,
+                      latitudeDelta: LATITUDE_DELTA,
+                      longitudeDelta: LONGITUDE_DELTA,
+                    }}
+                    showsUserLocation={true}
+                    followsUserLocation={true}
+                  >
+                    {address ? (
+                      <Marker
+                        pinColor="#FC5A56"
+                        coordinate={{
+                          latitude: lat ? lat : 0,
+                          longitude: long ? long : 0,
+                          latitudeDelta: LATITUDE_DELTA,
+                          longitudeDelta: LONGITUDE_DELTA,
+                        }}
+                        title={localized.t("SELECTED_LOCATION")}
+                      >
+                        <Image
+                          source={require("../../assets/newCurrentLocationPin.png")}
+                          style={styles.markerIcon}
+                        />
+                      </Marker>
+                    ) : null}
+                    {events?.map((marker: any) => {
+                      const coordinates = {
+                        latitude: marker?.address?.lat,
+                        longitude: marker?.address?.lng,
+                      };
+                      return (
+                        <Marker
+                          key={marker?.id}
+                          pinColor="#00693D"
+                          coordinate={coordinates}
+                        >
+                          <View>
+                            <Text
+                              style={{
+                                color: "#FC5A56",
+                                fontSize: h2dp(1.5),
+                                opacity: 0.8,
+                                fontWeight: "bold",
+                              }}
+                            >
+                              {marker?.name}
+                            </Text>
+                            <Image
+                              source={require("../../assets/lastEventLocationPin.png")}
+                              style={styles.markerIcon}
+                            />
+                          </View>
+                        </Marker>
+                      );
+                    })}
+                  </MapView>
+
+                  {emptyEvents ? (
+                    <Text
+                      style={{
+                        marginTop: w2dp(5),
+                        textAlign: "center",
+                        fontSize: h2dp(2.0),
+                        color: "white",
+                      }}
+                    >
+                      {localized.t("NO_EVENTS_FOUND")}
+                    </Text>
+                  ) : (
+                    <Text
+                      style={{
+                        marginTop: w2dp(5),
+                        textAlign: "center",
+                        fontSize: h2dp(2.0),
+                        color: "white",
+                        opacity: 0,
+                      }}
+                    >
+                      {localized.t("NO_EVENTS_FOUND")}
+                    </Text>
+                  )}
                 </View>
-                <BurgerIcon
-                  onOutsidePress={handlePressOutside}
-                  menuClose={menuClose}
-                  menuItem={menuItem}
+              </View>
+            </ScrollView>
+            {emptyEvents ? (
+              <View
+                style={{
+                  paddingBottom: h2dp(2),
+                }}
+              >
+                <PrimaryButton
+                  title={localized.t("HOME")}
+                  buttonStyle={styles.buttonStyles}
+                  titleStyle={styles.titleStyle}
+                  onPress={() => {
+                    navigation.replace("HomeScreen");
+                    handlePressOutside();
+                  }}
                 />
               </View>
-              <Modal visible={loading} animationType="slide" transparent={true}>
-                <View style={styles.centeredView}>
-                  <View style={styles.modalView}>
-                    <ActivityIndicator size={"large"} />
-                  </View>
-                </View>
-              </Modal>
-              <GooglePlacesAutocomplete
-                placeholder={
-                  emptyEvents
-                    ? localized.t("ADDRESS_OR_NEAREST_CROSS_STREETS")
-                    : `${currentLocation?.slice(0, 50)}...`
-                }
-                listHoverColor="red"
-                onPress={async (data, details) => {
-                  setAddress(details);
-                  setLat(details?.geometry?.location?.lat);
-                  setLong(details?.geometry?.location?.lng);
-                  setButtonVisibility(true);
-                  setfullAddress(details?.formatted_address);
-                  const addressComponents = details?.address_components || [];
-                  addressComponents.forEach((component) => {
-                    if (
-                      component.types.includes("administrative_area_level_1")
-                    ) {
-                      const state = component.long_name;
-                      setState(state);
-                    } else {
-                      setState("");
-                    }
-
-                    if (component.types.includes("locality")) {
-                      const city = component.long_name;
-                      setCity(city);
-                    } else {
-                      setCity("");
-                    }
-
-                    if (component.types.includes("postal_code")) {
-                      const postalCode = component.long_name;
-                      setPostalCode(postalCode);
-                    }
-                  });
-                  const findFoodData = {
-                    lat: details?.geometry?.location?.lat
-                      ? details?.geometry?.location?.lat
-                      : 0,
-                    lng: details?.geometry?.location?.lng
-                      ? details?.geometry?.location?.lng
-                      : 0,
-                    alt: 0,
-                    eventStartDate: startDate ? startDate : 0,
-                    fullAddress: details?.formatted_address,
-                    city: city,
-                    state: state,
-                    postalCode: postalCode ? Number(postalCode) : 0,
-
-                    eventEndDate: endDate ? endDate : 0,
-                  };
-                  const response = await dispatch(
-                    findFood(findFoodData as any) as any
-                  );
-                  const foodEvents = response?.payload?.results?.foodEvents;
-                  const verifiedFoodEvents = foodEvents?.filter(
-                    (event: any) => event.status === "approved"
-                  );
-                  if (verifiedFoodEvents?.length > 0) {
-                    setEvents(verifiedFoodEvents);
-                    setEmptyEvents(false);
-                  } else {
-                    setEmptyEvents(true);
-                  }
-                }}
-                fetchDetails={true}
-                textInputProps={{ placeholderTextColor: "#000000" }}
-                listUnderlayColor="blue"
-                query={{
-                  key: API_KEY,
-                  language: "en",
-                }}
-                styles={{
-                  textInputContainer: {
-                    borderColor: "black",
-                    borderRadius: 3,
-                    marginTop: 12,
-                    width: "100%",
-                  },
-                  description: {
-                    color: "black",
-                    fontSize: h2dp(1.4),
-                    width: "80%",
-                  },
-                  listView: {
-                    width: "100%",
-                    borderRadius: 3,
-                    // zIndex: 100,
-                  },
-                  row: {
-                    height: 40,
-                  },
-                  poweredContainer: {
-                    display: "none",
-                  },
-                  textInput: {
-                    color: "black",
-                    height: 50,
-                    backgroundColor: "white",
-                    paddingLeft: 16,
-                  },
-
-                  predefinedPlacesDescription: { color: "#FFFFFF" },
-                }}
-              />
-
+            ) : !emptyEvents && buttonVisibility ? (
               <View
-                style={[
-                  styles.mapContainer,
-                  {
-                    marginHorizontal: w2dp(-4),
-                  },
-                ]}
+                style={{
+                  paddingBottom: h2dp(2),
+                }}
               >
-                <MapView
-                  ref={mapRef}
-                  provider={"google"}
-                  style={{
-                    alignSelf: "stretch",
-                    height: Platform.OS === "ios" ? "55%" : "60%",
+                <PrimaryButton
+                  title={localized.t("NEXT")}
+                  buttonStyle={styles.buttonStyles}
+                  titleStyle={styles.titleStyle}
+                  onPress={() => {
+                    clickHandler();
+                    handlePressOutside();
                   }}
-                  initialRegion={{
-                    latitude: latitude ? latitude : 0,
-                    longitude: longitude ? longitude : 0,
-                    latitudeDelta: LATITUDE_DELTA,
-                    longitudeDelta: LONGITUDE_DELTA,
-                  }}
-                  showsUserLocation={true}
-                  followsUserLocation={true}
-                  customMapStyle={mapStyle}
-                >
-                  {address ? (
-                    <Marker
-                      pinColor="#FC5A56"
-                      coordinate={{
-                        latitude: lat ? lat : 0,
-                        longitude: long ? long : 0,
-                        latitudeDelta: LATITUDE_DELTA,
-                        longitudeDelta: LONGITUDE_DELTA,
-                      }}
-                      title={localized.t("SELECTED_LOCATION")}
-                    >
-                      <Image
-                        source={require("../../assets/newCurrentLocationPin.png")}
-                        style={styles.markerIcon}
-                      />
-                    </Marker>
-                  ) : null}
-                  {events?.map((marker: any) => {
-                    const coordinates = {
-                      latitude: marker?.address?.lat,
-                      longitude: marker?.address?.lng,
-                    };
-                    return (
-                      <Marker
-                        key={marker?.id}
-                        pinColor="#00693D"
-                        coordinate={coordinates}
-                      >
-                        <View>
-                          <Text
-                            style={{
-                              color: "#FC5A56",
-                              fontSize: h2dp(1.5),
-                              opacity: 0.8,
-                              fontWeight: "500",
-                            }}
-                          >
-                            {marker?.name}
-                          </Text>
-                          <Image
-                            source={require("../../assets/lastEventLocationPin.png")}
-                            style={styles.markerIcon}
-                          />
-                        </View>
-                      </Marker>
-                    );
-                  })}
-                </MapView>
-
-                {emptyEvents ? (
-                  <Text
-                    style={{
-                      marginTop: 5,
-                      textAlign: "center",
-                      fontSize: h2dp(2.0),
-                      color: "white",
-                    }}
-                  >
-                    {localized.t("NO_EVENTS_FOUND")}
-                  </Text>
-                ) : (
-                  <Text
-                    style={{
-                      marginTop: 5,
-                      textAlign: "center",
-                      fontSize: h2dp(2.0),
-                      color: "white",
-                      opacity: 0,
-                    }}
-                  >
-                    {localized.t("NO_EVENTS_FOUND")}
-                  </Text>
-                )}
-
-                {emptyEvents ? (
-                  <View>
-                    <PrimaryButton
-                      title={localized.t("HOME")}
-                      buttonStyle={styles.buttonStyles}
-                      titleStyle={styles.titleStyle}
-                      onPress={() => {
-                        navigation.navigate("HomeScreen"), handlePressOutside();
-                      }}
-                    />
-                  </View>
-                ) : !emptyEvents && buttonVisibility ? (
-                  <View>
-                    <PrimaryButton
-                      title={localized.t("NEXT")}
-                      buttonStyle={styles.buttonStyles}
-                      titleStyle={styles.titleStyle}
-                      onPress={() => {
-                        clickHandler(), handlePressOutside();
-                      }}
-                    />
-                  </View>
-                ) : null}
+                />
               </View>
-            </View>
-          </ScrollView>
+            ) : null}
+          </View>
         </SafeAreaView>
       </LinearGradient>
     </TouchableWithoutFeedback>

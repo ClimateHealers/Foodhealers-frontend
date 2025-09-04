@@ -14,24 +14,7 @@ export const signupSchema = Yup.object().shape({
     .required(`${localized.t("EMAIL_IS_REQUIRED")}`),
   password: Yup.string()
     .trim()
-    .matches(/\w*[a-z]\w*/, `${localized.t("PASSWORD_MUST_HAVE_SMALL")}`)
-    .matches(/\w*[A-Z]\w*/, `${localized.t("PASSWORD_MUST_HAVE_CAPS")}`)
-    .matches(/\d/, `${localized.t("PASSWORD_MUST_HAVE_NUMBERS")}`)
-    .matches(
-      /[!@#$%^&*()\-_"=+{}; :,<.>]/,
-      `${localized.t("PASSWORD_MUST_HAVE_CHAR")}`
-    )
-    .min(
-      6,
-      ({ min }) =>
-        `${localized.t("PASSWORD_MUST_BE_LEAST")} ${min} ${localized.t(
-          "CHARACTERS"
-        )}`
-    )
     .required(`${localized.t("PASSWORD_IS_REQUIRED")}`),
-  confirmPassword: Yup.string()
-    .oneOf([Yup.ref("password")], `${localized.t("PASSWORDS_DO_NOT_MATCH")}`)
-    .required(`${localized.t("CONFIRM_PASSWORD_IS_REQUIRED")}`),
 });
 
 export const loginSchema = Yup.object().shape({
@@ -78,6 +61,11 @@ export const postEventSchema = Yup.object().shape({
     /^[0-9]{1,3}$/,
     `${localized.t("PLEASE_ENTER_A_VALID_VOLUNTEER")}`
   ),
+});
+export const forgotPasswordValidationSchema = Yup.object().shape({
+  email: Yup.string()
+    .email(localized.t("PLEASE_ENTER_YOUR_EMAIL"))
+    .required(localized.t("EMAIL_IS_REQUIRED")),
 });
 
 export const AddDonations = Yup.object().shape({

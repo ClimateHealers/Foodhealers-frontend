@@ -8,7 +8,6 @@ import {
   FlatList,
   Keyboard,
   Modal,
-  SafeAreaView,
   ScrollView,
   Text,
   TouchableOpacity,
@@ -29,6 +28,7 @@ import {
   notfifications,
   putNotifications,
 } from "../redux/actions/notificationAction";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function NotificationScreen() {
   const navigation: any = useNavigation();
@@ -126,7 +126,7 @@ export default function NotificationScreen() {
             >
               <Ionicons
                 style={{ paddingTop: h2dp(0.5), marginRight: w2dp(1) }}
-                name="ios-time-outline"
+                name="time-outline"
                 size={20}
                 color="black"
               />
@@ -144,7 +144,7 @@ export default function NotificationScreen() {
           <Text
             style={{
               marginLeft: w2dp(3),
-              fontWeight: "500",
+              fontWeight: "bold",
               fontSize: h2dp(1.6),
               lineHeight: 30,
               marginBottom: h2dp(1.5),
@@ -170,7 +170,9 @@ export default function NotificationScreen() {
               name="chevron-back"
               size={32}
               color="white"
-              onPress={() => {navigation.goBack(), handlePressOutside()}}
+              onPress={() => {
+                navigation.goBack(), handlePressOutside();
+              }}
             />
             <View style={styles.item}>
               <Text style={styles.itemText}>{"Notifications"}</Text>
@@ -241,7 +243,7 @@ export default function NotificationScreen() {
                   >
                     <Ionicons
                       style={{ paddingTop: h2dp(1.5), marginRight: w2dp(1) }}
-                      name="ios-time-outline"
+                      name="time-outline"
                       size={20}
                       color="black"
                     />
@@ -259,7 +261,7 @@ export default function NotificationScreen() {
                 <Text
                   style={{
                     marginLeft: w2dp(3),
-                    fontWeight: "500",
+                    fontWeight: "bold",
                     fontSize: h2dp(1.6),
                     lineHeight: 30,
                   }}
@@ -292,6 +294,7 @@ export default function NotificationScreen() {
                       backgroundColor: "green",
                       paddingHorizontal: 20,
                       paddingVertical: 10,
+                      borderRadius: 5,
                     }}
                     titleStyle={{
                       fontSize: h2dp(2),
@@ -319,16 +322,8 @@ export default function NotificationScreen() {
               )}
             />
           ) : (
-            <View
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                marginTop: h2dp(35),
-                marginBottom: h2dp(10),
-              }}
-            >
-              <Text style={styles.itemText}>
+            <View style={[styles.centeredView, { flex: 1 }]}>
+              <Text style={{ color: "white" }}>
                 {localized.t("NOTHING_TO_SHOW")}
               </Text>
             </View>

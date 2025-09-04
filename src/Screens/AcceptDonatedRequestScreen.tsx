@@ -19,11 +19,14 @@ import {
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { Text, TextInput } from "react-native-paper";
 import PrimaryButton from "../Components/PrimaryButton";
-import { AddRequest } from "../Components/Validation";
+import { AddRequest } from "../Components/validation";
 
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import PhoneInput from "react-native-phone-number-input";
-import { heightPercentageToDP as h2dp } from "react-native-responsive-screen";
+import {
+  heightPercentageToDP as h2dp,
+  widthPercentageToDP as w2dp,
+} from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
@@ -76,7 +79,7 @@ const AcceptDonatedRequestScreen = ({ route }: any) => {
 
   const dispatch = useDispatch();
 
-  const API_KEY = Constants?.manifest?.extra?.googleMapsApiKey;
+  const API_KEY = Constants.expoConfig?.extra?.googleMapsApiKey;
 
   const eventDateTime = moment(selectedDate).utc().unix();
 
@@ -119,145 +122,149 @@ const AcceptDonatedRequestScreen = ({ route }: any) => {
         colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
         style={styles.background}
       >
-        <SafeAreaView>
-          <ScrollView keyboardShouldPersistTaps="handled">
-            <StatusBar animated={true} backgroundColor="auto" />
-            <View style={styles.container}>
-              <FoodhealersHeader />
-              <View style={styles.root}>
-                <Ionicons
-                  name="chevron-back"
-                  size={32}
-                  color="white"
-                  onPress={() => {
-                    navigation.goBack(), handlePressOutside();
-                  }}
-                />
-                <View style={styles.item}>
-                  <Text style={styles.itemText}>{title}</Text>
-                </View>
-                <BurgerIcon
-                  onOutsidePress={handlePressOutside}
-                  menuClose={menuClose}
-                />
-              </View>
-              <Modal visible={loading} animationType="slide" transparent={true}>
-                <View style={styles.centeredView}>
-                  <View style={styles.modalView}>
-                    <ActivityIndicator size={"large"} />
-                  </View>
-                </View>
-              </Modal>
-              <Formik
-                validationSchema={AddRequest}
-                initialValues={{
-                  foodItem: foodItem,
-                  quantity: quantity,
-                  phoneNumber: "",
-                  lat: 0,
-                  long: 0,
-                  address: "",
-                  city: "",
-                  state: "",
-                  postalCode: "",
-                  zipCode: "",
+        <SafeAreaView style={{ flex: 1 }}>
+          <StatusBar animated={true} backgroundColor="auto" />
+          <View style={styles.container}>
+            <FoodhealersHeader />
+            <View style={styles.root}>
+              <Ionicons
+                name="chevron-back"
+                size={32}
+                color="white"
+                onPress={() => {
+                  navigation.goBack(), handlePressOutside();
                 }}
-                onSubmit={async ({
-                  foodItem,
-                  quantity,
-                  lat,
-                  long,
-                  address,
-                  phoneNumber,
-                  city,
-                  state,
-                  zipCode,
-                }) => {
-                  setLoading(true);
-                  try {
-                    setResponse({
-                      loading: true,
-                      message: "",
-                      error: false,
-                    });
-                    const data = {
-                      donationId: id,
-                      pickupRequestTypeId: 4,
-                      itemName: foodItem,
-                      quantity: quantity,
-                      phoneNumber: phoneNumber,
-                      dropDate: eventDateTime,
-                      lat: lat,
-                      lng: long,
-                      fullAddress: address,
-                      city: city,
-                      state: state,
-                      postalCode: Number(zipCode) ? Number(zipCode) : 0,
-                    };
-                    const res = await dispatch(
-                      acceptDonation(data as any) as any
-                    );
-                    if (res?.payload?.success == true) {
-                      setLoading(false);
-                      setResponse({
-                        loading: false,
-                        message: "REQUEST_ADDED_SUCCESSFULLY",
-                        error: false,
-                      });
-                      setLoading(false);
-                      Alert.alert(
-                        `${localized.t("REQUEST_ADDED")}`,
-                        `${localized.t(
-                          "WE_HAVE_SUCCESSFULLY_ADDED_YOUR_REQUEST"
-                        )}`,
-                        [
-                          {
-                            text: `${localized.t("OK")}`,
-                            onPress: () => {
-                              handlePressOutside(),
-                                navigation.navigate("RequestCreatedScreen", {
-                                  itemTypeId: itemTypeId,
-                                  title: title,
-                                  address: address,
-                                  eventDateTime: selectedDate,
-                                  foodItem: foodItem,
-                                });
-                            },
-                          },
-                        ],
-                        { cancelable: false }
-                      );
-                    } else {
-                      setLoading(false);
-                      console.log("ERROR");
-                    }
-                  } catch (err: any) {
+              />
+              <View style={styles.item}>
+                <Text style={styles.itemText}>{title}</Text>
+              </View>
+              <BurgerIcon
+                onOutsidePress={handlePressOutside}
+                menuClose={menuClose}
+              />
+            </View>
+            <Modal visible={loading} animationType="slide" transparent={true}>
+              <View style={styles.centeredView}>
+                <View style={styles.modalView}>
+                  <ActivityIndicator size={"large"} />
+                </View>
+              </View>
+            </Modal>
+            <Formik
+              validationSchema={AddRequest}
+              initialValues={{
+                foodItem: foodItem,
+                quantity: quantity,
+                phoneNumber: "",
+                lat: 0,
+                long: 0,
+                address: "",
+                city: "",
+                state: "",
+                postalCode: "",
+                zipCode: "",
+              }}
+              onSubmit={async ({
+                foodItem,
+                quantity,
+                lat,
+                long,
+                address,
+                phoneNumber,
+                city,
+                state,
+                zipCode,
+              }) => {
+                setLoading(true);
+                try {
+                  setResponse({
+                    loading: true,
+                    message: "",
+                    error: false,
+                  });
+                  const data = {
+                    donationId: id,
+                    pickupRequestTypeId: 4,
+                    itemName: foodItem,
+                    quantity: quantity,
+                    phoneNumber: phoneNumber,
+                    dropDate: eventDateTime,
+                    lat: lat,
+                    lng: long,
+                    fullAddress: address,
+                    city: city,
+                    state: state,
+                    postalCode: Number(zipCode) ? Number(zipCode) : 0,
+                  };
+                  const res = await dispatch(
+                    acceptDonation(data as any) as any
+                  );
+                  if (res?.payload?.success == true) {
                     setLoading(false);
                     setResponse({
                       loading: false,
-                      message: err.message,
-                      error: true,
+                      message: "REQUEST_ADDED_SUCCESSFULLY",
+                      error: false,
                     });
+                    setLoading(false);
                     Alert.alert(
-                      `${localized.t("REQUEST_NOT_ADDED")}`,
-                      `${err.message}`,
-                      [{ text: `${localized.t("OK")}` }],
+                      `${localized.t("REQUEST_ADDED")}`,
+                      `${localized.t(
+                        "WE_HAVE_SUCCESSFULLY_ADDED_YOUR_REQUEST"
+                      )}`,
+                      [
+                        {
+                          text: `${localized.t("OK")}`,
+                          onPress: () => {
+                            handlePressOutside(),
+                              navigation.navigate("RequestCreatedScreen", {
+                                itemTypeId: itemTypeId,
+                                title: title,
+                                address: address,
+                                eventDateTime: selectedDate,
+                                foodItem: foodItem,
+                              });
+                          },
+                        },
+                      ],
                       { cancelable: false }
                     );
+                  } else {
+                    setLoading(false);
+                    console.log("ERROR");
                   }
-                }}
-              >
-                {({
-                  handleSubmit,
-                  handleBlur,
-                  handleChange,
-                  values,
-                  setFieldValue,
-                  errors,
-                  touched,
-                  isValid,
-                }) => (
-                  <>
+                } catch (err: any) {
+                  setLoading(false);
+                  setResponse({
+                    loading: false,
+                    message: err.message,
+                    error: true,
+                  });
+                  Alert.alert(
+                    `${localized.t("REQUEST_NOT_ADDED")}`,
+                    `${err.message}`,
+                    [{ text: `${localized.t("OK")}` }],
+                    { cancelable: false }
+                  );
+                }
+              }}
+            >
+              {({
+                handleSubmit,
+                handleBlur,
+                handleChange,
+                values,
+                setFieldValue,
+                errors,
+                touched,
+                isValid,
+              }) => (
+                <>
+                  <ScrollView
+                    keyboardShouldPersistTaps="handled"
+                    contentContainerStyle={{ paddingBottom: 20 }}
+                    style={{ flex: 1 }}
+                  >
                     <TextInput
                       onChangeText={handleChange("foodItem")}
                       onBlur={handleBlur("foodItem")}
@@ -507,6 +514,7 @@ const AcceptDonatedRequestScreen = ({ route }: any) => {
                       <PhoneInput
                         ref={phoneInput}
                         placeholder={localized.t("PHONE_NUMBER")}
+                        defaultCode="US"
                         onChangeText={(text) => {
                           const callingCode =
                             phoneInput.current?.getCallingCode();
@@ -518,36 +526,36 @@ const AcceptDonatedRequestScreen = ({ route }: any) => {
                             width: "100%",
                             alignContent: "center",
                             justifyContent: "center",
+                            borderRadius: w2dp(1),
+                            overflow: "hidden",
                           },
                         ]}
                         value={values.phoneNumber}
                         textInputProps={{ placeholderTextColor: "black" }}
-                        textInputStyle={{}}
-                      />
-                      <Text style={styles.inputError}>
-                        {errors?.phoneNumber}
-                      </Text>
-                    </View>
-                    <View
-                      style={{
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        marginTop: h2dp(1),
-                      }}
-                    >
-                      <PrimaryButton
-                        title={localized.t("SUBMIT")}
-                        buttonStyle={styles.buttonStyles}
-                        titleStyle={styles.titleStyle}
-                        onPress={handleSubmit}
+                        textInputStyle={{
+                          height: h2dp(8),
+                        }}
                       />
                     </View>
-                  </>
-                )}
-              </Formik>
-            </View>
-          </ScrollView>
+                    <Text style={styles.inputError}>{errors?.phoneNumber}</Text>
+                  </ScrollView>
+                  <View style={{ paddingBottom: h2dp(2) }}>
+                    <PrimaryButton
+                      title={localized.t("SUBMIT")}
+                      buttonStyle={[
+                        styles.buttonStyles,
+                        {
+                          marginHorizontal: 0,
+                        },
+                      ]}
+                      titleStyle={styles.titleStyle}
+                      onPress={handleSubmit}
+                    />
+                  </View>
+                </>
+              )}
+            </Formik>
+          </View>
         </SafeAreaView>
       </LinearGradient>
     </TouchableWithoutFeedback>

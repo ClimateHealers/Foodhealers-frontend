@@ -19,11 +19,14 @@ import {
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { Text, TextInput } from "react-native-paper";
 import PrimaryButton from "../Components/PrimaryButton";
-import { AddDonations } from "../Components/Validation";
+import { AddDonations } from "../Components/validation";
 
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import PhoneInput from "react-native-phone-number-input";
-import { heightPercentageToDP as h2dp } from "react-native-responsive-screen";
+import {
+  heightPercentageToDP as h2dp,
+  widthPercentageToDP as w2dp,
+} from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
@@ -58,7 +61,7 @@ const AddDonationsScreen = ({ route }: any) => {
 
   const dispatch = useDispatch();
 
-  const API_KEY = Constants?.manifest?.extra?.googleMapsApiKey;
+  const API_KEY = Constants?.expoConfig?.extra?.googleMapsApiKey;
 
   const eventDateTime = moment(selectedDate).utc().unix();
 
@@ -91,167 +94,165 @@ const AddDonationsScreen = ({ route }: any) => {
         colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
         style={styles.background}
       >
-        <SafeAreaView>
-          <ScrollView keyboardShouldPersistTaps="handled">
-            <StatusBar animated={true} backgroundColor="auto" />
-            <View style={styles.container}>
-              <FoodhealersHeader />
-              <View style={styles.root}>
-                <Ionicons
-                  name="chevron-back"
-                  size={32}
-                  color="white"
-                  onPress={() => {
-                    handlePressOutside(),
-                      navigation.navigate("SeeExistingRequestScreen", {
-                        latitude: latitude,
-                        longitude: longitude,
-                        itemTypeId: itemTypeId,
-                        title: title,
-                      });
-                  }}
-                />
-                <View style={styles.item}>
-                  <Text style={styles.itemText}>{title}</Text>
-                </View>
-                <BurgerIcon
-                  onOutsidePress={handlePressOutside}
-                  menuClose={menuClose}
-                />
-              </View>
-              <Modal visible={loading} animationType="slide" transparent={true}>
-                <View style={styles.centeredView}>
-                  <View style={styles.modalView}>
-                    <ActivityIndicator size={"large"} />
-                  </View>
-                </View>
-              </Modal>
-              <Formik
-                validationSchema={AddDonations}
-                initialValues={{
-                  foodItem: "",
-                  quantity: "",
-                  phoneNumber: "",
-                  flatNo: "",
-                  lat: 0,
-                  long: 0,
-                  address: "",
-                  city: "",
-                  state: "",
-                  postalCode: "",
-                  zipCode: "",
-                }}
-                onSubmit={async ({
-                  foodItem,
-                  quantity,
-                  lat,
-                  long,
-                  address,
-                  phoneNumber,
-                  flatNo,
-                  city,
-                  state,
-                  zipCode,
-                }) => {
-                  setLoading(true);
-                  try {
-                    setResponse({
-                      loading: true,
-                      message: "",
-                      error: false,
+        <SafeAreaView style={{ flex: 1 }}>
+          <StatusBar animated={true} backgroundColor="auto" />
+          <View style={styles.container}>
+            <FoodhealersHeader />
+            <View style={styles.root}>
+              <Ionicons
+                name="chevron-back"
+                size={32}
+                color="white"
+                onPress={() => {
+                  handlePressOutside(),
+                    navigation.navigate("SeeExistingRequestScreen", {
+                      latitude,
+                      longitude,
+                      itemTypeId,
+                      title,
                     });
-                    const data = {
-                      itemTypeId: itemTypeId,
-                      foodName: foodItem,
-                      quantity: quantity,
-                      phoneNumber: phoneNumber,
-                      pickupDate: eventDateTime,
-                      lat: lat,
-                      lng: long,
-                      flatNo: flatNo,
-                      fullAddress: address,
-                      city: city,
-                      state: state,
-                      postalCode: Number(zipCode) ? Number(zipCode) : 0,
-                    };
-                    const res = await dispatch(
-                      postDonation(data as any) as any
-                    );
-                    if (res?.payload?.success == true) {
-                      setLoading(false);
-                      setResponse({
-                        loading: false,
-                        message: `${localized.t(
-                          "DONATION_ADDED_SUCCESSFULLY"
-                        )}`,
-                        error: false,
-                      });
-                      setLoading(false);
-                      Alert.alert(
-                        `${localized.t("THAN_YOU_FOR_DONATION")}`,
-                        `${localized.t(
-                          "WH_HAVE_SUCCESSFULLY_ADDED_YOUR_DONATION"
-                        )}`,
-                        [
-                          {
-                            text: `${localized.t("OK")}`,
-                            onPress: () => {
-                              handlePressOutside(),
-                                navigation.navigate("VolunteerThankYouScreen", {
-                                  itemTypeId: itemTypeId,
-                                  title: title,
-                                  latitude: latitude,
-                                  longitude: longitude,
-                                });
-                            },
-                          },
-                        ],
-                        { cancelable: false }
-                      );
-                    } else {
-                      setLoading(false);
-                      console.log("ERROR");
-                    }
-                  } catch (err: any) {
+                }}
+              />
+              <View style={styles.item}>
+                <Text style={styles.itemText}>
+                  {localized.t("DONATE_FOOD")}
+                </Text>
+              </View>
+              <BurgerIcon
+                onOutsidePress={handlePressOutside}
+                menuClose={menuClose}
+              />
+            </View>
+
+            <Modal visible={loading} animationType="slide" transparent={true}>
+              <View style={styles.centeredView}>
+                <View style={styles.modalView}>
+                  <ActivityIndicator size={"large"} />
+                </View>
+              </View>
+            </Modal>
+
+            <Formik
+              validationSchema={AddDonations}
+              initialValues={{
+                foodItem: "",
+                quantity: "",
+                phoneNumber: "",
+                flatNo: "",
+                lat: 0,
+                long: 0,
+                address: "",
+                city: "",
+                state: "",
+                postalCode: "",
+                zipCode: "",
+              }}
+              onSubmit={async ({
+                foodItem,
+                quantity,
+                lat,
+                long,
+                address,
+                phoneNumber,
+                flatNo,
+                city,
+                state,
+                zipCode,
+              }) => {
+                setLoading(true);
+                try {
+                  setResponse({ loading: true, message: "", error: false });
+                  const data = {
+                    itemTypeId,
+                    foodName: foodItem,
+                    quantity,
+                    phoneNumber,
+                    pickupDate: eventDateTime,
+                    lat,
+                    lng: long,
+                    flatNo,
+                    fullAddress: address,
+                    city,
+                    state,
+                    postalCode: Number(zipCode) || 0,
+                  };
+                  const res = await dispatch(postDonation(data as any) as any);
+                  if (res?.payload?.success) {
                     setLoading(false);
                     setResponse({
                       loading: false,
-                      message: err.message,
-                      error: true,
+                      message: localized.t("DONATION_ADDED_SUCCESSFULLY"),
+                      error: false,
                     });
                     Alert.alert(
-                      `${localized.t("DONATION_NOT_ADDED")}`,
-                      `${err.message}`,
-                      [{ text: `${localized.t("OK")}` }],
+                      localized.t("THAN_YOU_FOR_DONATION"),
+                      localized.t("WH_HAVE_SUCCESSFULLY_ADDED_YOUR_DONATION"),
+                      [
+                        {
+                          text: localized.t("OK"),
+                          onPress: () => {
+                            handlePressOutside(),
+                              navigation.navigate("VolunteerThankYouScreen", {
+                                itemTypeId,
+                                title,
+                                latitude,
+                                longitude,
+                              });
+                          },
+                        },
+                      ],
                       { cancelable: false }
                     );
+                  } else {
+                    setLoading(false);
+                    console.log("ERROR");
                   }
-                }}
-              >
-                {({
-                  handleSubmit,
-                  handleBlur,
-                  handleChange,
-                  values,
-                  setFieldValue,
-                  errors,
-                  touched,
-                  isValid,
-                }) => (
-                  <>
+                } catch (err: any) {
+                  setLoading(false);
+                  setResponse({
+                    loading: false,
+                    message: err.message,
+                    error: true,
+                  });
+                  Alert.alert(
+                    localized.t("DONATION_NOT_ADDED"),
+                    err.message,
+                    [{ text: localized.t("OK") }],
+                    { cancelable: false }
+                  );
+                }
+              }}
+            >
+              {({
+                handleSubmit,
+                handleBlur,
+                handleChange,
+                values,
+                setFieldValue,
+                errors,
+                touched,
+                isValid,
+              }) => (
+                <>
+                  <ScrollView
+                    keyboardShouldPersistTaps="handled"
+                    contentContainerStyle={{ paddingBottom: 20 }}
+                    style={{ flex: 1 }}
+                  >
                     <TextInput
                       onChangeText={handleChange("foodItem")}
                       onBlur={handleBlur("foodItem")}
                       value={values?.foodItem}
                       placeholder={
                         itemTypeId == 1
-                          ? `${localized.t("FOOD_ITEM")}`
-                          : `${localized.t("SUPPLIES_LIST")}`
+                          ? localized.t("FOOD_ITEM")
+                          : localized.t("SUPPLIES_LIST")
                       }
                       placeholderTextColor={"black"}
                       style={styles.textInput}
                     />
                     <Text style={styles.inputError}>{errors?.foodItem}</Text>
+
                     <TextInput
                       onChangeText={handleChange("quantity")}
                       onBlur={handleBlur("quantity")}
@@ -261,6 +262,7 @@ const AddDonationsScreen = ({ route }: any) => {
                       style={styles.textInput}
                     />
                     <Text style={styles.inputError}>{errors?.quantity}</Text>
+
                     <TextInput
                       onChangeText={handleChange("flatNo")}
                       onBlur={handleBlur("flatNo")}
@@ -339,199 +341,159 @@ const AddDonationsScreen = ({ route }: any) => {
                     <Text style={styles.inputError}>{errors.address}</Text>
                     <View
                       style={{
-                        display: "flex",
                         flexDirection: "row",
-                        alignItems: "center",
                         justifyContent: "space-between",
                       }}
                     >
-                      <View
-                        style={[
-                          styles.dateTimePickerContainer,
-                          { backgroundColor: "#deddd9" },
-                        ]}
-                      >
-                        <TextInput
-                          onChangeText={handleChange("city")}
-                          onBlur={handleBlur("city")}
-                          value={values?.city}
-                          placeholder={localized.t("CITY")}
-                          placeholderTextColor={"black"}
-                          style={[
-                            styles.textInput,
-                            { backgroundColor: "#deddd9" },
-                          ]}
-                          editable={false}
-                        />
-                      </View>
-                      <View
-                        style={[
-                          styles.dateTimePickerContainer,
-                          { backgroundColor: "#deddd9" },
-                        ]}
-                      >
-                        <TextInput
-                          onChangeText={handleChange("state")}
-                          onBlur={handleBlur("state")}
-                          value={values?.state}
-                          placeholder={localized.t("STATE")}
-                          placeholderTextColor={"black"}
-                          style={[
-                            styles.textInput,
-                            { backgroundColor: "#deddd9" },
-                          ]}
-                          editable={false}
-                        />
-                      </View>
-                    </View>
-                    <View>
                       <TextInput
-                        onChangeText={handleChange("zipCode")}
-                        onBlur={handleBlur("zipCode")}
-                        value={values?.zipCode}
-                        keyboardType="numeric"
-                        placeholder={localized.t("ZIP_CODE")}
+                        value={values.city}
+                        editable={false}
+                        style={[
+                          styles.textInput,
+                          { flex: 1, backgroundColor: "#deddd9" },
+                        ]}
+                        placeholder={localized.t("CITY")}
                         placeholderTextColor={"black"}
-                        style={[styles.textInput]}
+                      />
+                      <TextInput
+                        value={values.state}
+                        editable={false}
+                        style={[
+                          styles.textInput,
+                          {
+                            flex: 1,
+                            backgroundColor: "#deddd9",
+                            marginLeft: 10,
+                          },
+                        ]}
+                        placeholder={localized.t("STATE")}
+                        placeholderTextColor={"black"}
                       />
                     </View>
 
+                    <TextInput
+                      onChangeText={handleChange("zipCode")}
+                      onBlur={handleBlur("zipCode")}
+                      value={values?.zipCode}
+                      keyboardType="numeric"
+                      placeholder={localized.t("ZIP_CODE")}
+                      placeholderTextColor={"black"}
+                      style={[styles.textInput]}
+                    />
                     <Text style={styles.inputError}>{errors?.zipCode}</Text>
+
                     <View
                       style={{
-                        display: "flex",
                         flexDirection: "row",
-                        alignItems: "center",
                         justifyContent: "space-between",
                       }}
                     >
                       <TouchableOpacity onPress={() => setShowDatePicker(true)}>
                         <View style={styles.dateTimePickerContainer}>
-                          <View>
-                            <Text
-                              style={{
-                                color: "black",
-                                fontSize: h2dp(1.3),
-                                marginBottom: 5,
-                                marginLeft: 15,
-                              }}
-                            >
-                              {localized.t("PICKUP_DATE")}
-                            </Text>
-                            <Text
-                              style={{
-                                color: "black",
-                                fontSize: h2dp(1.3),
-                                marginBottom: 5,
-                                marginLeft: 15,
-                              }}
-                            >
-                              {moment(selectedDate).format("MMM, DD, YYYY")}
-                            </Text>
-                          </View>
-                          {showDatePicker && (
-                            <DateTimePickerModal
-                              isVisible={showDatePicker}
-                              minimumDate={new Date()}
-                              date={
-                                selectedDate
-                                  ? new Date(selectedDate)
-                                  : undefined
-                              }
-                              mode="datetime"
-                              is24Hour={true}
-                              onConfirm={handleDateChange}
-                              onCancel={() => setShowDatePicker(false)}
-                            />
-                          )}
+                          <Text
+                            style={{
+                              color: "black",
+                              marginLeft: 15,
+                              fontSize: h2dp(1.3),
+                              marginBottom: 5,
+                            }}
+                          >
+                            {localized.t("PICKUP_DATE")}
+                          </Text>
+                          <Text
+                            style={{
+                              color: "black",
+                              marginLeft: 15,
+                              fontSize: h2dp(1.3),
+                              marginBottom: 5,
+                            }}
+                          >
+                            {moment(selectedDate).format("MMM, DD, YYYY")}
+                          </Text>
                         </View>
                       </TouchableOpacity>
-                      <TouchableOpacity
-                        disabled={true}
-                        onPress={() => setShowDatePicker(true)}
-                      >
-                        <View
-                          style={[
-                            styles.dateTimePickerContainer,
-                            { backgroundColor: "#deddd9" },
-                          ]}
-                        >
-                          <View>
-                            <Text
-                              style={{
-                                color: "black",
-                                fontSize: h2dp(1.3),
-                                width: 200,
-                                marginBottom: 5,
-                                marginLeft: 15,
-                              }}
-                            >
-                              {localized.t("PICKUP_TIME")}
-                            </Text>
-                            <Text
-                              style={{
-                                color: "black",
-                                fontSize: h2dp(1.3),
-                                marginBottom: 5,
-                                marginLeft: 15,
-                              }}
-                            >
-                              {moment(selectedDate).format("hh:mm A")}
-                            </Text>
-                          </View>
-                        </View>
-                      </TouchableOpacity>
-                    </View>
-                    <View
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                    >
-                      <PhoneInput
-                        ref={phoneInput}
-                        placeholder={localized.t("PHONE_NUMBER")}
-                        onChangeText={(text) => {
-                          const callingCode =
-                            phoneInput.current?.getCallingCode();
-                          setFieldValue("phoneNumber", `${callingCode}${text}`);
-                        }}
-                        containerStyle={[
-                          styles.textArea,
-                          {
-                            width: "100%",
-                            alignContent: "center",
-                            justifyContent: "center",
-                          },
+
+                      <View
+                        style={[
+                          styles.dateTimePickerContainer,
+                          { backgroundColor: "#deddd9" },
                         ]}
-                        value={values.phoneNumber}
-                        textInputProps={{ placeholderTextColor: "black" }}
-                        textInputStyle={{}}
-                      />
-                      <Text style={styles.inputError}>
-                        {errors?.phoneNumber}
-                      </Text>
+                      >
+                        <Text
+                          style={{
+                            color: "black",
+                            marginLeft: 15,
+                            fontSize: h2dp(1.3),
+                            marginBottom: 5,
+                          }}
+                        >
+                          {localized.t("PICKUP_TIME")}
+                        </Text>
+                        <Text
+                          style={{
+                            color: "black",
+                            marginLeft: 15,
+                            fontSize: h2dp(1.3),
+                            marginBottom: 5,
+                          }}
+                        >
+                          {moment(selectedDate).format("hh:mm A")}
+                        </Text>
+                      </View>
                     </View>
-                    <View
-                      style={{
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        marginTop: h2dp(1),
+
+                    {showDatePicker && (
+                      <DateTimePickerModal
+                        isVisible={showDatePicker}
+                        minimumDate={new Date()}
+                        date={new Date(selectedDate)}
+                        mode="datetime"
+                        is24Hour={true}
+                        onConfirm={handleDateChange}
+                        onCancel={() => setShowDatePicker(false)}
+                      />
+                    )}
+
+                    <PhoneInput
+                      ref={phoneInput}
+                      defaultCode="US"
+                      placeholder={localized.t("PHONE_NUMBER")}
+                      onChangeText={(text) => {
+                        const callingCode =
+                          phoneInput.current?.getCallingCode();
+                        setFieldValue("phoneNumber", `${callingCode}${text}`);
                       }}
-                    >
-                      <PrimaryButton
-                        title={localized.t("SUBMIT")}
-                        buttonStyle={styles.buttonStyles}
-                        titleStyle={styles.titleStyle}
-                        onPress={handleSubmit}
-                      />
-                    </View>
-                  </>
-                )}
-              </Formik>
-            </View>
-          </ScrollView>
+                      containerStyle={[
+                        styles.textArea,
+                        {
+                          width: "100%",
+                          borderRadius: w2dp(1),
+                          overflow: "hidden",
+                        },
+                      ]}
+                      value={values.phoneNumber}
+                      textInputProps={{ placeholderTextColor: "black" }}
+                      textInputStyle={{ height: h2dp(8) }}
+                    />
+                    <Text style={styles.inputError}>{errors?.phoneNumber}</Text>
+                  </ScrollView>
+                  <View style={{ paddingBottom: h2dp(2) }}>
+                    <PrimaryButton
+                      title={localized.t("SUBMIT")}
+                      buttonStyle={[
+                        styles.buttonStyles,
+                        {
+                          marginHorizontal: 0,
+                        },
+                      ]}
+                      titleStyle={styles.titleStyle}
+                      onPress={handleSubmit}
+                    />
+                  </View>
+                </>
+              )}
+            </Formik>
+          </View>
         </SafeAreaView>
       </LinearGradient>
     </TouchableWithoutFeedback>

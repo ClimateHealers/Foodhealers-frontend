@@ -7,7 +7,6 @@ import {
   Image,
   Keyboard,
   Platform,
-  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
@@ -26,6 +25,7 @@ import FoodhealersHeader from "../Components/FoodhealersHeader";
 import mapStyle from "../Components/MapStyle";
 import { localized } from "../locales/localization";
 import { VeganRecipesCategories } from "../redux/actions/veganRecipes";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const FindFoodHomeScreen = ({ route }: any) => {
   const {
@@ -83,7 +83,7 @@ const FindFoodHomeScreen = ({ route }: any) => {
     Keyboard.dismiss();
     setMenuOpen(!menuClose);
   };
-  
+
   const clickHandler = () => {
     navigation.navigate("WeekScreen", {
       currentlatitude: currentlat,
@@ -112,27 +112,28 @@ const FindFoodHomeScreen = ({ route }: any) => {
                 name="chevron-back"
                 size={32}
                 color="white"
-                onPress={() => {navigation.goBack(),handlePressOutside()}}
+                onPress={() => {
+                  navigation.goBack(), handlePressOutside();
+                }}
               />
               <View style={styles.item}>
                 <Text style={styles.itemText}>{localized.t("FIND_FOOD")}</Text>
               </View>
-              <BurgerIcon 
-                  onOutsidePress={handlePressOutside}
-                  menuClose={menuClose}
-                  menuItem={menuItem}/>
+              <BurgerIcon
+                onOutsidePress={handlePressOutside}
+                menuClose={menuClose}
+                menuItem={menuItem}
+              />
             </View>
             <TouchableOpacity
               style={[styles.touchableView]}
-              onPress={() => { 
-                handlePressOutside(),
-                clickHandler()
+              onPress={() => {
+                handlePressOutside(), clickHandler();
               }}
             >
               <View style={[styles.mapcontainerView]}>
                 <MapView
                   ref={mapRef}
-                  provider={"google"}
                   style={{
                     position: "relative",
                     alignSelf: "center",
@@ -183,7 +184,7 @@ const FindFoodHomeScreen = ({ route }: any) => {
                               color: "#FC5A56",
                               fontSize: h2dp(1.5),
                               opacity: 0.8,
-                              fontWeight: "500",
+                              fontWeight: "bold",
                             }}
                           >
                             {marker?.name}
@@ -209,12 +210,12 @@ const FindFoodHomeScreen = ({ route }: any) => {
             >
               <TouchableOpacity
                 style={[styles.touchableView]}
-                onPress={() =>{ 
+                onPress={() => {
                   handlePressOutside(),
-                  navigation.navigate("CalendarScreen", {
-                    latitude: latitude,
-                    longitude: lng,
-                  })
+                    navigation.navigate("CalendarScreen", {
+                      latitude: latitude,
+                      longitude: lng,
+                    });
                 }}
               >
                 <View
@@ -229,7 +230,7 @@ const FindFoodHomeScreen = ({ route }: any) => {
                     style={{
                       marginLeft: w2dp(6),
                       fontSize: h2dp(2.5),
-                      fontWeight: "500",
+                      fontWeight: "bold",
                     }}
                   >
                     {localized.t("FOOD_EVENTS_CALENDAR")}
@@ -238,9 +239,8 @@ const FindFoodHomeScreen = ({ route }: any) => {
               </TouchableOpacity>
               <TouchableOpacity
                 style={[styles.touchableView]}
-                onPress={()=>{
-                  handlePressOutside(),
-                  fetchRecipesCategories()
+                onPress={() => {
+                  handlePressOutside(), fetchRecipesCategories();
                 }}
               >
                 <View
@@ -255,7 +255,7 @@ const FindFoodHomeScreen = ({ route }: any) => {
                     style={{
                       marginLeft: w2dp(6),
                       fontSize: h2dp(2.5),
-                      fontWeight: "500",
+                      fontWeight: "bold",
                     }}
                   >
                     {localized.t("VEGAN_RECIPES")}
@@ -306,6 +306,7 @@ const styles = StyleSheet.create({
   itemText: {
     fontSize: h2dp(2.5),
     color: "white",
+    fontWeight: "bold",
   },
   dropdown1BtnStyle: {
     marginTop: 15,
@@ -317,7 +318,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#D1D1D6",
   },
-  dropdown1BtnTxtStyle: { color: "#B50000", textAlign: "left", fontSize: h2dp(1.4) },
+  dropdown1BtnTxtStyle: {
+    color: "#B50000",
+    textAlign: "left",
+    fontSize: h2dp(1.4),
+  },
   dropdown1DropdownStyle: {
     backgroundColor: "#EFEFEF",
     color: "black",
@@ -332,7 +337,11 @@ const styles = StyleSheet.create({
     borderBottomColor: "#D1D1D6",
     borderRadius: 5,
   },
-  dropdown1RowTxtStyle: { color: "black", textAlign: "center", fontSize: h2dp(1.0) },
+  dropdown1RowTxtStyle: {
+    color: "black",
+    textAlign: "center",
+    fontSize: h2dp(1.0),
+  },
   buttonStyles: {
     backgroundColor: "#FC5A56",
     color: "white",

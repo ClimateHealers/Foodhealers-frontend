@@ -7,7 +7,6 @@ import {
   FlatList,
   Keyboard,
   Modal,
-  SafeAreaView,
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
@@ -16,6 +15,7 @@ import {
 import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
 import { styles } from "../Components/Styles";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const LicenseScreen = () => {
   const [packages, setPackages] = useState<any[]>([]);

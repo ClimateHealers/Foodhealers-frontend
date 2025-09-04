@@ -8,7 +8,6 @@ import {
   ActivityIndicator,
   Keyboard,
   Modal,
-  SafeAreaView,
   ScrollView,
   Text,
   TextInput,
@@ -24,7 +23,7 @@ import { useDispatch, useSelector } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
 import { styles } from "../Components/Styles";
-import { getLocation } from "../Components/GetCurrentLocation";
+import { getLocation } from "../Components/getCurrentLocation";
 import API from "../Utils/APIUtils";
 import { localized } from "../locales/localization";
 import {
@@ -32,6 +31,7 @@ import {
   VeganRecipesCategory,
 } from "../redux/actions/veganRecipesCategory";
 import { useDebounce } from "../Components/Debounce";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const blurhash = "LBE~3[-;j[oy_MoMfQj[offQfQfQ";
 
@@ -153,7 +153,7 @@ const CategoryScreen = ({ route }: any) => {
         >
           <SafeAreaView style={styles.containerVolunteer}>
             <FoodhealersHeader />
-            <View style={styles.rootVolunteerHome}>
+            <View style={styles.root}>
               <Ionicons
                 name="chevron-back"
                 size={32}
@@ -286,7 +286,7 @@ const CategoryScreen = ({ route }: any) => {
                                 }}
                               >
                                 <Ionicons
-                                  name="ios-time-outline"
+                                  name="time-outline"
                                   size={20}
                                   color="#8A8686"
                                 />
@@ -366,7 +366,7 @@ const CategoryScreen = ({ route }: any) => {
                                 }}
                               >
                                 <Ionicons
-                                  name="ios-time-outline"
+                                  name="time-outline"
                                   size={20}
                                   color="#8A8686"
                                 />
@@ -394,15 +394,23 @@ const CategoryScreen = ({ route }: any) => {
                       Loading...
                     </Text>
                   ) : (
-                    <Text
+                    <View
                       style={{
-                        color: "white",
-                        fontSize: h2dp(1.5),
-                        marginBottom: h2dp(1.5),
+                        flex: 1,
+                        justifyContent: "center",
+                        alignItems: "center",
+                        minHeight: h2dp(80),
                       }}
                     >
-                      No results found
-                    </Text>
+                      <Text
+                        style={{
+                          color: "white",
+                          textAlign: "center",
+                        }}
+                      >
+                        {localized.t("NOTHING_TO_SHOW")}
+                      </Text>
+                    </View>
                   )}
                 </View>
               </TouchableOpacity>

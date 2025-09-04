@@ -17,14 +17,17 @@ import {
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { Text, TextInput } from "react-native-paper";
 import PhoneInput from "react-native-phone-number-input";
-import { heightPercentageToDP as h2dp } from "react-native-responsive-screen";
+import {
+  heightPercentageToDP as h2dp,
+  widthPercentageToDP as w2dp,
+} from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
 import PrimaryButton from "../Components/PrimaryButton";
 import { styles } from "../Components/Styles";
-import { addDriver } from "../Components/Validation";
+import { addDriver } from "../Components/validation";
 import { localized } from "../locales/localization";
 import { fetchUser, updateProfile } from "../redux/actions/authAction";
 
@@ -57,7 +60,7 @@ const UpdateProfileScreen = ({ route }: any) => {
   };
   const dispatch = useDispatch();
 
-  const API_KEY = Constants?.manifest?.extra?.googleMapsApiKey;
+  const API_KEY = Constants.expoConfig?.extra?.googleMapsApiKey;
 
   const handlePressOutside = () => {
     Keyboard.dismiss();
@@ -76,151 +79,153 @@ const UpdateProfileScreen = ({ route }: any) => {
   return (
     <TouchableWithoutFeedback onPress={handlePressOutside}>
       <LinearGradient
-        colors={["#6fa200", "#72a400", "#82b200", "#87b500", "#6fa200"]}
+        colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
         style={styles.background}
       >
-        <SafeAreaView>
-          <ScrollView keyboardShouldPersistTaps="handled">
-            <StatusBar animated={true} backgroundColor="auto" />
-            <View style={styles.container}>
-              <FoodhealersHeader />
-              <View style={styles.root}>
-                <Ionicons
-                  name="chevron-back"
-                  size={32}
-                  color="white"
-                  onPress={() => {
-                    navigation.goBack(), handlePressOutside();
-                  }}
-                />
-                <View style={styles.item}>
-                  <Text style={styles.itemText}>
-                    {localized.t("PROFILE_UPDATE")}
-                  </Text>
-                </View>
-                <BurgerIcon
-                  onOutsidePress={handlePressOutside}
-                  menuClose={menuClose}
-                  menuItem={menuItem}
-                />
-              </View>
-              <Modal visible={loading} animationType="slide" transparent={true}>
-                <View style={styles.centeredView}>
-                  <View style={styles.modalView}>
-                    <ActivityIndicator size={"large"} />
-                  </View>
-                </View>
-              </Modal>
-              <Formik
-                validationSchema={addDriver}
-                initialValues={{
-                  name: name,
-                  phoneNumber: phoneNumber,
-                  email: email,
-                  lat: lat,
-                  long: long,
-                  volunteerFullAddress: volunteerFullAddress,
-                  city: city,
-                  state: state,
-                  zipCode: zipCode,
+        <SafeAreaView
+          style={{
+            flex: 1,
+          }}
+        >
+          <StatusBar animated={true} backgroundColor="auto" />
+          <View style={styles.container}>
+            <FoodhealersHeader />
+            <View style={styles.root}>
+              <Ionicons
+                name="chevron-back"
+                size={32}
+                color="white"
+                onPress={() => {
+                  navigation.goBack(), handlePressOutside();
                 }}
-                onSubmit={async ({
-                  name,
-                  lat,
-                  email,
-                  long,
-                  volunteerFullAddress,
-                  phoneNumber,
-                  city,
-                  state,
-                  zipCode,
-                }) => {
-                  setLoading(true);
-                  try {
-                    setResponse({
-                      loading: true,
-                      message: "",
-                      error: false,
-                    });
-                    const data = {
-                      name: name,
-                      email: email,
-                      phoneNumber: phoneNumber,
-                      lat: lat,
-                      lng: long,
-                      fullAddress: volunteerFullAddress,
-                      city: city,
-                      state: state,
-                      postalCode: Number(zipCode) ? Number(zipCode) : 0,
-                    };
-                    const res = await dispatch(
-                      updateProfile(data as any) as any
-                    );
-                    if (res?.payload?.success == true) {
-                      setLoading(false);
-                      setResponse({
-                        loading: false,
-                        message: `${localized.t("PROFILE_UPDATE_SUCCESS")}`,
-                        error: false,
-                      });
-                      setLoading(false);
-                      Alert.alert(
-                        `${localized.t("PROFILE_UPDATE_SUCCESS")}`,
-                        `${localized.t(
-                          "YOUR_PROFILE_HAS_BEEN_UPDATED_SUCCESSFULLY"
-                        )}`,
-                        [
-                          {
-                            text: "OK",
-                            onPress: () => {
-                              navigation.navigate("ProfileScreen"),
-                                handlePressOutside();
-                            },
-                          },
-                        ],
-                        { cancelable: false }
-                      );
-                    } else {
-                      setLoading(false);
-                      Alert.alert(
-                        `${localized.t("ALERT")}`,
-                        `${res?.payload}`,
-                        [
-                          {
-                            text: `${localized.t("OK")}`,
-                            style: "cancel",
-                          },
-                        ],
-                        { cancelable: true }
-                      );
-                    }
-                  } catch (err: any) {
+              />
+              <View style={styles.item}>
+                <Text style={styles.itemText}>
+                  {localized.t("PROFILE_UPDATE")}
+                </Text>
+              </View>
+              <BurgerIcon
+                onOutsidePress={handlePressOutside}
+                menuClose={menuClose}
+                menuItem={menuItem}
+              />
+            </View>
+            <Modal visible={loading} animationType="slide" transparent={true}>
+              <View style={styles.centeredView}>
+                <View style={styles.modalView}>
+                  <ActivityIndicator size={"large"} />
+                </View>
+              </View>
+            </Modal>
+            <Formik
+              validationSchema={addDriver}
+              initialValues={{
+                name: name,
+                phoneNumber: phoneNumber,
+                email: email,
+                lat: lat,
+                long: long,
+                volunteerFullAddress: volunteerFullAddress,
+                city: city,
+                state: state,
+                zipCode: zipCode,
+              }}
+              onSubmit={async ({
+                name,
+                lat,
+                email,
+                long,
+                volunteerFullAddress,
+                phoneNumber,
+                city,
+                state,
+                zipCode,
+              }) => {
+                setLoading(true);
+                try {
+                  setResponse({
+                    loading: true,
+                    message: "",
+                    error: false,
+                  });
+                  const data = {
+                    name: name,
+                    email: email,
+                    phoneNumber: phoneNumber,
+                    lat: lat,
+                    lng: long,
+                    fullAddress: volunteerFullAddress,
+                    city: city,
+                    state: state,
+                    postalCode: Number(zipCode) ? Number(zipCode) : 0,
+                  };
+                  const res = await dispatch(updateProfile(data as any) as any);
+                  if (res?.payload?.success == true) {
                     setLoading(false);
                     setResponse({
                       loading: false,
-                      message: err?.message,
-                      error: true,
+                      message: `${localized.t("PROFILE_UPDATE_SUCCESS")}`,
+                      error: false,
                     });
+                    setLoading(false);
                     Alert.alert(
-                      `${localized.t("PROFILE_NOT_UPDATED")}`,
-                      `${err.message}`,
-                      [{ text: `${localized.t("OK")}` }],
+                      `${localized.t("PROFILE_UPDATE_SUCCESS")}`,
+                      `${localized.t(
+                        "YOUR_PROFILE_HAS_BEEN_UPDATED_SUCCESSFULLY"
+                      )}`,
+                      [
+                        {
+                          text: "OK",
+                          onPress: () => {
+                            navigation.navigate("ProfileScreen"),
+                              handlePressOutside();
+                          },
+                        },
+                      ],
                       { cancelable: false }
                     );
+                  } else {
+                    setLoading(false);
+                    Alert.alert(
+                      `${localized.t("ALERT")}`,
+                      `${res?.payload}`,
+                      [
+                        {
+                          text: `${localized.t("OK")}`,
+                          style: "cancel",
+                        },
+                      ],
+                      { cancelable: true }
+                    );
                   }
-                }}
-              >
-                {({
-                  handleSubmit,
-                  handleBlur,
-                  handleChange,
-                  values,
-                  setFieldValue,
-                  errors,
-                  touched,
-                  isValid,
-                }) => (
-                  <>
+                } catch (err: any) {
+                  setLoading(false);
+                  setResponse({
+                    loading: false,
+                    message: err?.message,
+                    error: true,
+                  });
+                  Alert.alert(
+                    `${localized.t("PROFILE_NOT_UPDATED")}`,
+                    `${err.message}`,
+                    [{ text: `${localized.t("OK")}` }],
+                    { cancelable: false }
+                  );
+                }
+              }}
+            >
+              {({
+                handleSubmit,
+                handleBlur,
+                handleChange,
+                values,
+                setFieldValue,
+                errors,
+                touched,
+                isValid,
+              }) => (
+                <>
+                  <ScrollView keyboardShouldPersistTaps="handled">
                     <TextInput
                       onChangeText={handleChange("name")}
                       onBlur={handleBlur("name")}
@@ -250,6 +255,7 @@ const UpdateProfileScreen = ({ route }: any) => {
                       fetchDetails={true}
                       listViewDisplayed="auto"
                       textInputProps={{ placeholderTextColor: "#000000" }}
+                      containerStyle={{}}
                       query={{
                         key: API_KEY,
                         language: "en",
@@ -381,6 +387,7 @@ const UpdateProfileScreen = ({ route }: any) => {
                     >
                       <PhoneInput
                         ref={phoneInput}
+                        defaultCode="US"
                         placeholder={
                           phoneNumber
                             ? phoneNumber?.slice(2, 12)
@@ -397,36 +404,43 @@ const UpdateProfileScreen = ({ route }: any) => {
                             width: "100%",
                             alignContent: "center",
                             justifyContent: "center",
+                            borderRadius: w2dp(1),
+                            overflow: "hidden",
                           },
                         ]}
                         value={values.phoneNumber}
                         textInputProps={{ placeholderTextColor: "black" }}
-                        textInputStyle={{}}
+                        textInputStyle={{
+                          height: h2dp(8),
+                        }}
                       />
                       <Text style={styles.inputError}>
                         {errors?.phoneNumber}
                       </Text>
                     </View>
-                    <View
-                      style={{
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        marginTop: h2dp(1),
-                      }}
-                    >
-                      <PrimaryButton
-                        title={localized.t("UPDATE")}
-                        buttonStyle={styles.nextButtonStyles}
-                        titleStyle={styles.titleStyle}
-                        onPress={handleSubmit}
-                      />
-                    </View>
-                  </>
-                )}
-              </Formik>
-            </View>
-          </ScrollView>
+                  </ScrollView>
+
+                  <View
+                    style={{
+                      marginBottom: h2dp(2),
+                    }}
+                  >
+                    <PrimaryButton
+                      title={localized.t("UPDATE")}
+                      buttonStyle={[
+                        styles.buttonStyles,
+                        {
+                          marginHorizontal: 0,
+                        },
+                      ]}
+                      titleStyle={styles.titleStyle}
+                      onPress={handleSubmit}
+                    />
+                  </View>
+                </>
+              )}
+            </Formik>
+          </View>
         </SafeAreaView>
       </LinearGradient>
     </TouchableWithoutFeedback>

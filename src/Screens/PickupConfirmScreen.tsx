@@ -1,8 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
-import {
-  useFocusEffect,
-  useNavigation
-} from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Formik } from "formik";
 import React, { useCallback, useState } from "react";
@@ -28,7 +25,7 @@ import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
 import PrimaryButton from "../Components/PrimaryButton";
 import { styles } from "../Components/Styles";
-import { GenerateOTP } from "../Components/Validation";
+import { GenerateOTP } from "../Components/validation";
 import { localized } from "../locales/localization";
 import {
   fetchPickup,
@@ -97,14 +94,14 @@ const PickupConfirmScreen = ({ route }: any) => {
   return (
     <TouchableWithoutFeedback onPress={handlePressOutside}>
       <LinearGradient
-        colors={["#6fa200", "#72a400", "#82b200", "#87b500", "#6fa200"]}
+        colors={["#86ce84", "#75c576", "#359133", "#0b550a", "#083f06"]}
         style={styles.background}
       >
         <SafeAreaView>
           <ScrollView keyboardShouldPersistTaps="handled">
             <View style={styles.containerVolunteer}>
               <FoodhealersHeader />
-              <View style={styles.rootVolunteerHome}>
+              <View style={styles.root}>
                 <Ionicons
                   name="chevron-back"
                   size={32}
@@ -156,7 +153,7 @@ const PickupConfirmScreen = ({ route }: any) => {
                         marginLeft: w2dp(3),
                         fontSize: h2dp(1.6),
                         // lineHeight: 30,
-                        fontWeight: "500",
+                        fontWeight: "bold",
                         paddingTop: h2dp(0.5),
                         alignSelf: "center",
                         marginVertical: h2dp(1),
@@ -178,7 +175,7 @@ const PickupConfirmScreen = ({ route }: any) => {
                           marginLeft: w2dp(3),
                           fontSize: h2dp(1.6),
                           // lineHeight: 30,
-                          fontWeight: "500",
+                          fontWeight: "bold",
                           paddingTop: h2dp(0.5),
                         }}
                       >
@@ -225,7 +222,7 @@ const PickupConfirmScreen = ({ route }: any) => {
                         marginLeft: w2dp(3),
                         fontSize: h2dp(1.6),
                         // lineHeight: 30,
-                        fontWeight: "500",
+                        fontWeight: "bold",
                         paddingTop: h2dp(0.5),
                         alignSelf: "center",
                         marginVertical: h2dp(1),
@@ -245,7 +242,7 @@ const PickupConfirmScreen = ({ route }: any) => {
                           marginLeft: w2dp(3),
                           fontSize: h2dp(1.6),
                           // lineHeight: 30,
-                          fontWeight: "500",
+                          fontWeight: "bold",
                           paddingTop: h2dp(0.5),
                         }}
                       >

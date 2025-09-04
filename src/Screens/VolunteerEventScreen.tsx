@@ -10,7 +10,7 @@ import {
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  View
+  View,
 } from "react-native";
 import { Button, Image } from "react-native-elements";
 import {
@@ -104,7 +104,7 @@ const VolunteerEventScreen = ({ route }: any) => {
           <Text
             style={{
               marginLeft: w2dp(3),
-              fontWeight: "500",
+              fontWeight: "bold",
               fontSize: h2dp(1.6),
               lineHeight: 30,
             }}
@@ -127,25 +127,25 @@ const VolunteerEventScreen = ({ route }: any) => {
           title={localized.t("DETAILS")}
           onPress={() => {
             handlePressOutside(),
-            navigation.navigate("SingleEventDetails", {
-              eventDetails: {
-                additionalInfo: additionalInfo,
-                itemTypeId: itemTypeId,
-                title: title,
-                id: id,
-                name: name,
-                address: address,
-                eventStartDate: eventStartDate,
-                eventEndDate: eventEndDate,
-                lat: lat,
-                long: long,
-                eventPhoto: eventPhoto,
-                requiredVolunteers: requiredVolunteers,
-                latitude: latitude,
-                longitude: longitude,
-                status: status,
-              },
-            })
+              navigation.navigate("SingleEventDetails", {
+                eventDetails: {
+                  additionalInfo: additionalInfo,
+                  itemTypeId: itemTypeId,
+                  title: title,
+                  id: id,
+                  name: name,
+                  address: address,
+                  eventStartDate: eventStartDate,
+                  eventEndDate: eventEndDate,
+                  lat: lat,
+                  long: long,
+                  eventPhoto: eventPhoto,
+                  requiredVolunteers: requiredVolunteers,
+                  latitude: latitude,
+                  longitude: longitude,
+                  status: status,
+                },
+              });
           }}
           buttonStyle={{
             marginLeft: w2dp(3),
@@ -179,7 +179,9 @@ const VolunteerEventScreen = ({ route }: any) => {
               name="chevron-back"
               size={32}
               color="white"
-              onPress={() => {navigation.goBack(),handlePressOutside()}}
+              onPress={() => {
+                navigation.goBack(), handlePressOutside();
+              }}
             />
             <View style={styles.item}>
               <Text style={styles.itemText}>
@@ -241,7 +243,11 @@ const VolunteerEventScreen = ({ route }: any) => {
               />
             </View>
           ) : (
-            <TouchableOpacity onPress={() => {navigation.navigate("PostEvent"),handlePressOutside()}}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("PostEvent"), handlePressOutside();
+              }}
+            >
               <View style={{ marginTop: h2dp(3), alignItems: "center" }}>
                 <Image
                   source={require("../../assets/images/shutterShock.png")}
