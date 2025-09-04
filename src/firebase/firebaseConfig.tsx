@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
+import Constants from "expo-constants";
 
 // configuration of xlerate products
 
@@ -16,14 +17,7 @@ import { getAuth } from "firebase/auth";
 
 // configuration of Food Healers app
 
-const firebaseConfig = {
-  apiKey: "AIzaSyAuYMvtEnxg_UImPL8SkxW3HCz0Z9cZ8WM",
-  authDomain: "food-healers-b6ab8.firebaseapp.com",
-  projectId: "food-healers-b6ab8",
-  storageBucket: "food-healers-b6ab8.appspot.com",
-  messagingSenderId: "863742234744",
-  appId: "1:863742234744:web:4b3a537aea2efa5c54dd8d",
-};
+const firebaseConfig = Constants.expoConfig?.extra?.firebase || {};
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);

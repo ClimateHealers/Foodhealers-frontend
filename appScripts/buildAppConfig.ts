@@ -12,7 +12,7 @@ const appConfig = {
   expo: {
     name: "Food-Healers",
     slug: "food-healers",
-    version: "1.4.2",
+    version: "1.4.3",
     orientation: "portrait",
 
     icon: "./assets/FH-androidLogo.png",
@@ -52,7 +52,8 @@ const appConfig = {
       },
     },
     android: {
-      versionCode: 20,
+      versionCode: 22,
+      targetSdkVersion: 35,
       permissions: [
         "android.permission.ACCESS_COARSE_LOCATION",
         "android.permission.ACCESS_FINE_LOCATION",
@@ -81,6 +82,15 @@ const appConfig = {
         apikey: process.env.FIREBASE_FCM_API_KEY || "",
       },
       googleMapsApiKey: process.env.GOOGLE_API_KEY || "",
+
+      firebase: {
+        apiKey: process.env.FIREBASE_API_KEY || "",
+        authDomain: process.env.FIREBASE_AUTH_DOMAIN || "",
+        projectId: process.env.FIREBASE_PROJECT_ID || "",
+        storageBucket: process.env.FIREBASE_STORAGE_BUCKET || "",
+        messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID || "",
+        appId: process.env.FIREBASE_APP_ID || "",
+      },
     },
     owner: "food-healers",
   },
