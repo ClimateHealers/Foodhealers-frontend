@@ -347,6 +347,9 @@ const MapScreen = ({ route }: any) => {
                     }
                   }}
                   fetchDetails={true}
+                  predefinedPlaces={[]}
+                  minLength={1}
+                  timeout={20000}
                   textInputProps={{ placeholderTextColor: "#000000" }}
                   listUnderlayColor="blue"
                   query={{
@@ -368,7 +371,7 @@ const MapScreen = ({ route }: any) => {
                     listView: {
                       width: "100%",
                       borderRadius: 3,
-                      // zIndex: 100,
+                      zIndex: 999,
                     },
                     row: {
                       height: 40,

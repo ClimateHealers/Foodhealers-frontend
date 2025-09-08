@@ -1,4 +1,3 @@
-import * as Localization from "expo-localization";
 import { getLocales } from "expo-localization";
 import { I18n } from "i18n-js";
 import { en } from "../locales/en.json";
@@ -10,34 +9,36 @@ import { pu } from "../locales/pu.json";
 import { es } from "../locales/es.json";
 import { fr } from "../locales/fr.json";
 
-// Set the key-value pairs for the different languages you want to support.
+// Initialize I18n with translations
 const localized = new I18n({
-  en: en,
-  be: be,
-  ch: ch,
-  hi: hi,
-  ma: ma,
-  pu: pu,
-  es: es,
-  fr: fr,
+  en,
+  be,
+  ch,
+  hi,
+  ma,
+  pu,
+  es,
+  fr,
 });
 
-localized.locale = Localization.locale;
-
+localized.enableFallback = true;
+localized.defaultLocale = "en";
 const preferredLocales = getLocales();
 
-function settingFallback(locale: any) {
-  if (localized.translations[locale]) {
+const deviceLocale =
+  preferredLocales.length > 0 ? preferredLocales[0].languageTag : "en";
+localized.locale = deviceLocale;
+
+function settingFallback(locale?: string) {
+  if (locale && localized.translations[locale]) {
     localized.locale = locale;
+  } else if (preferredLocales.length > 0) {
+    localized.locale = preferredLocales[0].languageCode || "en";
   } else {
-    if (preferredLocales && preferredLocales?.length > 0) {
-      localized.locale = preferredLocales[0].languageCode;
-    } else {
-      localized.locale = "en";
-    }
+    localized.locale = "en";
   }
 }
 
-settingFallback(Localization.locale);
+settingFallback(deviceLocale);
 
 export { localized };

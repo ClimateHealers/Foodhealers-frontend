@@ -283,6 +283,9 @@ const AddDonationsScreen = ({ route }: any) => {
                         language: "en",
                       }}
                       enablePoweredByContainer={false}
+                      predefinedPlaces={[]}
+                      minLength={1}
+                      timeout={20000}
                       onPress={(data, details) => {
                         setFieldValue("lat", details?.geometry?.location?.lat);
                         setFieldValue("long", details?.geometry?.location?.lng);
