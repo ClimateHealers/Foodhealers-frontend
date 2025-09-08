@@ -283,6 +283,7 @@ const AddDonationsScreen = ({ route }: any) => {
                         language: "en",
                       }}
                       enablePoweredByContainer={false}
+                      keyboardShouldPersistTaps="always"
                       predefinedPlaces={[]}
                       minLength={1}
                       timeout={20000}

@@ -346,6 +346,7 @@ const MapScreen = ({ route }: any) => {
                       setEmptyEvents(true);
                     }
                   }}
+                  keyboardShouldPersistTaps="always"
                   fetchDetails={true}
                   predefinedPlaces={[]}
                   minLength={1}
@@ -411,7 +412,7 @@ const MapScreen = ({ route }: any) => {
                       longitudeDelta: LONGITUDE_DELTA,
                     }}
                     showsUserLocation={true}
-                    followsUserLocation={true}
+                    followsUserLocation={false}
                   >
                     {address ? (
                       <Marker
