@@ -12,7 +12,7 @@ const appConfig = {
   expo: {
     name: "Food-Healers",
     slug: "food-healers",
-    version: "1.4.3",
+    version: "1.4.4",
     orientation: "portrait",
 
     icon: "./assets/FH-androidLogo.png",
@@ -52,7 +52,7 @@ const appConfig = {
       },
     },
     android: {
-      versionCode: 22,
+      versionCode: 23,
       targetSdkVersion: 35,
       permissions: [
         "android.permission.ACCESS_COARSE_LOCATION",
