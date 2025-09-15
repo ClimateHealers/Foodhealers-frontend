@@ -491,7 +491,22 @@ export const styles = StyleSheet.create({
     borderBottomLeftRadius: w2dp(2.5),
     padding: w2dp(2),
   },
-
+  floatingButton: {
+    position: "absolute",
+    bottom: h2dp(6),
+    right: w2dp(6),
+    backgroundColor: "#FC5A56",
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    justifyContent: "center",
+    alignItems: "center",
+    elevation: 5,
+    shadowColor: "#000",
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
+    shadowOffset: { width: 0, height: 2 },
+  },
   mapContainer: {
     height: h2dp(65),
     marginTop: h2dp(3),

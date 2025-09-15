@@ -75,6 +75,7 @@ import moment from "moment";
 import { Alert } from "react-native";
 import { logOut } from "./redux/reducers/authreducers";
 import { useDispatch } from "react-redux";
+import { jwtDecode } from "jwt-decode";
 
 const Navigation = () => {
   const Stack = createNativeStackNavigator();
@@ -86,22 +87,22 @@ const Navigation = () => {
     (async () => {
       if (sessionAlertShown) return;
       const response = await getAuthData();
-      const lastLogin = response?.user?.lastLogin;
+      const token = response?.token;
 
-      if (lastLogin) {
-        const expireDate = moment(lastLogin).add(29, "days");
-        const now = moment();
-
-        if (now.isAfter(expireDate)) {
-          setSessionAlertShown(true);
-          Alert.alert(
-            "Session Expired",
-            "Your session has expired. Please log in again.",
-            [
-              {
-                text: "LOGIN",
-                onPress: () => {
-                  (async () => {
+      if (token) {
+        try {
+          const decoded = jwtDecode(token);
+          const expireDate = moment.unix(decoded?.exp as any);
+          const now = moment();
+          if (now.isAfter(expireDate)) {
+            setSessionAlertShown(true);
+            Alert.alert(
+              "Session Expired",
+              "Your session has expired. Please log in again.",
+              [
+                {
+                  text: "LOGIN",
+                  onPress: async () => {
                     await dispatch(logOut());
                     await removeAuthData();
                     navigation.dispatch(
@@ -110,11 +111,13 @@ const Navigation = () => {
                         routes: [{ name: "LoginScreen" }],
                       })
                     );
-                  })();
+                  },
                 },
-              },
-            ]
-          );
+              ]
+            );
+          }
+        } catch (error) {
+          console.error("Error decoding token:", error);
         }
       }
     })();

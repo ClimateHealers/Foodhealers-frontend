@@ -36,6 +36,7 @@ import { fetchUser, getExpoPushToken } from "../redux/actions/authAction";
 import { Image } from "react-native-elements";
 import { allRequests } from "../redux/actions/allRequests";
 import { myRequests } from "../redux/actions/myRequests";
+import { nearbyEvents } from "../redux/actions/nearbyEvents";
 
 const HomeScreen = ({ route }: any) => {
   const userDetails = useSelector((state: any) => state.auth);
@@ -131,7 +132,8 @@ const HomeScreen = ({ route }: any) => {
 
   const postEvent = () => {
     if (data.token) {
-      navigation.navigate("EventsHomeScreen");
+      dispatch(nearbyEvents({ radius: 50 } as any) as any);
+      navigation.navigate("AllEventScreen");
     } else {
       Alert.alert(
         `${localized.t("REGISTRATION_REQUIRED")}`,
@@ -156,7 +158,6 @@ const HomeScreen = ({ route }: any) => {
       );
     }
   };
-
 
   const onRecipeClicked = () => {
     if (data.token) {
@@ -184,7 +185,7 @@ const HomeScreen = ({ route }: any) => {
         }
       );
     }
-  }
+  };
 
   const navigation: any = useNavigation();
   return (
@@ -262,6 +263,7 @@ const HomeScreen = ({ route }: any) => {
               onPress={() => {
                 if (data.isAuthenticated) {
                   if (volunteerData?.length > 0 || donationData?.length > 0) {
+                    dispatch(nearbyEvents({ radius: 50 } as any) as any);
                     navigation.navigate("VolunteerHomeScreen", {
                       latitude: lat,
                       longitude: long,
@@ -357,7 +359,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 8,
     elevation: 4,
-    width:w2dp(70)
+    width: w2dp(70),
   },
   imageContainer: {
     flexDirection: "row",

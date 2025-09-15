@@ -293,6 +293,7 @@
     "LICENSE_PLATE_NUMBER": "License plate Number",
     "RECIPE": "Recipe",
     "IN_TRANSIT": "In Transit",
-    "ACCEPTED": "Accepted"
+    "ACCEPTED": "Accepted",
+    "LOADING_NEARBY_EVENTS": "Loading nearby events..."
   }
 }
