@@ -96,28 +96,29 @@ const Navigation = () => {
           const now = moment();
           if (now.isAfter(expireDate)) {
             setSessionAlertShown(true);
+            await dispatch(logOut());
+            await removeAuthData();
+            navigation.dispatch(
+              CommonActions.reset({
+                index: 0,
+                routes: [{ name: "LoginScreen" }],
+              })
+            );
             Alert.alert(
               "Session Expired",
-              "Your session has expired. Please log in again.",
-              [
-                {
-                  text: "LOGIN",
-                  onPress: async () => {
-                    await dispatch(logOut());
-                    await removeAuthData();
-                    navigation.dispatch(
-                      CommonActions.reset({
-                        index: 0,
-                        routes: [{ name: "LoginScreen" }],
-                      })
-                    );
-                  },
-                },
-              ]
+              "Your session has expired. Please log in again."
             );
           }
         } catch (error) {
           console.error("Error decoding token:", error);
+          await dispatch(logOut());
+          await removeAuthData();
+          navigation.dispatch(
+            CommonActions.reset({
+              index: 0,
+              routes: [{ name: "LoginScreen" }],
+            })
+          );
         }
       }
     })();
