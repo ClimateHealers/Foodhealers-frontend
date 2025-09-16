@@ -292,6 +292,7 @@
     "LICENSE_PLATE_NUMBER": "ਲਾਇਸੰਸ ਪਲੇਟ ਨੰਬਰ",
     "RECIPE": "ਰੈਸਿਪੀ",
     "IN_TRANSIT": "ਟ੍ਰਾਂਜ਼ਿਟ ਵਿੱਚ",
-    "ACCEPTED": "ਸਵੀਕ੃ਤ"
+    "ACCEPTED": "ਸਵੀਕ੃ਤ",
+    "LOADING_NEARBY_EVENTS": "ਨੇੜਲੇ ਪ੍ਰੋਗਰਾਮ ਲੋਡ ਹੋ ਰਹੇ ਹਨ..."
   }
 }

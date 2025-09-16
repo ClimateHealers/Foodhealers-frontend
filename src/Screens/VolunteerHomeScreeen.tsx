@@ -1,7 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
   Image,
   Keyboard,
@@ -15,24 +15,22 @@ import {
   heightPercentageToDP as h2dp,
   widthPercentageToDP as w2dp,
 } from "react-native-responsive-screen";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
 import { styles } from "../Components/Styles";
 import { localized } from "../locales/localization";
-import { allEvents } from "../redux/actions/allEvents";
 import { fetchUser } from "../redux/actions/authAction";
 import { VeganRecipesCategory } from "../redux/actions/veganRecipesCategory";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { nearbyEvents } from "../redux/actions/nearbyEvents";
 
 const VolunteerHomeScreen = ({ route }: any) => {
   const { latitude, longitude } = route.params;
   const [recipeData, setRecipeData] = useState<[]>([]);
-  const [events, setEvents] = useState<[]>([]);
   const navigation: any = useNavigation();
   const [menuClose, setMenuOpen] = useState(false);
   const dispatch = useDispatch();
-  const eventsScheduled = events?.length > 0 ? events?.length : 0;
   const [data, setData] = useState<any>();
 
   const menuRef = useRef(null);
@@ -42,11 +40,17 @@ const VolunteerHomeScreen = ({ route }: any) => {
     setRecipeData(response?.payload?.results?.recipeList);
   };
 
-  const fetchingEventsData = async () => {
-    const response = await dispatch(allEvents({} as any) as any);
-    const data = response?.payload?.foodEvents;
-    setEvents(data);
-  };
+  const { events: nearbyEventsList } = useSelector(
+    (state: any) => state.nearbyEvents
+  );
+  const activeEvents = nearbyEventsList?.filter((event: any) => event?.active);
+  const eventsScheduled = activeEvents?.length > 0 ? activeEvents.length : 0;
+
+  useEffect(() => {
+    if (activeEvents.length === 0) {
+      dispatch(nearbyEvents({ radius: 50 } as any) as any);
+    }
+  }, [dispatch]);
 
   const fetchingUserData = async () => {
     const response = await dispatch(fetchUser({} as any) as any);
@@ -62,7 +66,6 @@ const VolunteerHomeScreen = ({ route }: any) => {
   useFocusEffect(
     useCallback(() => {
       fetchRecipesCategories();
-      fetchingEventsData();
       fetchingUserData();
     }, [])
   );
@@ -148,7 +151,7 @@ const VolunteerHomeScreen = ({ route }: any) => {
                     </View>
                   </View>
                 </TouchableOpacity>
-                {events?.length > 0 && (
+                {activeEvents?.length > 0 && (
                   <View
                     style={{
                       alignSelf: "flex-start",
@@ -168,7 +171,7 @@ const VolunteerHomeScreen = ({ route }: any) => {
                 >
                   <TouchableOpacity activeOpacity={1}>
                     <View style={styles.horizonatalView}>
-                      {events?.slice(0, 1)?.map((event: any) => (
+                      {activeEvents?.slice(0, 1)?.map((event: any) => (
                         <TouchableOpacity
                           onPress={() => {
                             handlePressOutside(),

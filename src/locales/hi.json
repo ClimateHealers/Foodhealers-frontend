@@ -292,6 +292,7 @@
     "LICENSE_PLATE_NUMBER": "लाइसेंस प्लेट नंबर",
     "RECIPE": "रेसिपी",
     "IN_TRANSIT": "ट्रांजिट में",
-    "ACCEPTED": "स्वीकृत"
+    "ACCEPTED": "स्वीकृत",
+    "LOADING_NEARBY_EVENTS": "नज़दीकी कार्यक्रम लोड हो रहे हैं..."
   }
 }

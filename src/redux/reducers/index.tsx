@@ -10,6 +10,7 @@ import veganRecipesReducer from "./veganRecipesReducer";
 import veganRecipesCategoryReducer from "./veganRecipesCategoryReducer";
 import myDonationsReducer from "./myDonationsReducer";
 import fetchVehicle from "./addVehicleReducer";
+import nearbyEventsSlice from "./nearbyEventsReducer";
 
 const rootReducer = combineReducers({
   auth: authreducers,
@@ -21,7 +22,8 @@ const rootReducer = combineReducers({
   notification:notificationReducer,
   recipesCategory:veganRecipesReducer,
   veganRecipesCategoryList: veganRecipesCategoryReducer,
-  fetchVehicle: fetchVehicle
+  fetchVehicle: fetchVehicle,
+  nearbyEvents: nearbyEventsSlice,
 });
 
 export default rootReducer;
