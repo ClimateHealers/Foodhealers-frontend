@@ -292,6 +292,7 @@
     "LICENSE_PLATE_NUMBER": "车牌号码",
     "RECIPE": "食谱",
     "IN_TRANSIT": "运输中",
-    "ACCEPTED": "已接受"
+    "ACCEPTED": "已接受",
+    "LOADING_NEARBY_EVENTS": "जवळील कार्यक्रम लोड होत आहेत..."
   }
 }

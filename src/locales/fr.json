@@ -292,6 +292,7 @@
     "LICENSE_PLATE_NUMBER": "Numéro de plaque d'immatriculation",
     "RECIPE": "Recette",
     "IN_TRANSIT": "En transit",
-    "ACCEPTED": "Accepté"
+    "ACCEPTED": "Accepté",
+    "LOADING_NEARBY_EVENTS": "Chargement des événements à proximité..."
   }
 }
