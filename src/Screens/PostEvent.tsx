@@ -9,7 +9,9 @@ import {
   ActivityIndicator,
   Alert,
   Keyboard,
+  KeyboardAvoidingView,
   Modal,
+  Platform,
   ScrollView,
   StatusBar,
   TouchableOpacity,
@@ -236,299 +238,313 @@ const PostEvent = () => {
                 isValid,
               }) => (
                 <>
-                  <ScrollView keyboardShouldPersistTaps="handled">
-                    <TextInput
-                      onChangeText={handleChange("eventName")}
-                      onBlur={handleBlur("eventName")}
-                      value={values.eventName}
-                      placeholder={localized.t("EVENT_NAME")}
-                      placeholderTextColor={"black"}
-                      style={styles.textInput}
-                    />
-                    <Text style={styles.inputError}>{errors.eventName}</Text>
-
-                    <GooglePlacesAutocomplete
-                      placeholder={localized.t("ADDRESS")}
-                      fetchDetails={true}
-                      listViewDisplayed="auto"
-                      textInputProps={{ placeholderTextColor: "#000000" }}
-                      query={{
-                        key: API_KEY,
-                        language: "en",
-                      }}
-                      enablePoweredByContainer={false}
-                      keyboardShouldPersistTaps="always"
-                      predefinedPlaces={[]}
-                      minLength={1}
-                      timeout={20000}
-                      onPress={(data, details) => {
-                        setFieldValue("lat", details?.geometry?.location?.lat);
-                        setFieldValue("long", details?.geometry?.location?.lng);
-                        setFieldValue("address", details?.formatted_address);
-
-                        const addressComponents =
-                          details?.address_components || [];
-                        addressComponents.forEach((component) => {
-                          if (
-                            component.types.includes(
-                              "administrative_area_level_1"
-                            )
-                          ) {
-                            const state = component.long_name;
-                            setFieldValue("state", state);
-                          }
-                          if (component.types.includes("locality")) {
-                            const city = component.long_name;
-                            setFieldValue("city", city);
-                          }
-
-                          if (component.types.includes("postal_code")) {
-                            const postalCode = component.long_name;
-                            setFieldValue("postalCode", postalCode);
-                          }
-                        });
-                      }}
-                      onFail={(error) => {
-                        console.log(error);
-                      }}
-                      onNotFound={() => {
-                        console.log("no results");
-                      }}
-                      styles={{
-                        textInputContainer: {
-                          borderColor: "black",
-                          borderRadius: 3,
-                          height: 50,
-                          width: "100%",
-                        },
-                        textInput: {
-                          color: "black",
-                          height: 50,
-                          backgroundColor: "white",
-                        },
-                        predefinedPlacesDescription: {
-                          color: "#FFFFFF",
-                        },
-                      }}
-                    />
-                    <Text style={styles.inputError}>{errors.address}</Text>
-                    <View
-                      style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      <TouchableOpacity onPress={() => setShowDatePicker(true)}>
-                        <View style={styles.dateTimePickerContainer}>
-                          <View>
-                            <Text
-                              style={{
-                                color: "black",
-                                fontSize: h2dp(1.3),
-                                marginBottom: 5,
-                                marginLeft: 15,
-                              }}
-                            >
-                              {localized.t("START_DATE")}
-                            </Text>
-                            <Text
-                              style={{
-                                color: "black",
-                                fontSize: h2dp(1.3),
-                                marginBottom: 5,
-                                marginLeft: 15,
-                              }}
-                            >
-                              {moment(selectedDate).format("MMM, DD, YYYY")}
-                            </Text>
-                          </View>
-                          {showDatePicker && (
-                            <DateTimePickerModal
-                              isVisible={showDatePicker}
-                              minimumDate={new Date()}
-                              date={
-                                selectedDate
-                                  ? new Date(selectedDate)
-                                  : undefined
-                              }
-                              mode="datetime"
-                              is24Hour={true}
-                              onConfirm={handleDateChange}
-                              onCancel={() => setShowDatePicker(false)}
-                            />
-                          )}
-                        </View>
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        disabled={true}
-                        onPress={() => setShowDatePicker(true)}
-                      >
-                        <View
-                          style={[
-                            styles.dateTimePickerContainer,
-                            { backgroundColor: "#deddd9" },
-                          ]}
-                        >
-                          <View>
-                            <Text
-                              style={{
-                                color: "black",
-                                fontSize: h2dp(1.3),
-                                width: 200,
-                                marginBottom: 5,
-                                marginLeft: 15,
-                              }}
-                            >
-                              {localized.t("START_TIME")}
-                            </Text>
-                            <Text
-                              style={{
-                                color: "black",
-                                fontSize: h2dp(1.3),
-                                marginBottom: 5,
-                                marginLeft: 15,
-                              }}
-                            >
-                              {moment(selectedDate).format("hh:mm A")}
-                            </Text>
-                          </View>
-                        </View>
-                      </TouchableOpacity>
-                    </View>
-                    <View
-                      style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      <TouchableOpacity
-                        onPress={() => setShowEndDatePicker(true)}
-                      >
-                        <View style={styles.dateTimePickerContainer}>
-                          <View>
-                            <Text
-                              style={{
-                                color: "black",
-                                fontSize: h2dp(1.3),
-                                marginBottom: 5,
-                                marginLeft: 15,
-                              }}
-                            >
-                              {localized.t("END_DATE")}
-                            </Text>
-                            <Text
-                              style={{
-                                color: "black",
-                                fontSize: h2dp(1.3),
-                                marginBottom: 5,
-                                marginLeft: 15,
-                              }}
-                            >
-                              {moment(selectedEndDate).format("MMM DD, YYYY")}
-                            </Text>
-                          </View>
-                          {showEndDatePicker && (
-                            <DateTimePickerModal
-                              isVisible={showEndDatePicker}
-                              minimumDate={
-                                new Date(moment(selectedDate).add(1, "hour"))
-                              }
-                              is24Hour={true}
-                              date={
-                                selectedEndDate
-                                  ? new Date(selectedEndDate)
-                                  : undefined
-                              }
-                              mode="datetime"
-                              onConfirm={handleEndDateChange}
-                              onCancel={() => setShowEndDatePicker(false)}
-                            />
-                          )}
-                        </View>
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        disabled={true}
-                        onPress={() => setShowEndTimePicker(true)}
-                      >
-                        <View
-                          style={[
-                            styles.dateTimePickerContainer,
-                            { backgroundColor: "#deddd9" },
-                          ]}
-                        >
-                          <View>
-                            <Text
-                              style={{
-                                color: "black",
-                                fontSize: h2dp(1.3),
-                                width: 200,
-                                marginBottom: 5,
-                                marginLeft: 15,
-                              }}
-                            >
-                              {localized.t("END_TIME")}
-                            </Text>
-                            <Text
-                              style={{
-                                color: "black",
-                                fontSize: h2dp(1.3),
-                                marginBottom: 5,
-                                marginLeft: 15,
-                              }}
-                            >
-                              {moment(selectedEndDate).format("hh:mm A")}
-                            </Text>
-                          </View>
-                        </View>
-                      </TouchableOpacity>
-                    </View>
-
-                    <TextInput
-                      onChangeText={handleChange("served")}
-                      onBlur={handleBlur("served")}
-                      value={values?.served}
-                      placeholder={localized.t("WHATS_BEING_SERVED")}
-                      placeholderTextColor={"black"}
-                      style={styles.textArea}
-                      id={"served"}
-                    />
-                    <Text style={styles.inputError}>{errors.served}</Text>
-                    <TextInput
-                      onChangeText={handleChange("volunteers")}
-                      onBlur={handleBlur("volunteers")}
-                      value={values?.volunteers}
-                      keyboardType="numeric"
-                      placeholder={localized.t(
-                        "NUMBERS_OF_VOLUNTEERS_REQUIRED"
-                      )}
-                      placeholderTextColor={"black"}
-                      style={styles.textArea}
-                      id={"volunteers"}
-                    />
-                    <Text style={styles.inputError}>{errors.volunteers}</Text>
-                  </ScrollView>
-
-                  <View
-                    style={{
-                      paddingBottom: h2dp(2),
-                    }}
+                  <KeyboardAvoidingView
+                    style={{ flex: 1 }}
+                    behavior={Platform.OS === "ios" ? "padding" : "height"}
+                    keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0} // tweak if header overlaps
                   >
-                    <PrimaryButton
-                      title={localized.t("SUBMIT")}
-                      buttonStyle={[
-                        styles.buttonStyles,
-                        {
-                          marginHorizontal: 0,
-                        },
-                      ]}
-                      titleStyle={styles.titleStyle}
-                      onPress={handleSubmit}
-                    />
-                  </View>
+                    <ScrollView keyboardShouldPersistTaps="handled">
+                      <TextInput
+                        onChangeText={handleChange("eventName")}
+                        onBlur={handleBlur("eventName")}
+                        value={values.eventName}
+                        placeholder={localized.t("EVENT_NAME")}
+                        placeholderTextColor={"black"}
+                        style={styles.textInput}
+                      />
+                      <Text style={styles.inputError}>{errors.eventName}</Text>
+
+                      <GooglePlacesAutocomplete
+                        placeholder={localized.t("ADDRESS")}
+                        fetchDetails={true}
+                        listViewDisplayed="auto"
+                        textInputProps={{ placeholderTextColor: "#000000" }}
+                        query={{
+                          key: API_KEY,
+                          language: "en",
+                        }}
+                        enablePoweredByContainer={false}
+                        keyboardShouldPersistTaps="always"
+                        predefinedPlaces={[]}
+                        minLength={1}
+                        timeout={20000}
+                        onPress={(data, details) => {
+                          setFieldValue(
+                            "lat",
+                            details?.geometry?.location?.lat
+                          );
+                          setFieldValue(
+                            "long",
+                            details?.geometry?.location?.lng
+                          );
+                          setFieldValue("address", details?.formatted_address);
+
+                          const addressComponents =
+                            details?.address_components || [];
+                          addressComponents.forEach((component) => {
+                            if (
+                              component.types.includes(
+                                "administrative_area_level_1"
+                              )
+                            ) {
+                              const state = component.long_name;
+                              setFieldValue("state", state);
+                            }
+                            if (component.types.includes("locality")) {
+                              const city = component.long_name;
+                              setFieldValue("city", city);
+                            }
+
+                            if (component.types.includes("postal_code")) {
+                              const postalCode = component.long_name;
+                              setFieldValue("postalCode", postalCode);
+                            }
+                          });
+                        }}
+                        onFail={(error) => {
+                          console.log(error);
+                        }}
+                        onNotFound={() => {
+                          console.log("no results");
+                        }}
+                        styles={{
+                          textInputContainer: {
+                            borderColor: "black",
+                            borderRadius: 3,
+                            height: 50,
+                            width: "100%",
+                          },
+                          textInput: {
+                            color: "black",
+                            height: 50,
+                            backgroundColor: "white",
+                          },
+                          predefinedPlacesDescription: {
+                            color: "#FFFFFF",
+                          },
+                        }}
+                      />
+                      <Text style={styles.inputError}>{errors.address}</Text>
+                      <View
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <TouchableOpacity
+                          onPress={() => setShowDatePicker(true)}
+                        >
+                          <View style={styles.dateTimePickerContainer}>
+                            <View>
+                              <Text
+                                style={{
+                                  color: "black",
+                                  fontSize: h2dp(1.3),
+                                  marginBottom: 5,
+                                  marginLeft: 15,
+                                }}
+                              >
+                                {localized.t("START_DATE")}
+                              </Text>
+                              <Text
+                                style={{
+                                  color: "black",
+                                  fontSize: h2dp(1.3),
+                                  marginBottom: 5,
+                                  marginLeft: 15,
+                                }}
+                              >
+                                {moment(selectedDate).format("MMM, DD, YYYY")}
+                              </Text>
+                            </View>
+                            {showDatePicker && (
+                              <DateTimePickerModal
+                                isVisible={showDatePicker}
+                                minimumDate={new Date()}
+                                date={
+                                  selectedDate
+                                    ? new Date(selectedDate)
+                                    : undefined
+                                }
+                                mode="datetime"
+                                is24Hour={true}
+                                onConfirm={handleDateChange}
+                                onCancel={() => setShowDatePicker(false)}
+                              />
+                            )}
+                          </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                          disabled={true}
+                          onPress={() => setShowDatePicker(true)}
+                        >
+                          <View
+                            style={[
+                              styles.dateTimePickerContainer,
+                              { backgroundColor: "#deddd9" },
+                            ]}
+                          >
+                            <View>
+                              <Text
+                                style={{
+                                  color: "black",
+                                  fontSize: h2dp(1.3),
+                                  width: 200,
+                                  marginBottom: 5,
+                                  marginLeft: 15,
+                                }}
+                              >
+                                {localized.t("START_TIME")}
+                              </Text>
+                              <Text
+                                style={{
+                                  color: "black",
+                                  fontSize: h2dp(1.3),
+                                  marginBottom: 5,
+                                  marginLeft: 15,
+                                }}
+                              >
+                                {moment(selectedDate).format("hh:mm A")}
+                              </Text>
+                            </View>
+                          </View>
+                        </TouchableOpacity>
+                      </View>
+                      <View
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <TouchableOpacity
+                          onPress={() => setShowEndDatePicker(true)}
+                        >
+                          <View style={styles.dateTimePickerContainer}>
+                            <View>
+                              <Text
+                                style={{
+                                  color: "black",
+                                  fontSize: h2dp(1.3),
+                                  marginBottom: 5,
+                                  marginLeft: 15,
+                                }}
+                              >
+                                {localized.t("END_DATE")}
+                              </Text>
+                              <Text
+                                style={{
+                                  color: "black",
+                                  fontSize: h2dp(1.3),
+                                  marginBottom: 5,
+                                  marginLeft: 15,
+                                }}
+                              >
+                                {moment(selectedEndDate).format("MMM DD, YYYY")}
+                              </Text>
+                            </View>
+                            {showEndDatePicker && (
+                              <DateTimePickerModal
+                                isVisible={showEndDatePicker}
+                                minimumDate={
+                                  new Date(moment(selectedDate).add(1, "hour"))
+                                }
+                                is24Hour={true}
+                                date={
+                                  selectedEndDate
+                                    ? new Date(selectedEndDate)
+                                    : undefined
+                                }
+                                mode="datetime"
+                                onConfirm={handleEndDateChange}
+                                onCancel={() => setShowEndDatePicker(false)}
+                              />
+                            )}
+                          </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                          disabled={true}
+                          onPress={() => setShowEndTimePicker(true)}
+                        >
+                          <View
+                            style={[
+                              styles.dateTimePickerContainer,
+                              { backgroundColor: "#deddd9" },
+                            ]}
+                          >
+                            <View>
+                              <Text
+                                style={{
+                                  color: "black",
+                                  fontSize: h2dp(1.3),
+                                  width: 200,
+                                  marginBottom: 5,
+                                  marginLeft: 15,
+                                }}
+                              >
+                                {localized.t("END_TIME")}
+                              </Text>
+                              <Text
+                                style={{
+                                  color: "black",
+                                  fontSize: h2dp(1.3),
+                                  marginBottom: 5,
+                                  marginLeft: 15,
+                                }}
+                              >
+                                {moment(selectedEndDate).format("hh:mm A")}
+                              </Text>
+                            </View>
+                          </View>
+                        </TouchableOpacity>
+                      </View>
+
+                      <TextInput
+                        onChangeText={handleChange("served")}
+                        onBlur={handleBlur("served")}
+                        value={values?.served}
+                        placeholder={localized.t("WHATS_BEING_SERVED")}
+                        placeholderTextColor={"black"}
+                        style={styles.textArea}
+                        id={"served"}
+                      />
+                      <Text style={styles.inputError}>{errors.served}</Text>
+                      <TextInput
+                        onChangeText={handleChange("volunteers")}
+                        onBlur={handleBlur("volunteers")}
+                        value={values?.volunteers}
+                        keyboardType="numeric"
+                        placeholder={localized.t(
+                          "NUMBERS_OF_VOLUNTEERS_REQUIRED"
+                        )}
+                        placeholderTextColor={"black"}
+                        style={styles.textArea}
+                        id={"volunteers"}
+                      />
+                      <Text style={styles.inputError}>{errors.volunteers}</Text>
+                    </ScrollView>
+
+                    <View
+                      style={{
+                        paddingBottom: h2dp(2),
+                      }}
+                    >
+                      <PrimaryButton
+                        title={localized.t("SUBMIT")}
+                        buttonStyle={[
+                          styles.buttonStyles,
+                          {
+                            marginHorizontal: 0,
+                          },
+                        ]}
+                        titleStyle={styles.titleStyle}
+                        onPress={handleSubmit}
+                      />
+                    </View>
+                  </KeyboardAvoidingView>
                 </>
               )}
             </Formik>

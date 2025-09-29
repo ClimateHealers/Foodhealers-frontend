@@ -11,7 +11,9 @@ import {
   ActivityIndicator,
   Alert,
   Keyboard,
+  KeyboardAvoidingView,
   Modal,
+  Platform,
   ScrollView,
   StatusBar,
   TouchableWithoutFeedback,
@@ -34,7 +36,7 @@ import { adddVehicle } from "../Components/validation";
 
 const AddVehicleScreen = ({ route }: any) => {
   const { newVehicle } = route?.params;
- const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [menuClose, setMenuOpen] = useState(false);
   const [response, setResponse] = useState({
     loading: false,
@@ -227,91 +229,99 @@ const AddVehicleScreen = ({ route }: any) => {
                 isValid,
               }) => (
                 <>
-                  <ScrollView keyboardShouldPersistTaps="handled">
+                  <KeyboardAvoidingView
+                    style={{ flex: 1 }}
+                    behavior={Platform.OS === "ios" ? "padding" : "height"}
+                    keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}
+                  >
+                    <ScrollView keyboardShouldPersistTaps="handled">
+                      <View
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <View
+                          style={[
+                            styles.dateTimePickerContainer,
+                            { backgroundColor: "white" },
+                          ]}
+                        >
+                          <TextInput
+                            onChangeText={handleChange("carMake")}
+                            onBlur={handleBlur("carMake")}
+                            value={values.carMake}
+                            placeholder={localized.t("VEHICLE_MAKE")}
+                            placeholderTextColor={"black"}
+                            style={styles.textInput}
+                          />
+                          <Text style={styles.inputError}>
+                            {errors.carMake}
+                          </Text>
+                        </View>
+                        <View
+                          style={[
+                            styles.dateTimePickerContainer,
+                            { backgroundColor: "white" },
+                          ]}
+                        >
+                          <TextInput
+                            onChangeText={handleChange("carModel")}
+                            onBlur={handleBlur("carModel")}
+                            value={values?.carModel}
+                            placeholder={localized.t("VEHICLE_MODEL")}
+                            placeholderTextColor={"black"}
+                            style={styles.textInput}
+                          />
+                          <Text style={styles.inputError}>
+                            {errors?.carModel}
+                          </Text>
+                        </View>
+                      </View>
+                      <TextInput
+                        onChangeText={handleChange("carColor")}
+                        onBlur={handleBlur("carColor")}
+                        value={values.carColor}
+                        placeholder={localized.t("VEHICLE_COLOR")}
+                        placeholderTextColor={"black"}
+                        style={styles.textInput}
+                      />
+                      <Text style={styles.inputError}>{errors.carColor}</Text>
+                      <View>
+                        <TextInput
+                          onChangeText={handleChange("licencePlate")}
+                          onBlur={handleBlur("licencePlate")}
+                          value={values?.licencePlate}
+                          placeholder={localized.t("LICENSE_PLATE_NUMBER")}
+                          placeholderTextColor={"black"}
+                          style={[styles.textInput]}
+                        />
+                      </View>
+                      <Text style={styles.inputError}>
+                        {errors?.licencePlate}
+                      </Text>
+                    </ScrollView>
+
                     <View
                       style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        alignItems: "center",
-                        justifyContent: "space-between",
+                        paddingBottom: h2dp(2),
                       }}
                     >
-                      <View
-                        style={[
-                          styles.dateTimePickerContainer,
-                          { backgroundColor: "white" },
+                      <PrimaryButton
+                        title={localized.t("NEXT")}
+                        buttonStyle={[
+                          styles.buttonStyles,
+                          {
+                            marginHorizontal: 0,
+                          },
                         ]}
-                      >
-                        <TextInput
-                          onChangeText={handleChange("carMake")}
-                          onBlur={handleBlur("carMake")}
-                          value={values.carMake}
-                          placeholder={localized.t("VEHICLE_MAKE")}
-                          placeholderTextColor={"black"}
-                          style={styles.textInput}
-                        />
-                        <Text style={styles.inputError}>{errors.carMake}</Text>
-                      </View>
-                      <View
-                        style={[
-                          styles.dateTimePickerContainer,
-                          { backgroundColor: "white" },
-                        ]}
-                      >
-                        <TextInput
-                          onChangeText={handleChange("carModel")}
-                          onBlur={handleBlur("carModel")}
-                          value={values?.carModel}
-                          placeholder={localized.t("VEHICLE_MODEL")}
-                          placeholderTextColor={"black"}
-                          style={styles.textInput}
-                        />
-                        <Text style={styles.inputError}>
-                          {errors?.carModel}
-                        </Text>
-                      </View>
-                    </View>
-                    <TextInput
-                      onChangeText={handleChange("carColor")}
-                      onBlur={handleBlur("carColor")}
-                      value={values.carColor}
-                      placeholder={localized.t("VEHICLE_COLOR")}
-                      placeholderTextColor={"black"}
-                      style={styles.textInput}
-                    />
-                    <Text style={styles.inputError}>{errors.carColor}</Text>
-                    <View>
-                      <TextInput
-                        onChangeText={handleChange("licencePlate")}
-                        onBlur={handleBlur("licencePlate")}
-                        value={values?.licencePlate}
-                        placeholder={localized.t("LICENSE_PLATE_NUMBER")}
-                        placeholderTextColor={"black"}
-                        style={[styles.textInput]}
+                        titleStyle={styles.titleStyle}
+                        onPress={handleSubmit}
                       />
                     </View>
-                    <Text style={styles.inputError}>
-                      {errors?.licencePlate}
-                    </Text>
-                  </ScrollView>
-
-                  <View
-                    style={{
-                      paddingBottom: h2dp(2),
-                    }}
-                  >
-                    <PrimaryButton
-                      title={localized.t("NEXT")}
-                      buttonStyle={[
-                        styles.buttonStyles,
-                        {
-                          marginHorizontal: 0,
-                        },
-                      ]}
-                      titleStyle={styles.titleStyle}
-                      onPress={handleSubmit}
-                    />
-                  </View>
+                  </KeyboardAvoidingView>
                 </>
               )}
             </Formik>

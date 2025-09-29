@@ -36,7 +36,6 @@ import { fetchUser, getExpoPushToken } from "../redux/actions/authAction";
 import { Image } from "react-native-elements";
 import { allRequests } from "../redux/actions/allRequests";
 import { myRequests } from "../redux/actions/myRequests";
-import { nearbyEvents } from "../redux/actions/nearbyEvents";
 
 const HomeScreen = ({ route }: any) => {
   const userDetails = useSelector((state: any) => state.auth);
@@ -132,7 +131,6 @@ const HomeScreen = ({ route }: any) => {
 
   const postEvent = () => {
     if (data.token) {
-      dispatch(nearbyEvents({ radius: 50 } as any) as any);
       navigation.navigate("AllEventScreen");
     } else {
       Alert.alert(

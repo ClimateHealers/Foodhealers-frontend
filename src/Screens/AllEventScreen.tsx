@@ -7,9 +7,8 @@ import {
 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
-import Spinner from "react-native-loading-spinner-overlay";
 import moment from "moment";
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState } from "react";
 import {
   FlatList,
   Keyboard,
@@ -25,82 +24,86 @@ import {
   widthPercentageToDP as w2dp,
 } from "react-native-responsive-screen";
 import SegmentedControlTab from "react-native-segmented-control-tab";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
 import { styles } from "../Components/Styles";
 import { localized } from "../locales/localization";
+import { allEvents } from "../redux/actions/allEvents";
 import { myEvents } from "../redux/actions/myEvents";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { nearbyEvents } from "../redux/actions/nearbyEvents";
-import { AppDispatch } from "../redux/store";
 
 const AllEventScreen = () => {
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [eventData, setEventData]: any = useState<[]>([]);
   const [menuClose, setMenuOpen] = useState(false);
   const [filterName, setFilterName] = useState<string>(`${localized.t("NEW")}`);
-  const [order, setOrder] = useState<"ASC" | "DESC">("ASC");
-  const [myEventsData, setMyEventsData] = useState<any[]>([]);
-  const [loading, setloading] = useState<boolean>(false);
+  const dispatch = useDispatch();
 
-  const dispatch = useDispatch<AppDispatch>();
   const navigation: any = useNavigation();
-
-  const { events: nearbyEventsList } = useSelector(
-    (state: any) => state.nearbyEvents
-  );
-  useEffect(() => {
-    try {
-      if (nearbyEventsList.length === 0) {
-        setloading(true);
-        dispatch(nearbyEvents({ radius: 50 }));
-      } else {
-        setloading(false);
-      }
-    } catch (error) {
-      console.log(error, "error during fetching nearby events");
-    } finally {
-      setloading(false);
-    }
-  }, [dispatch]);
-
-  const fetchingMyEvents = async () => {
-    const res = await dispatch(myEvents({} as any) as any);
-    const foodEvents = res?.payload?.foodEvents || [];
-    setMyEventsData(foodEvents);
-  };
-
-  const sortEvents = (list: any[], orderType: "ASC" | "DESC") => {
-    return [...list].sort((a, b) => {
-      const dateA = new Date(a?.eventStartDate).valueOf();
-      const dateB = new Date(b?.eventStartDate).valueOf();
-      return orderType === "ASC" ? dateA - dateB : dateB - dateA;
-    });
-  };
-
-  const sortByDate = () => {
-    const newOrder = order === "ASC" ? "DESC" : "ASC";
-    setFilterName(
-      newOrder === "ASC" ? `${localized.t("NEW")}` : `${localized.t("OLD")}`
+  const fetchingEventData = async () => {
+    const res = await dispatch(allEvents({} as any) as any);
+    const foodEvents = res?.payload?.foodEvents;
+    const verifiedFoodEvents = foodEvents?.filter(
+      (event: any) => event.status === "approved"
     );
-    setOrder(newOrder);
+    setEventData(verifiedFoodEvents);
   };
 
-  const eventData = useMemo(() => {
-    const list = selectedIndex === 0 ? nearbyEventsList : myEventsData;
-    return sortEvents(list, order);
-  }, [selectedIndex, nearbyEventsList, myEventsData, order]);
+  useEffect(() => {
+    fetchingEventData();
+    sortByDate();
+    const { routes } = navigation.getState();
+    const filteredRoutes = routes.filter(
+      (route: any) =>
+        route.name !== "EventPhotosScreen" &&
+        route.name !== "PostEvent" &&
+        route.name !== "UploadPhotosScreen"
+    );
 
-  const handleSingleIndexSelect = (index: number) => {
-    setSelectedIndex(index);
-    if (index === 1) {
-      fetchingMyEvents();
-    }
+    navigation.reset({
+      index: filteredRoutes.length - 4,
+      routes: filteredRoutes,
+    });
+  }, []);
+
+  const [order, setOrder] = useState<"ASC" | "DESC">("ASC");
+  const sortByDate = () => {
+    const postListFiltered = [...eventData].sort((a: any, b: any) => {
+      const dateA = new Date(a?.eventStartDate);
+      const dateB = new Date(b?.eventStartDate);
+
+      if (order === "ASC") {
+        setFilterName(`${localized.t("NEW")}`);
+        return dateA?.valueOf() - dateB?.valueOf();
+      } else {
+        setFilterName(`${localized.t("OLD")}`);
+        return dateB?.valueOf() - dateA?.valueOf();
+      }
+    });
+    setEventData(postListFiltered);
+    const newOrder = order === "ASC" ? "DESC" : "ASC";
+    setOrder(newOrder);
   };
 
   const handlePressOutside = () => {
     Keyboard.dismiss();
     setMenuOpen(!menuClose);
+  };
+
+  const handleSingleIndexSelect = async (index: any) => {
+    setSelectedIndex(index);
+    if (index === 0) {
+      const res = await dispatch(allEvents({} as any) as any);
+      const foodEvents = res?.payload?.foodEvents;
+      const verifiedFoodEvents = foodEvents?.filter(
+        (event: any) => event.status === "approved"
+      );
+      setEventData(verifiedFoodEvents);
+    } else if (index === 1) {
+      const response = await dispatch(myEvents({} as any) as any);
+      setEventData(response?.payload?.foodEvents);
+    }
   };
 
   const Item = ({
@@ -225,18 +228,18 @@ const AllEventScreen = () => {
             handlePressOutside(),
               navigation.navigate("SingleEventDetails", {
                 eventDetails: {
-                  id,
-                  name,
-                  additionalInfo,
-                  address,
-                  eventStartDate,
-                  eventEndDate,
-                  lat,
-                  long,
-                  eventPhoto,
-                  requiredVolunteers,
-                  status,
-                  eventSharingPhoto,
+                  id: id,
+                  name: name,
+                  additionalInfo: additionalInfo,
+                  address: address,
+                  eventStartDate: eventStartDate,
+                  eventEndDate: eventEndDate,
+                  lat: lat,
+                  long: long,
+                  eventPhoto: eventPhoto,
+                  requiredVolunteers: requiredVolunteers,
+                  status: status,
+                  eventSharingPhoto: eventSharingPhoto,
                 },
               });
           }}
@@ -329,37 +332,28 @@ const AllEventScreen = () => {
           </View>
           {eventData?.length > 0 ? (
             <View style={{ flex: 1 }}>
-              {loading ? (
-                <Spinner
-                  visible={loading}
-                  textContent={localized.t("LOADING_NEARBY_EVENTS")}
-                  cancelable={false}
-                  textStyle={{ color: "white", fontWeight: "200" }}
-                />
-              ) : (
-                <FlatList
-                  showsVerticalScrollIndicator={false}
-                  data={eventData}
-                  renderItem={({ item }: any) => (
-                    <Item
-                      id={item.id}
-                      additionalInfo={item?.additionalInfo}
-                      name={item?.name}
-                      address={item?.address?.fullAddress}
-                      lat={item.address?.lat}
-                      long={item.address?.lng}
-                      eventStartDate={item?.eventStartDate}
-                      eventEndDate={item?.eventEndDate}
-                      verified={item?.verified}
-                      status={item?.status}
-                      eventPhoto={item?.eventPhoto}
-                      requiredVolunteers={item?.requiredVolunteers}
-                      eventSharingPhoto={item?.eventSharingPhoto}
-                    />
-                  )}
-                  keyExtractor={(item: any) => item?.id}
-                />
-              )}
+              <FlatList
+                showsVerticalScrollIndicator={false}
+                data={eventData}
+                renderItem={({ item }: any) => (
+                  <Item
+                    id={item.id}
+                    additionalInfo={item?.additionalInfo}
+                    name={item?.name}
+                    address={item?.address?.fullAddress}
+                    lat={item.address?.lat}
+                    long={item.address?.lng}
+                    eventStartDate={item?.eventStartDate}
+                    eventEndDate={item?.eventEndDate}
+                    verified={item?.verified}
+                    status={item?.status}
+                    eventPhoto={item?.eventPhoto}
+                    requiredVolunteers={item?.requiredVolunteers}
+                    eventSharingPhoto={item?.eventSharingPhoto}
+                  />
+                )}
+                keyExtractor={(item: any) => item?.id}
+              />
             </View>
           ) : (
             <View style={[styles.centeredView, { flex: 1 }]}>
@@ -368,7 +362,7 @@ const AllEventScreen = () => {
               </Text>
             </View>
           )}
-          <TouchableOpacity
+           <TouchableOpacity
             style={styles.floatingButton}
             onPress={() => {
               navigation.navigate("PostEvent"), handlePressOutside();

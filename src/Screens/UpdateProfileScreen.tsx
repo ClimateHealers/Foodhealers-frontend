@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
   Alert,
   Keyboard,
+  KeyboardAvoidingView,
   Modal,
   ScrollView,
   StatusBar,
@@ -30,6 +31,7 @@ import { styles } from "../Components/Styles";
 import { addDriver } from "../Components/validation";
 import { localized } from "../locales/localization";
 import { fetchUser, updateProfile } from "../redux/actions/authAction";
+import { Platform } from "react-native";
 
 const UpdateProfileScreen = ({ route }: any) => {
   const {
@@ -225,221 +227,236 @@ const UpdateProfileScreen = ({ route }: any) => {
                 isValid,
               }) => (
                 <>
-                  <ScrollView keyboardShouldPersistTaps="handled">
-                    <TextInput
-                      onChangeText={handleChange("name")}
-                      onBlur={handleBlur("name")}
-                      value={values?.name}
-                      placeholder={
-                        name ? name : `${localized.t("VOLUNTEER_NAME")}`
-                      }
-                      placeholderTextColor={"black"}
-                      style={styles.textInput}
-                    />
-                    <Text style={styles.inputError}>{errors?.name}</Text>
-                    <TextInput
-                      onChangeText={handleChange("email")}
-                      onBlur={handleBlur("email")}
-                      value={values?.email?.toLocaleLowerCase()}
-                      placeholder={email ? email : localized.t("EMAIL")}
-                      placeholderTextColor={"black"}
-                      style={styles.textInput}
-                    />
-                    <Text style={styles.inputError}>{errors.email}</Text>
-                    <GooglePlacesAutocomplete
-                      placeholder={
-                        volunteerFullAddress
-                          ? volunteerFullAddress
-                          : `${localized.t("ADDRESS")}`
-                      }
-                      fetchDetails={true}
-                      listViewDisplayed="auto"
-                      textInputProps={{ placeholderTextColor: "#000000" }}
-                      query={{
-                        key: API_KEY,
-                        language: "en",
-                      }}
-                      enablePoweredByContainer={false}
-                      keyboardShouldPersistTaps="always"
-                      predefinedPlaces={[]}
-                      minLength={1}
-                      timeout={20000}
-                      onPress={(data, details) => {
-                        setFieldValue("lat", details?.geometry?.location?.lat);
-                        setFieldValue("long", details?.geometry?.location?.lng);
-                        setFieldValue(
-                          "volunteerFullAddress",
-                          details?.formatted_address
-                        );
-
-                        const addressComponents =
-                          details?.address_components || [];
-                        addressComponents.forEach((component) => {
-                          if (
-                            component?.types?.includes(
-                              "administrative_area_level_1"
-                            )
-                          ) {
-                            const state = component?.long_name;
-                            setFieldValue("state", state);
-                          }
-                          if (component?.types?.includes("locality")) {
-                            const city = component?.long_name;
-                            setFieldValue("city", city);
-                          }
-
-                          if (component?.types?.includes("postal_code")) {
-                            const zipCode = component?.long_name;
-                            setFieldValue("zipCode", zipCode);
-                          }
-                        });
-                      }}
-                      onFail={(error) => {
-                        console.log(error);
-                      }}
-                      onNotFound={() => {
-                        console.log("no results");
-                      }}
-                      styles={{
-                        textInputContainer: {
-                          borderColor: "black",
-                          borderRadius: 3,
-                          height: 50,
-                          zIndex: 1,
-                          width: "100%",
-                        },
-                        textInput: {
-                          color: "black",
-                          height: 50,
-                          backgroundColor: "white",
-                        },
-                        predefinedPlacesDescription: {
-                          color: "#FFFFFF",
-                        },
-                      }}
-                    />
-                    <Text style={styles.inputError}>
-                      {errors?.volunteerFullAddress}
-                    </Text>
-                    <View
-                      style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      <View
-                        style={[
-                          styles.dateTimePickerContainer,
-                          { backgroundColor: "#deddd9" },
-                        ]}
-                      >
-                        <TextInput
-                          onChangeText={handleChange("city")}
-                          onBlur={handleBlur("city")}
-                          value={values?.city}
-                          placeholder={city ? city : localized.t("CITY")}
-                          placeholderTextColor={"black"}
-                          style={[
-                            styles.textInput,
-                            { backgroundColor: "#deddd9" },
-                          ]}
-                          editable={false}
-                        />
-                      </View>
-                      <View
-                        style={[
-                          styles.dateTimePickerContainer,
-                          { backgroundColor: "#deddd9" },
-                        ]}
-                      >
-                        <TextInput
-                          onChangeText={handleChange("state")}
-                          onBlur={handleBlur("state")}
-                          value={values?.state}
-                          placeholder={state ? state : localized.t("STATE")}
-                          placeholderTextColor={"black"}
-                          style={[
-                            styles.textInput,
-                            { backgroundColor: "#deddd9" },
-                          ]}
-                          editable={false}
-                        />
-                      </View>
-                    </View>
-                    <View>
+                  <KeyboardAvoidingView
+                    style={{ flex: 1 }}
+                    behavior={Platform.OS === "ios" ? "padding" : "height"}
+                    keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}
+                  >
+                    <ScrollView keyboardShouldPersistTaps="handled">
                       <TextInput
-                        onChangeText={handleChange("zipCode")}
-                        onBlur={handleBlur("zipCode")}
-                        value={values?.zipCode}
-                        keyboardType="numeric"
+                        onChangeText={handleChange("name")}
+                        onBlur={handleBlur("name")}
+                        value={values?.name}
                         placeholder={
-                          zipCode ? zipCode : localized.t("ZIP_CODE")
+                          name ? name : `${localized.t("VOLUNTEER_NAME")}`
                         }
                         placeholderTextColor={"black"}
-                        style={[styles.textInput]}
+                        style={styles.textInput}
                       />
-                    </View>
-                    <Text style={styles.inputError}>{errors?.zipCode}</Text>
-                    <View
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                    >
-                      <PhoneInput
-                        ref={phoneInput}
-                        defaultCode="US"
+                      <Text style={styles.inputError}>{errors?.name}</Text>
+                      <TextInput
+                        onChangeText={handleChange("email")}
+                        onBlur={handleBlur("email")}
+                        value={values?.email?.toLocaleLowerCase()}
+                        placeholder={email ? email : localized.t("EMAIL")}
+                        placeholderTextColor={"black"}
+                        style={styles.textInput}
+                      />
+                      <Text style={styles.inputError}>{errors.email}</Text>
+                      <GooglePlacesAutocomplete
                         placeholder={
-                          phoneNumber
-                            ? phoneNumber?.slice(2, 12)
-                            : localized.t("PHONE_NUMBER")
+                          volunteerFullAddress
+                            ? volunteerFullAddress
+                            : `${localized.t("ADDRESS")}`
                         }
-                        onChangeText={(text) => {
-                          const callingCode =
-                            phoneInput.current?.getCallingCode();
-                          setFieldValue("phoneNumber", `${callingCode}${text}`);
+                        fetchDetails={true}
+                        listViewDisplayed="auto"
+                        textInputProps={{ placeholderTextColor: "#000000" }}
+                        query={{
+                          key: API_KEY,
+                          language: "en",
                         }}
-                        containerStyle={[
-                          styles.textArea,
-                          {
+                        enablePoweredByContainer={false}
+                        keyboardShouldPersistTaps="always"
+                        predefinedPlaces={[]}
+                        minLength={1}
+                        timeout={20000}
+                        onPress={(data, details) => {
+                          setFieldValue(
+                            "lat",
+                            details?.geometry?.location?.lat
+                          );
+                          setFieldValue(
+                            "long",
+                            details?.geometry?.location?.lng
+                          );
+                          setFieldValue(
+                            "volunteerFullAddress",
+                            details?.formatted_address
+                          );
+
+                          const addressComponents =
+                            details?.address_components || [];
+                          addressComponents.forEach((component) => {
+                            if (
+                              component?.types?.includes(
+                                "administrative_area_level_1"
+                              )
+                            ) {
+                              const state = component?.long_name;
+                              setFieldValue("state", state);
+                            }
+                            if (component?.types?.includes("locality")) {
+                              const city = component?.long_name;
+                              setFieldValue("city", city);
+                            }
+
+                            if (component?.types?.includes("postal_code")) {
+                              const zipCode = component?.long_name;
+                              setFieldValue("zipCode", zipCode);
+                            }
+                          });
+                        }}
+                        onFail={(error) => {
+                          console.log(error);
+                        }}
+                        onNotFound={() => {
+                          console.log("no results");
+                        }}
+                        styles={{
+                          textInputContainer: {
+                            borderColor: "black",
+                            borderRadius: 3,
+                            height: 50,
+                            zIndex: 1,
                             width: "100%",
-                            alignContent: "center",
-                            justifyContent: "center",
-                            borderRadius: w2dp(1),
-                            overflow: "hidden",
                           },
-                        ]}
-                        value={values.phoneNumber}
-                        textInputProps={{ placeholderTextColor: "black" }}
-                        textInputStyle={{
-                          height: h2dp(8),
+                          textInput: {
+                            color: "black",
+                            height: 50,
+                            backgroundColor: "white",
+                          },
+                          predefinedPlacesDescription: {
+                            color: "#FFFFFF",
+                          },
                         }}
                       />
                       <Text style={styles.inputError}>
-                        {errors?.phoneNumber}
+                        {errors?.volunteerFullAddress}
                       </Text>
-                    </View>
-                  </ScrollView>
+                      <View
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <View
+                          style={[
+                            styles.dateTimePickerContainer,
+                            { backgroundColor: "#deddd9" },
+                          ]}
+                        >
+                          <TextInput
+                            onChangeText={handleChange("city")}
+                            onBlur={handleBlur("city")}
+                            value={values?.city}
+                            placeholder={city ? city : localized.t("CITY")}
+                            placeholderTextColor={"black"}
+                            style={[
+                              styles.textInput,
+                              { backgroundColor: "#deddd9" },
+                            ]}
+                            editable={false}
+                          />
+                        </View>
+                        <View
+                          style={[
+                            styles.dateTimePickerContainer,
+                            { backgroundColor: "#deddd9" },
+                          ]}
+                        >
+                          <TextInput
+                            onChangeText={handleChange("state")}
+                            onBlur={handleBlur("state")}
+                            value={values?.state}
+                            placeholder={state ? state : localized.t("STATE")}
+                            placeholderTextColor={"black"}
+                            style={[
+                              styles.textInput,
+                              { backgroundColor: "#deddd9" },
+                            ]}
+                            editable={false}
+                          />
+                        </View>
+                      </View>
+                      <View>
+                        <TextInput
+                          onChangeText={handleChange("zipCode")}
+                          onBlur={handleBlur("zipCode")}
+                          value={values?.zipCode}
+                          keyboardType="numeric"
+                          placeholder={
+                            zipCode ? zipCode : localized.t("ZIP_CODE")
+                          }
+                          placeholderTextColor={"black"}
+                          style={[styles.textInput]}
+                        />
+                      </View>
+                      <Text style={styles.inputError}>{errors?.zipCode}</Text>
+                      <View
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        <PhoneInput
+                          ref={phoneInput}
+                          defaultCode="US"
+                          placeholder={
+                            phoneNumber
+                              ? phoneNumber?.slice(2, 12)
+                              : localized.t("PHONE_NUMBER")
+                          }
+                          onChangeText={(text) => {
+                            const callingCode =
+                              phoneInput.current?.getCallingCode();
+                            setFieldValue(
+                              "phoneNumber",
+                              `${callingCode}${text}`
+                            );
+                          }}
+                          containerStyle={[
+                            styles.textArea,
+                            {
+                              width: "100%",
+                              alignContent: "center",
+                              justifyContent: "center",
+                              borderRadius: w2dp(1),
+                              overflow: "hidden",
+                            },
+                          ]}
+                          value={values.phoneNumber}
+                          textInputProps={{ placeholderTextColor: "black" }}
+                          textInputStyle={{
+                            height: h2dp(8),
+                          }}
+                        />
+                        <Text style={styles.inputError}>
+                          {errors?.phoneNumber}
+                        </Text>
+                      </View>
+                    </ScrollView>
 
-                  <View
-                    style={{
-                      marginBottom: h2dp(2),
-                    }}
-                  >
-                    <PrimaryButton
-                      title={localized.t("UPDATE")}
-                      buttonStyle={[
-                        styles.buttonStyles,
-                        {
-                          marginHorizontal: 0,
-                        },
-                      ]}
-                      titleStyle={styles.titleStyle}
-                      onPress={handleSubmit}
-                    />
-                  </View>
+                    <View
+                      style={{
+                        marginBottom: h2dp(2),
+                      }}
+                    >
+                      <PrimaryButton
+                        title={localized.t("UPDATE")}
+                        buttonStyle={[
+                          styles.buttonStyles,
+                          {
+                            marginHorizontal: 0,
+                          },
+                        ]}
+                        titleStyle={styles.titleStyle}
+                        onPress={handleSubmit}
+                      />
+                    </View>
+                  </KeyboardAvoidingView>
                 </>
               )}
             </Formik>

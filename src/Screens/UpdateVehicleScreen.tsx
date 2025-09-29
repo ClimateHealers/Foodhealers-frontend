@@ -13,7 +13,9 @@ import {
   ActivityIndicator,
   Alert,
   Keyboard,
+  KeyboardAvoidingView,
   Modal,
+  Platform,
   ScrollView,
   StatusBar,
   TouchableWithoutFeedback,
@@ -230,172 +232,180 @@ const UpdateVehicleScreen = ({ route }: any) => {
                 touched,
                 isValid,
               }) => (
-                <View style={{ flex: 1 }}>
-                  <ScrollView keyboardShouldPersistTaps="handled">
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      <View
-                        style={[
-                          styles.dateTimePickerContainer,
-                          { backgroundColor: "#deddd9" },
-                        ]}
-                      >
-                        <TextInput
-                          disabled={true}
-                          onChangeText={handleChange("carMake")}
-                          onBlur={handleBlur("carMake")}
-                          value={values.carMake}
-                          placeholder={vehicleDetails?.make}
-                          placeholderTextColor={"black"}
-                          style={[
-                            styles.textInput,
-                            { backgroundColor: "#deddd9" },
-                          ]}
-                        />
-                        <Text style={styles.inputError}>{errors?.carMake}</Text>
-                      </View>
-                      <View
-                        style={[
-                          styles.dateTimePickerContainer,
-                          { backgroundColor: "#deddd9" },
-                        ]}
-                      >
-                        <TextInput
-                          disabled={true}
-                          onChangeText={handleChange("carModel")}
-                          onBlur={handleBlur("carModel")}
-                          value={values?.carModel}
-                          placeholder={vehicleDetails?.model}
-                          placeholderTextColor={"black"}
-                          style={[
-                            styles.textInput,
-                            { backgroundColor: "#deddd9" },
-                          ]}
-                        />
-                        <Text style={styles.inputError}>
-                          {errors?.carModel}
-                        </Text>
-                      </View>
-                    </View>
-                    <TextInput
-                      onChangeText={handleChange("carColor")}
-                      onBlur={handleBlur("carColor")}
-                      value={values.carColor}
-                      placeholder={vehicleDetails?.vehicleColour}
-                      placeholderTextColor={"black"}
-                      style={[styles.textInput]}
-                    />
-                    <Text style={styles.inputError}>{errors?.carColor}</Text>
-                    <View>
-                      <TextInput
-                        disabled={true}
-                        onChangeText={handleChange("licencePlate")}
-                        onBlur={handleBlur("licencePlate")}
-                        value={values?.licencePlate}
-                        placeholder={vehicleDetails?.plateNumber}
-                        placeholderTextColor={"black"}
-                        style={[
-                          styles.textInput,
-                          { backgroundColor: "#deddd9" },
-                        ]}
-                      />
-                    </View>
-                    <Text style={styles.inputError}>
-                      {errors?.licencePlate}
-                    </Text>
-                    <View
-                      style={{
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        marginTop: h2dp(1),
-                      }}
-                    >
-                      <SelectDropdown
-                        buttonStyle={{
-                          width: w2dp(50),
-                          height: h2dp(5),
-                          backgroundColor: "#FFF",
-                          borderRadius: 5,
-                          borderWidth: 1,
-                          borderColor: "#D1D1D6",
-                        }}
-                        buttonTextStyle={styles.dropdown1BtnTxtStyle}
-                        renderDropdownIcon={() => {
-                          return (
-                            <MaterialIcons
-                              name="keyboard-arrow-down"
-                              size={18}
-                              color="#B50000"
-                            />
-                          );
-                        }}
-                        dropdownStyle={styles.dropdown1DropdownStyle}
-                        rowStyle={styles.dropdown1RowStyle}
-                        rowTextStyle={{
-                          color: "black",
-                          textAlign: "center",
-                          fontSize: h2dp(1.6),
-                        }}
-                        data={
-                          vehicleData &&
-                          vehicleData.map((dd: any) => {
-                            return (
-                              dd?.make +
-                              " " +
-                              dd?.model +
-                              "  " +
-                              dd?.plateNumber
-                            );
-                          })
-                        }
-                        onSelect={changeVehicle}
-                        defaultButtonText={selectedVehicle?.toUpperCase()}
-                        rowTextForSelection={(item: any, index: any) => {
-                          return item;
-                        }}
-                      />
-                    </View>
-                  </ScrollView>
-                  <View
-                    style={{
-                      paddingBottom: h2dp(2),
-                    }}
+                <>
+                  <KeyboardAvoidingView
+                    style={{ flex: 1 }}
+                    behavior={Platform.OS === "ios" ? "padding" : "height"}
+                    keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}
                   >
-                    <PrimaryButton
-                      title={localized.t("UPDATE")}
-                      buttonStyle={[
-                        styles.buttonStyles,
-                        {
-                          marginHorizontal: 0,
-                        },
-                      ]}
-                      titleStyle={styles.titleStyle}
-                      onPress={handleSubmit}
-                    />
-                    <PrimaryButton
-                      title={localized.t("ADD_NEW_VEHICLE")}
-                      buttonStyle={[
-                        styles.buttonStyles,
-                        {
-                          marginHorizontal: 0,
-                          backgroundColor: "gray",
-                        },
-                      ]}
-                      titleStyle={styles.titleStyle}
-                      onPress={() => {
-                        handlePressOutside(),
-                          navigation.navigate("AddVehicleScreen", {
-                            newVehicle: true,
-                          });
+                    <ScrollView keyboardShouldPersistTaps="handled">
+                      <View
+                        style={{
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <View
+                          style={[
+                            styles.dateTimePickerContainer,
+                            { backgroundColor: "#deddd9" },
+                          ]}
+                        >
+                          <TextInput
+                            disabled={true}
+                            onChangeText={handleChange("carMake")}
+                            onBlur={handleBlur("carMake")}
+                            value={values.carMake}
+                            placeholder={vehicleDetails?.make}
+                            placeholderTextColor={"black"}
+                            style={[
+                              styles.textInput,
+                              { backgroundColor: "#deddd9" },
+                            ]}
+                          />
+                          <Text style={styles.inputError}>
+                            {errors?.carMake}
+                          </Text>
+                        </View>
+                        <View
+                          style={[
+                            styles.dateTimePickerContainer,
+                            { backgroundColor: "#deddd9" },
+                          ]}
+                        >
+                          <TextInput
+                            disabled={true}
+                            onChangeText={handleChange("carModel")}
+                            onBlur={handleBlur("carModel")}
+                            value={values?.carModel}
+                            placeholder={vehicleDetails?.model}
+                            placeholderTextColor={"black"}
+                            style={[
+                              styles.textInput,
+                              { backgroundColor: "#deddd9" },
+                            ]}
+                          />
+                          <Text style={styles.inputError}>
+                            {errors?.carModel}
+                          </Text>
+                        </View>
+                      </View>
+                      <TextInput
+                        onChangeText={handleChange("carColor")}
+                        onBlur={handleBlur("carColor")}
+                        value={values.carColor}
+                        placeholder={vehicleDetails?.vehicleColour}
+                        placeholderTextColor={"black"}
+                        style={[styles.textInput]}
+                      />
+                      <Text style={styles.inputError}>{errors?.carColor}</Text>
+                      <View>
+                        <TextInput
+                          disabled={true}
+                          onChangeText={handleChange("licencePlate")}
+                          onBlur={handleBlur("licencePlate")}
+                          value={values?.licencePlate}
+                          placeholder={vehicleDetails?.plateNumber}
+                          placeholderTextColor={"black"}
+                          style={[
+                            styles.textInput,
+                            { backgroundColor: "#deddd9" },
+                          ]}
+                        />
+                      </View>
+                      <Text style={styles.inputError}>
+                        {errors?.licencePlate}
+                      </Text>
+                      <View
+                        style={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          marginTop: h2dp(1),
+                        }}
+                      >
+                        <SelectDropdown
+                          buttonStyle={{
+                            width: w2dp(50),
+                            height: h2dp(5),
+                            backgroundColor: "#FFF",
+                            borderRadius: 5,
+                            borderWidth: 1,
+                            borderColor: "#D1D1D6",
+                          }}
+                          buttonTextStyle={styles.dropdown1BtnTxtStyle}
+                          renderDropdownIcon={() => {
+                            return (
+                              <MaterialIcons
+                                name="keyboard-arrow-down"
+                                size={18}
+                                color="#B50000"
+                              />
+                            );
+                          }}
+                          dropdownStyle={styles.dropdown1DropdownStyle}
+                          rowStyle={styles.dropdown1RowStyle}
+                          rowTextStyle={{
+                            color: "black",
+                            textAlign: "center",
+                            fontSize: h2dp(1.6),
+                          }}
+                          data={
+                            vehicleData &&
+                            vehicleData.map((dd: any) => {
+                              return (
+                                dd?.make +
+                                " " +
+                                dd?.model +
+                                "  " +
+                                dd?.plateNumber
+                              );
+                            })
+                          }
+                          onSelect={changeVehicle}
+                          defaultButtonText={selectedVehicle?.toUpperCase()}
+                          rowTextForSelection={(item: any, index: any) => {
+                            return item;
+                          }}
+                        />
+                      </View>
+                    </ScrollView>
+                    <View
+                      style={{
+                        paddingBottom: h2dp(2),
                       }}
-                    />
-                  </View>
-                </View>
+                    >
+                      <PrimaryButton
+                        title={localized.t("UPDATE")}
+                        buttonStyle={[
+                          styles.buttonStyles,
+                          {
+                            marginHorizontal: 0,
+                          },
+                        ]}
+                        titleStyle={styles.titleStyle}
+                        onPress={handleSubmit}
+                      />
+                      <PrimaryButton
+                        title={localized.t("ADD_NEW_VEHICLE")}
+                        buttonStyle={[
+                          styles.buttonStyles,
+                          {
+                            marginHorizontal: 0,
+                            backgroundColor: "gray",
+                          },
+                        ]}
+                        titleStyle={styles.titleStyle}
+                        onPress={() => {
+                          handlePressOutside(),
+                            navigation.navigate("AddVehicleScreen", {
+                              newVehicle: true,
+                            });
+                        }}
+                      />
+                    </View>
+                  </KeyboardAvoidingView>
+                </>
               )}
             </Formik>
           </View>
