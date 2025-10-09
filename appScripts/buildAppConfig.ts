@@ -12,7 +12,7 @@ const appConfig = {
   expo: {
     name: "Food-Healers",
     slug: "food-healers",
-    version: "1.4.5",
+    version: "1.4.6",
     orientation: "portrait",
 
     icon: "./assets/FH-androidLogo.png",
@@ -45,15 +45,15 @@ const appConfig = {
         NSLocationWhenInUseUsageDescription:
           "FoodHealers app needs your location to show nearby events and best transportation options for the selected event within the app.",
         NSPhotoLibraryUsageDescription:
-          "Enable photo library access for the Foodhealers app to effortlessly share and upload relevant photos of your contributions and events",
+          "Enable photo library access for the FoodHealers app to effortlessly share and upload relevant photos of your contributions and events",
       },
       useFrameworks: "static",
       config: {
-        googleMapsApiKey: process.env.GOOGLE_API_KEY || "",
+        googleMapsApiKey: process.env.GOOGLE_API_KEY_IOS || "",
       },
     },
     android: {
-      versionCode: 25,
+      versionCode: 26,
       targetSdkVersion: 35,
       permissions: [
         "android.permission.ACCESS_COARSE_LOCATION",
@@ -61,7 +61,7 @@ const appConfig = {
       ],
       config: {
         googleMaps: {
-          apiKey: process.env.GOOGLE_API_KEY || "",
+          apiKey: process.env.GOOGLE_API_KEY_ANDROID || "",
         },
       },
       package: "com.foodhealers.climatehealers",
@@ -82,8 +82,8 @@ const appConfig = {
         projectId: process.env.PROJECT_ID || "",
         apikey: process.env.FIREBASE_FCM_API_KEY || "",
       },
-      googleMapsApiKey: process.env.GOOGLE_API_KEY || "",
-
+      googleMapsApiKeyAndroid: process.env.GOOGLE_API_KEY_ANDROID || "",
+      googleMapsApiKeyIOS: process.env.GOOGLE_API_KEY_IOS || "",
       firebase: {
         apiKey: process.env.FIREBASE_API_KEY || "",
         authDomain: process.env.FIREBASE_AUTH_DOMAIN || "",

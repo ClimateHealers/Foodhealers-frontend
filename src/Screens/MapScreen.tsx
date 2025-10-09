@@ -82,7 +82,10 @@ const MapScreen = ({ route }: any) => {
 
   const mapRef = useRef<any>(null);
 
-  const API_KEY = Constants.expoConfig?.extra?.googleMapsApiKey;
+  const API_KEY =
+    Platform.OS === "ios"
+      ? Constants.expoConfig?.extra?.googleMapsApiKeyIOS
+      : Constants.expoConfig?.extra?.googleMapsApiKeyAndroid;
 
   const dispatch = useDispatch();
   const languageName = useSelector((state: any) => state.language);
