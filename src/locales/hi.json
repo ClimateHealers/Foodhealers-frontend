@@ -293,6 +293,7 @@
     "RECIPE": "रेसिपी",
     "IN_TRANSIT": "ट्रांजिट में",
     "ACCEPTED": "स्वीकृत",
-    "LOADING_NEARBY_EVENTS": "नज़दीकी कार्यक्रम लोड हो रहे हैं..."
+    "LOADING_NEARBY_EVENTS": "नज़दीकी कार्यक्रम लोड हो रहे हैं...",
+    "TAP_TO_FIND_FOOD": "खाना खोजने के लिए टैप करें"
   }
 }

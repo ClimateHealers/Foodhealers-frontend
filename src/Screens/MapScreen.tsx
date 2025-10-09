@@ -90,6 +90,10 @@ const MapScreen = ({ route }: any) => {
   const dispatch = useDispatch();
   const languageName = useSelector((state: any) => state.language);
 
+  const markerImage = !emptyEvents
+    ? require("../../assets/eventLocationPin.png")
+    : require("../../assets/newCurrentLocationPin.png");
+
   const focusMarker = () => {
     if (mapRef.current) {
       const markerCoordinate = {
@@ -157,7 +161,7 @@ const MapScreen = ({ route }: any) => {
   };
 
   const clickHandler = () => {
-    navigation.navigate("FindFoodHomeScreen", {
+    navigation.navigate("WeekScreen", {
       currentlat: latitude,
       currentlong: longitude,
       city: city,
@@ -435,10 +439,20 @@ const MapScreen = ({ route }: any) => {
                             latitudeDelta: LATITUDE_DELTA,
                             longitudeDelta: LONGITUDE_DELTA,
                           }}
-                          title={localized.t("SELECTED_LOCATION")}
+                          title={
+                            emptyEvents
+                              ? localized.t("SELECTED_LOCATION")
+                              : localized.t("TAP_TO_FIND_FOOD")
+                          }
+                          onPress={() => {
+                            {
+                              !emptyEvents && clickHandler();
+                              handlePressOutside();
+                            }
+                          }}
                         >
                           <Image
-                            source={require("../../assets/newCurrentLocationPin.png")}
+                            source={markerImage}
                             style={styles.markerIcon}
                           />
                         </Marker>
