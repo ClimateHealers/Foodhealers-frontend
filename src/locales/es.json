@@ -293,6 +293,7 @@
     "RECIPE": "Receta",
     "IN_TRANSIT": "En tránsito",
     "ACCEPTED": "Aceptado",
-    "LOADING_NEARBY_EVENTS": "Cargando eventos cercanos..."
+    "LOADING_NEARBY_EVENTS": "Cargando eventos cercanos...",
+    "TAP_TO_FIND_FOOD": "Toca para encontrar comida"
   }
 }

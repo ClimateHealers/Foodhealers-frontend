@@ -293,6 +293,7 @@
     "RECIPE": "食谱",
     "IN_TRANSIT": "运输中",
     "ACCEPTED": "已接受",
-    "LOADING_NEARBY_EVENTS": "जवळील कार्यक्रम लोड होत आहेत..."
+    "LOADING_NEARBY_EVENTS": "जवळील कार्यक्रम लोड होत आहेत...",
+    "TAP_TO_FIND_FOOD": "अन्न शोधण्यासाठी टॅप करा"
   }
 }

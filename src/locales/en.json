@@ -294,6 +294,7 @@
     "RECIPE": "Recipe",
     "IN_TRANSIT": "In Transit",
     "ACCEPTED": "Accepted",
-    "LOADING_NEARBY_EVENTS": "Loading nearby events..."
+    "LOADING_NEARBY_EVENTS": "Loading nearby events...",
+    "TAP_TO_FIND_FOOD": "Tap to find food"
   }
 }
