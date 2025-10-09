@@ -82,7 +82,10 @@ const AcceptRequestedDonationScreen = ({ route }: any) => {
 
   const dispatch = useDispatch();
 
-  const API_KEY = Constants.expoConfig?.extra?.googleMapsApiKey;
+  const API_KEY =
+    Platform.OS === "ios"
+      ? Constants.expoConfig?.extra?.googleMapsApiKeyIOS
+      : Constants.expoConfig?.extra?.googleMapsApiKeyAndroid;
 
   const eventDateTime = moment(selectedDate).utc().unix();
 
