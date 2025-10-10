@@ -67,8 +67,8 @@ const WeekScreen = ({ route }: any) => {
   ]);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [selectedLanguage, setSelectedLanguage] = useState(localized.locale);
-  const [currentLat, setCurrentlat] = useState(0);
-  const [currentLong, setCurrentlong] = useState(0);
+  const [currentLat, setCurrentlat] = useState(currentLatitude || 0);
+  const [currentLong, setCurrentlong] = useState(currentLongitude || 0);
   const mapRef = useRef<any>(null);
   const dispatch = useDispatch();
 
@@ -86,20 +86,66 @@ const WeekScreen = ({ route }: any) => {
     .add(6, "d")
     .utc()
     .unix();
-  const focusMarker = () => {
-    if (mapRef.current) {
-      const markerCoordinate = { latitude: lat, longitude: lng };
+  const gettingEvents = async (latitude?: number, longitude?: number) => {
+    const payload = {
+      lat: latitude ?? lat ?? currentLatitude,
+      lng: longitude ?? lng ?? currentLongitude,
+      alt: 0,
+      city,
+      state,
+      postalCode: postalCode ? Number(postalCode) : 0,
+      fullAddress,
+      eventStartDate: startDate,
+      eventEndDate: selectedIndex === 1 ? oneWeek : endDate,
+    };
 
-      const region = {
-        latitude: markerCoordinate.latitude,
-        longitude: markerCoordinate.longitude,
-        latitudeDelta: LATITUDE_DELTA,
-        longitudeDelta: LONGITUDE_DELTA,
-      };
-
-      mapRef.current.animateToRegion(region, 2000);
-    }
+    const response = await dispatch(findFood(payload as any) as any);
+    const foodEvents = response?.payload?.results?.foodEvents;
+    const verified = foodEvents?.filter((e: any) => e.status === "approved");
+    setEvents(verified || []);
   };
+
+  const navigateToEvent = (eventData: any) => {
+    navigation.navigate("EventDetailsScreen", {
+      eventDetails: eventData,
+      lat,
+      lng,
+    });
+  };
+
+  const changeLanguage = (itemValue: any, index: any) => {
+    const selectedLanguage = lang[index].value;
+    dispatch(setLanguage(selectedLanguage));
+    localized.locale = selectedLanguage;
+    setSelectedLanguage(selectedLanguage);
+  };
+
+  const handleSingleIndexSelect = (index: any) => {
+    setSelectedIndex(index);
+    gettingEvents();
+  };
+
+  const handlePressOutside = () => {
+    setlangOpen(false);
+    Keyboard.dismiss();
+    setMenuOpen(false);
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      gettingEvents();
+
+      if (lat && lng && mapRef.current) {
+        const region = {
+          latitude: lat,
+          longitude: lng,
+          latitudeDelta: LATITUDE_DELTA,
+          longitudeDelta: LONGITUDE_DELTA,
+        };
+        mapRef.current.animateToRegion(region, 1000);
+      }
+    }, [lat, lng])
+  );
 
   const fetchUserLocation = async () => {
     try {
@@ -129,147 +175,29 @@ const WeekScreen = ({ route }: any) => {
 
   const focusCurrentLocation = async () => {
     const locationResult = await fetchUserLocation();
-    let latitudeToUse, longitudeToUse;
+    let latitudeToUse = currentLatitude;
+    let longitudeToUse = currentLongitude;
 
     if (locationResult) {
       latitudeToUse = locationResult.coords.latitude;
       longitudeToUse = locationResult.coords.longitude;
-    } else {
-      latitudeToUse = currentLatitude;
-      longitudeToUse = currentLongitude;
     }
 
     setCurrentlat(latitudeToUse);
     setCurrentlong(longitudeToUse);
-
-    const CurrentLocationPayload = {
-      lat: latitudeToUse,
-      lng: longitudeToUse,
-      alt: 0,
-      city: city,
-      state: state,
-      postalCode: postalCode ? Number(postalCode) : 0,
-      fullAddress: fullAddress,
-      eventStartDate: startDate ? startDate : 0,
-      eventEndDate: oneWeek ? oneWeek : 0,
-    };
-    const response = await dispatch(
-      findFood(CurrentLocationPayload as any) as any
-    );
-    const foodEvents = response?.payload?.results?.foodEvents;
-    const verifiedFoodEvents = foodEvents?.filter(
-      (event: any) => event.status === "approved"
-    );
-    setEvents(verifiedFoodEvents);
+    await gettingEvents(latitudeToUse, longitudeToUse);
 
     if (mapRef.current) {
-      const markerCoordinate = {
-        latitude: latitudeToUse,
-        longitude: longitudeToUse,
-      };
-
-      const region = {
-        latitude: markerCoordinate.latitude,
-        longitude: markerCoordinate.longitude,
-        latitudeDelta: LATITUDE_DELTA,
-        longitudeDelta: LONGITUDE_DELTA,
-      };
-
-      mapRef.current.animateToRegion(region, 2000);
-    }
-  };
-
-  const gettingEvents = async () => {
-    const findFoodData = {
-      lat: lat ? lat : currentLatitude,
-      lng: lng ? lng : currentLongitude,
-      alt: 0,
-      city: city,
-      state: state,
-      postalCode: postalCode ? Number(postalCode) : 0,
-      fullAddress: fullAddress,
-      eventStartDate: startDate ? startDate : 0,
-      eventEndDate: endDate ? endDate : 0,
-    };
-
-    const response = await dispatch(findFood(findFoodData as any) as any);
-
-    const foodEvents = response?.payload?.results?.foodEvents;
-    const verifiedFoodEvents = foodEvents?.filter(
-      (event: any) => event.status === "approved"
-    );
-    setEvents(verifiedFoodEvents);
-  };
-
-  const navigateToEvent = (eventData: any) => {
-    navigation.navigate("EventDetailsScreen", {
-      eventDetails: eventData,
-      lat: lat,
-      lng: lng,
-    });
-  };
-
-  useFocusEffect(
-    useCallback(() => {
-      gettingEvents();
-      if (lat && lng) {
-        focusMarker();
-      }
-    }, [])
-  );
-
-  const handleSingleIndexSelect = async (index: any) => {
-    setSelectedIndex(index);
-    if (index === 0) {
-      const oneDayData = {
-        lat: lat ? lat : 0,
-        lng: lng ? lng : 0,
-        alt: 0,
-        city: city,
-        state: state,
-        postalCode: postalCode ? Number(postalCode) : 0,
-        fullAddress: fullAddress,
-        eventStartDate: startDate ? startDate : 0,
-        eventEndDate: endDate ? endDate : 0,
-      };
-      const response = await dispatch(findFood(oneDayData as any) as any);
-      const foodEvents = response?.payload?.results?.foodEvents;
-      const verifiedFoodEvents = foodEvents?.filter(
-        (event: any) => event.status === "approved"
+      mapRef.current.animateToRegion(
+        {
+          latitude: latitudeToUse,
+          longitude: longitudeToUse,
+          latitudeDelta: LATITUDE_DELTA,
+          longitudeDelta: LONGITUDE_DELTA,
+        },
+        1000
       );
-      setEvents(verifiedFoodEvents);
-    } else if (index === 1) {
-      const thisWeekData = {
-        lat: lat ? lat : 0,
-        lng: lng ? lng : 0,
-        alt: 0,
-        city: city,
-        state: state,
-        postalCode: postalCode ? Number(postalCode) : 0,
-        fullAddress: fullAddress,
-        eventStartDate: startDate ? startDate : 0,
-        eventEndDate: oneWeek ? oneWeek : 0,
-      };
-      const response = await dispatch(findFood(thisWeekData as any) as any);
-      const foodEvents = response?.payload?.results?.foodEvents;
-      const verifiedFoodEvents = foodEvents?.filter(
-        (event: any) => event.status === "approved"
-      );
-      setEvents(verifiedFoodEvents);
     }
-  };
-
-  const handlePressOutside = () => {
-    setlangOpen(false);
-    Keyboard.dismiss();
-    setMenuOpen(!menuClose);
-  };
-
-  const changeLanguage = (itemValue: any, index: any) => {
-    const selectedLanguage = lang[index].value;
-    dispatch(setLanguage(selectedLanguage));
-    localized.locale = selectedLanguage;
-    setSelectedLanguage(selectedLanguage);
   };
 
   return (
@@ -394,15 +322,9 @@ const WeekScreen = ({ route }: any) => {
                   showsUserLocation={true}
                   customMapStyle={mapStyle}
                 >
-                  {address ? (
+                  {lat && lng && (
                     <Marker
-                      pinColor="#FC5A56"
-                      coordinate={{
-                        latitude: lat ? lat : 0,
-                        longitude: lng ? lng : 0,
-                        latitudeDelta: LATITUDE_DELTA,
-                        longitudeDelta: LONGITUDE_DELTA,
-                      }}
+                      coordinate={{ latitude: lat, longitude: lng }}
                       title={localized.t("SELECTED_LOCATION")}
                     >
                       <Image
@@ -410,7 +332,22 @@ const WeekScreen = ({ route }: any) => {
                         style={styles.markerIcon}
                       />
                     </Marker>
-                  ) : null}
+                  )}
+
+                  {currentLat && currentLong && (
+                    <Marker
+                      coordinate={{
+                        latitude: currentLat,
+                        longitude: currentLong,
+                      }}
+                      title="Your Location"
+                    >
+                      <Image
+                        source={require("../../assets/eventLocationPin.png")}
+                        style={[styles.markerIcon, { tintColor: "#009b4d" }]}
+                      />
+                    </Marker>
+                  )}
 
                   {events?.map((marker: any) => {
                     const coordinates = {
@@ -420,7 +357,6 @@ const WeekScreen = ({ route }: any) => {
                     return (
                       <Marker
                         key={marker?.id}
-                        pinColor="#00693D"
                         coordinate={coordinates}
                         onPress={() => navigateToEvent(marker)}
                       >
@@ -445,6 +381,42 @@ const WeekScreen = ({ route }: any) => {
                   })}
                 </MapView>
               </View>
+
+              {fullAddress ? (
+                <View
+                  style={{
+                    marginTop: h2dp(2),
+                    marginHorizontal: w2dp(5),
+                    backgroundColor: "rgba(255,255,255,0.15)",
+                    borderRadius: 10,
+                    padding: h2dp(2),
+                    borderWidth: 1,
+                    borderColor: "rgba(255,255,255,0.2)",
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: h2dp(2),
+                      fontWeight: "600",
+                      color: "#fff",
+                      marginBottom: h2dp(0.5),
+                    }}
+                  >
+                    {localized.t("SELECTED_LOCATION")}
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: h2dp(1.8),
+                      color: "#fff",
+                      opacity: 0.9,
+                      lineHeight: h2dp(2.4),
+                    }}
+                    numberOfLines={3}
+                  >
+                    {fullAddress}
+                  </Text>
+                </View>
+              ) : null}
             </View>
           </ScrollView>
         </SafeAreaView>

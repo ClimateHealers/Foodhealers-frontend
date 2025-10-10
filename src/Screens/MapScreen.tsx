@@ -162,15 +162,15 @@ const MapScreen = ({ route }: any) => {
 
   const clickHandler = () => {
     navigation.navigate("WeekScreen", {
-      currentlat: latitude,
-      currentlong: longitude,
-      city: city,
-      state: state,
-      fullAddress: fullAddress,
-      postalCode: postalCode,
-      latitude: lat,
+      currentLatitude: latitude,
+      currentLongitude: longitude,
+      city,
+      state,
+      fullAddress,
+      postalCode,
+      lat,
       lng: long,
-      address: address,
+      address,
     });
   };
 
