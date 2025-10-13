@@ -294,6 +294,7 @@
     "IN_TRANSIT": "En transit",
     "ACCEPTED": "Accepté",
     "LOADING_NEARBY_EVENTS": "Chargement des événements à proximité...",
-    "TAP_TO_FIND_FOOD": "Appuyez pour trouver de la nourriture"
+    "TAP_TO_FIND_FOOD": "Appuyez pour trouver de la nourriture",
+    "MORE_DETAILS": "Plus de détails"
   }
 }

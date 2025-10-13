@@ -31,6 +31,7 @@ import { useDispatch, useSelector } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
 import mapStyle from "../Components/MapStyle";
+import { TouchableOpacity } from "react-native";
 import PrimaryButton from "../Components/PrimaryButton";
 import { styles } from "../Components/Styles";
 import { localized } from "../locales/localization";
@@ -42,6 +43,8 @@ const MapScreen = ({ route }: any) => {
   const { latitude, longitude } = route.params;
   const menuItem = "Find Food";
   const [menuClose, setMenuOpen] = useState(false);
+  const [openEventDetailsModal, setOpenEventDetailsModal] =
+    useState<boolean>(false);
   const startDate = moment(new Date().setHours(0, 0, 0, 0)).utc().unix();
   const endDate = moment(new Date().setHours(23, 59, 59, 0))
     .add(6, "d")
@@ -67,6 +70,7 @@ const MapScreen = ({ route }: any) => {
     { id: 8, label: "Spanish", value: "es" },
   ]);
   const [events, setEvents] = useState<[]>([]);
+  const [selectedEvent, setSelectedEvent] = useState<any>(null);
   const [selectedLanguage, setSelectedLanguage] = useState(localized.locale);
   const [currentLocation, setCurrentLocation] = useState<any>("");
   const [address, setAddress] = useState<any>();
@@ -114,6 +118,7 @@ const MapScreen = ({ route }: any) => {
 
   const getAddressFromCoordinates = async (latitude: any, longitude: any) => {
     try {
+      setLoading(true);
       const response = await fetch(
         `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${API_KEY}`
       );
@@ -152,6 +157,22 @@ const MapScreen = ({ route }: any) => {
       setLoading(false);
       console.error(error);
     }
+  };
+  const formatEventData = (event: any) => {
+    return {
+      id: event.id,
+      name: event.name,
+      additionalInfo: event.additionalInfo,
+      address: event.address?.fullAddress || "",
+      lat: event.address?.lat || 0,
+      long: event.address?.lng || 0,
+      eventStartDate: event.eventStartDate,
+      eventEndDate: event.eventEndDate,
+      eventPhoto: event.eventPhoto,
+      eventSharingPhoto: event.eventSharingPhoto,
+      requiredVolunteers: event.requiredVolunteers,
+      status: event.status,
+    };
   };
 
   const handlePressOutside = () => {
@@ -430,33 +451,42 @@ const MapScreen = ({ route }: any) => {
                       showsUserLocation={true}
                       followsUserLocation={false}
                     >
-                      {address ? (
-                        <Marker
-                          pinColor="#FC5A56"
-                          coordinate={{
-                            latitude: lat ? lat : 0,
-                            longitude: long ? long : 0,
-                            latitudeDelta: LATITUDE_DELTA,
-                            longitudeDelta: LONGITUDE_DELTA,
-                          }}
-                          title={
-                            emptyEvents
-                              ? localized.t("SELECTED_LOCATION")
-                              : localized.t("TAP_TO_FIND_FOOD")
-                          }
-                          onPress={() => {
-                            {
-                              !emptyEvents && clickHandler();
-                              handlePressOutside();
-                            }
-                          }}
-                        >
-                          <Image
-                            source={markerImage}
-                            style={styles.markerIcon}
-                          />
-                        </Marker>
-                      ) : null}
+                      {address &&
+                        events?.map((marker: any) => {
+                          return (
+                            <Marker
+                              key={marker?.id}
+                              pinColor="#FC5A56"
+                              coordinate={{
+                                latitude: lat ? lat : 0,
+                                longitude: long ? long : 0,
+                                latitudeDelta: LATITUDE_DELTA,
+                                longitudeDelta: LONGITUDE_DELTA,
+                              }}
+                              title={
+                                emptyEvents
+                                  ? localized.t("SELECTED_LOCATION")
+                                  : localized.t("TAP_TO_FIND_FOOD")
+                              }
+                              onPress={() => {
+                                if (!emptyEvents) {
+                                  setLoading(true);
+                                  const formatedData = formatEventData(marker);
+                                  setSelectedEvent(formatedData);
+                                  setOpenEventDetailsModal(true);
+                                  handlePressOutside();
+                                  setLoading(false);
+                                }
+                              }}
+                            >
+                              <Image
+                                source={markerImage}
+                                style={styles.markerIcon}
+                              />
+                            </Marker>
+                          );
+                        })}
+
                       {events?.map((marker: any) => {
                         const coordinates = {
                           latitude: marker?.address?.lat,
@@ -549,6 +579,89 @@ const MapScreen = ({ route }: any) => {
                   />
                 </View>
               ) : null}
+              <Modal
+                visible={openEventDetailsModal}
+                animationType="fade"
+                transparent
+                onRequestClose={() => setOpenEventDetailsModal(false)}
+              >
+                <View style={styles.modalCenteredView}>
+                  <View
+                    style={[
+                      styles.eventDetailsModalView,
+                      { width: "90%", padding: 20, backgroundColor: "white" },
+                    ]}
+                  >
+                    {selectedEvent && (
+                      <>
+                        <Text
+                          style={[
+                            {
+                              marginBottom: 16,
+                              fontSize: h2dp(1.8),
+                              color: "black",
+                              fontWeight: "800",
+                              textAlign: "center",
+                            },
+                          ]}
+                        >
+                          {selectedEvent?.name || "Event Details"}
+                        </Text>
+
+                        <Text style={styles.eventDetailText}>
+                          <Text style={styles.eventLabel}>
+                            {localized.t("FROM")}:
+                          </Text>{" "}
+                          {moment(selectedEvent?.eventStartDate).format(
+                            "MMMM Do YYYY, h:mm A"
+                          )}
+                        </Text>
+                        <Text style={styles.eventDetailText}>
+                          <Text style={styles.eventLabel}>
+                            {localized.t("TO")}:
+                          </Text>{" "}
+                          {moment(selectedEvent?.eventEndDate).format(
+                            "MMMM Do YYYY, h:mm A"
+                          )}
+                        </Text>
+
+                        <Text style={styles.eventDetailText}>
+                          <Text style={styles.eventLabel}>
+                            {" "}
+                            {localized.t("LOCATION")}:
+                          </Text>{" "}
+                          {selectedEvent?.address}
+                        </Text>
+
+                        <View style={{ flexDirection: "row", marginTop: 20 }}>
+                          <TouchableOpacity
+                            style={styles.modalButton}
+                            onPress={() => setOpenEventDetailsModal(false)}
+                          >
+                            <Text style={styles.buttonText}>
+                              {localized.t("CLOSE")}
+                            </Text>
+                          </TouchableOpacity>
+
+                          <TouchableOpacity
+                            style={[styles.modalButton, { marginLeft: 12 }]}
+                            onPress={() => {
+                              setOpenEventDetailsModal(false);
+                              navigation.navigate("SingleEventDetails", {
+                                eventDetails: selectedEvent,
+                              });
+                            }}
+                          >
+                            <Text style={styles.buttonText}>
+                              {localized.t("MORE_DETAILS")}
+                            </Text>
+                          </TouchableOpacity>
+                        </View>
+                      </>
+                    )}
+                  </View>
+                </View>
+              </Modal>
             </KeyboardAvoidingView>
           </View>
         </SafeAreaView>

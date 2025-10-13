@@ -294,6 +294,7 @@
     "IN_TRANSIT": "运输中",
     "ACCEPTED": "已接受",
     "LOADING_NEARBY_EVENTS": "正在加载附近的活动...",
-    "TAP_TO_FIND_FOOD": "点击寻找食物"
+    "TAP_TO_FIND_FOOD": "点击寻找食物",
+    "MORE_DETAILS": "更多详情"
   }
 }

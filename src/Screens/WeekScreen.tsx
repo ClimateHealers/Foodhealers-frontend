@@ -69,6 +69,7 @@ const WeekScreen = ({ route }: any) => {
   const [selectedLanguage, setSelectedLanguage] = useState(localized.locale);
   const [currentLat, setCurrentlat] = useState(currentLatitude || 0);
   const [currentLong, setCurrentlong] = useState(currentLongitude || 0);
+  const [mapReady, setMapReady] = useState(false);
   const mapRef = useRef<any>(null);
   const dispatch = useDispatch();
 
@@ -131,20 +132,26 @@ const WeekScreen = ({ route }: any) => {
     setMenuOpen(false);
   };
 
+  const centerOnSelectedLocation = useCallback(() => {
+    if (lat && lng && mapRef.current) {
+      const region = {
+        latitude: lat,
+        longitude: lng,
+        latitudeDelta: LATITUDE_DELTA,
+        longitudeDelta: LONGITUDE_DELTA,
+      };
+      mapRef.current.animateToRegion(region, 1000);
+    }
+  }, [lat, lng]);
+
   useFocusEffect(
     useCallback(() => {
-      gettingEvents();
-
-      if (lat && lng && mapRef.current) {
-        const region = {
-          latitude: lat,
-          longitude: lng,
-          latitudeDelta: LATITUDE_DELTA,
-          longitudeDelta: LONGITUDE_DELTA,
-        };
-        mapRef.current.animateToRegion(region, 1000);
+      if (mapReady) {
+        setTimeout(() => {
+          centerOnSelectedLocation();
+        }, 500);
       }
-    }, [lat, lng])
+    }, [mapReady, centerOnSelectedLocation])
   );
 
   const fetchUserLocation = async () => {
@@ -314,6 +321,7 @@ const WeekScreen = ({ route }: any) => {
               <View style={styles.mapContainer}>
                 <MapView
                   ref={mapRef}
+                  onMapReady={() => setMapReady(true)}
                   style={{
                     alignSelf: "stretch",
                     height: "65%",
