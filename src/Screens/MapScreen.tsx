@@ -1,4 +1,4 @@
-import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { Ionicons, MaterialIcons, Octicons } from "@expo/vector-icons";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import Constants from "expo-constants";
 import { LinearGradient } from "expo-linear-gradient";
@@ -15,6 +15,7 @@ import {
   Platform,
   ScrollView,
   Text,
+  TouchableOpacity,
   TouchableWithoutFeedback,
   View,
 } from "react-native";
@@ -67,6 +68,10 @@ const MapScreen = ({ route }: any) => {
     { id: 8, label: "Spanish", value: "es" },
   ]);
   const [events, setEvents] = useState<[]>([]);
+
+  const [selectedEvent, setSelectedEvent] = useState<any>(null);
+  const [openEventDetailsModal, setOpenEventDetailsModal] =
+    useState<boolean>(false);
   const [selectedLanguage, setSelectedLanguage] = useState(localized.locale);
   const [currentLocation, setCurrentLocation] = useState<any>("");
   const [address, setAddress] = useState<any>();
@@ -154,6 +159,22 @@ const MapScreen = ({ route }: any) => {
     }
   };
 
+  const formatEventData = (event: any) => {
+    return {
+      id: event?.id,
+      name: event?.name,
+      additionalInfo: event?.additionalInfo,
+      address: event?.address?.fullAddress || "",
+      lat: event?.address?.lat || 0,
+      long: event?.address?.lng || 0,
+      eventStartDate: event?.eventStartDate,
+      eventEndDate: event?.eventEndDate,
+      eventPhoto: event?.eventPhoto,
+      eventSharingPhoto: event?.eventSharingPhoto,
+      requiredVolunteers: event?.requiredVolunteers,
+      status: event?.status,
+    };
+  };
   const handlePressOutside = () => {
     setlangOpen(false);
     Keyboard.dismiss();
@@ -442,17 +463,26 @@ const MapScreen = ({ route }: any) => {
                           title={
                             emptyEvents
                               ? localized.t("SELECTED_LOCATION")
-                              : localized.t("TAP_TO_FIND_FOOD")
+                              : selectedEvent?.address
                           }
                           onPress={() => {
-                            {
-                              !emptyEvents && clickHandler();
+                            if (!emptyEvents) {
+                              setLoading(true);
+                              const selectedEvent = events?.map(
+                                (event) => event
+                              );
+                              const formatedData = formatEventData(
+                                selectedEvent[0]
+                              );
+                              setSelectedEvent(formatedData);
+                              setOpenEventDetailsModal(true);
                               handlePressOutside();
+                              setLoading(false);
                             }
                           }}
                         >
                           <Image
-                            source={markerImage}
+                            source={require("../../assets/newCurrentLocationPin.png")}
                             style={styles.markerIcon}
                           />
                         </Marker>
@@ -488,6 +518,161 @@ const MapScreen = ({ route }: any) => {
                         );
                       })}
                     </MapView>
+                    <Modal
+                      visible={openEventDetailsModal}
+                      animationType="fade"
+                      transparent
+                      onRequestClose={() => setOpenEventDetailsModal(false)}
+                    >
+                      <View style={styles.modalCenteredView}>
+                        <View
+                          style={[
+                            styles.eventDetailsModalView,
+                            {
+                              width: "90%",
+                              padding: 20,
+                              backgroundColor: "white",
+                            },
+                          ]}
+                        >
+                          {selectedEvent && (
+                            <>
+                              <Text
+                                style={{
+                                  marginBottom: 16,
+                                  fontSize: h2dp(1.8),
+                                  color: "black",
+                                  fontWeight: "800",
+                                  textAlign: "center",
+                                }}
+                              >
+                                {selectedEvent?.name || "Event Details"}
+                              </Text>
+
+                              <View style={{ gap: 20, width: "100%" }}>
+                                <View
+                                  style={{
+                                    gap:5,
+                                    flexDirection: "row",
+                                    alignItems: "flex-start",
+                                    width: "100%",
+                                  }}
+                                >
+                                  <View
+                                    style={{ width: 25, alignItems: "center" }}
+                                  >
+                                    <MaterialIcons
+                                      name="access-time"
+                                      size={22}
+                                      color="black"
+                                    />
+                                  </View>
+                                  <Text
+                                    style={[
+                                      styles.eventDetailText,
+                                      {
+                                        flex: 1,
+                                        lineHeight: h2dp(2.3),
+                                        textAlign: "left",
+                                      },
+                                    ]}
+                                  >
+                                    <Text style={styles.eventLabel}>
+                                      {localized.t("TIME")}:{" "}
+                                    </Text>
+                                    {`${moment(
+                                      selectedEvent?.eventStartDate
+                                    ).format("h:mm A")} - ${moment(
+                                      selectedEvent?.eventEndDate
+                                    ).format("h:mm A")}, ${moment(
+                                      selectedEvent?.eventStartDate
+                                    ).format("DD/MM/YYYY")}`}
+                                  </Text>
+                                </View>
+
+                                <View
+                                  style={{
+                                    gap:5,
+                                    flexDirection: "row",
+                                    alignItems: "flex-start",
+                                    width: "100%",
+                                  }}
+                                >
+                                  <View
+                                    style={{ width: 25, alignItems: "center" }}
+                                  >
+                                    <Octicons
+                                      name="location"
+                                      size={22}
+                                      color="black"
+                                    />
+                                  </View>
+                                  <Text
+                                    style={[
+                                      styles.eventDetailText,
+                                      {
+                                        flex: 1,
+                                        lineHeight: h2dp(2.3),
+                                        textAlign: "left",
+                                      },
+                                    ]}
+                                  >
+                                    <Text style={styles.eventLabel}>
+                                      {localized.t("LOCATION")}:{" "}
+                                    </Text>
+                                    {selectedEvent?.address}
+                                  </Text>
+                                </View>
+                              </View>
+
+                              <View
+                                style={{ flexDirection: "row", marginTop: 20 }}
+                              >
+                                <TouchableOpacity
+                                  style={[
+                                    styles.modalButton,
+                                    {
+                                      borderColor: "#FC5A56",
+                                      borderWidth: 1.5,
+                                      backgroundColor: "transparent",
+                                    },
+                                  ]}
+                                  onPress={() =>
+                                    setOpenEventDetailsModal(false)
+                                  }
+                                >
+                                  <Text
+                                    style={[
+                                      styles.buttonText,
+                                      { color: "#FC5A56" },
+                                    ]}
+                                  >
+                                    {localized.t("CLOSE")}
+                                  </Text>
+                                </TouchableOpacity>
+
+                                <TouchableOpacity
+                                  style={[
+                                    styles.modalButton,
+                                    { marginLeft: 12 },
+                                  ]}
+                                  onPress={() => {
+                                    setOpenEventDetailsModal(false);
+                                    navigation.navigate("SingleEventDetails", {
+                                      eventDetails: selectedEvent,
+                                    });
+                                  }}
+                                >
+                                  <Text style={styles.buttonText}>
+                                    {localized.t("MORE_DETAILS")}
+                                  </Text>
+                                </TouchableOpacity>
+                              </View>
+                            </>
+                          )}
+                        </View>
+                      </View>
+                    </Modal>
 
                     {emptyEvents ? (
                       <Text
@@ -501,17 +686,21 @@ const MapScreen = ({ route }: any) => {
                         {localized.t("NO_EVENTS_FOUND")}
                       </Text>
                     ) : (
-                      <Text
-                        style={{
-                          marginTop: w2dp(5),
-                          textAlign: "center",
-                          fontSize: h2dp(2.0),
-                          color: "white",
-                          opacity: 0,
-                        }}
-                      >
-                        {localized.t("NO_EVENTS_FOUND")}
-                      </Text>
+                      !emptyEvents &&
+                      buttonVisibility && (
+                        <Text
+                          style={{
+                            marginTop: w2dp(5),
+                            textAlign: "center",
+                            fontSize: h2dp(2.0),
+                            color: "white",
+                          }}
+                        >
+                          {localized.t(
+                            "TAP_PINNED_LOCATION_TO_VIEW_EVENT_DETAILS"
+                          )}
+                        </Text>
+                      )
                     )}
                   </View>
                 </View>
@@ -524,7 +713,12 @@ const MapScreen = ({ route }: any) => {
                 >
                   <PrimaryButton
                     title={localized.t("HOME")}
-                    buttonStyle={styles.buttonStyles}
+                    buttonStyle={[
+                      styles.buttonStyles,
+                      {
+                        backgroundColor: "gray",
+                      },
+                    ]}
                     titleStyle={styles.titleStyle}
                     onPress={() => {
                       navigation.replace("HomeScreen");
