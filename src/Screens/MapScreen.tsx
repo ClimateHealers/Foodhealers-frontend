@@ -524,7 +524,12 @@ const MapScreen = ({ route }: any) => {
                 >
                   <PrimaryButton
                     title={localized.t("HOME")}
-                    buttonStyle={styles.buttonStyles}
+                    buttonStyle={[
+                      styles.buttonStyles,
+                      {
+                        backgroundColor: "gray",
+                      },
+                    ]}
                     titleStyle={styles.titleStyle}
                     onPress={() => {
                       navigation.replace("HomeScreen");

@@ -28,6 +28,7 @@ import SplashScreen from "./src/Screens/SplashScreen";
 import { customFonts } from "./src/font";
 import { persistor, store } from "./src/redux/store";
 import "react-native-get-random-values";
+import { initAutoUpdateListener } from "./src/AutoUpdateActions/autoUpdate";
 
 (TextRN as any).defaultProps ??= {};
 (Text as any).defaultProps ??= {};
@@ -54,7 +55,10 @@ export default function App() {
   let lastBackPressed: number = 0;
 
   const netInfo = useNetInfo();
-
+  useEffect(() => {
+    const cleanup = initAutoUpdateListener();
+    return cleanup;
+  }, []);
   useEffect(() => {
     (async () => {
       await Font.loadAsync(customFonts);
