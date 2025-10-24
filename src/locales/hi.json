@@ -294,6 +294,8 @@
     "IN_TRANSIT": "ट्रांजिट में",
     "ACCEPTED": "स्वीकृत",
     "LOADING_NEARBY_EVENTS": "नज़दीकी कार्यक्रम लोड हो रहे हैं...",
-    "TAP_TO_FIND_FOOD": "खाना खोजने के लिए टैप करें"
+    "TAP_TO_FIND_FOOD": "खाना खोजने के लिए टैप करें",
+    "MORE_DETAILS": "और विवरण",
+    "TAP_PINNED_LOCATION_TO_VIEW_EVENT_DETAILS": "इवेंट विवरण देखने के लिए पिन की गई लोकेशन पर टैप करें"
   }
 }
