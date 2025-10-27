@@ -296,6 +296,7 @@
     "LOADING_NEARBY_EVENTS": "কাছাকাছি ইভেন্ট লোড হচ্ছে...",
     "TAP_TO_FIND_FOOD": "খাবার খুঁজতে ট্যাপ করুন",
     "MORE_DETAILS": "আরও বিস্তারিত",
-    "TAP_PINNED_LOCATION_TO_VIEW_EVENT_DETAILS": "ইভেন্টের বিবরণ দেখার জন্য পিন করা অবস্থানে চাপুন"
+    "TAP_PINNED_LOCATION_TO_VIEW_EVENT_DETAILS": "ইভেন্টের বিবরণ দেখার জন্য পিন করা অবস্থানে চাপুন",
+    "VERIFIED": "যাচাই করা হয়েছে"
   }
 }

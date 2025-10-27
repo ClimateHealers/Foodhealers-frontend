@@ -8,6 +8,7 @@ import {
   Image,
   Keyboard,
   Linking,
+  Platform,
   ScrollView,
   Share,
   Text,
@@ -125,8 +126,24 @@ Join me using https://play.google.com/store/apps/details?id=com.foodhealers.clim
   const formattedEndTime = moment(EndTime).format("h:mm a");
 
   const navigationHandler = () => {
-    const url = `https://www.google.com/maps/dir/?api=1&destination=${eventDetails?.address?.lat},${eventDetails?.address?.lng}`;
-    Linking.openURL(url);
+    const lat = eventDetails?.address?.lat;
+    const lng = eventDetails?.address?.lng;
+
+    if (!lat || !lng) {
+      Alert.alert("Error", "Location details are missing.");
+      return;
+    }
+
+    const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`;
+    const appleMapsUrl = `http://maps.apple.com/?daddr=${lat},${lng}`;
+
+    if (Platform.OS === "ios") {
+      Linking.openURL(appleMapsUrl).catch(() => {
+        Linking.openURL(googleMapsUrl);
+      });
+    } else {
+      Linking.openURL(googleMapsUrl);
+    }
   };
 
   const volunteersRequired = eventDetails?.requiredVolunteers;

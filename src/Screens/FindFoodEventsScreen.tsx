@@ -24,7 +24,6 @@ import {
   heightPercentageToDP as h2dp,
   widthPercentageToDP as w2dp,
 } from "react-native-responsive-screen";
-import { Button } from "react-native-elements";
 import { useDispatch } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
 import FoodhealersHeader from "../Components/FoodhealersHeader";
@@ -85,138 +84,122 @@ const FindFoodEventsScreen = () => {
     Linking.openURL(url);
   };
 
-  const Item = ({
-    id,
-    address,
-    eventStartDate,
-    lat,
-    long,
-    status,
-    name,
-  }: any) => (
-    <TouchableOpacity activeOpacity={1}>
-      <View style={styles.cardContainer}>
-        {/* Status */}
-        {status === "approved" ? (
-          <View>
-            <AntDesign
-              name="checkcircleo"
-              size={24}
-              color="green"
-              style={{
-                marginLeft: h2dp(2.5),
-                marginTop: h2dp(1.5),
-              }}
-            />
-            <Text
-              style={{
-                marginLeft: h2dp(1.5),
-                fontSize: h2dp(1.1),
-                color: "green",
-                marginTop: h2dp(0.5),
-              }}
-            >
-              {localized.t("APPROVED")}
-            </Text>
-          </View>
-        ) : status === "pending" ? (
-          <View>
-            <FontAwesome
-              name="clock-o"
-              size={24}
-              color="#f2db0a"
-              style={{
-                marginLeft: h2dp(2.3),
-                marginTop: h2dp(1.5),
-              }}
-            />
-            <Text
-              style={{
-                marginLeft: h2dp(1.5),
-                fontSize: h2dp(1.1),
-                color: "#f2db0a",
-                marginTop: h2dp(0.5),
-              }}
-            >
-              {localized.t("PENDING")}
-            </Text>
-          </View>
-        ) : (
-          <View>
-            <Feather
-              name="x-circle"
-              size={24}
-              color="red"
-              style={{ marginLeft: h2dp(2.3), marginTop: h2dp(1.5) }}
-            />
-            <Text
-              style={{
-                marginLeft: h2dp(1.5),
-                fontSize: h2dp(1.1),
-                color: "red",
-                marginTop: h2dp(0.5),
-              }}
-            >
-              {localized.t("REJECTED")}
-            </Text>
-          </View>
-        )}
+  const Item = ({ event }: any) => {
+    const { id, address, eventStartDate, status, name } = event;
 
-        {/* Content */}
-        <View style={{ flex: 1, paddingVertical: h2dp(1.5) }}>
-          <Text
-            style={{
-              marginLeft: w2dp(5),
-              fontSize: h2dp(1.6),
-              lineHeight: 30,
-              paddingTop: h2dp(0.5),
-            }}
-          >
-            {moment(eventStartDate).format("MMM DD, YYYY  ddd, hh:mm A")}
-          </Text>
-          <Text
-            style={{
-              marginLeft: w2dp(5),
-              width: w2dp(52),
-              fontWeight: "bold",
-              fontSize: h2dp(1.6),
-              lineHeight: 30,
-            }}
-          >
-            {name}
-          </Text>
-          <Text
-            style={{
-              marginLeft: w2dp(5),
-              width: w2dp(47),
-              fontWeight: "200",
-              fontSize: h2dp(1.6),
-              lineHeight: 20,
-              paddingBottom: h2dp(1),
-            }}
-          >
-            📍 {address}
-          </Text>
-        </View>
+    return (
+      <TouchableOpacity
+        activeOpacity={1}
+        onPress={() => {
+          navigation.navigate("EventDetailsScreen", {
+            eventDetails: event,
+          });
+        }}
+      >
+        <View style={[styles.cardContainer, { paddingHorizontal: 5 }]}>
+          {status === "approved" ? (
+            <View>
+              <AntDesign
+                name="checkcircleo"
+                size={24}
+                color="green"
+                style={{
+                  marginLeft: h2dp(2.5),
+                  marginTop: h2dp(1.5),
+                }}
+              />
+              <Text
+                style={{
+                  marginLeft: h2dp(1.5),
+                  fontSize: h2dp(1.1),
+                  color: "green",
+                  marginTop: h2dp(0.5),
+                }}
+              >
+                {localized.t("VERIFIED")}
+              </Text>
+            </View>
+          ) : status === "pending" ? (
+            <View>
+              <FontAwesome
+                name="clock-o"
+                size={24}
+                color="#f2db0a"
+                style={{
+                  marginLeft: h2dp(2.3),
+                  marginTop: h2dp(1.5),
+                }}
+              />
+              <Text
+                style={{
+                  marginLeft: h2dp(1.5),
+                  fontSize: h2dp(1.1),
+                  color: "#f2db0a",
+                  marginTop: h2dp(0.5),
+                }}
+              >
+                {localized.t("PENDING")}
+              </Text>
+            </View>
+          ) : (
+            <View>
+              <Feather
+                name="x-circle"
+                size={24}
+                color="red"
+                style={{ marginLeft: h2dp(2.3), marginTop: h2dp(1.5) }}
+              />
+              <Text
+                style={{
+                  marginLeft: h2dp(1.5),
+                  fontSize: h2dp(1.1),
+                  color: "red",
+                  marginTop: h2dp(0.5),
+                }}
+              >
+                {localized.t("REJECTED")}
+              </Text>
+            </View>
+          )}
 
-        {/* Button at bottom right */}
-        <View style={styles.buttonWrapper}>
-          <Button
-            title={localized.t("GET_DIRECTIONS")}
-            onPress={() => {
-              if (lat && long) {
-                openMaps(lat, long, address);
-              } else {
-                alert("Location not available");
-              }
-            }}
-            buttonStyle={styles.directionButton}
-            titleStyle={styles.directionButtonText}
-          />
+          <View style={{ flex: 1, paddingVertical: h2dp(1.5) }}>
+            <Text
+              style={{
+                marginLeft: w2dp(5),
+                fontSize: h2dp(1.6),
+                lineHeight: 30,
+                paddingTop: h2dp(0.5),
+              }}
+            >
+              {moment(eventStartDate).format("MMM DD, YYYY  ddd, hh:mm A")}
+            </Text>
+            <Text
+              style={{
+                marginLeft: w2dp(5),
+                width: w2dp(52),
+                fontWeight: "bold",
+                fontSize: h2dp(1.6),
+                lineHeight: 30,
+              }}
+            >
+              {name}
+            </Text>
+            <Text
+              style={{
+                marginLeft: w2dp(5),
+                fontWeight: "200",
+                fontSize: h2dp(1.6),
+                lineHeight: 20,
+                paddingBottom: h2dp(1),
+              }}
+            >
+              📍 {address?.fullAddress || localized.t("ADDRESS_NOT_AVAILABLE")}
+            </Text>
+          </View>
         </View>
-      </View>
-    </TouchableOpacity>
-  );
+      </TouchableOpacity>
+    );
+  };
 
   return (
     <TouchableWithoutFeedback onPress={handlePressOutside}>
@@ -271,17 +254,7 @@ const FindFoodEventsScreen = () => {
                 item?.id?.toString() || index.toString()
               }
               renderItem={({ item }: any) => {
-                return (
-                  <Item
-                    id={item?.id}
-                    name={item?.name}
-                    address={item?.address?.fullAddress}
-                    lat={item?.address?.lat}
-                    long={item?.address?.lng}
-                    eventStartDate={item?.eventStartDate}
-                    status={item?.status}
-                  />
-                );
+                return <Item event={item} />;
               }}
             />
           ) : (

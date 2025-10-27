@@ -296,6 +296,7 @@
     "LOADING_NEARBY_EVENTS": "Cargando eventos cercanos...",
     "TAP_TO_FIND_FOOD": "Toca para encontrar comida",
     "MORE_DETAILS": "Más detalles",
-    "TAP_PINNED_LOCATION_TO_VIEW_EVENT_DETAILS": "Toque la ubicación marcada para ver los detalles del evento"
+    "TAP_PINNED_LOCATION_TO_VIEW_EVENT_DETAILS": "Toque la ubicación marcada para ver los detalles del evento",
+    "VERIFIED": "Verificado"
   }
 }

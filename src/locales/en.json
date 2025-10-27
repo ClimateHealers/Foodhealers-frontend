@@ -297,6 +297,7 @@
     "LOADING_NEARBY_EVENTS": "Loading nearby events...",
     "TAP_TO_FIND_FOOD": "Tap to find food",
     "MORE_DETAILS": "More Details",
-    "TAP_PINNED_LOCATION_TO_VIEW_EVENT_DETAILS": "Tap pinned location to view event details"
+    "TAP_PINNED_LOCATION_TO_VIEW_EVENT_DETAILS": "Tap pinned location to view event details",
+    "VERIFIED": "Verified"
   }
 }
