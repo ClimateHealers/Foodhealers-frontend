@@ -707,4 +707,9 @@ export const styles = StyleSheet.create({
     fontSize: h2dp(1.3),
     fontWeight: "500",
   },
+  buttonWrapper: {
+    position: "absolute",
+    bottom: h2dp(1),
+    right: w2dp(3),
+  },
 });

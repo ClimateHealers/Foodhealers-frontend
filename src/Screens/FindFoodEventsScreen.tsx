@@ -20,6 +20,10 @@ import {
   Platform,
   Keyboard,
 } from "react-native";
+import {
+  heightPercentageToDP as h2dp,
+  widthPercentageToDP as w2dp,
+} from "react-native-responsive-screen";
 import { Button } from "react-native-elements";
 import { useDispatch } from "react-redux";
 import BurgerIcon from "../Components/BurgerIcon";
@@ -90,44 +94,113 @@ const FindFoodEventsScreen = () => {
     status,
     name,
   }: any) => (
-    <TouchableOpacity activeOpacity={0.9}>
-      <View style={styles.eventCardContainer}>
+    <TouchableOpacity activeOpacity={1}>
+      <View style={styles.cardContainer}>
+        {/* Status */}
         {status === "approved" ? (
-          <View style={styles.statusRow}>
-            <AntDesign name="checkcircleo" size={18} color="green" />
-            <Text style={[styles.statusText, { color: "green" }]}>
+          <View>
+            <AntDesign
+              name="checkcircleo"
+              size={24}
+              color="green"
+              style={{
+                marginLeft: h2dp(2.5),
+                marginTop: h2dp(1.5),
+              }}
+            />
+            <Text
+              style={{
+                marginLeft: h2dp(1.5),
+                fontSize: h2dp(1.1),
+                color: "green",
+                marginTop: h2dp(0.5),
+              }}
+            >
               {localized.t("APPROVED")}
             </Text>
           </View>
         ) : status === "pending" ? (
-          <View style={styles.statusRow}>
-            <FontAwesome name="clock-o" size={18} color="#f2db0a" />
-            <Text style={[styles.statusText, { color: "#f2db0a" }]}>
+          <View>
+            <FontAwesome
+              name="clock-o"
+              size={24}
+              color="#f2db0a"
+              style={{
+                marginLeft: h2dp(2.3),
+                marginTop: h2dp(1.5),
+              }}
+            />
+            <Text
+              style={{
+                marginLeft: h2dp(1.5),
+                fontSize: h2dp(1.1),
+                color: "#f2db0a",
+                marginTop: h2dp(0.5),
+              }}
+            >
               {localized.t("PENDING")}
             </Text>
           </View>
         ) : (
-          <View style={styles.statusRow}>
-            <Feather name="x-circle" size={18} color="red" />
-            <Text style={[styles.statusText, { color: "red" }]}>
+          <View>
+            <Feather
+              name="x-circle"
+              size={24}
+              color="red"
+              style={{ marginLeft: h2dp(2.3), marginTop: h2dp(1.5) }}
+            />
+            <Text
+              style={{
+                marginLeft: h2dp(1.5),
+                fontSize: h2dp(1.1),
+                color: "red",
+                marginTop: h2dp(0.5),
+              }}
+            >
               {localized.t("REJECTED")}
             </Text>
           </View>
         )}
 
-        <Text style={styles.dateText}>
-          {moment(eventStartDate).format("MMM DD, YYYY ddd, hh:mm A")}
-        </Text>
+        {/* Content */}
+        <View style={{ flex: 1, paddingVertical: h2dp(1.5) }}>
+          <Text
+            style={{
+              marginLeft: w2dp(5),
+              fontSize: h2dp(1.6),
+              lineHeight: 30,
+              paddingTop: h2dp(0.5),
+            }}
+          >
+            {moment(eventStartDate).format("MMM DD, YYYY  ddd, hh:mm A")}
+          </Text>
+          <Text
+            style={{
+              marginLeft: w2dp(5),
+              width: w2dp(52),
+              fontWeight: "bold",
+              fontSize: h2dp(1.6),
+              lineHeight: 30,
+            }}
+          >
+            {name}
+          </Text>
+          <Text
+            style={{
+              marginLeft: w2dp(5),
+              width: w2dp(47),
+              fontWeight: "200",
+              fontSize: h2dp(1.6),
+              lineHeight: 20,
+              paddingBottom: h2dp(1),
+            }}
+          >
+            📍 {address}
+          </Text>
+        </View>
 
-        <Text style={styles.cardEventName}>{name}</Text>
-
-        <View style={styles.locationRow}>
-          <View style={{ flex: 1 }}>
-            <Text style={styles.locationText} numberOfLines={2}>
-              📍 {address}
-            </Text>
-          </View>
-
+        {/* Button at bottom right */}
+        <View style={styles.buttonWrapper}>
           <Button
             title={localized.t("GET_DIRECTIONS")}
             onPress={() => {
