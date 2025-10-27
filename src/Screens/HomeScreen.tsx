@@ -123,7 +123,7 @@ const HomeScreen = ({ route }: any) => {
   };
 
   const navigateToMapScreen = () => {
-    navigation.navigate("MapScreen", {
+    navigation.navigate("FindFoodEventsScreen", {
       latitude: lat,
       longitude: long,
     });
@@ -245,7 +245,7 @@ const HomeScreen = ({ route }: any) => {
           <View style={styles.buttonContainer}>
             <PrimaryButton
               title={localized.t("FIND_FOOD")}
-              onPress={navigateToMapScreen}
+              onPress={() => navigation.navigate("FindFoodEventsScreen")}
               buttonStyle={styles.greenButton}
               titleStyle={styles.buttonTitle}
             />

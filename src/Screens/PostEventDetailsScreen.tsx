@@ -56,11 +56,12 @@ const PostEventDetailsScreen = ({ route }: any) => {
   };
 
   const findFoodMenuItemPress = (item: any) => {
-    getLocation().then((location: any) => {
-      navigation.navigate("MapScreen", {
-        location: location,
-      });
-    });
+    navigation.navigate("FindFoodEventsScreen");
+    // getLocation().then((location: any) => {
+    //   navigation.navigate("MapScreen", {
+    //     location: location,
+    //   });
+    // });
     setMenuOpen(false);
   };
 

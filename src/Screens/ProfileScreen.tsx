@@ -201,14 +201,15 @@ const ProfileScreen = () => {
             <View style={styles.menuContainer}>
               {renderMenuItem("HOME", () => navigation.replace("HomeScreen"))}
               {renderMenuItem("FIND_FOOD", () => {
-                getLocation().then((res) => {
-                  if (res) {
-                    navigation.navigate("MapScreen", {
-                      latitude: res?.latitude,
-                      longitude: res?.longitude,
-                    });
-                  }
-                });
+                navigation.navigate("FindFoodEventsScreen");
+                // getLocation().then((res) => {
+                //   if (res) {
+                //     navigation.navigate("MapScreen", {
+                //       latitude: res?.latitude,
+                //       longitude: res?.longitude,
+                //     });
+                //   }
+                // });
                 setMenuOpen(false);
               })}
               {isAuthenticated && (
