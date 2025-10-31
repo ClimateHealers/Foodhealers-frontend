@@ -76,6 +76,7 @@ import { Alert } from "react-native";
 import { logOut } from "./redux/reducers/authreducers";
 import { useDispatch } from "react-redux";
 import { jwtDecode } from "jwt-decode";
+import FindFoodEventsScreen from "./Screens/FindFoodEventsScreen";
 
 const Navigation = () => {
   const Stack = createNativeStackNavigator();
@@ -166,6 +167,11 @@ const Navigation = () => {
         <Stack.Screen
           name="FindFoodHomeScreen"
           component={FindFoodHomeScreen}
+          options={{ title: "", header: () => null }}
+        />
+        <Stack.Screen
+          name="FindFoodEventsScreen"
+          component={FindFoodEventsScreen}
           options={{ title: "", header: () => null }}
         />
         <Stack.Screen

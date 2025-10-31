@@ -129,13 +129,41 @@ const HomeScreen = ({ route }: any) => {
     });
   };
 
+  const navigateToFindFoodEventsScreen = () => {
+    if (data.token) {
+      navigation.navigate("FindFoodEventsScreen");
+    } else {
+      Alert.alert(
+        `${localized.t("REGISTRATION_REQUIRED")}`,
+        `${localized.t("ALERT_MESSAGE")}`,
+        [
+          {
+            text: `${localized.t("LOGIN")}`,
+            onPress: () => {
+              navigation.navigate("LoginScreen");
+            },
+            style: "default",
+          },
+          {
+            text: `${localized.t("CANCEL")}`,
+            onPress: () => {},
+            style: "default",
+          },
+        ],
+        {
+          cancelable: true,
+        }
+      );
+    }
+  };
+
   const postEvent = () => {
     if (data.token) {
       navigation.navigate("AllEventScreen");
     } else {
       Alert.alert(
         `${localized.t("REGISTRATION_REQUIRED")}`,
-        `${localized.t("ONLY_A_REGISTERED")}`,
+        `${localized.t("ALERT_MESSAGE")}`,
         [
           {
             text: `${localized.t("LOGIN")}`,
@@ -163,7 +191,7 @@ const HomeScreen = ({ route }: any) => {
     } else {
       Alert.alert(
         `${localized.t("REGISTRATION_REQUIRED")}`,
-        `${localized.t("ONLY_A_REGISTERED")}`,
+        `${localized.t("ALERT_MESSAGE")}`,
         [
           {
             text: `${localized.t("LOGIN")}`,
@@ -245,7 +273,7 @@ const HomeScreen = ({ route }: any) => {
           <View style={styles.buttonContainer}>
             <PrimaryButton
               title={localized.t("FIND_FOOD")}
-              onPress={navigateToMapScreen}
+              onPress={navigateToFindFoodEventsScreen}
               buttonStyle={styles.greenButton}
               titleStyle={styles.buttonTitle}
             />
@@ -261,7 +289,6 @@ const HomeScreen = ({ route }: any) => {
               onPress={() => {
                 if (data.isAuthenticated) {
                   if (volunteerData?.length > 0 || donationData?.length > 0) {
-                    dispatch(nearbyEvents({ radius: 50 } as any) as any);
                     navigation.navigate("VolunteerHomeScreen", {
                       latitude: lat,
                       longitude: long,
@@ -275,7 +302,7 @@ const HomeScreen = ({ route }: any) => {
                 } else {
                   Alert.alert(
                     `${localized.t("REGISTRATION_REQUIRED")}`,
-                    `${localized.t("ONLY_A_REGISTERED")}`,
+                    `${localized.t("ALERT_MESSAGE")}`,
                     [
                       {
                         text: `${localized.t("LOGIN")}`,

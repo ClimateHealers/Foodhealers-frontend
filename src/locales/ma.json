@@ -296,6 +296,8 @@
     "LOADING_NEARBY_EVENTS": "जवळील कार्यक्रम लोड होत आहेत...",
     "TAP_TO_FIND_FOOD": "अन्न शोधण्यासाठी टॅप करा",
     "MORE_DETAILS": "अधिक तपशील",
-    "TAP_PINNED_LOCATION_TO_VIEW_EVENT_DETAILS": "इव्हेंट तपशील पाहण्यासाठी पिन केलेल्या ठिकाणी टॅप करा"
+    "TAP_PINNED_LOCATION_TO_VIEW_EVENT_DETAILS": "इव्हेंट तपशील पाहण्यासाठी पिन केलेल्या ठिकाणी टॅप करा",
+    "VERIFIED": "सत्यापित",
+    "ALERT_MESSAGE": "कृपया ही कृती करण्यासाठी लॉगिन करा."
   }
 }

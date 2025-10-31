@@ -55,14 +55,15 @@ const BurgerIcon = ({ menuClose, onOutsidePress, menuItem }: any) => {
   };
 
   const findFoodMenuItemPress = (item: any) => {
-    getLocation().then((res) => {
-      if (res) {
-        navigation?.navigate("MapScreen", {
-          latitude: res?.latitude,
-          longitude: res?.longitude,
-        });
-      }
-    });
+    navigation?.navigate("FindFoodEventsScreen");
+    // getLocation().then((res) => {
+    //   if (res) {
+    //     navigation?.navigate("MapScreen", {
+    //       latitude: res?.latitude,
+    //       longitude: res?.longitude,
+    //     });
+    //   }
+    // });
     setMenuOpen(false);
   };
 
