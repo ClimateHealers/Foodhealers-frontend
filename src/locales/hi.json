@@ -297,6 +297,7 @@
     "TAP_TO_FIND_FOOD": "खाना खोजने के लिए टैप करें",
     "MORE_DETAILS": "और विवरण",
     "TAP_PINNED_LOCATION_TO_VIEW_EVENT_DETAILS": "इवेंट विवरण देखने के लिए पिन की गई लोकेशन पर टैप करें",
-    "VERIFIED": "सत्यापित"
+    "VERIFIED": "सत्यापित",
+    "ALERT_MESSAGE": "कृपया यह कार्रवाई करने के लिए लॉगिन करें।"
   }
 }

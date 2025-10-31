@@ -8,7 +8,7 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import moment from "moment";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   FlatList,
   ScrollView,
@@ -19,6 +19,7 @@ import {
   Linking,
   Platform,
   Keyboard,
+  Animated,
 } from "react-native";
 import {
   heightPercentageToDP as h2dp,
@@ -75,129 +76,136 @@ const FindFoodEventsScreen = () => {
     setMenuOpen(!menuClose);
   };
 
-  const openMaps = (lat: number, lng: number, address: any) => {
-    const label = address || localized.t("SELECTED_LOCATION");
-    const url =
-      Platform.OS === "ios"
-        ? `http://maps.apple.com/?ll=${lat},${lng}&q=${label}`
-        : `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
-    Linking.openURL(url);
-  };
-
   const Item = ({ event }: any) => {
+    const navigation = useNavigation();
+    const scaleAnim = useRef(new Animated.Value(1)).current;
+
+    const handlePress = () => {
+      Animated.sequence([
+        Animated.timing(scaleAnim, {
+          toValue: 0.95,
+          duration: 100,
+          useNativeDriver: true,
+        }),
+        Animated.timing(scaleAnim, {
+          toValue: 1,
+          duration: 100,
+          useNativeDriver: true,
+        }),
+      ]).start(() => {
+        navigation.navigate("EventDetailsScreen", { eventDetails: event });
+      });
+    };
+
     const { id, address, eventStartDate, status, name } = event;
 
     return (
-      <TouchableOpacity
-        activeOpacity={1}
-        onPress={() => {
-          navigation.navigate("EventDetailsScreen", {
-            eventDetails: event,
-          });
-        }}
-      >
-        <View style={[styles.cardContainer, { paddingHorizontal: 5 }]}>
-          {status === "approved" ? (
-            <View>
-              <AntDesign
-                name="checkcircleo"
-                size={24}
-                color="green"
-                style={{
-                  marginLeft: h2dp(2.5),
-                  marginTop: h2dp(1.5),
-                }}
-              />
-              <Text
-                style={{
-                  marginLeft: h2dp(1.5),
-                  fontSize: h2dp(1.1),
-                  color: "green",
-                  marginTop: h2dp(0.5),
-                }}
-              >
-                {localized.t("VERIFIED")}
-              </Text>
-            </View>
-          ) : status === "pending" ? (
-            <View>
-              <FontAwesome
-                name="clock-o"
-                size={24}
-                color="#f2db0a"
-                style={{
-                  marginLeft: h2dp(2.3),
-                  marginTop: h2dp(1.5),
-                }}
-              />
-              <Text
-                style={{
-                  marginLeft: h2dp(1.5),
-                  fontSize: h2dp(1.1),
-                  color: "#f2db0a",
-                  marginTop: h2dp(0.5),
-                }}
-              >
-                {localized.t("PENDING")}
-              </Text>
-            </View>
-          ) : (
-            <View>
-              <Feather
-                name="x-circle"
-                size={24}
-                color="red"
-                style={{ marginLeft: h2dp(2.3), marginTop: h2dp(1.5) }}
-              />
-              <Text
-                style={{
-                  marginLeft: h2dp(1.5),
-                  fontSize: h2dp(1.1),
-                  color: "red",
-                  marginTop: h2dp(0.5),
-                }}
-              >
-                {localized.t("REJECTED")}
-              </Text>
-            </View>
-          )}
+      <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
+        <TouchableOpacity activeOpacity={1} onPress={handlePress}>
+          <View style={[styles.cardContainer, { paddingHorizontal: 5 }]}>
+            {status === "approved" ? (
+              <View>
+                <AntDesign
+                  name="checkcircleo"
+                  size={24}
+                  color="green"
+                  style={{
+                    marginLeft: h2dp(2.5),
+                    marginTop: h2dp(1.5),
+                  }}
+                />
+                <Text
+                  style={{
+                    marginLeft: h2dp(1.5),
+                    fontSize: h2dp(1.1),
+                    color: "green",
+                    marginTop: h2dp(0.5),
+                  }}
+                >
+                  {localized.t("VERIFIED")}
+                </Text>
+              </View>
+            ) : status === "pending" ? (
+              <View>
+                <FontAwesome
+                  name="clock-o"
+                  size={24}
+                  color="#f2db0a"
+                  style={{
+                    marginLeft: h2dp(2.3),
+                    marginTop: h2dp(1.5),
+                  }}
+                />
+                <Text
+                  style={{
+                    marginLeft: h2dp(1.5),
+                    fontSize: h2dp(1.1),
+                    color: "#f2db0a",
+                    marginTop: h2dp(0.5),
+                  }}
+                >
+                  {localized.t("PENDING")}
+                </Text>
+              </View>
+            ) : (
+              <View>
+                <Feather
+                  name="x-circle"
+                  size={24}
+                  color="red"
+                  style={{ marginLeft: h2dp(2.3), marginTop: h2dp(1.5) }}
+                />
+                <Text
+                  style={{
+                    marginLeft: h2dp(1.5),
+                    fontSize: h2dp(1.1),
+                    color: "red",
+                    marginTop: h2dp(0.5),
+                  }}
+                >
+                  {localized.t("REJECTED")}
+                </Text>
+              </View>
+            )}
 
-          <View style={{ flex: 1, paddingVertical: h2dp(1.5) }}>
-            <Text
-              style={{
-                marginLeft: w2dp(5),
-                fontSize: h2dp(1.6),
-                lineHeight: 30,
-                paddingTop: h2dp(0.5),
-              }}
-            >
-              {moment(eventStartDate).format("MMM DD, YYYY  ddd, hh:mm A")}
-            </Text>
-            <Text
-              style={{
-                marginLeft: w2dp(5),
-                width: w2dp(52),
-                fontWeight: "bold",
-                fontSize: h2dp(1.6),
-                lineHeight: 30,
-              }}
-            >
-              {name}
-            </Text>
-            <Text
-              style={{
-                marginLeft: w2dp(5),
-                fontWeight: "200",
-                fontSize: h2dp(1.6),
-                lineHeight: 20,
-                paddingBottom: h2dp(1),
-              }}
-            >
-              📍 {address?.fullAddress || localized.t("ADDRESS_NOT_AVAILABLE")}
-            </Text>
+            <View style={{ flex: 1, paddingVertical: h2dp(1.5) }}>
+              <Text
+                style={{
+                  marginLeft: w2dp(5),
+                  fontSize: h2dp(1.6),
+                  lineHeight: 30,
+                  paddingTop: h2dp(0.5),
+                }}
+              >
+                {moment(eventStartDate).format("MMM DD, YYYY  ddd, hh:mm A")}
+              </Text>
+              <Text
+                style={{
+                  marginLeft: w2dp(5),
+                  width: w2dp(52),
+                  fontWeight: "bold",
+                  fontSize: h2dp(1.6),
+                  lineHeight: 30,
+                }}
+              >
+                {name}
+              </Text>
+              <Text
+                style={{
+                  marginLeft: w2dp(5),
+                  fontWeight: "200",
+                  fontSize: h2dp(1.6),
+                  lineHeight: 20,
+                  paddingBottom: h2dp(1),
+                }}
+              >
+                📍{" "}
+                {address?.fullAddress || localized.t("ADDRESS_NOT_AVAILABLE")}
+              </Text>
+            </View>
           </View>
-        </View>
-      </TouchableOpacity>
+        </TouchableOpacity>
+      </Animated.View>
     );
   };
 

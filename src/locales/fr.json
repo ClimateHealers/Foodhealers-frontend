@@ -297,6 +297,7 @@
     "TAP_TO_FIND_FOOD": "Appuyez pour trouver de la nourriture",
     "MORE_DETAILS": "Plus de détails",
     "TAP_PINNED_LOCATION_TO_VIEW_EVENT_DETAILS": "Appuyez sur l’emplacement épinglé pour voir les détails de l’événement",
-    "VERIFIED": "Vérifié"
+    "VERIFIED": "Vérifié",
+    "ALERT_MESSAGE": "Veuillez vous connecter pour effectuer cette action."
   }
 }

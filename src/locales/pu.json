@@ -297,6 +297,7 @@
     "TAP_TO_FIND_FOOD": "ਖਾਣਾ ਲੱਭਣ ਲਈ ਟੈਪ ਕਰੋ",
     "MORE_DETAILS": "ਹੋਰ ਵੇਰਵਾ",
     "TAP_PINNED_LOCATION_TO_VIEW_EVENT_DETAILS": "ਇਵੈਂਟ ਦੇ ਵੇਰਵੇ ਵੇਖਣ ਲਈ ਪਿਨ ਕੀਤੇ ਸਥਾਨ 'ਤੇ ਟੈਪ ਕਰੋ",
-    "VERIFIED": "ਪੁਸ਼ਟੀ ਕੀਤੀ ਗਈ"
+    "VERIFIED": "ਪੁਸ਼ਟੀ ਕੀਤੀ ਗਈ",
+    "ALERT_MESSAGE": "ਕਿਰਪਾ ਕਰਕੇ ਇਹ ਕਾਰਵਾਈ ਕਰਨ ਲਈ ਲੌਗਿਨ ਕਰੋ।"
   }
 }
